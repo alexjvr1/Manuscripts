@@ -1,0 +1,32 @@
+##Population genomics of Rana temporaria across elevational temperature gradient in Scandinavia. 
+
+Compare to Johannsen et al. 2006
+
+http://onlinelibrary.wiley.com/doi/10.1111/j.1365-294X.2006.02866.x/full
+
+ (i) Are there clear geographic patterns of within population genetic variability and degree of among population genetic variability in this species? 
+ 
+ (ii) Are there clear geographic patterns of occurrence and population sizes in this species? 
+ 
+ (iii) Is there evidence that the current patterns of genetic variability and differentiation in this species are better explained by their current demography, rather than their colonization history?
+
+1. What is the fine-scale connectivity within each sampling area?
+
+2. IBD vs IBE?
+
+3. Signatures of selection? 
+
+I will run analyses based on Laurent et al. 2015 (white sand lizards) http://onlinelibrary.wiley.com/doi/10.1111/mec.13385/epdf
+
+
+1. Filter SNPs 
+
+2. PCA
+
+3. Structure analysis
+
+4. Heterozygosity
+
+5. Filter outliers??
+
+6. Fst table
