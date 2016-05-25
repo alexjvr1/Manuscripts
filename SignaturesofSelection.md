@@ -1,6 +1,8 @@
-#Genomics of adaptation. What to expect, and how to search for the signals. 
+#Genomics of adaptation. 
 
-##Summary of the literature
+##What to expect, and how to search for the signals. 
+
+A Summary of the literature
 
 ##What to expect: 
 
@@ -94,7 +96,39 @@ This footprint will change based on the type of sweep. - if it's a hard sweep, t
 
 Soft-sweeps can be single-origin (i.e. the loci are all identical by descent), or multiple origin. For single-origin, there should be the same reduction in heterozygosity around the locus under selection, while for multiple origin, there will still be heterogeneity around the locus, since the genetic background is different. However, this is almost impossible to tell apart from incomplete soft-sweeps. 
 
-However, current estimators vary massively in their results. 
+However, current estimators vary massively in their results. - Although this could be explained by a variation in what they are actually measuring: 
+
+1. Divergence-based methods (ie. Fst outlier/McDonald-Kreitman (MK) or HKA) count the effective fixation of many weakly selective mutation over longer evolutionary time. 
+
+Drawbacks of these methods are that 1) populations need to be defined a priori, which is not always simple (weak structure, continuous pops, small sample sizes), 2) Fst will work better for hard sweeps, which is more likely to occur in large populations (time for new mutations to arise), 3) There is no ecological hypothesis to support the test (Pavladis et al. 2012 simulated datasets and performed outlier analyses. They showed that false positives showed significant enrichment of biologically interesting gene catagories)
+
+Positive: genotype-first approach. I.e. no bias in deciding what the phenotype under selection might be. 
+
+
+2. Polymorphism-based methods (e.g. SFS) are most impacted by the recent fixation of strongly beneficial mutations. 
+
+
+
+
+![alt_txt][joost.table1]
+[joost.table1]:https://cloud.githubusercontent.com/assets/12142475/15557079/f310ed42-2285-11e6-864e-468724ef4495.png
+
+
+####Demographic effects on loci: 
+
+#####Gene-flow/selection balance
+
+When gene flow is high, loci are unlikely to become fixed. But if gene-flow is low, a new selected allele is much more likely to become fixed in a geographically heterogeneous environment. 
+
+
+
+#####Population size changes
+
+Large populations: more likey for new mutations to arise, thus hard sweeps. 
+
+
+
+
 
 How do I identify sweeps under different demographic scenarios? 
 
@@ -102,6 +136,26 @@ How do I identify sweeps under different demographic scenarios?
 
 
 ##Landscape genomics/Environmental association analyses
+
+These methods corrolate allele frequencies with environmental variables. They are more likely to identify ecologically relevant loci (Eckert et al 2010). But these methods do not take population structure or demographic history into account, which could lead to false positives. 
+
+Ways to correct for population structure: 
+
+1. Use a control dataset to estimate the null distribution and correct the probability (p-value) at which the null distribution is rejected (Hancock et al. 2008). But a control dataset is not often available.
+
+2. Incorporate a covariance matrix to account for spatial autocorrelation of individuals collected at the same place (Poncet et al. 2010). 
+
+3. Incorporate a covariance matrix of Moran's Eigenvector Maps (MEMs) for unaccounted for environmental variables (Manel et al. 2010)
+
+4. Covariance matrix of genetic structure (Hancock et al. 2008, Coop et al. 2010). - A control dataset is needed to estimate relatedness. Often the same dataset is used which leads to circularity and a loss of statistical power. 
+
+5. LFMM (Frichot 2013) simultaneously fits a model of population structure and environmental effects. Population structure is modelled as K latent factors (independent, linear combinations of the genetic data estimated from joint distributions), and environmental covariates are modeled as fixed effects. (see also De Mita et al. 2013). This method seems to have reduced false positives and false negatives, so is better at detecting environmental associations with population structure. 
+
+
+
+
+
+
 
 
 
