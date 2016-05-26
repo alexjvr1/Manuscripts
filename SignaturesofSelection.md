@@ -85,6 +85,9 @@ Recombination
 ##Population genomics/Fst outlier approaches
 
 Population genomics aims to understand how adaptive and non-adaptive processes are shaping genomic variation: 
+Review by Vitti et al. 2013
+
+
 
 1. By looking at the effect of selection on loci
 
@@ -121,6 +124,13 @@ Positive: genotype-first approach. I.e. no bias in deciding what the phenotype u
 When gene flow is high, loci are unlikely to become fixed. But if gene-flow is low, a new selected allele is much more likely to become fixed in a geographically heterogeneous environment. 
 
 
+####Pop genetics classic tests for selection/non-neutrality 
+
+1. Lewontin-Krakauer (1973): Fst outlier. Tests the observed value of the inter-locus variance of Fst, assuming gene frequency at a locus for each subpopulation is randomly drawn from a given frequency distribution, and that Fst is the same for all loci. 
+
+2. McDonald-Kreitman (1991): the ratio of fixed synonymous vs fixed non-synonymous mutations 
+
+
 
 #####Population size changes
 
@@ -138,6 +148,10 @@ How do I identify sweeps under different demographic scenarios?
 ##Landscape genomics/Environmental association analyses
 
 These methods corrolate allele frequencies with environmental variables. They are more likely to identify ecologically relevant loci (Eckert et al 2010). But these methods do not take population structure or demographic history into account, which could lead to false positives. 
+
+![alt_txt][Joost2]
+[Joost2]:https://cloud.githubusercontent.com/assets/12142475/15559047/d54f6d84-2293-11e6-8b9d-af6c5d8d598e.png
+
 
 Ways to correct for population structure: 
 
@@ -159,9 +173,19 @@ Ways to correct for population structure:
 
 
 
-##Why are we detecting different loci with the different methods?
+###Why are we detecting different loci with the different methods?
 
 
+
+
+###Combining methods
+
+We should be combining population genomic and landscape genomic methods when looking for adaptation/selection in natural populations. 
+
+-> Explain why allele frequencies differ between populations + spatial genetic variation in relation to environmental adaptation, while correcting for demographic history and population structure. 
+
+![alt_txt][comb]
+[comb]:https://cloud.githubusercontent.com/assets/12142475/15559116/415d5d42-2294-11e6-9375-1a676905be4b.png
 
 
 ##Repeatability of selection
