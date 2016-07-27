@@ -144,6 +144,26 @@ bcftools reheader subset.EAST.s2.recode.vcf -s EAST.names -o subset.EAST.s3.vcf
 ```
 
 
+###3. Thin to 1 SNP per locus: 
+
+```
+vcftools --vcf subset.EAST.s3.vcf --thin 500 --recode --recode-INFO-all --out subset.EAST.thinned.vcf
+
+Parameters as interpreted:
+	--vcf subset.EAST.s3.vcf
+	--recode-INFO-all
+	--thin 500
+	--out subset.EAST.thinned.vcf
+	--recode
+
+After filtering, kept 118 out of 118 Individuals
+Outputting VCF file...
+After filtering, kept 2399 out of a possible 5802 Sites
+Run Time = 0.00 seconds
+```
+
+####4.Filter for >0.7 obs Het
+
 Based on my recent checks on the pyRAD data, I should also filter all SNPs with >0.7 observed Heterozygosity. 
 
 I will do this in R using the PLINK file. (PLINK output plink.hwe has a very strange format - multiple spaces between columns - so I couldn't figure out how to cut a specific column using linux)
@@ -185,45 +205,6 @@ Final dataset:
 7572 SNPs 
 
 0.914192 Genotyping rate
-
-
-
-
-
-Rename all the individuals in the vcf file: 
-
-First get a list of all the samples: 
-```
-bcftools query -l subset.imiss80.recode.vcf
-
-```
-
-copy and paste this to excel. And rename accordingly (I remove the "cat" and ".fq.trim"). Nano and paste into a new file. 
-
-Paste back: 
-```
-bcftools reheader subset.EAST.s2.recode.vcf -s EAST.names -o subset.EAST.s3.vcf
-```
-
-###3. Thin to 1 SNP per locus: 
-
-```
-vcftools --vcf subset.EAST.s3.vcf --thin 500 --recode --recode-INFO-all --out subset.EAST.thinned.vcf
-
-Parameters as interpreted:
-	--vcf subset.EAST.s3.vcf
-	--recode-INFO-all
-	--thin 500
-	--out subset.EAST.thinned.vcf
-	--recode
-
-After filtering, kept 118 out of 118 Individuals
-Outputting VCF file...
-After filtering, kept 2399 out of a possible 5802 Sites
-Run Time = 0.00 seconds
-```
-
-
 
     
 ##Population Structure
