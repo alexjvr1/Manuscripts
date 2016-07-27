@@ -75,7 +75,7 @@ Run Time = 48.00 seconds
 
 And check the missingness for the individuals: 
 ```
-vcftools --vcf s1.Phylo.RAD.vcf.recode.vcf --missing-indv
+vcftools --vcf subset.EAST.s2.recode.vcf --missing-indv
 
 mawk '!/IN/' out.imiss | cut -f5 > totalmissing
 
@@ -97,7 +97,7 @@ EOF
 Output: 
 
 ![alt_txt][Fig1]
-[Fig1]:
+[Fig1]:https://cloud.githubusercontent.com/assets/12142475/17170713/47a3577e-53e5-11e6-9c2f-9c422b357f6b.png
 
 
 All of the samples have <50% missing data. 
@@ -109,34 +109,24 @@ And if I try with --max-missing 0.8 followed by the rest of the filtering
 vcftools --vcf CH.Phylo.vcf.recode.vcf --max-missing 0.8 --mac 3 --recode --recode-INFO-all --out s1.Phylo.RAD.vcf
 
 Parameters as interpreted:
-	--vcf CH.Phylo.vcf.recode.vcf
+	--vcf subset.EAST.s1.recode.vcf
 	--recode-INFO-all
 	--mac 3
 	--max-missing 0.8
-	--out s1.Phylo.RAD.0.8maxmiss.vcf
+	--out subset.EAST.s2
 	--recode
 
-After filtering, kept 256 out of 256 Individuals
+After filtering, kept 118 out of 118 Individuals
 Outputting VCF file...
-After filtering, kept 7710 out of a possible 5784222 Sites
-Run Time = 290.00 seconds
+After filtering, kept 5802 out of a possible 1063455 Sites
+Run Time = 43.00 seconds
 ```
 
 ![alt_txt][Fig2]
-[Fig2]:https://cloud.githubusercontent.com/assets/12142475/14905392/f4dfa4c8-0d64-11e6-83a1-00c6192074b1.png
+[Fig2]:https://cloud.githubusercontent.com/assets/12142475/17170898/1e328a4e-53e6-11e6-9865-140dbbd990c9.png
 
-I will lose 27 individuals. Of these only wise03 is from a mixed population. (PhyloDataset.mtDNA.RAD_20160428)
+So <0.3 missing data. 
 
-I will remove these individuals. (Good news is that all the brown haplotypes are still represented. 
-
-```
-vcftools --vcf s1.Phylo.RAD.0.8maxmiss.vcf.recode.vcf --remove lowDP.indiv --recode --recode-INFO-all --out subset.imiss80
-
-After filtering, kept 230 out of 256 Individuals
-Outputting VCF file...
-After filtering, kept 7710 out of a possible 7710 Sites
-Run Time = 1.00 seconds
-```
 
 Rename the samples in vcf file: 
 
@@ -150,10 +140,8 @@ copy and paste this to excel. And rename accordingly (I remove the "cat" and ".f
 
 Paste back: 
 ```
-bcftools bcftools reheader subset.imiss80.recode.vcf -s CH.230.newnames.txt -o CH.230.Phylo.FINAL.vcf
+bcftools reheader subset.EAST.s2.recode.vcf -s EAST.names -o subset.EAST.s3.vcf
 ```
-
-
 
 
 Based on my recent checks on the pyRAD data, I should also filter all SNPs with >0.7 observed Heterozygosity. 
@@ -214,8 +202,27 @@ copy and paste this to excel. And rename accordingly (I remove the "cat" and ".f
 
 Paste back: 
 ```
-bcftools reheader subset.imiss80.recode.vcf -s CH.230.newnames.txt -o CH.230.Phylo.FINAL.vcf
+bcftools reheader subset.EAST.s2.recode.vcf -s EAST.names -o subset.EAST.s3.vcf
 ```
+
+###3. Thin to 1 SNP per locus: 
+
+```
+vcftools --vcf subset.EAST.s3.vcf --thin 500 --recode --recode-INFO-all --out subset.EAST.thinned.vcf
+
+Parameters as interpreted:
+	--vcf subset.EAST.s3.vcf
+	--recode-INFO-all
+	--thin 500
+	--out subset.EAST.thinned.vcf
+	--recode
+
+After filtering, kept 118 out of 118 Individuals
+Outputting VCF file...
+After filtering, kept 2399 out of a possible 5802 Sites
+Run Time = 0.00 seconds
+```
+
 
 
     
