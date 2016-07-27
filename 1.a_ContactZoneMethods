@@ -166,45 +166,63 @@ Run Time = 0.00 seconds
 
 Based on my recent checks on the pyRAD data, I should also filter all SNPs with >0.7 observed Heterozygosity. 
 
-I will do this in R using the PLINK file. (PLINK output plink.hwe has a very strange format - multiple spaces between columns - so I couldn't figure out how to cut a specific column using linux)
+I will do this in R using the PLINK file.
 
-In R: 
+Convert to plink
+```
+vcftools --vcf subset.EAST.s4THIN.recode.vcf --plink --out subset.EAST.s4
 ```
 
+Calculate HWE for all loci in PLINK
 ```
-Because of a problem with ~4 of the SNPs (it printed no number under A1 allele in the plink.hwe, so couldn't get read into R), I sorted everything in excel.
+plink --file subset.EAST.s4 --hardy
+```
 
-There are only 15 SNPs with O.Het >0.6 (i.e. 0.19%) 
+PLINK output plink.hwe has a very strange format - multiple spaces between columns - so I couldn't figure out how to cut a specific column using linux
 
-1062975:73
-724541:81
-1344840:45
-126180:97
-1391708:85
-1000448:60
-513575:68
-472871:75
-229541:28
-1202593:51
-371437:60
-888865:72
-959427:119
-280931:28
+I sorted everything in excel.
 
-Remove with plink on mac (1_Phylo/input.files/plink/)
+There are only 24 SNPs with O.Het >0.6 (i.e. 0.19%) 
+
+62398:4
+78226:93
+133358:7
+267920:70
+39465:59
+126930:112
+19060:14
+286067:81
+178295:84
+173522:78
+79355:21
+140229:67
+277990:41
+161923:106
+133065:51
+191402:71
+3053:75
+61372:10
+157987:33
+19818:115
+229342:14
+758:72
+17377:3
+247581:17
+
+Remove with plink 
 ```
 nano SNPstoexclude.txt
 
-plink --file CH.Phyl.230.7710.imiss80 --exclude SNPstoexclude.txt --recodeA --out CHPhylFINAL
+plink --file subset.EAST.s4 --exclude SNPtoexclude.txt --recodeA --out subsetEAST.Final
 ```
 
 Final dataset: 
 
-230 individuals
+118 individuals
 
-7572 SNPs 
+2358 SNPs 
 
-0.914192 Genotyping rate
+0.885 Genotyping rate
 
     
 ##Population Structure
