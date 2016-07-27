@@ -1,0 +1,52 @@
+#Methods for Contact zone MS
+
+##Sampling
+
+To determine the genomic cline across the contact zone, populations were sampled from pure northern mitochondrial haplotypes across the contact zone including pure southern mitochonridal haplotypes. 
+
+Reduced representation libraries were produced using the double digest Restriction Associated DNA (ddRAD) sequencing protocol (Peterson et al. 2012) with some modifications. Specifically, EcoRI and MSeI were chosen as restriction enzymes. 
+
+Single end libraries were sequenced for 150bp on an Illumina xx. 
+
+##Datasets
+
+###1. SNP calling with pyRAD
+
+###2. Generate datasets
+    
+    a. subset: 2Mil reads per sample (downsampled .trim reads and rerun pyRAD)
+    
+    b. Full dataset. 
+    
+##Population Structure
+
+Dataset 1. 
+
+1. Geographic prior
+
+    a. TESS3
+    
+    b. sPCA
+
+2. Non-geographic prior
+
+    a. fastStructure
+    
+    b. DAPC
+    
+
+
+##Hybrid Index calculation
+
+Dataset 2. 
+
+1. Identify "pure" individuals
+
+2. Simulate hybrids
+
+3. Calculate hybrid index of all individuals. 
+
+
+##Genomic Cline Analysis
+
+Dataset 2. 
