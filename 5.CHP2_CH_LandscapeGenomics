@@ -1,0 +1,91 @@
+#CH: Adaptation to elevation
+
+1. What are the signals of adaptation to elevation? 
+
+2. Are they the same across different elevational gradients? 
+
+3. Genomic turnover -> ie. where is the most selective pressure & what will the effects of future climate be?
+
+
+##Data generation
+
+
+##Datasets & Summary statistics
+
+PCA to decide how to divide pops
+
+1. All CH
+
+2. CHN-E
+
+3. CHN-W
+
+4. CHS-VS
+
+5. CHS-TI
+
+6. CHN.2
+
+7. CHS.2
+
+F-statistics
+
+Het/nucleotide diversity
+
+IBD
+
+
+##Population Structure
+
+TESS3
+
+
+fastStructure
+
+
+
+##Environmental variables: PCA
+
+Decide which environmental variables to use. This shoudl probably be base on the results from the Landscape genetic analysis. 
+
+
+##Outlier Analysis
+
+###1. PCAdapt
+
+
+
+###2. BayeScan
+
+
+
+##EAA
+
+###1. BayEnv
+
+
+###2. LFMM
+
+
+
+##Comparison between the different datasets & different analyses (Venn Diagram)
+
+
+
+
+
+##Genomic Turnover: Gradient Forest
+
+
+
+
+
+
+##Genomic Turnover: GDM
+
+
+
+
+
+
+##Other Analyses??
