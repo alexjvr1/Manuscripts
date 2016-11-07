@@ -8,9 +8,13 @@ Genomic patterns across environment.
 
 1. Population structure
 
-2. Find loci that are likely to be under selection 
+2. Find loci that are likely to be under selection (with EAA)
 
 3. Random Forest: allele frequency turnover across the environmental gradient. 
+		
+		- is there a geographic region that is particularly important?
+	
+		- Environmental parameter that is particularly important?
 
 
 #Data
@@ -30,6 +34,17 @@ max sites with Quality <20 = 4
 
 
 ####Step 1: 
+
+Remove loci with >0.5 missingness across all individuals: 
+
+```
+vcftools --vcf 
+
+```
+
+
+
+
 
 Remove all loci with excess Heterozygosity
 ```
@@ -113,12 +128,15 @@ java -Xmx2024m -Xms512m -jar /usr/local/PGDSpider_2.0.7.2/PGDSpider2-cli.jar -in
 ```
 I had to increase the memory allowance here. And remember to include the path to file.spid in the spid file. Even if it is in the working directory. 
 
-
+The conversion ran for >1 hour. (not sure how long. I left it running overnight)
 
 
 ####step 2: rename
 
+```
 
+
+```
 
 
 
