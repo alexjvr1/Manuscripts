@@ -55,11 +55,55 @@ EOF
 [Fig1]:https://cloud.githubusercontent.com/assets/12142475/20273129/6a5aba12-aa90-11e6-83fa-015ec87310ac.png
 
 
+rename
+```
+bcftools query -l SEsubset.Nov.s2.names.vcf
+```
 
 
 
 2. Filter loci with Linkage of r2 > 0.8 in >10 pops (>60% of populations)
 ```
+vcftools --vcf SEsubset.Nov.vcf.s2.recode.vcf --plink --out SEsubset.Nov.plink
 
+VCFtools - v0.1.12b
+(C) Adam Auton and Anthony Marcketta 2009
+
+Parameters as interpreted:
+	--vcf SEsubset.Nov.vcf.s2.recode.vcf
+	--out SEsubset.Nov.plink
+	--plink
+
+After filtering, kept 177 out of 177 Individuals
+Writing PLINK PED and MAP files ... 
+	PLINK: Only outputting biallelic loci.
+Done.
+After filtering, kept 10326 out of a possible 10326 Sites
+Run Time = 1.00 seconds
 
 ```
+
+
+
+
+Calculate r2 per population
+
+1. subset the plink file to all the populations. the --keep file should have two columns, duplicated in this case (FamID, IndID)
+```
+plink --file SE.subset.Nov.plink --keep Upp_O --recode --recodeA --out Upp_O.plink
+
+```
+
+Calculate r2 in all populations
+```
+plink --file Upp_O.plink --r2 --out Upp_O.ld
+```
+
+Read into R. Combine all loci with r2 >0.8. If locus occurs > 10 times, write the name to a new file. 
+```
+
+```
+
+
+
+
