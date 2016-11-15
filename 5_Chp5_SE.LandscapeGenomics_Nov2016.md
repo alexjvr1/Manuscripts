@@ -61,6 +61,7 @@ bcftools query -l SEsubset.Nov.s2.names.vcf
 ```
 
 
+
 2. site-pi per window
 
 Check the frequency of SNPs in the sequence: 
