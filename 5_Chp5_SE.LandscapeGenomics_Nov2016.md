@@ -80,6 +80,9 @@ qplot(BIN_START, N_VARIANTS, data=SE.10pisort, geom=c("boxplot", "jitter"), main
 qplot(BIN_START, PI, data=SE.10pisort, geom=c("boxplot", "jitter"), main="Nucleotide diversity SNPs in 10bp sliding window: SE dataset")
 ```
 
+![alt_txt][Fig2]
+[Fig2]:https://cloud.githubusercontent.com/assets/12142475/20315078/ca502278-ab5c-11e6-950b-c76421030338.png
+
 test for significant difference: 
 
 ```
