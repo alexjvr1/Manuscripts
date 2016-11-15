@@ -61,6 +61,31 @@ bcftools query -l SEsubset.Nov.s2.names.vcf
 ```
 
 
+2. site-pi per window
+
+Check the frequency of SNPs in the sequence: 
+
+Count the SNPs in windows. 
+```
+vcftools --vcf SEsubset.Nov.vcf.s2.recode.vcf --window-pi 10
+```
+
+Import into R and plot: 
+```
+SE.10pi <- read.table("out.windowed.pi", header=T)
+SE.10pisort <- SE.10pi[order(BIN_START),]  #sort by bin
+SE.10pisort$BIN_START <- factor(SE.10pisort$BIN_START, levels=SE.10pisort$BIN_START)
+
+qplot(BIN_START, N_VARIANTS, data=SE.10pisort, geom=c("boxplot", "jitter"), main="Nr SNPs in 10bp sliding window: SE dataset")
+qplot(BIN_START, PI, data=SE.10pisort, geom=c("boxplot", "jitter"), main="Nucleotide diversity SNPs in 10bp sliding window: SE dataset")
+```
+
+test for significant difference: 
+
+```
+
+```
+
 
 2. Filter loci with Linkage of r2 > 0.8 in >10 pops (>60% of populations)
 ```
