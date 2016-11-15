@@ -85,9 +85,31 @@ qplot(BIN_START, PI, data=SE.10pisort, geom=c("boxplot", "jitter"), main="Nucleo
 
 test for significant difference: 
 
+My data have a poisson distribution, and are count data. There is also not a significant difference in the mean and SD between classes (with a superficial look at the summary stats)
 ```
+start <- factor(BIN_START)
+
+with(SE.10pisort, tapply(N_VARIANTS, start, function(x) {sprintf("M (SD) = %1.2f (%1.2f)", mean(x), sd(x))}))
+
+                     1                     11                     21 
+"M (SD) = 1.16 (0.40)" "M (SD) = 1.14 (0.40)" "M (SD) = 1.12 (0.34)" 
+                    31                     41                     51 
+"M (SD) = 1.11 (0.33)" "M (SD) = 1.13 (0.36)" "M (SD) = 1.14 (0.39)" 
+                    61                     71                     81 
+"M (SD) = 1.14 (0.41)" "M (SD) = 1.14 (0.39)" "M (SD) = 1.13 (0.37)" 
+                    91                    101                    111 
+"M (SD) = 1.12 (0.37)" "M (SD) = 1.16 (0.43)" "M (SD) = 1.08 (0.27)" 
+
+ggplot(SE.10pisort, aes(N_VARIANTS, fill=start))+ geom_histogram(binwidth=0.5, position="dodge")
 
 ```
+
+![alt_txt][Fig3]
+[Fig3]:https://cloud.githubusercontent.com/assets/12142475/20316362/c72a86f6-ab61-11e6-8496-86a974ab15b8.png
+
+
+
+Useful website: http://www.ats.ucla.edu/stat/r/dae/poissonreg.htm
 
 
 2. Filter loci with Linkage of r2 > 0.8 in >10 pops (>60% of populations)
