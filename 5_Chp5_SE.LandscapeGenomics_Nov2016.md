@@ -304,6 +304,29 @@ Kir.L.hwe <- read.table("Kir_L.hwe", header=T)
 FIN.hwe <- read.table("FIN.hwe", header=T)
 ```
 
+Keep only the Test=All columns
+```
+DE.B.hwe <- subset(DE.B.hwe, TEST=="ALL")
+DE.W.hwe <- subset(DE.W.hwe, TEST=="ALL")
+DE.K.hwe <- subset(DE.K.hwe, TEST=="ALL")
+Sk.Ho.hwe <- subset(Sk.Ho.hwe, TEST=="ALL")
+Sk.SF.hwe <- subset(Sk.SF.hwe, TEST=="ALL")
+Sk.SL.hwe <- subset(Sk.SL.hwe, TEST=="ALL")
+Upp.Gra.hwe <- subset(Upp.Gra.hwe, TEST=="ALL")
+Upp.K.hwe <- subset(Upp.K.hwe, TEST=="ALL")
+Upp.O.hwe <- subset(Upp.O.hwe, TEST=="ALL")
+Um.Gr.hwe <- subset(Um.Gr.hwe, TEST=="ALL")
+Um.UT3.hwe <- subset(Um.UT3.hwe, TEST=="ALL")
+Um.Taf.hwe <- subset(Um.Taf.hwe, TEST=="ALL")
+LT1.hwe <- subset(LT1.hwe, TEST=="ALL")
+LT2.hwe <- subset(LT2.hwe, TEST=="ALL")
+LT3.hwe <- subset(LT3.hwe, TEST=="ALL")
+Kir.G.hwe <- subset(Kir..hwe, TEST=="ALL")
+Kir.G.hwe <- subset(Kir.G.hwe, TEST=="ALL")
+Kir.L.hwe <- subset(Kir.L.hwe, TEST=="ALL")
+FIN.hwe <- subset(FIN.hwe, TEST=="ALL")
+```
+
 
 
 
@@ -340,7 +363,37 @@ plink --file Kir_G.SNPonly --r2 --out Kir_G.ld
 plink --file FIN.SNPonly --r2 --out FIN.ld
 ```
 
-Read into R. Combine all loci with r2 >0.8. If locus occurs > 10 times, write the name to a new file. 
+Read into R. 
+```
+DE.B.ld <- read.table("DE_B.ld.ld", header=T)
+DE.K.ld <- read.table("DE_K.ld.ld", header=T)
+DE.W.ld <- read.table("DE_W.ld.ld", header=T)
+
+Sk.Ho.ld <- read.table("Sk_Ho.ld.ld", header=T)
+Sk.SF.ld <- read.table("Sk_SF.ld.ld", header=T)
+Sk.SL.ld <- read.table("Sk_SL.ld.ld", header=T)
+
+Upp.Gra.ld <- read.table("Upp_Gra.ld.ld", header=T)
+Upp.K.ld <- read.table("Upp_K.ld.ld", header=T)
+Upp.O.ld <- read.table("Upp_O.ld.ld", header=T)
+
+Um.Gr.ld <- read.table("Um_Gr.ld.ld", header=T)
+Um.UT3.ld <- read.table("Um_UT3.ld.ld", header=T)
+Um.Taf.ld <- read.table("Um_Taf.ld.ld", header=T)
+
+LT1.ld <- read.table("LT1.ld.ld", header=T)
+LT2.ld <- read.table("LT2.ld.ld", header=T)
+LT3.ld <- read.table("LT3.ld.ld", header=T)
+
+Kir.G.ld <- read.table("Kir_G.ld.ld", header=T)
+Kir.L.ld <- read.table("Kir_L.ld.ld", header=T)
+
+FIN.ld <- read.table("FIN.ld.ld", header=T)
+```
+
+
+
+Combine all loci with r2 >0.8. If locus occurs > 10 times, write the name to a new file. 
 ```
 
 ```
