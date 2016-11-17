@@ -728,6 +728,95 @@ vcftools --vcf SE.Final.3963.vcf --remove remove.imiss.names --recode --recode-I
 
 
 
+###Final checks: 
+
+convert the final dataset to plink and split into populations: 
+```
+vcftools --vcf SE.Final.3963.171.names.vcf --plink --out SE.Final.3963.171.plink
+plink --file SE.Final.3963.171.plink --recode --recodeA
+
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/DE_B  --recode --recodeA --out FinalData.SE/DE_B.plink
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/DE_W  --recode --recodeA --out FinalData.SE/DE_W.plink
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/DE_K  --recode --recodeA --out FinalData.SE/DE_K.plink
+
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/Sk_SF  --recode --recodeA --out FinalData.SE/Sk_SF.plink
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/Sk_SL  --recode --recodeA --out FinalData.SE/Sk_SL.plink
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/Sk_Ho  --recode --recodeA --out FinalData.SE/Sk_Ho.plink
+
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/Upp_O  --recode --recodeA --out FinalData.SE/Upp_O.plink
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/Upp_Gra  --recode --recodeA --out FinalData.SE/Upp_Gra.plink
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/Upp_K  --recode --recodeA --out FinalData.SE/Upp_K.plink
+
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/LT1  --recode --recodeA --out FinalData.SE/LT1.plink
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/LT2  --recode --recodeA --out FinalData.SE/LT2.plink
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/LT3  --recode --recodeA --out FinalData.SE/LT3.plink
+
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/Um_UT3  --recode --recodeA --out FinalData.SE/Um_UT3.plink
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/Um_Taf  --recode --recodeA --out FinalData.SE/Um_Taf.plink
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/Um_Gr  --recode --recodeA --out FinalData.SE/Um_Gr.plink
+
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/Kir_L  --recode --recodeA --out FinalData.SE/Kir_L.plink
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/Kir_G  --recode --recodeA --out FinalData.SE/Kir_G.plink
+
+plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/FIN  --recode --recodeA --out FinalData.SE/FIN.plink
+```
+
+Check missingness overall, Nr of variable loci per pop, and MAF spectrum per pop
+```
+##linux
+plink --file DE_K.plink --freq --out DE.K
+plink --file DE_W.plink --freq --out DE.W
+plink --file DE_B.plink --freq --out DE.B
+
+plink --file Sk_Ho.plink --freq --out Sk_Ho
+plink --file Sk_SF.plink --freq --out Sk_SL
+plink --file Sk_SL.plink --freq --out Sk_SF
+
+plink --file Upp_Gra.plink --freq --out Upp_Gra
+plink --file Upp_K.plink --freq --out Upp_K
+plink --file Upp_O.plink --freq --out Upp_O
+
+plink --file Um_Taf.plink --freq --out Um_Taf
+plink --file Um_Gr.plink --freq --out Um_Gr
+
+plink --file LT1.plink --freq --out LT1
+plink --file LT2.plink --freq --out LT2
+plink --file LT3.plink --freq --out LT3
+
+plink --file Kir_G.plink --freq --out Kir_G
+plink --file Kir_L.plink --freq --out Kir_L
+
+plink --file FIN.plink --freq --out FIN
+```
+
+Read into R and plot
+```
+DE.B.frq <- read.table("DE.B.frq", header=T)
+DE.K.frq <- read.table("DE.K.frq", header=T)
+DE.W.frq <- read.table("DE.W.frq", header=T)
+
+Sk.Ho.frq <- read.table("Sk_Ho.frq", header=T)
+Sk.SF.frq <- read.table("Sk_SF.frq", header=T)
+Sk.SL.frq <- read.table("Sk_SL.frq", header=T)
+
+Upp.Gra.frq <- read.table("Upp_Gra.frq", header=T)
+Upp.K.frq <- read.table("Upp_K.frq", header=T)
+Upp.O.frq <- read.table("Upp_O.frq", header=T)
+
+Um.Gr.frq <- read.table("Um_Gr.frq", header=T)
+Um.Taf.frq <- read.table("Um_Taf.frq", header=T)
+
+LT1.frq <- read.table("LT1.frq", header=T)
+LT2.frq <- read.table("LT2.frq", header=T)
+LT3.frq <- read.table("LT3.frq", header=T)
+
+Kir.G.frq <- read.table("Kir_G.frq", header=T)
+Kir.L.frq <- read.table("Kir_L.frq", header=T)
+
+FIN.frq <- read.table("FIN.frq", header=T)
+```
+
+
 
 
 
@@ -737,7 +826,7 @@ Final dataset:
 
 171 individuals
 
-17 populations
+18 populations
 
 Genotyping rate: 0.701687
 
