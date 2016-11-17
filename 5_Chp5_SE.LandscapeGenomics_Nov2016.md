@@ -923,3 +923,111 @@ summary(SE.SNPs.keep.var5pops)
 ![alt_txt][Variable.loci]
 [Variable.loci]:https://cloud.githubusercontent.com/assets/12142475/20389920/6e275b30-accc-11e6-9c57-733562108857.png
 
+
+
+```
+#Create the datasets
+
+write.table(SE.SNPs.keep.var5pops$Var1, row.names=F, col.names=F, quote=F, "SE.SNPs.keep.var5pops")
+write.table(SE.SNPs.keep.var10pops$Var1, row.names=F, col.names=F, quote=F, "SE.SNPs.keep.var10pops")
+
+#linux
+
+vcftools --vcf SE.Final.3963.171.names.vcf --snps SE.SNPs.keep.var5pops --recode --recode-INFO-all --out SE.var5pops.3007.171
+vcftools --vcf SE.Final.3963.171.names.vcf --snps SE.SNPs.keep.var10pops --recode --recode-INFO-all --out SE.var10pops.1353.171
+```
+
+
+##RDA
+
+Redundancy Analysis. 
+
+Two input files: 
+
+1. Genotype: Allele frequences for all loci by population
+
+2. Env file: 
+
+WD: /Users/alexjvr/2016RADAnalysis/5_SE.MS1/Analyses_old/summstats/subset.Filter_14Nov2016/SEsubset.version2/FinalData.SE
+
+Genotype file
+```
+#convert to plink
+
+vcftools --vcf SE.var5pops.3007.171.recode.vcf --plink --out SE.var5pops.3007.171.plink
+plink --file SE.var5pops.3007.171.plink --recode --recodeA --out SE.var5pops.3007.171.plink
+
+vcftools --vcf SE.var10pops.1353.171.recode.vcf --plink --out SE.var10pops.1353.171.plink
+plink --file SE.var10pops.1353.171.plink --recode --recodeA --out SE.var10pops.1353.171.plink
+```
+
+Look at the *nosex* file and create a file with an third column specifying the cluster level (here pop): 
+
+
+![alt_txt][cluster]
+[cluster]:https://cloud.githubusercontent.com/assets/12142475/20393131/022f5b26-acdb-11e6-87d4-7b8be12f5b14.png
+
+
+Calculate allele frequency within each cluster level for both plink files
+```
+plink --file SE.var5pops.3007.171.plink --within SE171.Clusters --freq SE.3007.171
+
+plink --file SE.var10pops.1353.171.plink --within SE171.Clusters --freq --out SE.1353.171
+
+```
+
+
+Import into R to reformat the output - by population and loci as columns
+
+```
+SE.var5.maf <- read.table("SE.3007.171.frq.strat", header = T)
+head(SE.var5.maf)
+
+SE.var10.maf <- read.table("SE.1353.171.frq.strat", header = T)
+head(SE.var10.maf)
+
+
+SE.var5.maf$CHR = NULL
+SE.var5.maf$A1 = NULL
+SE.var5.maf$A2 = NULL
+SE.var5.maf$MAC = NULL
+SE.var5.maf$NCHROBS = NULL
+head(SE.var5.maf)
+
+SE.var5.maf <- SE.var5.maf[,c(2,1,3)]
+
+
+SE.var10.maf$CHR = NULL
+SE.var10.maf$A1 = NULL
+SE.var10.maf$A2 = NULL
+SE.var10.maf$MAC = NULL
+SE.var10.maf$NCHROBS = NULL
+head(SE.var10.maf)
+
+SE.var10.maf <- SE.var10.maf[,c(2,1,3)]
+
+
+library("ggplot2")
+library("reshape2")
+
+SE.var5.maf2 <- melt(SE.var5.maf, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(SE.var5.maf2)
+head(SE.var5.maf2)
+
+
+SE.var5.maf3 <- dcast(SE.var5.maf2, formula= CLST ~ SNP)
+head(SE.var5.maf3)
+write.csv(SE.var5.maf3, file="SE.var5.maf.csv")
+
+
+SE.var10.maf2 <- melt(SE.var10.maf, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(SE.var10.maf2)
+head(SE.var10.maf2)
+
+
+SE.var10.maf3 <- dcast(SE.var10.maf2, formula= CLST ~ SNP)
+head(SE.var10.maf3)
+write.csv(SE.var10.maf3, file="SE.var10.maf.csv")
+```
+
+Open in Excel and add "X" in front of all the locus names. 
