@@ -727,6 +727,19 @@ vcftools --vcf SE.Final.3963.vcf --remove remove.imiss.names --recode --recode-I
 
 
 
+Final dataset: 
+
+3963 loci
+
+171 individuals
+
+18 populations
+
+Genotyping rate: 0.701687
+
+
+
+
 
 ###Final checks: 
 
@@ -761,7 +774,7 @@ plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/Kir_G  --recod
 plink --file SE.Final.3963.171.plink --keep popnames.plink.folder/FIN  --recode --recodeA --out FinalData.SE/FIN.plink
 ```
 
-Check missingness overall, Nr of variable loci per pop, and MAF spectrum per pop
+Check missingness overall, and MAF spectrum per pop, Nr of variable loci per pop
 ```
 ##linux
 plink --file DE_K.plink --freq --out DE.K
@@ -816,18 +829,97 @@ Kir.L.frq <- read.table("Kir_L.frq", header=T)
 FIN.frq <- read.table("FIN.frq", header=T)
 ```
 
+```
+par(mfrow=c(3,6))
+
+hist(DE.B.frq$MAF, main="DE.B")
+hist(DE.K.frq$MAF, main="DE.K")
+hist(DE.W.frq$MAF, main="DE.W")
+
+hist(Sk.Ho.frq$MAF, main="Sk.Ho")
+hist(Sk.SF.frq$MAF, main="Sk.SF")
+hist(Sk.SL.frq$MAF, main="Sk.SL")
+
+hist(Upp.Gra.frq$MAF, main="Upp.Gra")
+hist(Upp.K.frq$MAF, main="Upp.K")
+hist(Upp.O.frq$MAF, main="Upp.O")
+
+hist(Um.Gr.frq$MAF, main="Um.Gr")
+hist(Um.Taf.frq$MAF, main="Um.Taf")
+hist(Um.UT3.frq$MAF, main="Um.UT3")
+
+hist(LT1.frq$MAF, main="LT1")
+hist(LT2.frq$MAF, main="LT2")
+hist(LT3.frq$MAF, main="LT3")
+
+hist(Kir.G.frq$MAF, main="Kir.G")
+hist(Kir.L.frq$MAF, main="Kir.L")
+hist(FIN.frq$MAF, main="FIN")
+
+###Add pop column to each .frq data.frame: 
+
+DE.B.frq$pop <- c(rep_len("DE.B", length.out=3963))
+DE.K.frq$pop <- c(rep_len("DE.K", length.out=3963))
+DE.W.frq$pop <- c(rep_len("DE.W", length.out=3963))
+Sk.Ho.frq$pop <- c(rep_len("Sk.Ho", length.out=3963))
+Sk.SL.frq$pop <- c(rep_len("Sk.SL", length.out=3963))
+Sk.SF.frq$pop <- c(rep_len("Sk.SF", length.out=3963))
+Upp.Gra.frq$pop <- c(rep_len("Up.Gra", length.out=3963))
+Upp.K.frq$pop <- c(rep_len("Up.K", length.out=3963))
+Upp.O.frq$pop <- c(rep_len("Up.O", length.out=3963))
+Um.Taf.frq$pop <- c(rep_len("Um.Taf", length.out=3963))
+Um.Gr.frq$pop <- c(rep_len("Um.Gr", length.out=3963))
+LT1.frq$pop <- c(rep_len("LT1", length.out=3963))
+LT2.frq$pop <- c(rep_len("LT2", length.out=3963))
+LT3.frq$pop <- c(rep_len("LT3", length.out=3963))
+Kir.G.frq$pop <- c(rep_len("Kir.G", length.out=3963))
+Kir.L.frq$pop <- c(rep_len("Kir.L", length.out=3963))
+FIN.frq$pop <- c(rep_len("FIN", length.out=3963))
+
+##bind all files together
+SE.MAF.file <- do.call(rbind, lapply(ls(pattern=“frq$"), get))
+pop <- factor(pop)
+ggplot(SE.MAF.file, aes(MAF, fill=pop))+ geom_histogram(binwidth=0.05, position="dodge")
+```
 
 
+![alt_txt][maf.perpop.1]
+[maf.perpop.1]:https://cloud.githubusercontent.com/assets/12142475/20389651/01358e94-accb-11e6-8872-08406c2bd1d8.png
+
+![alt_txt][maf.perpop.2]
+[maf.perpop.2]:https://cloud.githubusercontent.com/assets/12142475/20389661/06b313a0-accb-11e6-8abb-47c8279af9db.png
 
 
-Final dataset: 
+Nr of loci variable in >1 pop
+```
+SE.MAF.file.keep <- subset(SE.MAF.file, MAF>0.0001)   ##keep variable loci only
+test.table.maf <- data.frame(table(SE.MAF.file.keep$SNP)) ##write table of frequencies of SNPs
+hist(test.table.maf$Freq, main="Freq of loci variable in x pops")
 
-3963 loci
+SE.SNPs.keep.var10pops <- subset(test.table.maf, Freq>9)   ##Loci variable in >9pops
+summary(SE.SNPs.keep.var10pops)
+         Var1           Freq      
+ 100043:88 :   1   Min.   :10.00  
+ 100140:47 :   1   1st Qu.:11.00  
+ 100233:35 :   1   Median :12.00  
+ 100277:21 :   1   Mean   :12.53  
+ 100431:36 :   1   3rd Qu.:14.00  
+ 100440:100:   1   Max.   :17.00  
+ (Other)   :1347                  
+SE.SNPs.keep.var5pops <- subset(test.table.maf, Freq>4)
+summary(SE.SNPs.keep.var5pops)
+        Var1           Freq       
+ 100043:88:   1   Min.   : 5.000  
+ 100124:1 :   1   1st Qu.: 7.000  
+ 100140:47:   1   Median : 9.000  
+ 100233:35:   1   Mean   : 9.399  
+ 100261:84:   1   3rd Qu.:12.000  
+ 100277:21:   1   Max.   :17.000  
+ (Other)  :3001   
 
-171 individuals
 
-18 populations
+```
 
-Genotyping rate: 0.701687
-
+![alt_txt][Variable.loci]
+[Variable.loci]:https://cloud.githubusercontent.com/assets/12142475/20389920/6e275b30-accc-11e6-9c57-733562108857.png
 
