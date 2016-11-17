@@ -665,7 +665,80 @@ test.table.ld <- data.frame(table(SE.ld.remove.file$SNP_A, SE.ld.remove.file$SNP
 test.table.ld.subset <- subset(test.table.ld, Freq>0)
 hist(test.table.ld.subset$Freq, xlab="Number of pops in which locus occurs", ylab="Frequency", main="Frequency of SNP pairs with R2>0.8")
 
+###and per pop
+par(mfrow=c(3, 6))
+hist(DE.B.ld$R2, main="DE.B")
+hist(DE.K.ld$R2, main="DE.K")
+hist(DE.W.ld$R2, main="DE.W")
+
+hist(Sk.Ho.ld$R2, main="Sk.Ho")
+hist(Sk.SF.ld$R2, main="Sk.SF")
+hist(Sk.SL.ld$R2, main="Sk.SL")
+
+hist(Upp.Gra.ld$R2, main="Upp.Gra")
+hist(Upp.K.ld$R2, main="Upp.K")
+hist(Upp.O.ld$R2, main="Upp.O")
+
+hist(Um.Gr.ld$R2, main="Um.Gr")
+hist(Um.Taf.ld$R2, main="Um.Taf")
+hist(Um.UT3.ld$R2, main="Um.UT3")
+
+hist(LT1.ld$R2, main="LT1")
+hist(LT2.ld$R2, main="LT2")
+hist(LT3.ld$R2, main="LT3")
+
+hist(Kir.G.ld$R2, main="Kir.G")
+hist(Kir.L.ld$R2, main="Kir.L")
+hist(FIN.ld$R2, main="FIN")
 
 ```
+
+![alt_txt][SE.R2]
+[SE.R2]:https://cloud.githubusercontent.com/assets/12142475/20363125/622b4168-ac3e-11e6-9b87-d74cb1e74738.png
+
+
+![alt_txt][SE.R2.2]
+[SE.R2.2]:https://cloud.githubusercontent.com/assets/12142475/20384698/0faffbaa-acb5-11e6-800b-dcb3eb42802f.png
+
+
+###6. Remove individuals with too much missing data
+
+```
+vcftools --vcf SE.Final.3963.vcf --missing-indv
+nano pop.imiss
+
+###IN R
+SE.imiss <- read.table("out.imiss", header=T)
+pop.imiss <- read.table("pop.imiss", header=F)
+SE.imiss$pop <- pop.imiss$V1
+attach(SE.imiss)
+dat.sort <- SE.imiss[order(pop),]
+dat.sort$pop <- factor(dat.sort$pop, levels=dat.sort$pop)
+indiv.remove.names <- subset(SE.imiss, F_MISS>0.55)
+q <- qplot(pop, F_MISS, data=dat.sort, geom=c("boxplot", "jitter"))
+
+##in linux
+vcftools --vcf SE.Final.3963.vcf --remove remove.imiss.names --recode --recode-INFO-all --out SE.Final.3963.171
+```
+
+![alt_txt][SE.missing]
+[SE.missing]:https://cloud.githubusercontent.com/assets/12142475/20384838/82a04174-acb5-11e6-967f-2019a234b18f.png
+
+
+
+
+
+
+
+
+Final dataset: 
+
+3963 loci
+
+171 individuals
+
+17 populations
+
+Genotyping rate: 0.701687
 
 
