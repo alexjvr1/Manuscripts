@@ -1031,3 +1031,10 @@ write.csv(SE.var10.maf3, file="SE.var10.maf.csv")
 ```
 
 Open in Excel and add "X" in front of all the locus names. 
+
+```
+##RDA in R
+library(vegan)
+
+
+```
