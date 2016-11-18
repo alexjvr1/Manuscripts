@@ -216,6 +216,8 @@ Lulea.3pop.frq <- read.table("subset.data/Lulea.3pop.frq", header=T)
 Kir.2pop.frq <- read.table("subset.data/Kir.2pop.frq", header=T)
 FIN.frq <- read.table("subset.data/FIN.frq", header=T)
 
+
+
 par(mfrow=c(2, 4))
 hist(DE.3pop.frq$MAF, main="DE.3pop (29, 2199, 90%) SFS")
 hist(Sk.3pop.frq$MAF, main="Sk.3pop (48, 2199, 90%) SFS")
@@ -225,11 +227,34 @@ hist(Lulea.3pop.frq$MAF, main="Lulea.3pop (19, 2199, 97%) SFS")
 hist(Kir.2pop.frq$MAF, main="Kir.2pop (20, 2199, 95%) SFS")
 hist(FIN.frq$MAF, main="FIN (7, 2199, 88%) SFS")
 
+
+#And without the fixed loci: 
+
+DE.3.pop.frq.var <- subset(DE.3pop.frq, MAF>0.001)
+Sk.3pop.frq.var <- subset(Sk.3pop.frq, MAF>0.001)
+Upp.3pop.frq.var <- subset(Upp.3pop.frq, MAF>0.001)
+Umea.3pop.frq.var <- subset(Umea.3pop.frq, MAF>0.001)
+Lulea.3pop.frq.var <- subset(Lulea.3pop.frq, MAF>0.001)
+Kir.2pop.frq.var <- subset(Kir.2pop.frq, MAF>0.001)
+FIN.frq.var <- subset(FIN.frq, MAF>0.001)
+
+my.bin.width <- 0.01
+
+par(mfrow=c(2, 4))
+hist(DE.3pop.frq.var$MAF, main="DE.3pop.var (29, 1680, 23.6% fixed) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(Sk.3pop.frq.var$MAF, main="Sk.3pop (48, 2091, 4.1% fixed) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(Upp.3pop.frq.var$MAF, main="Upp.3pop (28, 1261, 42.7%) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(Umea.3pop.frq.var$MAF, main="Umea.3pop (19, 1146, 47.9%) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(Lulea.3pop.frq.var$MAF, main="Lulea.3pop (19, 1123, 48.9%) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(Kir.2pop.frq.var$MAF, main="Kir.2pop (20, 1196, 45.6%) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(FIN.frq.var$MAF, main="FIN (7, 901, 59%) SFS", breaks=seq(0,0.5, by=my.bin.width))
 ```
 
 
 ![alt_txt][SFS.s4.regions]
 [SFS.s4.regions]:https://cloud.githubusercontent.com/assets/12142475/20433442/df6d3152-ada3-11e6-9a02-4123ad1ff7f4.png
+
+
 
 
 
