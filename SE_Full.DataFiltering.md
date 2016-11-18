@@ -122,11 +122,69 @@ hist(SE.s1.r2$R2, main="SE s1 (max.miss0.8; 15294; 193) R2")
 
 
 
-##Step 2. Filter MAF 0.05 
+##Step 2-4. Filter MAF 0.05, thin, max-missing 0.25 
+
+```
+vcftools --vcf SE.s1.maxmiss0.8.names.recode.vcf --maf 0.05 --recode --recode-INFO-all --out SE.s2.0.8.maf0.05
+ vcftools --vcf SE.s2.0.8.maf0.05.recode.vcf --plink --out SE.s2.plink
+plink --file SE.s2.plink --recode --recodeA
+plink --file SE.s2.plink --freq --out SE.s2
+
+vcftools --vcf SE.s2.0.8.maf0.05.recode.vcf --thin 125 --recode --recode-INFO-all --out SE.s3.0.8.maf0.05.thin 
+vcftools --vcf SE.s3.0.8.maf0.05.thin.recode.vcf --plink --out SE.s3.plink
+plink --file SE.s3.plink --recode --recodeA 
+plink --file SE.s3.plink --freq --out SE.s3
+
+vcftools --vcf SE.s3.0.8.maf0.05.thin.recode.vcf --remove lowDP.indiv --recode --recode-INFO-all --out SE.s4.171
+vcftools --vcf SE.s4.171.recode.vcf --plink --out SE.s4.plink
+plink --file --SE.s4.plink --recode --recodeA
+plink --file SE.s4.plink --recode --recodeA
+plink --file SE.s4.plink --freq --out SE.s4
+```
+
+```
+##R
+
+SE.s1.freq <- read.table("SE.s1.frq", header=T)
+SE.s2.freq <- read.table("SE.s2.frq", header=T)
+SE.s3.freq <- read.table("SE.s3.frq", header=T)
+SE.s4.freq <- read.table("SE.s4.frq", header=T)
+
+my.bin.width <- 0.05
+
+par(mfrow=c(2,2))
+hist(SE.s1.freq$MAF, main="SE s1 (max.miss0.8; 15294; 193) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(SE.s2.freq$MAF, main="SE s2 (max.miss0.8; maf 0.05; 4519; 193) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(SE.s3.freq$MAF, main="SE s3 (max.miss0.8; maf 0.05; thin; 2199; 193) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(SE.s4.freq$MAF, main="SE s4 (max.miss0.8; maf 0.05; thin; 2199; 171) SFS", breaks=seq(0,0.5, by=my.bin.width))
 
 ```
 
 
+![alt_txt][SFS.s1-4]
+[SFS.s1-4]:https://cloud.githubusercontent.com/assets/12142475/20431680/a805d262-ad9b-11e6-95c9-4390efaeb9c9.png
+
+
+Missingness across individuals
 ```
+alexjvr$ vcftools --vcf SE.s4.171.recode.vcf --missing-indv --out SE.s4
+ 
+##R
+library(ggplot2)
+SE.s4.miss <- read.table("SE.s4.imiss", header=T)
+pop.s4 <- read.table("SE.s4.popnames", header=F)
+SE.s4.miss$pop <- pop.s4$V1
+SE.s4.miss$pop.order <- pop.s4$V2
+
+SE.s4.miss.sort <- SE.s4.miss[order(SE.s4.miss$pop.order),]
+
+SE.s4.miss.sort <- SE.s4.miss[order(SE.s4.miss$pop.order),]
+
+SE.s4.miss.sort$pop <- factor(SE.s4.miss.sort$pop, levels=SE.s4.miss.sort$pop)
+```
+
+![alt_txt][miss.s4]
+[miss.s4]:https://cloud.githubusercontent.com/assets/12142475/20431948/394aada0-ad9d-11e6-9162-12229591b63e.png
+
 
 
