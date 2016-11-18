@@ -188,3 +188,50 @@ SE.s4.miss.sort$pop <- factor(SE.s4.miss.sort$pop, levels=SE.s4.miss.sort$pop)
 
 
 
+
+##Subset data
+
+into populations and regions
+
+
+/Users/alexjvr/2016RADAnalysis/5_SE.MS1/SE.FullData.Analyses/sumstats/DataFiltering/SE.Full_Filtered_20161118
+```
+mkdir subset.data
+for i in $(ls popnames.plink.folder/); do plink --file SE.s4.plink --keep popnames.plink.folder/$i --recode --recodeA --out subset.data/$i.plink; done
+```
+
+and calculate SFS and LD for each 
+
+```
+for i in $(ls popnames.plink.folder/); do plink --file subset.data/$i.plink --freq --out subset.data/$i; done
+for i in $(ls popnames.plink.folder/); do plink --file subset.data/$i.plink --r2 --out subset.data/$i; done
+
+##R
+
+DE.3pop.frq <- read.table("subset.data/DE.3pop.frq", header=T)
+Sk.3pop.frq <- read.table("subset.data/Sk.3pop.frq", header=T)
+Upp.3pop.frq <- read.table("subset.data/Upp.3pop.frq", header=T)
+Umea.3pop.frq <- read.table("subset.data/Umea.3pop.frq", header=T)
+Lulea.3pop.frq <- read.table("subset.data/Lulea.3pop.frq", header=T)
+Kir.2pop.frq <- read.table("subset.data/Kir.2pop.frq", header=T)
+FIN.frq <- read.table("subset.data/FIN.frq", header=T)
+
+par(mfrow=c(2, 4))
+hist(DE.3pop.frq$MAF, main="DE.3pop (29, 2199, 90%) SFS")
+hist(Sk.3pop.frq$MAF, main="Sk.3pop (48, 2199, 90%) SFS")
+hist(Upp.3pop.frq$MAF, main="Upp.3pop (28, 2199, 96%) SFS")
+hist(Umea.3pop.frq$MAF, main="Umea.3pop (19, 2199, 93%) SFS")
+hist(Lulea.3pop.frq$MAF, main="Lulea.3pop (19, 2199, 97%) SFS")
+hist(Kir.2pop.frq$MAF, main="Kir.2pop (20, 2199, 95%) SFS")
+hist(FIN.frq$MAF, main="FIN (7, 2199, 88%) SFS")
+
+```
+
+
+![alt_txt][SFS.s4.regions]
+[SFS.s4.regions]:https://cloud.githubusercontent.com/assets/12142475/20433442/df6d3152-ada3-11e6-9a02-4123ad1ff7f4.png
+
+
+
+
+
