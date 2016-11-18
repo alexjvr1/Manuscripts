@@ -281,4 +281,8 @@ hist(SE.fix.region.table.keep$Freq, xlab="Number of pops", ylab="Frequency", mai
 
 
 
+##R2 LD
+
+Checking for linkage 
+
 
