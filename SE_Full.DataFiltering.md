@@ -248,14 +248,36 @@ hist(Umea.3pop.frq.var$MAF, main="Umea.3pop (19, 1146, 47.9%) SFS", breaks=seq(0
 hist(Lulea.3pop.frq.var$MAF, main="Lulea.3pop (19, 1123, 48.9%) SFS", breaks=seq(0,0.5, by=my.bin.width))
 hist(Kir.2pop.frq.var$MAF, main="Kir.2pop (20, 1196, 45.6%) SFS", breaks=seq(0,0.5, by=my.bin.width))
 hist(FIN.frq.var$MAF, main="FIN (7, 901, 59%) SFS", breaks=seq(0,0.5, by=my.bin.width))
+
+
+###Looking only at fixed loci
+
+#And without the fixed loci: 
+
+DE.3.pop.frq.fix <- subset(DE.3pop.frq, MAF<0.0018)
+Sk.3pop.frq.fix <- subset(Sk.3pop.frq, MAF<0.00105)
+Upp.3pop.frq.fix <- subset(Upp.3pop.frq, MAF<0.00179)
+Umea.3pop.frq.fix <- subset(Umea.3pop.frq, MAF<0.0027)
+Lulea.3pop.frq.fix <- subset(Lulea.3pop.frq, MAF<0.0027)
+Kir.2pop.frq.fix <- subset(Kir.2pop.frq, MAF<0.0026)
+FIN.frq.fix <- subset(FIN.frq, MAF<0.0072)
+
+SE.region.frq.fix.table <- do.call(rbind, lapply(ls(pattern="fix$"), get))
+
+SE.fix.region.table.keep <- data.frame(table(SE.region.frq.fix.table$SNP))
+my.bin.width=1
+hist(SE.fix.region.table.keep$Freq, xlab="Number of pops", ylab="Frequency", main="Frequency of fixed loci found in increasing number of populations", breaks=seq(0,7, by=my.bin.width))
 ```
 
 
 ![alt_txt][SFS.s4.regions]
 [SFS.s4.regions]:https://cloud.githubusercontent.com/assets/12142475/20433442/df6d3152-ada3-11e6-9a02-4123ad1ff7f4.png
 
+![alt_txt][SFS.s4.regions]
+[SFS.s4.regions]:https://cloud.githubusercontent.com/assets/12142475/20435155/4d959fb4-adab-11e6-99d7-cc0fd54519f2.png
 
-
+![alt_txt][SFS.s4.regions]
+[SFS.s4.regions]:https://cloud.githubusercontent.com/assets/12142475/20435161/56ab279a-adab-11e6-8ad5-2a512cb2c689.png
 
 
 
