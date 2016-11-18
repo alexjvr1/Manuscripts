@@ -96,15 +96,37 @@ qplot(pop, F_MISS, data=SE.Full.s1.sort, geom=c("boxplot", "jitter"))
 
 SFS and LD (r2) for the full dataset: 
 ```
+##linux
 
+vcftools --vcf SE.s1.maxmiss0.8.names.recode.vcf --plink --out SE.s1.plink
+plink --file SE.s1.plink --recode --recodeA
+
+plink --file SE.s1.plink --freq --out SE.s1
+plink --file SE.s1.plink --r2 --out SE.s1
+
+###R
+
+SE.s1.freq <- read.table("SE.s1.frq", header=T)
+hist(SE.s1.freq, main="SE s1 (max.miss0.8; 15294; 193) SFS")
+
+SE.s1.r2 <- read.table("SE.s1.ld", header=T)
+hist(SE.s1.r2$R2, main="SE s1 (max.miss0.8; 15294; 193) R2")
+```
+
+![alt_txt][SFS.s1]
+[SFS.s1]:https://cloud.githubusercontent.com/assets/12142475/20428334/c9cbff2e-ad88-11e6-8793-8247b7530f27.png
+
+
+![alt_txt][R2.s1]
+[R2.s1]:https://cloud.githubusercontent.com/assets/12142475/20428410/452de7ae-ad89-11e6-9acf-0f8773e34525.png
+
+
+
+##Step 2. Filter MAF 0.05 
 
 ```
 
 
-
-
-
-
-
+```
 
 
