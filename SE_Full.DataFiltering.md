@@ -273,11 +273,11 @@ hist(SE.fix.region.table.keep$Freq, xlab="Number of pops", ylab="Frequency", mai
 ![alt_txt][SFS.s4.regions]
 [SFS.s4.regions]:https://cloud.githubusercontent.com/assets/12142475/20433442/df6d3152-ada3-11e6-9a02-4123ad1ff7f4.png
 
-![alt_txt][SFS.s4.regions]
-[SFS.s4.regions]:https://cloud.githubusercontent.com/assets/12142475/20435155/4d959fb4-adab-11e6-99d7-cc0fd54519f2.png
+![alt_txt][var.only]
+[var.only]:https://cloud.githubusercontent.com/assets/12142475/20435155/4d959fb4-adab-11e6-99d7-cc0fd54519f2.png
 
-![alt_txt][SFS.s4.regions]
-[SFS.s4.regions]:https://cloud.githubusercontent.com/assets/12142475/20435161/56ab279a-adab-11e6-8ad5-2a512cb2c689.png
+![alt_txt][freq.fixed]
+[freq.fixed]:https://cloud.githubusercontent.com/assets/12142475/20435161/56ab279a-adab-11e6-8ad5-2a512cb2c689.png
 
 
 
