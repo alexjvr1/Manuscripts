@@ -266,6 +266,13 @@ hist(Kir.2pop.frq.var$MAF, main="Kir.2pop (20, 1196, 45.6%) SFS", breaks=seq(0,0
 hist(FIN.frq.var$MAF, main="FIN (7, 901, 59%) SFS", breaks=seq(0,0.5, by=my.bin.width))
 
 
+##Loci variable in x populations
+SE.var.loci.freq <- do.call(rbind, lapply(ls(pattern=".frq.var$"), get))
+summary(SE.var.loci.freq)
+SE.var.loci.freq.keep <- data.frame(table(SE.var.loci.freq$SNP)) 
+hist(SE.var.loci.freq.keep$Freq, xlab="Nr pops", ylab="Frequency", main="Frequency of variable loci across regions", breaks=seq(0.5,7.5, by=my.bin.width))
+
+
 ###Looking only at fixed loci
 
 #And without the fixed loci: (Frequency here is based on 1/(nx2) for MAC >1)
@@ -294,11 +301,14 @@ hist(SE.fix.region.table.keep$Freq, xlab="Number of pops", ylab="Frequency", mai
 ![alt_txt][var.only]
 [var.only]:https://cloud.githubusercontent.com/assets/12142475/20435155/4d959fb4-adab-11e6-99d7-cc0fd54519f2.png
 
+Frequency fixed loci
 ![alt_txt][freq.fixed]
 [freq.fixed]:https://cloud.githubusercontent.com/assets/12142475/20435161/56ab279a-adab-11e6-8ad5-2a512cb2c689.png
 
 
-
+Frequency variable loci
+![alt_txt][freq.var]
+[freq.var]:https://cloud.githubusercontent.com/assets/12142475/20495176/452bf2ac-b020-11e6-87bb-ec23ccb29357.png
 
 Variable sites only
 ![alt_txt][SFS.var.allregions]
