@@ -458,11 +458,10 @@ legend("bottomleft", c("DE", "SK", "Upp", "Um", "Lul", "Kir", "FIN"), xpd = TRUE
 
 
 ![alt_txt][Fst.17pops]
-[alt_txt.17pops]:https://cloud.githubusercontent.com/assets/12142475/20483452/6b879254-aff2-11e6-80b9-4d1baecf7887.png
-
+[alt_txt.17pops]:https://cloud.githubusercontent.com/assets/12142475/20490278/ba542c88-b00d-11e6-96cf-139d290b044d.png
 
 ![alt_txt][Fst.7regions]
-[alt_txt.7regions]:https://cloud.githubusercontent.com/assets/12142475/20483619/49b33600-aff3-11e6-98bf-50e22fa37fea.png
+[alt_txt.7regions]:https://cloud.githubusercontent.com/assets/12142475/20490279/ba55728c-b00d-11e6-90ff-aac64d2d7f93.png
 
 
 
@@ -518,6 +517,36 @@ legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.sq
 title("Isolation by distance plot - SE (no DE)")
 
 
+###Regions only
+
+m.region <- as.matrix(SE.region.Fst)
+m.region
+m2.region <- melt(m.region)[melt(upper.tri(m.region))$value,]
+names(m2.region) <- c("c1", "c2", "distance")
+m2.region
+m2.region$IBD <- m2.region$distance/(1-m2.region$distance)
+
+
+SE.region.coords <- read.table("SE.regions.coords", header=T)
+SEregion_lon.lat <- cbind(SE.region.coords$Long, SE.region.coords$Lat)
+distance.matrix.SEregion <- rdist.earth(SEregion_lon.lat, miles=F)  ##great circle dist based on the coordinates
+m.dist.region <- as.matrix(distance.matrix.SEregion)
+summary(m.dist.region)
+
+m2.dist.region <- melt(m.dist.region)[melt(upper.tri(m.dist.region))$value,]
+names(m2.dist.region) <- c("c1", "c2", "distance")
+summary(m2.dist.region)
+m2.dist.region$log.km <- log(m2.dist.region$distance)
+
+
+library(MASS)
+#dens <- kde2d(m2.region$IBD,m2.dist.region$log.km, n=300)
+#myPal <- colorRampPalette(c("white","blue","gold", "orange", "red"))
+plot(m2.region$IBD~m2.dist.region$log.km, pch=20,cex=.5, xlab="log Geographic distance (km)", ylab="Fst/(1-Fst)")
+#image(dens, col=transp(myPal(10),.7), add=TRUE)
+abline(fit <- lm(m2.region$IBD~m2.dist.region$log.km))
+legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.squared, digits=4)))  ##and paste R2
+title("Isolation by distance plot - SE regions")
 
 ```
 
@@ -528,6 +557,8 @@ title("Isolation by distance plot - SE (no DE)")
 [IBD.SEonly]:https://cloud.githubusercontent.com/assets/12142475/20487203/bad21072-b002-11e6-9ee3-04b12573c66c.png
 
 
+![alt_txt][IBD.region]
+[IBD.region]:https://cloud.githubusercontent.com/assets/12142475/20490586/cbf78402-b00e-11e6-9866-bc70d20398db.png
 
 
 ###AMOVA
