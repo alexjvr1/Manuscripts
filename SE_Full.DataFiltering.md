@@ -301,5 +301,66 @@ Adjusted bin width increments of ~MAC 1
 ##R2 LD
 
 Checking for linkage 
+```
+##R
+write.table(DE.3pop.frq.fix$SNP, "DE.3pop.fixedloci", row.names=F, col.names=F, quote=F)
+write.table(Sk.3pop.frq.fix$SNP, "Sk.3pop.fixedloci", row.names=F, col.names=F, quote=F)
+write.table(Upp.3pop.frq.fix$SNP, "Upp.3pop.fixedloci", row.names=F, col.names=F, quote=F)
+write.table(Umea.3pop.frq.fix$SNP, "Umea.3pop.fixedloci", row.names=F, col.names=F, quote=F)
+write.table(Lulea.3pop.frq.fix$SNP, "Lulea.3pop.fixedloci", row.names=F, col.names=F, quote=F)
+write.table(Kir.2pop.frq.fix$SNP, "Kir.2pop.fixedloci", row.names=F, col.names=F, quote=F)
+write.table(FIN.frq.fix$SNP, "FIN.fixedloci", row.names=F, col.names=F, quote=F)
+
+
+##linux
+plink --file subset.data/DE.3pop.plink --exclude DE.3pop.fixedloci --recode --recodeA --out subset.data/DE.3pop.var.plink
+plink --file subset.data/DE.3pop.var.plink --r2 --out subset.data/DE.3pop.var
+plink --file subset.data/Sk.3pop.plink --exclude Sk.3pop.fixedloci --recode --recodeA --out subset.data/Sk.3pop.var.plink
+plink --file subset.data/Sk.3pop.var.plink --r2 --out subset.data/Sk.3pop.var
+plink --file subset.data/Upp.3pop.plink --exclude Upp.3pop.fixedloci --recode --recodeA --out subset.data/Upp.3pop.var.plink
+plink --file subset.data/Upp.3pop.var.plink --r2 --out subset.data/Upp.3pop.var
+plink --file subset.data/Umea.3pop.plink --exclude Umea.3pop.fixedloci --recode --recodeA --out subset.data/Um.3pop.var.plink
+plink --file subset.data/Um.3pop.var.plink --r2 --out subset.data/Um.3pop.var
+plink --file subset.data/Lulea.3pop.plink --exclude Lulea.3pop.fixedloci --recode --recodeA --out subset.data/Lulea.3pop.var.plink
+plink --file subset.data/Lulea.3pop.var.plink --r2 --out subset.data/Lulea.3pop.var
+plink --file subset.data/Kir.2pop.plink --exclude Kir.2pop.fixedloci --recode --recodeA --out subset.data/Kir.2pop.var.plink
+plink --file subset.data/Kir.2pop.var.plink --r2 --out subset.data/Kir.2pop.var
+plink --file subset.data/FIN.plink --exclude FIN.fixedloci --recode --recodeA --out subset.data/FIN.var.plink
+plink --file subset.data/FIN.var.plink --r2 --out subset.data/FIN.var
+
+
+
+
+##R
+DE.3pop.var.ld <- read.table("subset.data/DE.3pop.var.ld", header=T)
+Sk.3pop.var.ld <- read.table("subset.data/Sk.3pop.var.ld", header=T)
+Upp.3pop.var.ld <- read.table("subset.data/Upp.3pop.var.ld", header=T)
+Lulea.3pop.var.ld <- read.table("subset.data/Lulea.3pop.var.ld", header=T)
+Um.3pop.var.ld <- read.table("subset.data/Um.3pop.var.ld", header=T)
+Kir.2pop.var.ld <- read.table("subset.data/Kir.2pop.var.ld", header=T)
+FIN.var.ld <- read.table("subset.data/FIN.var.ld", header=T)
+
+my.bin.width=0.05
+
+par(mfrow=c(2,4))
+hist(DE.3pop.var.ld$R2, main="DE.3pop.var (29, 1680 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
+hist(Sk.3pop.var.ld$R2, main="Sk.3pop.var (29, 2091 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
+hist(Upp.3pop.var.ld$R2, main="Upp.3pop (28, 1261 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
+hist(Um.3pop.var.ld$R2, main="Umea.3pop (19, 1146 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
+hist(Lulea.3pop.var.ld$R2, main="Lulea.3pop (19, 1123 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
+hist(Kir.2pop.var.ld$R2,main="Kir.2pop (20, 1196 loci) R2",  breaks=seq(0,1.0, by=my.bin.width))
+hist(FIN.var.ld$R2, main="FIN (7, 901 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
+```
+
+R2 of variable loci only
+
+Starts at 0.2, because: 
+
+Finland still has high R2, because: 
+
+![alt_txt][R2.variableLoci]
+[R2.variableLoci]:https://cloud.githubusercontent.com/assets/12142475/20479938/91400c40-afe0-11e6-9fff-e3b6b14da7f6.png
+
+
 
 
