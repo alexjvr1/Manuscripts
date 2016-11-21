@@ -620,4 +620,45 @@ plink --file /Users/alexjvr/2016RADAnalysis/5_SE.MS1/SE.FullData.Analyses/sumsta
 ###R
 ######Reformat PLINK output
 ###MAF for each locus -> melt and reformat rows as pops, and columns as loci.
+
+SE.MAF <- read.table("SE.s4.frq.strat", header=T)
+SE.MAF2 <- SE.MAF[,c(3,2,6)]
+> summary(SE.MAF2)
+    CLST             SNP             MAF         
+ DE   :2199   100096:2 :    7   Min.   :0.00000  
+ FIN  :2199   100865:23:    7   1st Qu.:0.00000  
+ Kir  :2199   101108:35:    7   Median :0.08889  
+ Lulea:2199   101270:3 :    7   Mean   :0.20265  
+ Sk   :2199   101367:84:    7   3rd Qu.:0.32500  
+ Umea :2199   101697:24:    7   Max.   :1.00000  
+ Upp  :2199   (Other)  :15351                    
+ 
+library("ggplot2")
+library("reshape2")
+
+SE.MAF3 <- melt(SE.MAF2, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(SE.MAF3)
+head(SE.MAF3)
+
+
+SE.MAF4 <- dcast(SE.MAF3, formula= CLST ~ SNP)
+head(SE.MAF4)
+write.csv(SE.MAF4, file="SE.MAF.csv")
+
+
+##Add X infront of all locusnames. 
+colnames(SE.MAF4) <- paste("X", colnames(SE.MAF4), sep=".")
+
+```
+
+Run RDA
+
+```
+library(vegan)
+
+GenData <- SE.MAF4
+GenData$X.CLST <- NULL
+
+ClimData <- read.csv(Climate.Data <- read.csv("SE.Full.Climate.test.csv", header=T)
+
 ```
