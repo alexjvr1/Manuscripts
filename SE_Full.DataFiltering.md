@@ -228,9 +228,9 @@ hist(Kir.2pop.frq$MAF, main="Kir.2pop (20, 2199, 95%) SFS")
 hist(FIN.frq$MAF, main="FIN (7, 2199, 88%) SFS")
 
 
-#And without the fixed loci: 
+#And with only variable loci: 
 
-DE.3.pop.frq.var <- subset(DE.3pop.frq, MAF>0.001)
+DE.3pop.frq.var <- subset(DE.3pop.frq, MAF>0.001)
 Sk.3pop.frq.var <- subset(Sk.3pop.frq, MAF>0.001)
 Upp.3pop.frq.var <- subset(Upp.3pop.frq, MAF>0.001)
 Umea.3pop.frq.var <- subset(Umea.3pop.frq, MAF>0.001)
@@ -252,7 +252,7 @@ hist(FIN.frq.var$MAF, main="FIN (7, 901, 59%) SFS", breaks=seq(0,0.5, by=my.bin.
 
 ###Looking only at fixed loci
 
-#And without the fixed loci: 
+#And without the fixed loci: (Frequency here is based on 1/(nx2) for MAC >1)
 
 DE.3.pop.frq.fix <- subset(DE.3pop.frq, MAF<0.0018)
 Sk.3pop.frq.fix <- subset(Sk.3pop.frq, MAF<0.00105)
@@ -260,7 +260,9 @@ Upp.3pop.frq.fix <- subset(Upp.3pop.frq, MAF<0.00179)
 Umea.3pop.frq.fix <- subset(Umea.3pop.frq, MAF<0.0027)
 Lulea.3pop.frq.fix <- subset(Lulea.3pop.frq, MAF<0.0027)
 Kir.2pop.frq.fix <- subset(Kir.2pop.frq, MAF<0.0026)
-FIN.frq.fix <- subset(FIN.frq, MAF<0.0072)
+FIN.frq.fix <- subset(FIN.frq, MAF<0.070)
+
+par(mfrow=c(2, 4))
 
 SE.region.frq.fix.table <- do.call(rbind, lapply(ls(pattern="fix$"), get))
 
@@ -278,6 +280,21 @@ hist(SE.fix.region.table.keep$Freq, xlab="Number of pops", ylab="Frequency", mai
 
 ![alt_txt][freq.fixed]
 [freq.fixed]:https://cloud.githubusercontent.com/assets/12142475/20435161/56ab279a-adab-11e6-8ad5-2a512cb2c689.png
+
+
+
+
+Variable sites only
+![alt_txt][SFS.var.allregions]
+[SFS.var.allregions]:https://cloud.githubusercontent.com/assets/12142475/20478502/ad6c623e-afda-11e6-8607-c630767538ba.png
+
+Adjusted bin width increments of ~MAC 1 
+![alt_txt][SFS.var.allregions.adjbinwidth]
+[SFS.var.allregions.adjbinwidth]:https://cloud.githubusercontent.com/assets/12142475/20478501/ad4d9f84-afda-11e6-9e3e-c936431fac6e.png
+
+
+
+
 
 
 
