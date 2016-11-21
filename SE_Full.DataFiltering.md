@@ -350,6 +350,22 @@ hist(Um.3pop.var.ld$R2, main="Umea.3pop (19, 1146 loci) R2", breaks=seq(0,1.0, b
 hist(Lulea.3pop.var.ld$R2, main="Lulea.3pop (19, 1123 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
 hist(Kir.2pop.var.ld$R2,main="Kir.2pop (20, 1196 loci) R2",  breaks=seq(0,1.0, by=my.bin.width))
 hist(FIN.var.ld$R2, main="FIN (7, 901 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
+
+
+##Keep only loci R2>0.8 and plot frequency in R
+DE.3pop.ld.remove <- subset(DE.3pop.var.ld, R2>0.799999)
+Sk.3pop.ld.remove <- subset(Sk.3pop.var.ld, R2>0.799999)
+Upp.3pop.ld.remove <- subset(Upp.3pop.var.ld, R2>0.799999)
+Umea.3pop.ld.remove <- subset(Umea.3pop.var.ld, R2>0.799999)
+Umea.3pop.ld.remove <- subset(Um.3pop.var.ld, R2>0.799999)
+Lulea.3pop.ld.remove <- subset(Lulea.3pop.var.ld, R2>0.799999)
+Kir.2pop.ld.remove <- subset(Kir.2pop.var.ld, R2>0.799999)
+FIN.ld.remove <- subset(FIN.var.ld, R2>0.799999)
+
+SE.ld.remove.file <- do.call(rbind, lapply(ls(pattern="ld.remove$"), get))
+test.table.ld <- data.frame(table(SE.ld.remove.file$SNP_A, SE.ld.remove.file$SNP_B))
+test.table.ld.subset <- subset(test.table.ld, Freq>0)
+
 ```
 
 R2 of variable loci only
@@ -363,4 +379,7 @@ Finland still has high R2, because:
 
 
 
+Frequency of loci R2>0.8
+![alt_txt][R2.3pop]
+[R2.3pop]:https://cloud.githubusercontent.com/assets/12142475/20480471/f1e56ef8-afe2-11e6-987b-b137a9bc9e7f.png
 
