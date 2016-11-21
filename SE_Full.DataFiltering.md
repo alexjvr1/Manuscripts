@@ -403,10 +403,153 @@ Frequency of loci R2>0.8
 
 ##Population structure
 
-Convert plink s4 
+###Fst
+
+Convert plink s4 to structure using pgdspider, and import into R
+```
+library(adegenet)
+library(hierfstat)
+library(reshape)
+
+SEall.171 <- read.structure("SE.s4.str")
+SEall.171
+
+popnames.SEall.factor <- as.factor(pop.s4$V1)
+SEall.171@pop <- popnames.SEall.factor
+
+hier.SEall <- genind2hierfstat(SEall.171)
+
+SEall.fst <- pairwise.fst(SEall.171, pop=NULL, res.type=c("dist", "matrix"))
+
+m <- as.matrix(SEall.fst)
+m2 <- melt(m)[melt(upper.tri(m))$value,]
+names(m2)<- c("c1","c2", "distance")
+
+library(gplots)
+
+shadesOfGrey <- colorRampPalette(c("grey100", "grey0"))  ##define the colourpalette. 
+
+Dend <- read.table("heatmap2.S18.colours", header=F)  ##list of colour names for each population based on R colour palatte. In order of the genind file. Colours here are based on geographic location
+Dend.Colours <- as.character(Dend$V2)
+
+Dend2 <- read.table("heatmap2.S18.colours", header=F)  ##colours for 18 regions
+Dend.Colours2 <- as.character(Dend2$V3)
+
+par(oma=c(1,1,2,1))
+heatmap.2(as.matrix(SEall.fst), trace="none", RowSideColors=Dend.Colours, ColSideColors=Dend.Colours2, col=shadesOfGrey, labRow=F, labCol=F, key.ylab=NA, key.xlab=NA, key.title="Fst Colour Key", keysize=0.9, main="Pairwise Fst and dendrograms of SEall: 17pops, 7regions, 2217loci")  ##RowSideColors is for the dendrogram on the row, ColSideColors for the upper dendrogram. Colour order should be the same as the input.
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
+
+legend("bottomleft", c("DE", "SK", "Upp", "Um", "Lul", "Kir", "FIN"), xpd = TRUE, horiz = TRUE, inset = c(0, 0), bty="o", pch=15, col=c("gold1","chartreuse1","darkolivegreen1", "darkslategray1", "deepskyblue1", "dodgerblue2", "dodgerblue4"), title="Side Dendrogram:Region")
+
+
+
+##Fst between regions
+Dend3 <- c("gold1","chartreuse1","darkolivegreen1", "darkslategray1", "deepskyblue1", "dodgerblue2", "dodgerblue4")  ##colours for 7 regions
+
+
+par(oma=c(1,1,2,1))
+heatmap.2(as.matrix(SE.region.Fst), trace="none", RowSideColors=Dend3, ColSideColors=Dend3, col=shadesOfGrey, labRow=F, labCol=F, key.ylab=NA, key.xlab=NA, key.title="Fst Colour Key", keysize=0.9, main="Pairwise Fst and dendrograms of SEall: 17pops, 7regions, 2217loci")  ##RowSideColors is for the dendrogram on the row, ColSideColors for the upper dendrogram. Colour order should be the same as the input.
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
+
+legend("bottomleft", c("DE", "SK", "Upp", "Um", "Lul", "Kir", "FIN"), xpd = TRUE, horiz = TRUE, inset = c(0, 0), bty="o", pch=15, col=c("gold1","chartreuse1","darkolivegreen1", "darkslategray1", "deepskyblue1", "dodgerblue2", "dodgerblue4"), title="Side Dendrogram:Region")
 ```
 
 
+![alt_txt][Fst.17pops]
+[alt_txt.17pops]:https://cloud.githubusercontent.com/assets/12142475/20483452/6b879254-aff2-11e6-80b9-4d1baecf7887.png
+
+
+![alt_txt][Fst.7regions]
+[alt_txt.7regions]:https://cloud.githubusercontent.com/assets/12142475/20483619/49b33600-aff3-11e6-98bf-50e22fa37fea.png
+
+
+
+
+###IBD
+
+Fst/(1-Fst) vs log.dist(km) - according to Rousset et al. 1997, this is correlated with the effective population density (De) and effective dispersal distance (variance)
+
+```
+##Fst 18 pops -> Fst/(1-Fst)
+
+library(reshape)
+library(fields)
+
+
+m <- as.matrix(SEall.fst)
+m
+m2 <- melt(m)[melt(upper.tri(m))$value,]
+names(m2) <- c("c1", "c2", "distance")
+m2
+m2$IBD <- m2$distance/(1-m2$distance)
+
+
+SE.pop.coords <- read.table("SE.coords.18pop", header=T)
+SEpop_lon.lat <- cbind(SE.pop.coords$Long, SE.pop.coords$Lat)
+distance.matrix.SEpop <- rdist.earth(SEpop_lon.lat, miles=F)  ##great circle dist based on the coordinates
+m.dist <- as.matrix(distance.matrix.SEpop)
+summary(m.dist)
+
+m2.dist <- melt(m.dist)[melt(upper.tri(m.dist))$value,]
+names(m2.dist) <- c("c1", "c2", "distance")
+summary(m2.dist)
+m2.dist$log.km <- log(m2.dist$distance)
+
+
+library(MASS)
+#dens <- kde2d(m2$IBD,m2.dist$log.km, n=10)
+#myPal <- colorRampPalette(c("white","blue","gold", "orange", "red"))
+plot(m2$IBD~m2.dist$log.km, pch=20,cex=.5, xlab="log Geographic distance (km)", ylab="Fst/(1-Fst)")
+#image(dens, col=transp(myPal(10),.7), add=TRUE)
+abline(fit <- lm(m2$IBD~m2.dist$log.km))
+legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.squared, digits=4)))  ##and paste R2
+title("Isolation by distance plot - SEall")
+
+
+##Remove Germany
+
+DE.only.m2 <- subset(m2, m2$c1>3)
+DE.only.m2.dist <- subset(m2.dist, c1>3)
+plot(DE.only.m2$IBD~DE.only.m2.dist$log.km, pch=20,cex=.5, xlab="log Geographic distance (km)", ylab="Fst/(1-Fst)")
+abline(fit <- lm(DE.only.m2$IBD~DE.only.m2.dist$log.km))
+legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.squared, digits=4)))  ##and paste R2
+title("Isolation by distance plot - SE (no DE)")
+
+
 
 ```
 
+![alt_txt][IBD.SEall]
+[IBD.SEall]:https://cloud.githubusercontent.com/assets/12142475/20486576/9f2c4c86-b000-11e6-83dd-5da2277af85f.png
+
+![alt_txt][IBD.SEonly]
+[IBD.SEonly]:https://cloud.githubusercontent.com/assets/12142475/20487203/bad21072-b002-11e6-9ee3-04b12573c66c.png
+
+
+
+
+###AMOVA
+
+
+
+
+###DAPC
+
+
+
+
+###PCA
+
+
+
+###fastStructure
+
+
+
+###TESS3
+
+
+
+##RDA
