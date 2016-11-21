@@ -140,7 +140,23 @@ vcftools --vcf SE.s4.171.recode.vcf --plink --out SE.s4.plink
 plink --file --SE.s4.plink --recode --recodeA
 plink --file SE.s4.plink --recode --recodeA
 plink --file SE.s4.plink --freq --out SE.s4
+
+
+##Remove loci identified as out of HWE in 5_Chp5_SE.LandscapeGenomics.md, but these loci have already been removed with the other filters
+
+plink --file SE.s4.plink --exclude HWE.loci.remove.names --recode --recodeA --out SE.s5.plink
+
 ```
+
+Final Dataset: 
+
+2199 SNPs
+
+171 individuals
+
+92.61% genotyping rate
+
+
 
 ```
 ##R
@@ -382,4 +398,15 @@ Finland still has high R2, because:
 Frequency of loci R2>0.8
 ![alt_txt][R2.3pop]
 [R2.3pop]:https://cloud.githubusercontent.com/assets/12142475/20480471/f1e56ef8-afe2-11e6-987b-b137a9bc9e7f.png
+
+
+
+##Population structure
+
+Convert plink s4 
+```
+
+
+
+```
 
