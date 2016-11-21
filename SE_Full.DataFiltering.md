@@ -458,10 +458,10 @@ legend("bottomleft", c("DE", "SK", "Upp", "Um", "Lul", "Kir", "FIN"), xpd = TRUE
 
 
 ![alt_txt][Fst.17pops]
-[alt_txt.17pops]:https://cloud.githubusercontent.com/assets/12142475/20490278/ba542c88-b00d-11e6-96cf-139d290b044d.png
+[Fst.17pops]:https://cloud.githubusercontent.com/assets/12142475/20490278/ba542c88-b00d-11e6-96cf-139d290b044d.png
 
 ![alt_txt][Fst.7regions]
-[alt_txt.7regions]:https://cloud.githubusercontent.com/assets/12142475/20490279/ba55728c-b00d-11e6-90ff-aac64d2d7f93.png
+[Fst.7regions]:https://cloud.githubusercontent.com/assets/12142475/20490279/ba55728c-b00d-11e6-90ff-aac64d2d7f93.png
 
 
 
@@ -584,3 +584,30 @@ title("Isolation by distance plot - SE regions")
 
 
 ##RDA
+
+Input files: 
+
+1. MAF of all loci 
+
+2. Geographic coordinates
+
+3. Climate variables
+
+2199 loci 
+
+```
+###1. MAF
+
+#Calculate MAF for the full dataset within region using PLINK
+
+/Users/alexjvr/2016RADAnalysis/5_SE.MS1/SE.FullData.Analyses/sumstats/DataFiltering/SE.Full_Filtered_20161118
+
+###Use the *nosex file to create a file for subsetting the data. Here I've made 2: 1=within region, 2=population
+
+plink --file /Users/alexjvr/2016RADAnalysis/5_SE.MS1/SE.FullData.Analyses/sumstats/DataFiltering/SE.Full_Filtered_20161118/SE.s4.plink --freq --within SE.Full.s4.region.Cluster --out SE.s4
+
+
+###R
+######Reformat PLINK output
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci.
+```
