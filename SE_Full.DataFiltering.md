@@ -442,20 +442,32 @@ shadesOfGrey <- colorRampPalette(c("grey100", "grey0"))  ##define the colourpale
 Dend <- read.table("heatmap2.S18.colours", header=F)  ##list of colour names for each population based on R colour palatte. In order of the genind file. Colours here are based on geographic location
 Dend.Colours <- as.character(Dend$V2)
 
-Dend2 <- read.table("heatmap2.S18.colours", header=F)  ##colours for 18 regions
+##Dend2 <- read.table("heatmap2.S18.colours", header=F)  ##colours for 18 regions
+##Dend.Colours2 <- as.character(Dend2$V3)
+
+Dend2 <- read.table("Dend2.alphabetical.names", header=F)  ##colours for 18 regions
 Dend.Colours2 <- as.character(Dend2$V3)
 
+
 par(oma=c(1,1,2,1))
-heatmap.2(as.matrix(SEall.fst), trace="none", RowSideColors=Dend.Colours, ColSideColors=Dend.Colours2, col=shadesOfGrey, labRow=F, labCol=F, key.ylab=NA, key.xlab=NA, key.title="Fst Colour Key", keysize=0.9, main="Pairwise Fst and dendrograms of SEall: 17pops, 7regions, 2217loci")  ##RowSideColors is for the dendrogram on the row, ColSideColors for the upper dendrogram. Colour order should be the same as the input.
+heatmap.2(as.matrix(SEall.fst), trace="none", RowSideColors=Dend.Colours2, ColSideColors=Dend.Colours2, col=shadesOfGrey, labRow=F, labCol=F, key.ylab=NA, key.xlab=NA, key.title="Fst Colour Key", keysize=0.9, main="Pairwise Fst and dendrograms of SEall: 17pops, 7regions, 2217loci")  ##RowSideColors is for the dendrogram on the row, ColSideColors for the upper dendrogram. Colour order should be the same as the input. The pop order is alphabetical in the output. 
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
 
-legend("bottomleft", c("DE", "SK", "Upp", "Um", "Lul", "Kir", "FIN"), xpd = TRUE, horiz = TRUE, inset = c(0, 0), bty="o", pch=15, col=c("gold1","chartreuse1","darkolivegreen1", "darkslategray1", "deepskyblue1", "dodgerblue2", "dodgerblue4"), title="Side Dendrogram:Region")
+popnames.all <- as.character(Dend2$V1)
+legend("right", popnames.all, xpd = TRUE, horiz = TRUE, inset = c(0, 0), bty="o", pch=15, col=Dend.Colours2, title="Side Dendrogram:Region")
+
+
+
+
+#legend("bottomleft", c("DE", "SK", "Upp", "Um", "Lul", "Kir", "FIN"), xpd = TRUE, horiz = TRUE, inset = c(0, 0), bty="o", pch=15, #col=c("gold1","chartreuse2","darkolivegreen1", "darkslategray1", "deepskyblue1", "dodgerblue2", "dodgerblue4"), title="Side #Dendrogram:Region")
 
 
 
 ##Fst between regions
-Dend3 <- c("gold1","chartreuse1","darkolivegreen1", "darkslategray1", "deepskyblue1", "dodgerblue2", "dodgerblue4")  ##colours for 7 regions
+##pop levels are always in alphabetical order
+
+Dend3 <- c("gold1","dodgerblue4", "dodgerblue2", "deepskyblue1", "chartreuse2", "darkslategray1", "darkolivegreen1")
 
 
 par(oma=c(1,1,2,1))
@@ -463,7 +475,7 @@ heatmap.2(as.matrix(SE.region.Fst), trace="none", RowSideColors=Dend3, ColSideCo
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
 
-legend("bottomleft", c("DE", "SK", "Upp", "Um", "Lul", "Kir", "FIN"), xpd = TRUE, horiz = TRUE, inset = c(0, 0), bty="o", pch=15, col=c("gold1","chartreuse1","darkolivegreen1", "darkslategray1", "deepskyblue1", "dodgerblue2", "dodgerblue4"), title="Side Dendrogram:Region")
+legend("bottomleft", c("DE", "SK", "Upp", "Um", "Lul", "Kir", "FIN"), xpd = TRUE, horiz = TRUE, inset = c(0, 0), bty="o", pch=15, col=c("gold1","chartreuse2","darkolivegreen1", "darkslategray1", "deepskyblue1", "dodgerblue2", "dodgerblue4"), title="Side Dendrogram:Region")
 ```
 
 
