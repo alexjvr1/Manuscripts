@@ -571,12 +571,14 @@ title("Isolation by distance plot - SE regions")
 [IBD.region]:https://cloud.githubusercontent.com/assets/12142475/20490586/cbf78402-b00e-11e6-9866-bc70d20398db.png
 
 
+
 ###AMOVA
 
 
 
 
 ###DAPC
+
 
 
 
@@ -653,6 +655,11 @@ colnames(SE.MAF4) <- paste("X", colnames(SE.MAF4), sep=".")
 
 Run RDA
 
+See this tutorial for the interpretation: 
+REDUNDANCY ANALYSIS TUTORIAL: Landscape Genetics Paul Gugger
+redundancy-analysis-for-landscape-genetics.pdf on mac
+
+
 ```
 library(vegan)
 
@@ -660,5 +667,45 @@ GenData <- SE.MAF4
 GenData$X.CLST <- NULL
 
 ClimData <- read.csv(Climate.Data <- read.csv("SE.Full.Climate.test.csv", header=T)
+
+GenData <- SE.MAF4
+GenData$X.CLST <- NULL
+
+##1. Run RDA with only climate data 
+##H0: climate data does not affect genotype
+
+RDA.SEfull <- rda(GenData~Avgtemp.90days+bio2+bio15+bio18, Climate.Data)
+anova(RDA.SEfull)
+
+> anova(RDA.SEfull)
+Set of permutations < 'minperm'. Generating entire set.
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ Avgtemp.90days + bio2 + bio15 + bio18, data = Climate.Data)
+         Df Variance      F Pr(>F)  
+Model     4   106.47 2.7022  0.027 *
+Residual  2    19.70                
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+##So H0 rejected -> climate affects genotype
+##to see which variables are most important, we can plot the results in a biplot
+
+plot(RDA.SEfull)
+
+summary(RDA.SEfull)
+plot(RDA.SEfull)
+
+##Partial out geog
+pRDA.geog <- rda(GenData~bio2+bio15+bio18+Avgtemp.90days+ Condition(x + y), Climate.Data)
+head(summary(pRDA.geog))
+
+##Partial out climate
+pRDA.climate <- rda(GenData~x+y + Condition(bio2+bio15+bio18+Avgtemp.90days), Climate.Data)
+head(summary(pRDA.climate))
+
 
 ```
