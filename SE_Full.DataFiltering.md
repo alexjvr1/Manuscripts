@@ -157,14 +157,59 @@ plink --file SE.s5.plink --exclude HWE.loci.remove.names --recode --recodeA --ou
 
 ```
 
-Final Dataset: 
 
-2167 SNPs (plink; 2184 in vcf)
+##Removing Sk_Ho from the analyses
 
-167 individuals
+It looks like Sk_Ho is problematic: there is more variation in this population compared with the others. 
+All of the individuals in this population are based on concatenated datasets: i.e. data from 2 or more runs that have been added together. I think there might be a problem with how the data were concatenated (perhaps individuals were not correctly combined?) or one of the plates (I think perhaps H22 is problematic - based on the misassignment of CH individuals from this plate) has mislabeled samples. 
 
-92.61% genotyping rate
+These data will have to be re-analysed. But I will do this at a later stage. For now I will remove these samples from the analysis to finish this chapter. 
 
+##Removing Sk.Ho from analyses
+
+![alt_txt][SFS.Sk.pops]
+[SFS.Sk.pops]:https://cloud.githubusercontent.com/assets/12142475/20597838/46e279c2-b246-11e6-8ee8-752cc48daa91.png
+
+
+##remove Sk.Ho from dataset
+```
+vcftools --vcf SE.s4.171.recode.vcf --remove lowDP.indiv --recode --recode-INFO-all --out SE.s4.148
+vcftools --vcf SE.s4.148.recode.vcf --maf 0.05 --recode --recode-INFO-all --out SE.s5.148.maf0.05
+vcftools --vcf SE.s5.148.maf0.05.recode.vcf --plink --out SE.s5.148.plink
+plink --file SE.s5.148.plink --recode --recodeA
+plink --file SE.s5.148.plink --exclude HWE.loci.remove.names --recode --recodeA --out SE.s6.148.plink 
+plink --file SE.s6.148.plink --freq --out SE.s6.148
+
+```
+
+Final Dataset:
+2118 SNPs (plink; 2134 in vcf)
+148 individuals
+93.3% genotyping rate
+```
+plink --file SE.s5.148.plink --freq --out SE.s5.148
+
+##R
+
+SE.s1.freq <- read.table("SE.s1.frq", header=T)
+SE.s2.freq <- read.table("SE.s2.frq", header=T)
+SE.s3.freq <- read.table("SE.s3.frq", header=T)
+SE.s4.freq <- read.table("SE.s4.frq", header=T)
+SE.s5.148.freq <- read.table("SE.s5.148.frq", header=T)
+
+
+my.bin.width <- 0.05
+
+par(mfrow=c(3,2))
+hist(SE.s1.freq$MAF, main="SE s1 (max.miss0.8; 15294; 193) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(SE.s2.freq$MAF, main="SE s2 (max.miss0.8; maf 0.05; 4519; 193) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(SE.s3.freq$MAF, main="SE s3 (max.miss0.8; maf 0.05; thin; 2199; 193) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(SE.s4.freq$MAF, main="SE s4 (max.miss0.8; maf 0.05; thin; 2199; 171) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(SE.s5.148.freq$MAF, main="SE s5 (max.miss0.8; maf 0.05; thin; 2118; 148) SFS", breaks=seq(0,0.5, by=my.bin.width))
+```
+
+![alt_txt][SFS.Final.148]
+[SFS.Final.148]:https://cloud.githubusercontent.com/assets/12142475/20598485/93144f2a-b249-11e6-9b6a-0a5edbf95ee4.png
 
 
 ```
@@ -197,8 +242,8 @@ hist(SE.s6.freq$MAF, main="SE s4 (max.miss0.8; maf 0.05; thin; 2167; 167) SFS", 
 
 Missingness across individuals
 ```
-##s4 with LT2 and UT3 still included
-##s6 with final dataset
+##s4 with LT2, Sk_Ho, & UT3 still included
+##s6 with final dataset (148indivs) 
 
 alexjvr$ vcftools --vcf SE.s4.171.recode.vcf --missing-indv --out SE.s4
  
@@ -216,7 +261,7 @@ SE.s4.miss.sort$pop <- factor(SE.s4.miss.sort$pop, levels=SE.s4.miss.sort$pop)
 
 
 
-alexjvr$ vcftools --vcf SE.s6.167.maf0.05.recode.vcf --missing-indv --out SE.s6
+vcftools --vcf SE.s5.148.maf0.05.recode.vcf --missing-indv --out SE.s6
  
 ##R
 library(ggplot2)
@@ -235,8 +280,8 @@ qplot(pop, F_MISS, data=SE.s6.miss.sort, geom=c("boxplot", "jitter"))
 ![alt_txt][miss.s4]
 [miss.s4]:https://cloud.githubusercontent.com/assets/12142475/20431948/394aada0-ad9d-11e6-9162-12229591b63e.png
 
-![alt_txt][miss.s4]
-[miss.s4]:https://cloud.githubusercontent.com/assets/12142475/20596720/178dbaac-b240-11e6-859e-1e928369aaa7.png
+![alt_txt][miss.s6]
+[miss.s6]:https://cloud.githubusercontent.com/assets/12142475/20598647/4beb14a2-b24a-11e6-82ed-0ccefa7be946.png
 
 
 ##Subset data
@@ -250,7 +295,7 @@ mkdir subset.data
 for i in $(ls popnames.plink.folder/); do plink --file SE.s4.plink --keep popnames.plink.folder/$i --recode --recodeA --out subset.data/$i.plink; done
 
 mkdir subset.data.s6
-for i in $(ls popnames.plink.folder/); do plink --file SE.s6.plink --keep popnames.plink.folder/$i --recode --recodeA --out subset.data.s6/$i.plink; done
+for i in $(ls popnames.plink.folder/); do plink --file SE.s6.148.plink --keep popnames.plink.folder/$i --recode --recodeA --out subset.data.s6/$i.plink; done
 ```
 
 and calculate SFS and LD for each 
@@ -355,28 +400,6 @@ SE.fix.region.table.keep <- data.frame(table(SE.region.frq.fix.table$SNP))
 my.bin.width=1
 hist(SE.fix.region.table.keep$Freq, xlab="Number of pops", ylab="Frequency", main="Frequency of fixed loci found in increasing number of populations", breaks=seq(0,7, by=my.bin.width))
 ```
-
-##Removing Sk_Ho from the analyses
-
-It looks like Sk_Ho is problematic: there is more variation in this population compared with the others. 
-All of the individuals in this population are based on concatenated datasets: i.e. data from 2 or more runs that have been added together. I think there might be a problem with how the data were concatenated (perhaps individuals were not correctly combined?) or one of the plates (I think perhaps H22 is problematic - based on the misassignment of CH individuals from this plate) has mislabeled samples. 
-
-These data will have to be re-analysed. But I will do this at a later stage. For now I will remove these samples from the analysis to finish this chapter. 
-
-```
-Sk.Ho.s6.frq <- read.table("subset.data.s6/Sk.Ho.frq", header=T)
-Sk.SF.s6.frq <- read.table("subset.data.s6/Sk.SF.frq", header=T)
-Sk.SL.s6.frq <- read.table("subset.data.s6/Sk.SL.frq", header=T)
-par(mfrow=c(2,2))
-hist(Sk.Ho.s6.frq$MAF, main="Sk.Ho.s6 SFS")
-hist(Sk.SL.s6.frq$MAF, main="Sk.SL.s6 SFS")
-hist(Sk.SF.s6.frq$MAF, main="Sk.SF.s6 SFS")
-```
-
-##Removing Sk.Ho from analyses
-
-![alt_txt][SFS.Sk.pops]
-[SFS.Sk.pops]:https://cloud.githubusercontent.com/assets/12142475/20597838/46e279c2-b246-11e6-8ee8-752cc48daa91.png
 
 
 ##SFS.s4.regions
