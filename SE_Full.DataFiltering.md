@@ -183,9 +183,13 @@ plink --file SE.s6.148.plink --freq --out SE.s6.148
 ```
 
 Final Dataset:
+
 2118 SNPs (plink; 2134 in vcf)
+
 148 individuals
+
 93.3% genotyping rate
+
 ```
 plink --file SE.s5.148.plink --freq --out SE.s5.148
 
@@ -281,7 +285,7 @@ qplot(pop, F_MISS, data=SE.s6.miss.sort, geom=c("boxplot", "jitter"))
 [miss.s4]:https://cloud.githubusercontent.com/assets/12142475/20431948/394aada0-ad9d-11e6-9162-12229591b63e.png
 
 ![alt_txt][miss.s6]
-[miss.s6]:https://cloud.githubusercontent.com/assets/12142475/20598647/4beb14a2-b24a-11e6-82ed-0ccefa7be946.png
+[miss.s6]:https://cloud.githubusercontent.com/assets/12142475/20599639/7968fe1c-b24f-11e6-8f66-fbbf2776ee2b.png
 
 
 ##Subset data
@@ -295,7 +299,7 @@ mkdir subset.data
 for i in $(ls popnames.plink.folder/); do plink --file SE.s4.plink --keep popnames.plink.folder/$i --recode --recodeA --out subset.data/$i.plink; done
 
 mkdir subset.data.s6
-for i in $(ls popnames.plink.folder/); do plink --file SE.s6.148.plink --keep popnames.plink.folder/$i --recode --recodeA --out subset.data.s6/$i.plink; done
+for i in $(ls popnames.plink.folder/); do plink --file SE.s5.148.plink --keep popnames.plink.folder/$i --recode --recodeA --out subset.data.s6/$i.plink; done
 ```
 
 and calculate SFS and LD for each 
@@ -331,7 +335,7 @@ for i in $(ls popnames.plink.folder/); do plink --file subset.data.s6/$i.plink -
 ##R
 
 DE.3pop.frq <- read.table("subset.data.s6/DE.3pop.frq", header=T)
-Sk.3pop.frq <- read.table("subset.data.s6/Sk.3pop.frq", header=T)
+Sk.2pop.frq <- read.table("subset.data.s6/Sk.3pop.frq", header=T)
 Upp.3pop.frq <- read.table("subset.data.s6/Upp.3pop.frq", header=T)
 Umea.2pop.frq <- read.table("subset.data.s6/Umea.3pop.frq", header=T)
 Lulea.2pop.frq <- read.table("subset.data.s6/Lulea.3pop.frq", header=T)
@@ -341,7 +345,7 @@ FIN.frq <- read.table("subset.data.s6/FIN.frq", header=T)
 
 par(mfrow=c(2, 4))
 hist(DE.3pop.frq$MAF, main="DE.3pop (29, 2167, 90%) SFS")
-hist(Sk.3pop.frq$MAF, main="Sk.3pop (48, 2167, 90%) SFS")
+hist(Sk.2pop.frq$MAF, main="Sk.2pop (29, 2167, 93%) SFS")
 hist(Upp.3pop.frq$MAF, main="Upp.3pop (28, 2167, 96%) SFS")
 hist(Umea.2pop.frq$MAF, main="Umea.2pop (18, 2167, 94%) SFS")
 hist(Lulea.2pop.frq$MAF, main="Lulea.2pop (16, 2167, 97%) SFS")
@@ -353,48 +357,49 @@ hist(FIN.frq$MAF, main="FIN (7, 2167, 88%) SFS")
 
 #And with only variable loci: 
 
-DE.3pop.frq.var <- subset(DE.3pop.frq, MAF>0.001)
-Sk.3pop.frq.var <- subset(Sk.3pop.frq, MAF>0.001)
-Upp.3pop.frq.var <- subset(Upp.3pop.frq, MAF>0.001)
-Umea.2pop.frq.var <- subset(Umea.2pop.frq, MAF>0.001)
-Lulea.2pop.frq.var <- subset(Lulea.2pop.frq, MAF>0.001)
-Kir.2pop.frq.var <- subset(Kir.2pop.frq, MAF>0.001)
-FIN.frq.var <- subset(FIN.frq, MAF>0.001)
+DE.3pop.frq.var.new <- subset(DE.3pop.frq, MAF>0.001)
+Sk.2pop.frq.var.new <- subset(Sk.2pop.frq, MAF>0.001)
+Upp.3pop.frq.var.new <- subset(Upp.3pop.frq, MAF>0.001)
+Umea.2pop.frq.var.new <- subset(Umea.2pop.frq, MAF>0.001)
+Lulea.2pop.frq.var.new <- subset(Lulea.2pop.frq, MAF>0.001)
+Kir.2pop.frq.var.new <- subset(Kir.2pop.frq, MAF>0.001)
+FIN.frq.var.new <- subset(FIN.frq, MAF>0.1)  ##I think because of missing data, I have to filter for a MAC of 2 in this dataset
 
 my.bin.width <- 0.01
 
 par(mfrow=c(2, 4))
 hist(DE.3pop.frq.var$MAF, main="DE.3pop.var (29, 1673, 22.7% fixed) SFS", breaks=seq(0,0.5, by=my.bin.width))
-hist(Sk.3pop.frq.var$MAF, main="Sk.3pop (48, 2065, 4.7% fixed) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(Sk.2pop.frq.var$MAF, main="Sk.3pop (29, 1760, 18.8% fixed) SFS", breaks=seq(0,0.5, by=my.bin.width))
 hist(Upp.3pop.frq.var$MAF, main="Upp.3pop (28, 1256, 42.0%) SFS", breaks=seq(0,0.5, by=my.bin.width))
 hist(Umea.2pop.frq.var$MAF, main="Umea.3pop (18, 1129, 47.9%) SFS", breaks=seq(0,0.5, by=my.bin.width))
 hist(Lulea.2pop.frq.var$MAF, main="Lulea.3pop (16, 1062, 51.0%) SFS", breaks=seq(0,0.5, by=my.bin.width))
 hist(Kir.2pop.frq.var$MAF, main="Kir.2pop (20, 1187, 45.2%) SFS", breaks=seq(0,0.5, by=my.bin.width))
-hist(FIN.frq.var$MAF, main="FIN (7, 892, 58.8%) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(FIN.frq.var$MAF, main="FIN (7, 739, 65.8%) SFS", breaks=seq(0,0.5, by=my.bin.width))
 
 
 ##Loci variable in x populations
-SE.var.loci.freq <- do.call(rbind, lapply(ls(pattern=".frq.var$"), get))
+SE.var.loci.freq <- do.call(rbind, lapply(ls(pattern=".frq.var.new$"), get))
 summary(SE.var.loci.freq)
 SE.var.loci.freq.keep <- data.frame(table(SE.var.loci.freq$SNP)) 
-hist(SE.var.loci.freq.keep$Freq, xlab="Nr pops", ylab="Frequency", main="Frequency of variable loci across regions (s6)", breaks=seq(0.5,7.5, by=0.5))
+#SE.var.loci.freq.keep <- subset(SE.var.loci.freq.keep, Freq>0) 
+hist(SE.var.loci.freq.keep$Freq, xlab="Nr pops", ylab="Frequency", main="Frequency of variable loci across regions (s6)", breaks=seq(0.5,7.5, by=1.0))
 
 
 ###Looking only at fixed loci
 
 #And without the fixed loci: (Frequency here is based on 1/(nx2) for MAC >1)
 
-DE.3.pop.frq.fix <- subset(DE.3pop.frq, MAF<0.0018)
-Sk.3pop.frq.fix <- subset(Sk.3pop.frq, MAF<0.00105)
-Upp.3pop.frq.fix <- subset(Upp.3pop.frq, MAF<0.00179)
-Umea.3pop.frq.fix <- subset(Umea.3pop.frq, MAF<0.0027)
-Lulea.3pop.frq.fix <- subset(Lulea.3pop.frq, MAF<0.0027)
-Kir.2pop.frq.fix <- subset(Kir.2pop.frq, MAF<0.0026)
-FIN.frq.fix <- subset(FIN.frq, MAF<0.070)
+DE.3.pop.frq.fix.new <- subset(DE.3pop.frq, MAF<0.0018)
+Sk.2pop.frq.fix.new <- subset(Sk.2pop.frq, MAF<0.0018)
+Upp.3pop.frq.fix.new <- subset(Upp.3pop.frq, MAF<0.00179)
+Umea.3pop.frq.fix.new <- subset(Umea.2pop.frq, MAF<0.0027)
+Lulea.3pop.frq.fix.new <- subset(Lulea.2pop.frq, MAF<0.0031)
+Kir.2pop.frq.fix.new <- subset(Kir.2pop.frq, MAF<0.0026)
+FIN.frq.fix.new <- subset(FIN.frq, MAF<0.070)
 
-par(mfrow=c(2, 4))
 
-SE.region.frq.fix.table <- do.call(rbind, lapply(ls(pattern="fix$"), get))
+
+SE.region.frq.fix.table <- do.call(rbind, lapply(ls(pattern="fix.new$"), get))
 
 SE.fix.region.table.keep <- data.frame(table(SE.region.frq.fix.table$SNP))
 my.bin.width=1
@@ -409,7 +414,7 @@ hist(SE.fix.region.table.keep$Freq, xlab="Number of pops", ylab="Frequency", mai
 
 ##SFS.s6.regions
 ![alt_txt][SFS.s6.regions]
-[SFS.s6.regions]:https://cloud.githubusercontent.com/assets/12142475/20597009/9b63b524-b241-11e6-81e7-d0ac1c70f761.png
+[SFS.s6.regions]:https://cloud.githubusercontent.com/assets/12142475/20599759/32c752e6-b250-11e6-92a7-61b9f659ddf5.png
 
 
 ##SFS.s4.variable only
@@ -418,7 +423,7 @@ hist(SE.fix.region.table.keep$Freq, xlab="Number of pops", ylab="Frequency", mai
 
 ##SFS.s6.variable only
 ![alt_txt][var.only.s6]
-[var.only.s6]:
+[var.only.s6]:https://cloud.githubusercontent.com/assets/12142475/20599880/e3c6013c-b250-11e6-9d94-b3108f2b0269.png
 
 
 
@@ -443,20 +448,12 @@ hist(SE.fix.region.table.keep$Freq, xlab="Number of pops", ylab="Frequency", mai
 
 ##s6 Frequency fixed loci
 ![alt_txt][freq.fixed.s6]
-[freq.fixed.s6]:
+[freq.fixed.s6]:https://cloud.githubusercontent.com/assets/12142475/20600482/25939de2-b254-11e6-9a58-949041539ccd.png
 
 
 ##s6 Frequency variable loci
 ![alt_txt][freq.var.s6]
-[freq.var.s6]:
-
-##s6 Variable sites only
-![alt_txt][SFS.var.allregions.s6]
-[SFS.var.allregions.s6]:
-
-##s6 Adjusted bin width increments of ~MAC 1 
-![alt_txt][SFS.var.allregions.adjbinwidth.s6]
-[SFS.var.allregions.adjbinwidth.s6]:
+[freq.var.s6]:https://cloud.githubusercontent.com/assets/12142475/20600481/25935440-b254-11e6-8840-2c3640e46715.png
 
 
 
@@ -468,53 +465,53 @@ hist(SE.fix.region.table.keep$Freq, xlab="Number of pops", ylab="Frequency", mai
 Checking for linkage 
 ```
 ##R
-write.table(DE.3pop.frq.fix$SNP, "DE.3pop.fixedloci", row.names=F, col.names=F, quote=F)
-write.table(Sk.3pop.frq.fix$SNP, "Sk.3pop.fixedloci", row.names=F, col.names=F, quote=F)
-write.table(Upp.3pop.frq.fix$SNP, "Upp.3pop.fixedloci", row.names=F, col.names=F, quote=F)
-write.table(Umea.3pop.frq.fix$SNP, "Umea.3pop.fixedloci", row.names=F, col.names=F, quote=F)
-write.table(Lulea.3pop.frq.fix$SNP, "Lulea.3pop.fixedloci", row.names=F, col.names=F, quote=F)
-write.table(Kir.2pop.frq.fix$SNP, "Kir.2pop.fixedloci", row.names=F, col.names=F, quote=F)
-write.table(FIN.frq.fix$SNP, "FIN.fixedloci", row.names=F, col.names=F, quote=F)
+write.table(DE.3pop.frq.fix.new$SNP, "DE.3pop.fixedloci", row.names=F, col.names=F, quote=F)
+write.table(Sk.2pop.frq.fix.new$SNP, "Sk.3pop.fixedloci", row.names=F, col.names=F, quote=F)
+write.table(Upp.3pop.frq.fix.new$SNP, "Upp.3pop.fixedloci", row.names=F, col.names=F, quote=F)
+write.table(Umea.3pop.frq.fix.new$SNP, "Umea.3pop.fixedloci", row.names=F, col.names=F, quote=F)
+write.table(Lulea.3pop.frq.fix.new$SNP, "Lulea.3pop.fixedloci", row.names=F, col.names=F, quote=F)
+write.table(Kir.2pop.frq.fix.new$SNP, "Kir.2pop.fixedloci", row.names=F, col.names=F, quote=F)
+write.table(FIN.frq.fix.new$SNP, "FIN.fixedloci", row.names=F, col.names=F, quote=F)
 
 
 ##linux
-plink --file subset.data/DE.3pop.plink --exclude DE.3pop.fixedloci --recode --recodeA --out subset.data/DE.3pop.var.plink
-plink --file subset.data/DE.3pop.var.plink --r2 --out subset.data/DE.3pop.var
-plink --file subset.data/Sk.3pop.plink --exclude Sk.3pop.fixedloci --recode --recodeA --out subset.data/Sk.3pop.var.plink
-plink --file subset.data/Sk.3pop.var.plink --r2 --out subset.data/Sk.3pop.var
-plink --file subset.data/Upp.3pop.plink --exclude Upp.3pop.fixedloci --recode --recodeA --out subset.data/Upp.3pop.var.plink
-plink --file subset.data/Upp.3pop.var.plink --r2 --out subset.data/Upp.3pop.var
-plink --file subset.data/Umea.3pop.plink --exclude Umea.3pop.fixedloci --recode --recodeA --out subset.data/Um.3pop.var.plink
-plink --file subset.data/Um.3pop.var.plink --r2 --out subset.data/Um.3pop.var
-plink --file subset.data/Lulea.3pop.plink --exclude Lulea.3pop.fixedloci --recode --recodeA --out subset.data/Lulea.3pop.var.plink
-plink --file subset.data/Lulea.3pop.var.plink --r2 --out subset.data/Lulea.3pop.var
-plink --file subset.data/Kir.2pop.plink --exclude Kir.2pop.fixedloci --recode --recodeA --out subset.data/Kir.2pop.var.plink
-plink --file subset.data/Kir.2pop.var.plink --r2 --out subset.data/Kir.2pop.var
-plink --file subset.data/FIN.plink --exclude FIN.fixedloci --recode --recodeA --out subset.data/FIN.var.plink
-plink --file subset.data/FIN.var.plink --r2 --out subset.data/FIN.var
+plink --file subset.data.s6/DE.3pop.plink --exclude DE.3pop.fixedloci --recode --recodeA --out subset.data.s6/DE.3pop.var.plink
+plink --file subset.data.s6/DE.3pop.var.plink --r2 --out subset.data.s6/DE.3pop.var
+plink --file subset.data.s6/Sk.3pop.plink --exclude Sk.3pop.fixedloci --recode --recodeA --out subset.data.s6/Sk.3pop.var.plink
+plink --file subset.data.s6/Sk.3pop.var.plink --r2 --out subset.data.s6/Sk.3pop.var
+plink --file subset.data.s6/Upp.3pop.plink --exclude Upp.3pop.fixedloci --recode --recodeA --out subset.data.s6/Upp.3pop.var.plink
+plink --file subset.data.s6/Upp.3pop.var.plink --r2 --out subset.data.s6/Upp.3pop.var
+plink --file subset.data.s6/Umea.3pop.plink --exclude Umea.3pop.fixedloci --recode --recodeA --out subset.data.s6/Um.3pop.var.plink
+plink --file subset.data.s6/Um.3pop.var.plink --r2 --out subset.data.s6/Um.3pop.var
+plink --file subset.data.s6/Lulea.3pop.plink --exclude Lulea.3pop.fixedloci --recode --recodeA --out subset.data.s6/Lulea.3pop.var.plink
+plink --file subset.data.s6/Lulea.3pop.var.plink --r2 --out subset.data.s6/Lulea.3pop.var
+plink --file subset.data.s6/Kir.2pop.plink --exclude Kir.2pop.fixedloci --recode --recodeA --out subset.data.s6/Kir.2pop.var.plink
+plink --file subset.data.s6/Kir.2pop.var.plink --r2 --out subset.data.s6/Kir.2pop.var
+plink --file subset.data.s6/FIN.plink --exclude FIN.fixedloci --recode --recodeA --out subset.data.s6/FIN.var.plink
+plink --file subset.data.s6/FIN.var.plink --r2 --out subset.data.s6/FIN.var
 
 
 
 
 ##R
-DE.3pop.var.ld <- read.table("subset.data/DE.3pop.var.ld", header=T)
-Sk.3pop.var.ld <- read.table("subset.data/Sk.3pop.var.ld", header=T)
-Upp.3pop.var.ld <- read.table("subset.data/Upp.3pop.var.ld", header=T)
-Lulea.3pop.var.ld <- read.table("subset.data/Lulea.3pop.var.ld", header=T)
-Um.3pop.var.ld <- read.table("subset.data/Um.3pop.var.ld", header=T)
-Kir.2pop.var.ld <- read.table("subset.data/Kir.2pop.var.ld", header=T)
-FIN.var.ld <- read.table("subset.data/FIN.var.ld", header=T)
+DE.3pop.var.ld <- read.table("subset.data.s6/DE.3pop.var.ld", header=T)
+Sk.3pop.var.ld <- read.table("subset.data.s6/Sk.3pop.var.ld", header=T)
+Upp.3pop.var.ld <- read.table("subset.data.s6/Upp.3pop.var.ld", header=T)
+Lulea.3pop.var.ld <- read.table("subset.data.s6/Lulea.3pop.var.ld", header=T)
+Um.3pop.var.ld <- read.table("subset.data.s6/Um.3pop.var.ld", header=T)
+Kir.2pop.var.ld <- read.table("subset.data.s6/Kir.2pop.var.ld", header=T)
+FIN.var.ld <- read.table("subset.data.s6/FIN.var.ld", header=T)
 
 my.bin.width=0.05
 
 par(mfrow=c(2,4))
-hist(DE.3pop.var.ld$R2, main="DE.3pop.var (29, 1680 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
-hist(Sk.3pop.var.ld$R2, main="Sk.3pop.var (29, 2091 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
-hist(Upp.3pop.var.ld$R2, main="Upp.3pop (28, 1261 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
-hist(Um.3pop.var.ld$R2, main="Umea.3pop (19, 1146 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
-hist(Lulea.3pop.var.ld$R2, main="Lulea.3pop (19, 1123 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
-hist(Kir.2pop.var.ld$R2,main="Kir.2pop (20, 1196 loci) R2",  breaks=seq(0,1.0, by=my.bin.width))
-hist(FIN.var.ld$R2, main="FIN (7, 901 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
+hist(DE.3pop.var.ld$R2, main="DE.3pop.var (29, 1623 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
+hist(Sk.3pop.var.ld$R2, main="Sk.2pop.var (29, 1760 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
+hist(Upp.3pop.var.ld$R2, main="Upp.3pop (28, 1255 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
+hist(Um.3pop.var.ld$R2, main="Umea.2pop (18, 1127 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
+hist(Lulea.3pop.var.ld$R2, main="Lulea.2pop (16, 1065 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
+hist(Kir.2pop.var.ld$R2,main="Kir.2pop (20, 1190 loci) R2",  breaks=seq(0,1.0, by=my.bin.width))
+hist(FIN.var.ld$R2, main="FIN (7, 897 loci) R2", breaks=seq(0,1.0, by=my.bin.width))
 
 
 ##Keep only loci R2>0.8 and plot frequency in R
