@@ -139,22 +139,29 @@ plink --file SE.s3.plink --freq --out SE.s3
 
 vcftools --vcf SE.s3.0.8.maf0.05.thin.recode.vcf --remove lowDP.indiv --recode --recode-INFO-all --out SE.s4.171
 vcftools --vcf SE.s4.171.recode.vcf --plink --out SE.s4.plink
-plink --file --SE.s4.plink --recode --recodeA
 plink --file SE.s4.plink --recode --recodeA
 plink --file SE.s4.plink --freq --out SE.s4
 
 
+vcftools --vcf SE.s4.171.recode.vcf --remove lowDP.indiv --recode --recode-INFO-all --out SE.s4.167
+vcftools --vcf SE.s4.167.recode.vcf --maf 0.05 --recode --recode-INFO-all --out SE.s5.167.maf0.05
+
+vcftools --vcf SE.s5.167.maf0.05.recode.vcf --plink --out SE.s5.plink
+plink --file SE.s5.plink --recode --recodeA
+plink --file SE.s5.plink --freq --out SE.s5
+
+
 ##Remove loci identified as out of HWE in 5_Chp5_SE.LandscapeGenomics.md, but these loci have already been removed with the other filters
 
-plink --file SE.s4.plink --exclude HWE.loci.remove.names --recode --recodeA --out SE.s5.plink
+plink --file SE.s5.plink --exclude HWE.loci.remove.names --recode --recodeA --out SE.s6.plink
 
 ```
 
 Final Dataset: 
 
-2199 SNPs
+2167 SNPs (plink; 2184 in vcf)
 
-171 individuals
+167 individuals
 
 92.61% genotyping rate
 
@@ -167,24 +174,32 @@ SE.s1.freq <- read.table("SE.s1.frq", header=T)
 SE.s2.freq <- read.table("SE.s2.frq", header=T)
 SE.s3.freq <- read.table("SE.s3.frq", header=T)
 SE.s4.freq <- read.table("SE.s4.frq", header=T)
+SE.s5.freq <- read.table("SE.s5.frq", header=T)
+SE.s6.freq <- read.table("SE.s6.frq", header=T)
 
 my.bin.width <- 0.05
 
-par(mfrow=c(2,2))
+par(mfrow=c(3,2))
 hist(SE.s1.freq$MAF, main="SE s1 (max.miss0.8; 15294; 193) SFS", breaks=seq(0,0.5, by=my.bin.width))
 hist(SE.s2.freq$MAF, main="SE s2 (max.miss0.8; maf 0.05; 4519; 193) SFS", breaks=seq(0,0.5, by=my.bin.width))
 hist(SE.s3.freq$MAF, main="SE s3 (max.miss0.8; maf 0.05; thin; 2199; 193) SFS", breaks=seq(0,0.5, by=my.bin.width))
 hist(SE.s4.freq$MAF, main="SE s4 (max.miss0.8; maf 0.05; thin; 2199; 171) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(SE.s5.freq$MAF, main="SE s4 (max.miss0.8; maf 0.05; thin; 2167; 167) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(SE.s6.freq$MAF, main="SE s4 (max.miss0.8; maf 0.05; thin; 2167; 167) SFS", breaks=seq(0,0.5, by=my.bin.width))
+
 
 ```
 
 
-![alt_txt][SFS.s1-4]
-[SFS.s1-4]:https://cloud.githubusercontent.com/assets/12142475/20431680/a805d262-ad9b-11e6-95c9-4390efaeb9c9.png
+![alt_txt][SFS.s1-6]
+[SFS.s1-4]:https://cloud.githubusercontent.com/assets/12142475/20595904/36f88ede-b23c-11e6-9f04-9112c431147a.png
 
 
 Missingness across individuals
 ```
+##s4 with LT2 and UT3 still included
+##s6 with final dataset
+
 alexjvr$ vcftools --vcf SE.s4.171.recode.vcf --missing-indv --out SE.s4
  
 ##R
@@ -196,9 +211,25 @@ SE.s4.miss$pop.order <- pop.s4$V2
 
 SE.s4.miss.sort <- SE.s4.miss[order(SE.s4.miss$pop.order),]
 
-SE.s4.miss.sort <- SE.s4.miss[order(SE.s4.miss$pop.order),]
-
 SE.s4.miss.sort$pop <- factor(SE.s4.miss.sort$pop, levels=SE.s4.miss.sort$pop)
+
+
+
+
+alexjvr$ vcftools --vcf SE.s6.167.maf0.05.recode.vcf --missing-indv --out SE.s6
+ 
+##R
+library(ggplot2)
+SE.s6.miss <- read.table("SE.s6.imiss", header=T)
+pop.s6 <- read.table("SE.s6.popnames", header=F)
+SE.s6.miss$pop <- pop.s6$V2
+SE.s6.miss$pop.order <- pop.s6$V1
+
+SE.s6.miss.sort <- SE.s6.miss[order(SE.s6.miss$pop.order),]
+
+SE.s6.miss.sort$pop <- factor(SE.s6.miss.sort$pop, levels=SE.s6.miss.sort$pop)
+
+qplot(pop, F_MISS, data=SE.s6.miss.sort, geom=c("boxplot", "jitter"))
 ```
 
 ![alt_txt][miss.s4]
