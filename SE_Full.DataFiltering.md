@@ -235,7 +235,8 @@ qplot(pop, F_MISS, data=SE.s6.miss.sort, geom=c("boxplot", "jitter"))
 ![alt_txt][miss.s4]
 [miss.s4]:https://cloud.githubusercontent.com/assets/12142475/20431948/394aada0-ad9d-11e6-9162-12229591b63e.png
 
-
+![alt_txt][miss.s4]
+[miss.s4]:https://cloud.githubusercontent.com/assets/12142475/20596720/178dbaac-b240-11e6-859e-1e928369aaa7.png
 
 
 ##Subset data
@@ -247,11 +248,15 @@ into populations and regions
 ```
 mkdir subset.data
 for i in $(ls popnames.plink.folder/); do plink --file SE.s4.plink --keep popnames.plink.folder/$i --recode --recodeA --out subset.data/$i.plink; done
+
+mkdir subset.data.s6
+for i in $(ls popnames.plink.folder/); do plink --file SE.s6.plink --keep popnames.plink.folder/$i --recode --recodeA --out subset.data.s6/$i.plink; done
 ```
 
 and calculate SFS and LD for each 
 
 ```
+##s4
 for i in $(ls popnames.plink.folder/); do plink --file subset.data/$i.plink --freq --out subset.data/$i; done
 for i in $(ls popnames.plink.folder/); do plink --file subset.data/$i.plink --r2 --out subset.data/$i; done
 
@@ -265,8 +270,6 @@ Lulea.3pop.frq <- read.table("subset.data/Lulea.3pop.frq", header=T)
 Kir.2pop.frq <- read.table("subset.data/Kir.2pop.frq", header=T)
 FIN.frq <- read.table("subset.data/FIN.frq", header=T)
 
-
-
 par(mfrow=c(2, 4))
 hist(DE.3pop.frq$MAF, main="DE.3pop (29, 2199, 90%) SFS")
 hist(Sk.3pop.frq$MAF, main="Sk.3pop (48, 2199, 90%) SFS")
@@ -276,34 +279,60 @@ hist(Lulea.3pop.frq$MAF, main="Lulea.3pop (19, 2199, 97%) SFS")
 hist(Kir.2pop.frq$MAF, main="Kir.2pop (20, 2199, 95%) SFS")
 hist(FIN.frq$MAF, main="FIN (7, 2199, 88%) SFS")
 
+##s6
+for i in $(ls popnames.plink.folder/); do plink --file subset.data.s6/$i.plink --freq --out subset.data.s6/$i; done
+for i in $(ls popnames.plink.folder/); do plink --file subset.data.s6/$i.plink --r2 --out subset.data.s6/$i; done
+
+##R
+
+DE.3pop.frq <- read.table("subset.data.s6/DE.3pop.frq", header=T)
+Sk.3pop.frq <- read.table("subset.data.s6/Sk.3pop.frq", header=T)
+Upp.3pop.frq <- read.table("subset.data.s6/Upp.3pop.frq", header=T)
+Umea.2pop.frq <- read.table("subset.data.s6/Umea.3pop.frq", header=T)
+Lulea.2pop.frq <- read.table("subset.data.s6/Lulea.3pop.frq", header=T)
+Kir.2pop.frq <- read.table("subset.data.s6/Kir.2pop.frq", header=T)
+FIN.frq <- read.table("subset.data.s6/FIN.frq", header=T)
+
+
+par(mfrow=c(2, 4))
+hist(DE.3pop.frq$MAF, main="DE.3pop (29, 2167, 90%) SFS")
+hist(Sk.3pop.frq$MAF, main="Sk.3pop (48, 2167, 90%) SFS")
+hist(Upp.3pop.frq$MAF, main="Upp.3pop (28, 2167, 96%) SFS")
+hist(Umea.2pop.frq$MAF, main="Umea.2pop (18, 2167, 94%) SFS")
+hist(Lulea.2pop.frq$MAF, main="Lulea.2pop (16, 2167, 97%) SFS")
+hist(Kir.2pop.frq$MAF, main="Kir.2pop (20, 2167, 94%) SFS")
+hist(FIN.frq$MAF, main="FIN (7, 2167, 88%) SFS")
+
+
+
 
 #And with only variable loci: 
 
 DE.3pop.frq.var <- subset(DE.3pop.frq, MAF>0.001)
 Sk.3pop.frq.var <- subset(Sk.3pop.frq, MAF>0.001)
 Upp.3pop.frq.var <- subset(Upp.3pop.frq, MAF>0.001)
-Umea.3pop.frq.var <- subset(Umea.3pop.frq, MAF>0.001)
-Lulea.3pop.frq.var <- subset(Lulea.3pop.frq, MAF>0.001)
+Umea.2pop.frq.var <- subset(Umea.2pop.frq, MAF>0.001)
+Lulea.2pop.frq.var <- subset(Lulea.2pop.frq, MAF>0.001)
 Kir.2pop.frq.var <- subset(Kir.2pop.frq, MAF>0.001)
 FIN.frq.var <- subset(FIN.frq, MAF>0.001)
 
 my.bin.width <- 0.01
 
 par(mfrow=c(2, 4))
-hist(DE.3pop.frq.var$MAF, main="DE.3pop.var (29, 1680, 23.6% fixed) SFS", breaks=seq(0,0.5, by=my.bin.width))
-hist(Sk.3pop.frq.var$MAF, main="Sk.3pop (48, 2091, 4.1% fixed) SFS", breaks=seq(0,0.5, by=my.bin.width))
-hist(Upp.3pop.frq.var$MAF, main="Upp.3pop (28, 1261, 42.7%) SFS", breaks=seq(0,0.5, by=my.bin.width))
-hist(Umea.3pop.frq.var$MAF, main="Umea.3pop (19, 1146, 47.9%) SFS", breaks=seq(0,0.5, by=my.bin.width))
-hist(Lulea.3pop.frq.var$MAF, main="Lulea.3pop (19, 1123, 48.9%) SFS", breaks=seq(0,0.5, by=my.bin.width))
-hist(Kir.2pop.frq.var$MAF, main="Kir.2pop (20, 1196, 45.6%) SFS", breaks=seq(0,0.5, by=my.bin.width))
-hist(FIN.frq.var$MAF, main="FIN (7, 901, 59%) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(DE.3pop.frq.var$MAF, main="DE.3pop.var (29, 1673, 22.7% fixed) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(Sk.3pop.frq.var$MAF, main="Sk.3pop (48, 2065, 4.7% fixed) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(Upp.3pop.frq.var$MAF, main="Upp.3pop (28, 1256, 42.0%) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(Umea.2pop.frq.var$MAF, main="Umea.3pop (18, 1129, 47.9%) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(Lulea.2pop.frq.var$MAF, main="Lulea.3pop (16, 1062, 51.0%) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(Kir.2pop.frq.var$MAF, main="Kir.2pop (20, 1187, 45.2%) SFS", breaks=seq(0,0.5, by=my.bin.width))
+hist(FIN.frq.var$MAF, main="FIN (7, 892, 58.8%) SFS", breaks=seq(0,0.5, by=my.bin.width))
 
 
 ##Loci variable in x populations
 SE.var.loci.freq <- do.call(rbind, lapply(ls(pattern=".frq.var$"), get))
 summary(SE.var.loci.freq)
 SE.var.loci.freq.keep <- data.frame(table(SE.var.loci.freq$SNP)) 
-hist(SE.var.loci.freq.keep$Freq, xlab="Nr pops", ylab="Frequency", main="Frequency of variable loci across regions", breaks=seq(0.5,7.5, by=my.bin.width))
+hist(SE.var.loci.freq.keep$Freq, xlab="Nr pops", ylab="Frequency", main="Frequency of variable loci across regions (s6)", breaks=seq(0.5,7.5, by=0.5))
 
 
 ###Looking only at fixed loci
@@ -327,30 +356,84 @@ my.bin.width=1
 hist(SE.fix.region.table.keep$Freq, xlab="Number of pops", ylab="Frequency", main="Frequency of fixed loci found in increasing number of populations", breaks=seq(0,7, by=my.bin.width))
 ```
 
+##Removing Sk_Ho from the analyses
 
+It looks like Sk_Ho is problematic: there is more variation in this population compared with the others. 
+All of the individuals in this population are based on concatenated datasets: i.e. data from 2 or more runs that have been added together. I think there might be a problem with how the data were concatenated (perhaps individuals were not correctly combined?) or one of the plates (I think perhaps H22 is problematic - based on the misassignment of CH individuals from this plate) has mislabeled samples. 
+
+These data will have to be re-analysed. But I will do this at a later stage. For now I will remove these samples from the analysis to finish this chapter. 
+
+```
+Sk.Ho.s6.frq <- read.table("subset.data.s6/Sk.Ho.frq", header=T)
+Sk.SF.s6.frq <- read.table("subset.data.s6/Sk.SF.frq", header=T)
+Sk.SL.s6.frq <- read.table("subset.data.s6/Sk.SL.frq", header=T)
+par(mfrow=c(2,2))
+hist(Sk.Ho.s6.frq$MAF, main="Sk.Ho.s6 SFS")
+hist(Sk.SL.s6.frq$MAF, main="Sk.SL.s6 SFS")
+hist(Sk.SF.s6.frq$MAF, main="Sk.SF.s6 SFS")
+```
+
+##Removing Sk.Ho from analyses
+
+![alt_txt][SFS.Sk.pops]
+[SFS.Sk.pops]:https://cloud.githubusercontent.com/assets/12142475/20597838/46e279c2-b246-11e6-8ee8-752cc48daa91.png
+
+
+##SFS.s4.regions
 ![alt_txt][SFS.s4.regions]
 [SFS.s4.regions]:https://cloud.githubusercontent.com/assets/12142475/20433442/df6d3152-ada3-11e6-9a02-4123ad1ff7f4.png
 
+
+##SFS.s6.regions
+![alt_txt][SFS.s6.regions]
+[SFS.s6.regions]:https://cloud.githubusercontent.com/assets/12142475/20597009/9b63b524-b241-11e6-81e7-d0ac1c70f761.png
+
+
+##SFS.s4.variable only
 ![alt_txt][var.only]
 [var.only]:https://cloud.githubusercontent.com/assets/12142475/20435155/4d959fb4-adab-11e6-99d7-cc0fd54519f2.png
 
-Frequency fixed loci
+##SFS.s6.variable only
+![alt_txt][var.only.s6]
+[var.only.s6]:
+
+
+
+##s4 Frequency fixed loci
 ![alt_txt][freq.fixed]
 [freq.fixed]:https://cloud.githubusercontent.com/assets/12142475/20435161/56ab279a-adab-11e6-8ad5-2a512cb2c689.png
 
 
-Frequency variable loci
+##s4 Frequency variable loci
 ![alt_txt][freq.var]
 [freq.var]:https://cloud.githubusercontent.com/assets/12142475/20495176/452bf2ac-b020-11e6-87bb-ec23ccb29357.png
 
-Variable sites only
+##s4 Variable sites only
 ![alt_txt][SFS.var.allregions]
 [SFS.var.allregions]:https://cloud.githubusercontent.com/assets/12142475/20478502/ad6c623e-afda-11e6-8607-c630767538ba.png
 
-Adjusted bin width increments of ~MAC 1 
+##s4 Adjusted bin width increments of ~MAC 1 
 ![alt_txt][SFS.var.allregions.adjbinwidth]
 [SFS.var.allregions.adjbinwidth]:https://cloud.githubusercontent.com/assets/12142475/20478501/ad4d9f84-afda-11e6-9e3e-c936431fac6e.png
 
+
+
+##s6 Frequency fixed loci
+![alt_txt][freq.fixed.s6]
+[freq.fixed.s6]:
+
+
+##s6 Frequency variable loci
+![alt_txt][freq.var.s6]
+[freq.var.s6]:
+
+##s6 Variable sites only
+![alt_txt][SFS.var.allregions.s6]
+[SFS.var.allregions.s6]:
+
+##s6 Adjusted bin width increments of ~MAC 1 
+![alt_txt][SFS.var.allregions.adjbinwidth.s6]
+[SFS.var.allregions.adjbinwidth.s6]:
 
 
 
