@@ -25,9 +25,11 @@ Step 4.
 
    - SFS and LD
 
-Step 5. Remove indivs with >0.5 missing data
+Step 5.1. Remove indivs with >0.5 missing data & remove populations with <5 individuals
 
   - SFS and LD
+
+Step 5.2. Filter MAF 0.05 overall
 
 Step 6. removed fixed loci per pop/region
 
