@@ -894,13 +894,15 @@ scatter(dapc1.SE148)
 ```
 
 ![alt_txt][DAPC.148]
-[DAPC.148]:https://cloud.githubusercontent.com/assets/12142475/20623863/faefc384-b309-11e6-8e13-44fd4d78190e.png
+[DAPC.148]:https://cloud.githubusercontent.com/assets/12142475/20624232/0ea393ae-b30c-11e6-8840-3685e3fd023f.png
 
 ![alt_txt][DAPC.148.2]
-[DAPC.148.2]:https://cloud.githubusercontent.com/assets/12142475/20624232/0ea393ae-b30c-11e6-8840-3685e3fd023f.png
+[DAPC.148.2]:https://cloud.githubusercontent.com/assets/12142475/20625975/b2dbf8ee-b316-11e6-8b64-c0bca7d057eb.png
 
 ![alt_txt][DAPC.148.3]
-[DAPC.148.3]:https://cloud.githubusercontent.com/assets/12142475/20625975/b2dbf8ee-b316-11e6-8b64-c0bca7d057eb.png
+[DAPC.148.3]:https://cloud.githubusercontent.com/assets/12142475/20625944/8461363c-b316-11e6-8c10-5e490c976210.png
+
+
 
 ###PCA
 
