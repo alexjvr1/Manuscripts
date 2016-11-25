@@ -518,7 +518,6 @@ hist(FIN.var.ld$R2, main="FIN (7, 897 loci) R2", breaks=seq(0,1.0, by=my.bin.wid
 DE.3pop.ld.remove <- subset(DE.3pop.var.ld, R2>0.799999)
 Sk.3pop.ld.remove <- subset(Sk.3pop.var.ld, R2>0.799999)
 Upp.3pop.ld.remove <- subset(Upp.3pop.var.ld, R2>0.799999)
-Umea.3pop.ld.remove <- subset(Umea.3pop.var.ld, R2>0.799999)
 Umea.3pop.ld.remove <- subset(Um.3pop.var.ld, R2>0.799999)
 Lulea.3pop.ld.remove <- subset(Lulea.3pop.var.ld, R2>0.799999)
 Kir.2pop.ld.remove <- subset(Kir.2pop.var.ld, R2>0.799999)
@@ -527,7 +526,7 @@ FIN.ld.remove <- subset(FIN.var.ld, R2>0.799999)
 SE.ld.remove.file <- do.call(rbind, lapply(ls(pattern="ld.remove$"), get))
 test.table.ld <- data.frame(table(SE.ld.remove.file$SNP_A, SE.ld.remove.file$SNP_B))
 test.table.ld.subset <- subset(test.table.ld, Freq>0)
-
+hist(test.table.ld.subset$Freq, main="Frequency of loci R2>0.8 across 7 regions")
 ```
 
 R2 of variable loci only
@@ -537,13 +536,13 @@ Starts at 0.2, because:
 Finland still has high R2, because: 
 
 ![alt_txt][R2.variableLoci]
-[R2.variableLoci]:https://cloud.githubusercontent.com/assets/12142475/20479938/91400c40-afe0-11e6-9fff-e3b6b14da7f6.png
+[R2.variableLoci]:https://cloud.githubusercontent.com/assets/12142475/20603559/5b809c3a-b262-11e6-9a90-d9c0da234060.png
 
 
 
 Frequency of loci R2>0.8
 ![alt_txt][R2.3pop]
-[R2.3pop]:https://cloud.githubusercontent.com/assets/12142475/20480471/f1e56ef8-afe2-11e6-987b-b137a9bc9e7f.png
+[R2.3pop]:https://cloud.githubusercontent.com/assets/12142475/20603558/5b804d16-b262-11e6-984e-54cd5a71c70a.png
 
 
 
@@ -551,17 +550,20 @@ Frequency of loci R2>0.8
 
 ###Fst
 
-Convert plink s4 to structure using pgdspider, and import into R
+Convert plink s5 to structure using pgdspider, and import into R
 ```
+/Users/alexjvr/2016RADAnalysis/5_SE.MS1/SE.FullData.Analyses/pop.str
+
 library(adegenet)
 library(hierfstat)
 library(reshape)
 
-SEall.171 <- read.structure("SE.s4.str")
+SEall.171 <- read.structure("SE.s5.148.15pops.str")
 SEall.171
 
-popnames.SEall.factor <- as.factor(pop.s4$V1)
-SEall.171@pop <- popnames.SEall.factor
+pop.SE171 <- read.table("popnames.s5.structure", header=T)  ##make sure the populations are numbered "01.DE.B", etc.
+popnames.15.SEall.factor <- as.factor(pop.SE171$pop)
+SEall.171@pop <- popnames.15.SEall.factor
 
 hier.SEall <- genind2hierfstat(SEall.171)
 
@@ -575,39 +577,40 @@ library(gplots)
 
 shadesOfGrey <- colorRampPalette(c("grey100", "grey0"))  ##define the colourpalette. 
 
-Dend <- read.table("heatmap2.S18.colours", header=F)  ##list of colour names for each population based on R colour palatte. In order of the genind file. Colours here are based on geographic location
-Dend.Colours <- as.character(Dend$V2)
-
-##Dend2 <- read.table("heatmap2.S18.colours", header=F)  ##colours for 18 regions
-##Dend.Colours2 <- as.character(Dend2$V3)
-
-Dend2 <- read.table("Dend2.alphabetical.names", header=F)  ##colours for 18 regions
-Dend.Colours2 <- as.character(Dend2$V3)
-
+Dend <- read.table("heatmap.popcolours", header=T)  ##list of colour names for each population based on R colour palatte. In alphabetical order (as in genind file)
+Dend.Colours <- as.character(Dend$colours.pop)
 
 par(oma=c(1,1,2,1))
-heatmap.2(as.matrix(SEall.fst), trace="none", RowSideColors=Dend.Colours2, ColSideColors=Dend.Colours2, col=shadesOfGrey, labRow=F, labCol=F, key.ylab=NA, key.xlab=NA, key.title="Fst Colour Key", keysize=0.9, main="Pairwise Fst and dendrograms of SEall: 17pops, 7regions, 2217loci")  ##RowSideColors is for the dendrogram on the row, ColSideColors for the upper dendrogram. Colour order should be the same as the input. The pop order is alphabetical in the output. 
+heatmap.2(as.matrix(SEall.fst), trace="none", RowSideColors=Dend.Colours, ColSideColors=Dend.Colours, col=shadesOfGrey, labRow=F, labCol=F, key.ylab=NA, key.xlab=NA, key.title="Fst Colour Key", keysize=0.9, main="Pairwise Fst and dendrograms of SEall: 15pops, 7regions, 2167loci")  ##RowSideColors is for the dendrogram on the row, ColSideColors for the upper dendrogram. Colour order should be the same as the input. The pop order is alphabetical in the output. 
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
 
-popnames.all <- as.character(Dend2$V1)
-legend("right", popnames.all, xpd = TRUE, horiz = TRUE, inset = c(0, 0), bty="o", pch=15, col=Dend.Colours2, title="Side Dendrogram:Region")
-
-
-
-
-#legend("bottomleft", c("DE", "SK", "Upp", "Um", "Lul", "Kir", "FIN"), xpd = TRUE, horiz = TRUE, inset = c(0, 0), bty="o", pch=15, #col=c("gold1","chartreuse2","darkolivegreen1", "darkslategray1", "deepskyblue1", "dodgerblue2", "dodgerblue4"), title="Side #Dendrogram:Region")
+popnames.all <- as.character(Dend$pop)
+legend("bottom", popnames.all, xpd = TRUE, horiz = TRUE, inset = c(0, 0), bty="o", pch=15, col=Dend.Colours, title="Side Dendrogram:Region")
 
 
 
 ##Fst between regions
 ##pop levels are always in alphabetical order
 
-Dend3 <- c("gold1","dodgerblue4", "dodgerblue2", "deepskyblue1", "chartreuse2", "darkslategray1", "darkolivegreen1")
+SEall.171.regions <- SEall.171
+popnames.7.SEall.factor <- as.factor(pop.SE171$region)
+SEall.171.regions@pop <- popnames.7.SEall.factor
+
+SEall.region.Fst <- pairwise.fst(SEall.171.regions, pop=NULL, res.type=c("dist", "matrix"))
+
+#Dend3 <- read.table("heatmap.regioncolours", header=T)  ##list of colour names for each population based on R colour palatte. In #alphabetical order (as in genind file)
+#Dend.Colours3 <- as.character(Dend3$colours.region)
+
+Dend3 <- read.table("heatmap.regions.nonumber", header=T)  ##list of colour names for each population based on R colour palatte. In alphabetical order (as in genind file)
+Dend.Colours3 <- as.character(Dend3$colours.region)
+
+par(oma=c(1,1,2,1))
+heatmap.2(as.matrix(SE.region.Fst), trace="none", RowSideColors=Dend.Colours3, ColSideColors=Dend.Colours3, col=shadesOfGrey, labCol=F, key.ylab=NA, key.xlab=NA, key.title="Fst Colour Key", keysize=0.9, main="Pairwise Fst and dendrograms of SEall: 15pops, 7regions, 2167loci")  ##RowSideColors is for the dendrogram on the row, ColSideColors for the upper dendrogram. Colour order should be the same as the input.
 
 
 par(oma=c(1,1,2,1))
-heatmap.2(as.matrix(SE.region.Fst), trace="none", RowSideColors=Dend3, ColSideColors=Dend3, col=shadesOfGrey, labRow=F, labCol=F, key.ylab=NA, key.xlab=NA, key.title="Fst Colour Key", keysize=0.9, main="Pairwise Fst and dendrograms of SEall: 17pops, 7regions, 2217loci")  ##RowSideColors is for the dendrogram on the row, ColSideColors for the upper dendrogram. Colour order should be the same as the input.
+heatmap.2(as.matrix(SE.region.Fst), trace="none", RowSideColors=Dend.Colours3, ColSideColors=Dend.Colours3, col=shadesOfGrey, labRow=F, labCol=F, key.ylab=NA, key.xlab=NA, key.title="Fst Colour Key", keysize=0.9, main="Pairwise Fst and dendrograms of SEall: 15pops, 7regions, 2167loci")  ##RowSideColors is for the dendrogram on the row, ColSideColors for the upper dendrogram. Colour order should be the same as the input.
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE)
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
 
@@ -616,10 +619,10 @@ legend("bottomleft", c("DE", "SK", "Upp", "Um", "Lul", "Kir", "FIN"), xpd = TRUE
 
 
 ![alt_txt][Fst.17pops]
-[Fst.17pops]:https://cloud.githubusercontent.com/assets/12142475/20490278/ba542c88-b00d-11e6-96cf-139d290b044d.png
+[Fst.17pops]:https://cloud.githubusercontent.com/assets/12142475/20605840/a3af1652-b26d-11e6-81a9-fffef37154d4.png
 
 ![alt_txt][Fst.7regions]
-[Fst.7regions]:https://cloud.githubusercontent.com/assets/12142475/20490279/ba55728c-b00d-11e6-90ff-aac64d2d7f93.png
+[Fst.7regions]:https://cloud.githubusercontent.com/assets/12142475/20605871/d05a0996-b26d-11e6-80f3-176b2086edff.png
 
 
 
@@ -629,7 +632,7 @@ legend("bottomleft", c("DE", "SK", "Upp", "Um", "Lul", "Kir", "FIN"), xpd = TRUE
 Fst/(1-Fst) vs log.dist(km) - according to Rousset et al. 1997, this is correlated with the effective population density (De) and effective dispersal distance (variance)
 
 ```
-##Fst 18 pops -> Fst/(1-Fst)
+##Fst 15 pops -> Fst/(1-Fst)
 
 library(reshape)
 library(fields)
@@ -643,7 +646,7 @@ m2
 m2$IBD <- m2$distance/(1-m2$distance)
 
 
-SE.pop.coords <- read.table("SE.coords.18pop", header=T)
+SE.pop.coords <- read.table("SE.coords.15pop", header=T)
 SEpop_lon.lat <- cbind(SE.pop.coords$Long, SE.pop.coords$Lat)
 distance.matrix.SEpop <- rdist.earth(SEpop_lon.lat, miles=F)  ##great circle dist based on the coordinates
 m.dist <- as.matrix(distance.matrix.SEpop)
@@ -709,10 +712,10 @@ title("Isolation by distance plot - SE regions")
 ```
 
 ![alt_txt][IBD.SEall]
-[IBD.SEall]:https://cloud.githubusercontent.com/assets/12142475/20486576/9f2c4c86-b000-11e6-83dd-5da2277af85f.png
+[IBD.SEall]:https://cloud.githubusercontent.com/assets/12142475/20606328/7690e44a-b270-11e6-97af-4cc2eb089190.png
 
 ![alt_txt][IBD.SEonly]
-[IBD.SEonly]:https://cloud.githubusercontent.com/assets/12142475/20487203/bad21072-b002-11e6-9ee3-04b12573c66c.png
+[IBD.SEonly]:https://cloud.githubusercontent.com/assets/12142475/20606327/7690b54c-b270-11e6-806b-9abe07862590.png
 
 
 ![alt_txt][IBD.region]
@@ -722,6 +725,131 @@ title("Isolation by distance plot - SE regions")
 
 ###AMOVA
 
+http://grunwaldlab.github.io/Population_Genetics_in_R/AMOVA.html
+
+```
+library(adegenet)
+library(poppr)
+
+SE148.strata <- pop.SE171[,1:3]  ##from text file. each column has one hierarchy level specified for all individuals. (indiv, pop, region)
+SEall.148.genind@other <- SE148.strata ##renamed the SEall.171 genind to a better name
+
+strata(SEall.148.genind) <- other(SEall.148.genind)
+
+SEall.148.genclone <- as.genclone(SEall.148.genind)
+
+SE148.amova <- poppr.amova(SEall.148.genclone, ~region/pop)
+
+SE148.amova 
+$call
+ade4::amova(samples = xtab, distances = xdist, structures = xstruct)
+
+$results
+                            Df    Sum Sq    Mean Sq
+Between region               6 14249.577 2374.92948
+Between pop Within region    8  1267.817  158.47708
+Between samples Within pop 133 10411.288   78.28036
+Within samples             148 10492.128   70.89276
+Total                      295 36420.810  123.46037
+
+$componentsofcovariance
+                                            Sigma          %
+Variations  Between region              53.634789  40.539819
+Variations  Between pop Within region    4.080152   3.083980
+Variations  Between samples Within pop   3.693802   2.791958
+Variations  Within samples              70.892758  53.584243
+Total variations                       132.301501 100.000000
+
+$statphi
+                         Phi
+Phi-samples-total 0.46415757
+Phi-samples-pop   0.04952370
+Phi-pop-region    0.05186631
+Phi-region-total  0.40539819
+
+SE148.amovatest <- randtest(SE148.amova, nrepet=999)
+
+SE148.amovatest
+
+class: krandtest 
+Monte-Carlo tests
+Call: randtest.amova(xtest = SE148.amova, nrepet = 999)
+
+Number of tests:   4 
+
+Adjustment method for multiple comparisons:   none 
+Permutation number:   999 
+                        Test       Obs    Std.Obs   Alter Pvalue
+1  Variations within samples 70.892758 -16.254415    less  0.001
+2 Variations between samples  3.693802   2.715691 greater  0.006
+3     Variations between pop  4.080152  16.816844 greater  0.001
+4  Variations between region 53.634789   4.478215    less  1.000
+
+```
+
+![alt_txt][AMOVA]
+[AMOVA]:https://cloud.githubusercontent.com/assets/12142475/20623482/1040a2be-b308-11e6-92ad-570212235f23.png
+
+
+```
+##Randomised test
+SE148.new <- SEall.148.genclone
+set.seed(9001)
+strata(SE148.new) <- strata(SEall.148.genclone)[sample(nInd(SEall.148.genclone)), -1]
+head(strata(SE148.new))
+head(strata(SEall.148.genclone))
+SE148.new.amova <- poppr.amova(SE148.new, ~region/pop)
+
+SE148.new.amova   ##now all the variation is within samples and within populations. So no population structure evident. 
+$call
+ade4::amova(samples = xtab, distances = xdist, structures = xstruct)
+
+$results
+                            Df     Sum Sq   Mean Sq
+Between region               6   909.3634 151.56057
+Between pop Within region    8  1445.1514 180.64392
+Between samples Within pop 133 23574.1669 177.24938
+Within samples             148 10492.1281  70.89276
+Total                      295 36420.8098 123.46037
+
+$componentsofcovariance
+                                             Sigma           %
+Variations  Between region              -0.7034904  -0.5694421
+Variations  Between pop Within region    0.1727036   0.1397954
+Variations  Between samples Within pop  53.1783088  43.0453201
+Variations  Within samples              70.8927576  57.3843267
+Total variations                       123.5402795 100.0000000
+
+$statphi
+                           Phi
+Phi-samples-total  0.426156733
+Phi-samples-pop    0.428611685
+Phi-pop-region     0.001390038
+Phi-region-total  -0.005694421
+
+
+SE148.new.amova.test<- randtest(SE148.new.amova, nrepet=999) 
+
+SE148.new.amova.test
+
+class: krandtest 
+Monte-Carlo tests
+Call: randtest.amova(xtest = SE148.new.amova, nrepet = 999)
+
+Number of tests:   4 
+
+Adjustment method for multiple comparisons:   none 
+Permutation number:   999 
+                        Test        Obs     Std.Obs   Alter Pvalue
+1  Variations within samples 70.8927576 -15.8040911    less  0.001
+2 Variations between samples 53.1783088  16.1312400 greater  0.001
+3     Variations between pop  0.1727036   0.2045010 greater  0.368
+4  Variations between region -0.7034904  -0.5337828    less  0.312
+```
+Randomised samples
+
+![alt_txt][AMOVA.random]
+[AMOVA.random]:https://cloud.githubusercontent.com/assets/12142475/20623863/faefc384-b309-11e6-8e13-44fd4d78190e.png
 
 
 
