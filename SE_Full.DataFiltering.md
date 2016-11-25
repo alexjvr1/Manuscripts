@@ -999,28 +999,30 @@ Input files:
 
 #Calculate MAF for the full dataset within region using PLINK
 
-/Users/alexjvr/2016RADAnalysis/5_SE.MS1/SE.FullData.Analyses/sumstats/DataFiltering/SE.Full_Filtered_20161118
+/Users/alexjvr/2016RADAnalysis/5_SE.MS1/SE.FullData.Analyses/PCAdapt
 
-###Use the *nosex file to create a file for subsetting the data. Here I've made 2: 1=within region, 2=population
+###Use the *nosex file to create a file for subsetting the data. Here I've made 1=within region, 2=within pop
 
-plink --file /Users/alexjvr/2016RADAnalysis/5_SE.MS1/SE.FullData.Analyses/sumstats/DataFiltering/SE.Full_Filtered_20161118/SE.s4.plink --freq --within SE.Full.s4.region.Cluster --out SE.s4
+plink --file SE.148.plink --freq --within SE.148.region.Cluster --out SE.148.Cluster
+
+plink --file SE.148.plink --freq --within SE.148.pop.Cluster --out SE.148.pop
 
 
 ###R
 ######Reformat PLINK output
 ###MAF for each locus -> melt and reformat rows as pops, and columns as loci.
 
-SE.MAF <- read.table("SE.s4.frq.strat", header=T)
+SE.MAF <- read.table("SE.148.pop.frq.strat", header=T)
 SE.MAF2 <- SE.MAF[,c(3,2,6)]
-> summary(SE.MAF2)
-    CLST             SNP             MAF         
- DE   :2199   100096:2 :    7   Min.   :0.00000  
- FIN  :2199   100865:23:    7   1st Qu.:0.00000  
- Kir  :2199   101108:35:    7   Median :0.08889  
- Lulea:2199   101270:3 :    7   Mean   :0.20265  
- Sk   :2199   101367:84:    7   3rd Qu.:0.32500  
- Umea :2199   101697:24:    7   Max.   :1.00000  
- Upp  :2199   (Other)  :15351                    
+summary(SE.MAF2)
+         CLST              SNP             MAF         
+ 01.DE.B   : 2118   100096:2 :   15   Min.   :0.00000  
+ 02.DE.K   : 2118   100865:23:   15   1st Qu.:0.00000  
+ 03.DE.W   : 2118   101108:35:   15   Median :0.07143  
+ 04.Sk.SF  : 2118   101270:3 :   15   Mean   :0.21596  
+ 05.Sk.SL  : 2118   101367:84:   15   3rd Qu.:0.35710  
+ 06.Upp.Gra: 2118   101697:24:   15   Max.   :1.00000  
+ (Other)   :19062   (Other)  :31680   
  
 library("ggplot2")
 library("reshape2")
@@ -1030,13 +1032,14 @@ str(SE.MAF3)
 head(SE.MAF3)
 
 
-SE.MAF4 <- dcast(SE.MAF3, formula= CLST ~ SNP)
+SE.148.MAF4 <- dcast(SE.MAF3, formula= CLST ~ SNP)
 head(SE.MAF4)
-write.csv(SE.MAF4, file="SE.MAF.csv")
+
 
 
 ##Add X infront of all locusnames. 
-colnames(SE.MAF4) <- paste("X", colnames(SE.MAF4), sep=".")
+colnames(SE.148.MAF4) <- paste("X", colnames(SE.148.MAF4), sep=".")
+write.csv(SE.148.MAF4, file="SE.148.MAF.csv")
 
 ```
 
@@ -1050,13 +1053,11 @@ redundancy-analysis-for-landscape-genetics.pdf on mac
 ```
 library(vegan)
 
-GenData <- SE.MAF4
+GenData <- SE.148.MAF4
 GenData$X.CLST <- NULL
 
-ClimData <- read.csv(Climate.Data <- read.csv("SE.Full.Climate.test.csv", header=T)
+Climate.Data <- read.csv("SE.148.MAF.csv", header=T)
 
-GenData <- SE.MAF4
-GenData$X.CLST <- NULL
 
 ##1. Run RDA with only climate data 
 ##H0: climate data does not affect genotype
@@ -1064,16 +1065,14 @@ GenData$X.CLST <- NULL
 RDA.SEfull <- rda(GenData~Avgtemp.90days+bio2+bio15+bio18, Climate.Data)
 anova(RDA.SEfull)
 
-> anova(RDA.SEfull)
-Set of permutations < 'minperm'. Generating entire set.
 Permutation test for rda under reduced model
 Permutation: free
 Number of permutations: 999
 
 Model: rda(formula = GenData ~ Avgtemp.90days + bio2 + bio15 + bio18, data = Climate.Data)
-         Df Variance      F Pr(>F)  
-Model     4   106.47 2.7022  0.027 *
-Residual  2    19.70                
+         Df Variance      F Pr(>F)    
+Model     4  118.126 9.5555  0.001 ***
+Residual 10   30.905                  
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
