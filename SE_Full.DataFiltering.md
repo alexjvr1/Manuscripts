@@ -791,6 +791,8 @@ Permutation number:   999
 [AMOVA]:https://cloud.githubusercontent.com/assets/12142475/20623482/1040a2be-b308-11e6-92ad-570212235f23.png
 
 
+i.e. significant structure between regions, but not within regions. 
+
 ```
 ##Randomised test
 SE148.new <- SEall.148.genclone
@@ -855,9 +857,50 @@ Randomised samples
 
 ###DAPC
 
+tutorial-dapc: A tutorial for Discriminant Analysis of Principal Components (DAPC) using adegenet 2.0.0
+
+total variance = (variance between groups) + (variance within groups)
+
+or more simply, denoting X the data matrix:
+
+VAR(X) = B(X) +W(X)
+
+Usual approaches such as Principal Component Analysis (PCA) or Principal Coordinates
+Analysis (PCoA / MDS) focus on V AR(X). That is, they only describe the global diversity,
+possibly overlooking differences between groups. On the contrary, DAPC optimizes B(X)
+while minimizing W(X): it seeks synthetic variables, the discriminant functions, which show
+differences between groups as best as possible while minimizing variation within clusters.
+
+```
+##1. estimate the number of clusters
+
+Using k-means. Which finds the number of clusters with minimises W(X) and maximises B(X). Compare using BIC
+
+Run algorithm on PCA transformed data. I.e. reduce the dataset so that it can run faster. 
+
+grp.SE148 <- find.clusters(SEall.148.genind, max.n.clust=40)
+
+> choose nr of PCs: 200  ##I try to keep all the PCs
+
+> choose k: 5 ##see figure below
 
 
+names.15 <- c("DE.B", "DE.K", "DE.W", "Sk.SF", "SK.SL", "Upp.Gra", "Upp.K", "Upp.O", "Um.Gr", "Um.Taf", "LT1", "LT3", "Kir.G", "Kir.L", "FIN")
+names.15 <- as.character(names.15)
+table.value(table(pop(SEall.148.genind), grp.SE148$grp), col.lab=paste("inf", 1:6), row.lab=names.15)
 
+dapc1.SE148 <- dapc(SEall.148.genind, grp.SE148$grp)
+scatter(dapc1.SE148)
+```
+
+![alt_txt][DAPC.148]
+[DAPC.148]:https://cloud.githubusercontent.com/assets/12142475/20623863/faefc384-b309-11e6-8e13-44fd4d78190e.png
+
+![alt_txt][DAPC.148.2]
+[DAPC.148.2]:https://cloud.githubusercontent.com/assets/12142475/20624232/0ea393ae-b30c-11e6-8840-3685e3fd023f.png
+
+![alt_txt][DAPC.148.3]
+[DAPC.148.3]:https://cloud.githubusercontent.com/assets/12142475/20625975/b2dbf8ee-b316-11e6-8b64-c0bca7d057eb.png
 
 ###PCA
 
