@@ -907,6 +907,72 @@ scatter(dapc1.SE148)
 ###PCA
 
 
+PCAdapt in R:
+
+```
+##convert .vcf to plink 
+##linux
+
+vcftools --vcf SE.148.recode.vcf --plink --out SE.148.plink
+
+plink --file SE.148.plink --recode --recodeA
+
+##È
+SE.148 <- read.pcadapt("SE.148.plink.ped", type="ped")
+Summary:
+
+        - input file      SE.148.plink.ped
+        - output file     SE.148.plink.pcadapt
+
+	- number of individuals detected:	148
+	- number of loci detected:		2118
+
+File has been sucessfully converted.
+```
+
+Check the nr of PCs
+
+```
+x <- pcadapt(SE148, K=20)
+
+Reading file SE.148.plink.pcadapt...
+Number of SNPs: 2118
+Number of individuals: 148
+Number of SNPs with minor allele frequency lower than 0.05 ignored: 0
+20694 out of 313464 missing data ignored.
+
+plot(x, option="screeplot")  ##PC for pop structure = on the steep curve
+```
+
+![alt_txt][pcadapt.148.scree]
+[pcadapt.148.scree]:https://cloud.githubusercontent.com/assets/12142475/20627427/399c5d0c-b320-11e6-8492-cb21faea7f8c.png
+
+
+Plot the PCA using population information
+```
+popnames <- read.table("popnames", header=T)
+head(popnames)
+   indiv     pop region region2
+1 DE_B01 01.DE.B   1.DE      DE
+2 DE_B02 01.DE.B   1.DE      DE
+3 DE_B03 01.DE.B   1.DE      DE
+4 DE_B04 01.DE.B   1.DE      DE
+5 DE_B05 01.DE.B   1.DE      DE
+6 DE_B06 01.DE.B   1.DE      DE
+poplist <- popnames[,2]
+
+plot(x,option="scores",pop=poplist)
+
+poplist <- as.character(popnames[,3]) ##select regions
+plot(x,option="scores",pop=poplist)
+```
+
+![alt_txt][pcadapt.pop]
+[pcadapt.pop]:https://cloud.githubusercontent.com/assets/12142475/20627810/cd7147c0-b322-11e6-95b4-a61f35f7ec7c.png
+
+![alt_txt][pcadapt.regions]
+[pcadapt.regions]:https://cloud.githubusercontent.com/assets/12142475/20627811/cd719086-b322-11e6-99ef-531d948b7f0c.png
+
 
 ###fastStructure
 
