@@ -268,7 +268,7 @@ dev.off()
 ```
 
 ![alt_txt][Fig2]
-[Fig2]:https://cloud.githubusercontent.com/assets/12142475/22834459/7cad0a70-efb5-11e6-87df-b44fb895b3cf.png
+[Fig2]:https://github.com/alexjvr1/Manuscripts/files/767200/CumImp.ALL_20170210.pdf
 
 
 
