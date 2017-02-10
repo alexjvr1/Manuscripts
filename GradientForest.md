@@ -264,9 +264,11 @@ plot(CU.ENV$x[isub.ENV], CU.ENV$y[isub.ENV], type = "s", ylab = "", xlab="", yli
 #legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
 dev.off()
 
+##Create the combined plot in AdobeIllustrator
 ```
 
-
+![alt_txt][Fig2]
+[Fig2]:https://cloud.githubusercontent.com/assets/12142475/22834459/7cad0a70-efb5-11e6-87df-b44fb895b3cf.png
 
 
 
