@@ -43,9 +43,36 @@ As in the Fitzpatric paper.
 
 
 ###Table 1
+
+The R2 can be obtained from the importance of each "Species" in the gf model:  see getAnywhere(performance.plot)
 ```
+perf.NEUTRAL <- importance(gf.NEUTRAL.model.SEtemp, type="Species")
+perf.Fst <- importance(gf.Fst.model.SEtemp, type="Species")
+perf.ENV <- importance(gf.ENV.model.SEtemp, type="Species")
+
+##mean and range
+summary(perf.NEUTRAL)
+summary(perf.Fst)
+summary(perf.ENV)
+
+##count the number of loci above R2 of x (here 0.5)
+length(perf.NEUT.df[which(perf.NEUT.df$perf.NEUTRAL>0.5),])
+length(perf.Fst.df[which(perf.Fst.df>0.5),])
+length(perf.ENV.df[which(perf.ENV.df>0.5),])
+
+#variable in more than 5 pops: this will be the number of loci run in the final model. Can be seen with: 
+gf.NEUTRAL.model.SEtemp
+gf.Fst.model.SEtemp
+gf.ENVcandidates.model.SEtemp
+
+#How many loci were originally included?
 
 
+##And we can plot the frequency of R2 for each dataset: 
+par(mfrow=c(2,2))
+hist(perf.NEUTRAL)
+hist(perf.ENV)
+hist(perf.Fst)
 ```
 
 
