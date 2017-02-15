@@ -445,6 +445,8 @@ names(SE.coords)
 plot(SE.coords)
 crs.geo <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")  ##make sure the projection is the same as for the raster files
 proj4string(SE.coords) <- crs.geo
+
+pch.SE <- c(0,0,0,1,1,1,2,2,2,5,5,5,6,6,6) ##make pch.SE symbols different for each genetic cluster as in DAPC
 ```
 
 
