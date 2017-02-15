@@ -451,6 +451,9 @@ mos <- do.call(mosaic, srtm.SE.P32)   ##mosaic these together
 srtm.SEall <- mosaic(srtm123, mos, mos2, mos3, mos4, mos5, mos6, fun=mean)  ##mosaic all the individual rasters together. 
 plot(srtm.SEall)  ##check visually
 srtm.SEall  ##check extent
+srtm.SEall <- mosaic(srtm.SEall, mos7, mos8, mos9, mos10, mos11, mos12, mos13, fun=mean) ##I had to add more tiles
+
+srtm.SEall.crop <- crop(srtm.SEall, extent(9,23,52,70)) ##crop to the same extent as the bioclim data
 
 
 ```
