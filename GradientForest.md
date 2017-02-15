@@ -436,6 +436,21 @@ Then I want the map to be in grey scale.
 
 Download all the tiles from here: http://www.viewfinderpanoramas.org/Coverage%20map%20viewfinderpanoramas_org3.htm
 ```
+#extract .zip files in Downloads. Navigate to each folder and import the list of raster files. 
+
+setwd("/Users/alexjvr/Downloads/P32")  ##go to the directory
+SE2 <- list.files(pattern="hgt")  ##list all the files of a certain type
+srtm.SE.P32 <- sapply(SE2, function(filename){
+r=raster(filename)
+})   ##function to import all these as a raster list into R
+
+names(srtm.SE.P32) <- NULL
+srtm.SE.P32$fun <- mean  ##function with which they will be joined together. For only two layers: raster.mos <- mosaic(ras1, ras2, fun=mean)
+mos <- do.call(mosaic, srtm.SE.P32)   ##mosaic these together
+
+srtm.SEall <- mosaic(srtm123, mos, mos2, mos3, mos4, mos5, mos6, fun=mean)  ##mosaic all the individual rasters together. 
+plot(srtm.SEall)  ##check visually
+srtm.SEall  ##check extent
 
 
 ```
