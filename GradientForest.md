@@ -300,6 +300,7 @@ dev.off()
 [Fig2]:https://cloud.githubusercontent.com/assets/12142475/22886423/13fc2d1c-f1fe-11e6-9f5b-2fbad3e0ca54.png
 
 
+#4 Individual SNPs
 Plot of individual SNPs for a specific dataset and environmental variable
 ```
 plot(gf.Fst.model.SEtemp, plot.type="C", imp.vars="bio5", show.species=T, ylim=c(0,0.5))
@@ -307,6 +308,16 @@ plot(gf.Fst.model.SEtemp, plot.type="C", imp.vars="bio5", show.species=T, ylim=c
 ```
 ![alt_txt][Fig3]
 [Fig3]:https://cloud.githubusercontent.com/assets/12142475/22886425/19e50622-f1fe-11e6-9b8e-8d91624e3b87.png
+
+#5. PCA for each map
+
+Plot the first two PCs for each dataset. Include samples on the PCA, and the first two axes of differentiation. 
+
+```
+
+
+
+```
 
 
 
