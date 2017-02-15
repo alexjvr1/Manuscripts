@@ -336,7 +336,7 @@ create a raster file which is the product of the bioclim data and the predicted 
 
 Define the functions for the mapping (as in Fitzpatrick&Keller). 
 
-5. rast
+5. rast & coordinates
 
 A raster base layer to be mapped on. Here I create a srtm elevation map in grey scale for the base map. 
 
@@ -428,13 +428,26 @@ RGBdiffMap <- function(predMap1, predMap2, rast, mapCells){
 }
 ```
 
-###5. Rast
+###5. Rast & sampling coordinates
 
 I just used one of the raster layers from climate2. 
 
 ```
 raster <- climate2$bio2
 ```
+
+coordinates
+```
+setwd("/Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/GradientForest")
+SE.coords <- read.table("SE.coords", header=T)
+coordinates(SE.coords) <- c("Long", "Lat")
+names(SE.coords)
+plot(SE.coords)
+crs.geo <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")  ##make sure the projection is the same as for the raster files
+proj4string(SE.coords) <- crs.geo
+```
+
+
 
 I tried the following first to get a grey-scale base map. But it doesn't work because I didn't get the same number of columns. The resolution is also way too high, so it takes really long to load. The first solution works fine. 
 
@@ -479,16 +492,19 @@ srtm.SEall.crop <- crop(srtm.SEall, extent(9,23,52,70)) ##crop to the same exten
 # map continuous variation - NEUTRAL SNPs
 NEUTRAL.RGBmap <- pcaToRaster(pred.NEUTRAL.complete, rast, env_trns.SE.complete$ID)
 plotRGB(NEUTRAL.RGBmap)
+plot(SE.coords, pch=20, cex=1, add=T)
 writeRaster(NEUTRAL.RGBmap, "/.../NEUTRAL.RGBmap_map.tif", format="GTiff", overwrite=TRUE)
 
 # map continuous variation - Fst SNPs
 Fst.RGBmap <- pcaToRaster(pred.Fst.complete, rast, env_trns.SE.complete$ID)
 plotRGB(Fst.RGBmap)
+plot(SE.coords, pch=20, cex=1, add=T)
 writeRaster(Fst.RGBmap, "/.../Fst.RGBmap_map.tif", format="GTiff", overwrite=TRUE)
 
 # map continuous variation - ENV SNPs
 ENV.RGBmap <- pcaToRaster(pred.ENV.complete, rast, env_trns.SE.complete$ID)
 plotRGB(ENV.RGBmap)
+plot(SE.coords, pch=20, cex=1, add=T)
 writeRaster(ENV.RGBmap, "/.../ENV.RGBmap_map.tif", format="GTiff", overwrite=TRUE)
 ```
 
@@ -498,6 +514,7 @@ writeRaster(ENV.RGBmap, "/.../ENV.RGBmap_map.tif", format="GTiff", overwrite=TRU
 # Difference between maps (NEUTRAL and Fst) 
 diffNEUTRAL.Fst <- RGBdiffMap(pred.NEUTRAL.complete, pred.Fst.complete, rast, env_trns.SE.complete$ID)
 plot(diffNEUTRAL.Fst[[2]])
+plot(SE.coords, pch=20, cex=1, add=T)
 writeRaster(diffNEUTRAL.Fst[[2]], "/.../diffNEUTRAL.Fst.tif", format="GTiff", overwrite=TRUE)
 
 
