@@ -430,6 +430,14 @@ RGBdiffMap <- function(predMap1, predMap2, rast, mapCells){
 
 ###5. Rast
 
+I just used one of the raster layers from climate2. 
+
+```
+raster <- climate2$bio2
+```
+
+I tried the following first to get a grey-scale base map. But it doesn't work because I didn't get the same number of columns. The resolution is also way too high, so it takes really long to load. The first solution works fine. 
+
 Create a raster mask to map onto. Here I'm creating an srtm elevation map. Since the area is so large, I need to download several tiles
 and mosaic them together. 
 Then I want the map to be in grey scale. 
