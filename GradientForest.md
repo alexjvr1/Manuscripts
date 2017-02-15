@@ -41,6 +41,8 @@ As in the Fitzpatric paper.
 8. Pop-level vulnerability to climate change: Map mean genetic offset between current and future climates. 
 
 
+I had a lot of problems creating the geographic maps. I got scripts from Karina (from Victoria Sork's lab) which created "greengrid" raster files with data extracted from 2-10k points. However, the resolution for this was always really low. It turns out I can create the maps using the scripts from Fitzpatrick & Keller 2015 by just using the raster layers directly (i.e. all the points rather than a subset of random points). 
+
 
 ###Table 1
 
@@ -306,6 +308,185 @@ plot(gf.Fst.model.SEtemp, plot.type="C", imp.vars="bio5", show.species=T, ylim=c
 ![alt_txt][Fig3]
 [Fig3]:https://cloud.githubusercontent.com/assets/12142475/22886425/19e50622-f1fe-11e6-9b8e-8d91624e3b87.png
 
+
+
+
+#6. Geographic plots
+
+I'm using the Fitzpatric & Keller 2015 code for best results. 
+
+1. gf model output (generated above)
+
+gf.ENVcandidates.model.SEtemp
+
+gf.Fst.model.SEtemp
+
+gf.NEUTRAL.model.SEtemp
+
+2. env_Trns.SE.complete
+
+The extracted bioclim variables (same as run in the gf model) and all the cell IDs (i.e. locations in the raster stack). 
+The data needs to be complete; NA needs to be removed. 
+
+3. predicted maps
+
+create a raster file which is the product of the bioclim data and the predicted allele frequencies
+
+4. Define functions
+
+Define the functions for the mapping (as in Fitzpatrick&Keller). 
+
+5. rast
+
+A raster base layer to be mapped on. Here I create a srtm elevation map in grey scale for the base map. 
+
+6. Mapping
+
+
+
+###2. env_Trns.SE.complete
+
+extract all the information from the raster layers. Remove unwanted layers. Remove missing data. 
+```
+library(rgdal)
+#install.packages("raster")
+library(raster)
+climate <- getData('worldclim', var='bio', res=2.5)
+climate  ##make sure it's a RasterStack
+names(climate)  ##lists bio1-19
+plot(climate$bio1) ##This should be of the whole world
+climate2 <- crop(climate, extent(9,23,52,70)) ##crop to map extent
+climate2
+plot(climate2)
+
+env_trns <- extract(climate2,1:ncell(climate2), df=T)   ##extract all the bioclim data and the cell IDs
+env_trns.SE <- subset(env_trns, select=c("ID", "bio5", "bio15", "bio18", "bio2", "bio13"))
+
+env_trns.SE.complete <- env_trns.SE[complete.cases(env_trns.SE),]  ##remove missing data
+```
+
+###3. Predictor maps
+```
+#library(gradientForest)
+# transform env using gf models, see ?predict.gradientForest
+
+pred.NEUTRAL <- predict(gf.NEUTRAL.model.SEtemp, env_trns.SE[,-1]) ##remove ID column
+pred.Fst <- predict(gf.Fst.model.SEtemp, env_trns.SE[,-1])
+pred.ENV <- predict(gf.ENV.model.SEtemp, env_trns.SE[,-1])
+
+pred.NEUTRAL.complete <- pred.NEUTRAL[complete.cases(pred.NEUTRAL),]  ##remove all missing data
+pred.Fst.complete <- pred.Fst[complete.cases(pred.Fst),]
+pred.ENV.complete <- pred.ENV[complete.cases(pred.ENV),]
+```
+
+###4. Define functions
+
+```
+# Mapping spatial genetic variation --------------------------------------------
+###### functions to support mapping #####
+# builds RGB raster from transformed environment
+# pred* = dataframe of transformed variables from gf or gdm model
+# rast = a raster mask to which RGB values are to be mapped  ##This is just a single layer!
+# cellNums = cell IDs to which RGB values should be assigned  ##all this can be extracted from raster stack
+pcaToRaster <- function(snpPreds, rast, mapCells){
+  require(raster)
+  
+  pca <- prcomp(snpPreds, center=TRUE, scale.=FALSE)
+    
+  ##assigns to colors, edit as needed to maximize color contrast, etc.
+  a1 <- pca$x[,1]; a2 <- pca$x[,2]; a3 <- pca$x[,3]
+  r <- a1+a2; g <- -a2; b <- a3+a2-a1
+  
+  ##scales colors
+  scalR <- (r-min(r))/(max(r)-min(r))*255
+  scalG <- (g-min(g))/(max(g)-min(g))*255
+  scalB <- (b-min(b))/(max(b)-min(b))*255
+  
+  ##assigns color to raster
+  rast1 <- rast2 <- rast3 <- rast
+  rast1[mapCells] <- scalR
+  rast2[mapCells] <- scalG
+  rast3[mapCells] <- scalB
+  ##stacks color rasters
+  outRast <- stack(rast1, rast2, rast3)
+  return(outRast)
+}
+
+# Function to map difference between spatial genetic predictions
+# predMap1 = dataframe of transformed variables from gf or gdm model for first set of SNPs
+# predMap2 = dataframe of transformed variables from gf or gdm model for second set of SNPs
+# rast = a raster mask to which Procrustes residuals are to be mapped
+# mapCells = cell IDs to which Procrustes residuals values should be assigned
+RGBdiffMap <- function(predMap1, predMap2, rast, mapCells){
+  require(vegan)
+  PCA1 <- prcomp(predMap1, center=TRUE, scale.=FALSE)
+  PCA2 <- prcomp(predMap2, center=TRUE, scale.=FALSE)
+  diffProcrust <- procrustes(PCA1, PCA2, scale=TRUE, symmetrical=FALSE)
+  residMap <- residuals(diffProcrust)
+  rast[mapCells] <- residMap
+  return(list(max(residMap), rast))
+}
+```
+
+###5. Rast
+
+Create a raster mask to map onto. Here I'm creating an srtm elevation map. Since the area is so large, I need to download several tiles
+and mosaic them together. 
+Then I want the map to be in grey scale. 
+
+Download all the tiles from here: http://www.viewfinderpanoramas.org/Coverage%20map%20viewfinderpanoramas_org3.htm
+```
+
+
+```
+
+###6. Mapping
+
+```
+# OK, on to mapping. Script assumes:
+# (1) a dataframe named env_trns containing extracted raster data (w/ cell IDs)
+# and env. variables used in the models & with columns as follows: cell, bio1, bio2, etc.
+#
+# (2) a raster mask of the study region to which the RGB data will be written
+
+
+# map continuous variation - NEUTRAL SNPs
+NEUTRAL.RGBmap <- pcaToRaster(pred.NEUTRAL.complete, rast, env_trns.SE.complete$ID)
+plotRGB(NEUTRAL.RGBmap)
+writeRaster(NEUTRAL.RGBmap, "/.../NEUTRAL.RGBmap_map.tif", format="GTiff", overwrite=TRUE)
+
+# map continuous variation - Fst SNPs
+Fst.RGBmap <- pcaToRaster(pred.Fst.complete, rast, env_trns.SE.complete$ID)
+plotRGB(Fst.RGBmap)
+writeRaster(Fst.RGBmap, "/.../Fst.RGBmap_map.tif", format="GTiff", overwrite=TRUE)
+
+# map continuous variation - ENV SNPs
+ENV.RGBmap <- pcaToRaster(pred.ENV.complete, rast, env_trns.SE.complete$ID)
+plotRGB(ENV.RGBmap)
+writeRaster(ENV.RGBmap, "/.../ENV.RGBmap_map.tif", format="GTiff", overwrite=TRUE)
+```
+
+####Differences between maps
+```
+
+# Difference between maps (NEUTRAL and Fst) 
+diffNEUTRAL.Fst <- RGBdiffMap(pred.NEUTRAL.complete, pred.Fst.complete, rast, env_trns.SE.complete$ID)
+plot(diffNEUTRAL.Fst[[2]])
+writeRaster(diffNEUTRAL.Fst[[2]], "/.../diffNEUTRAL.Fst.tif", format="GTiff", overwrite=TRUE)
+
+
+# Difference between maps (NEUTRAL and ENV) 
+diffNEUTRAL.ENV <- RGBdiffMap(pred.NEUTRAL.complete, pred.ENV.complete, rast, env_trns.SE.complete$ID)
+plot(diffNEUTRAL.ENV[[2]])
+writeRaster(diffNEUTRAL.ENV[[2]], "/.../diffNEUTRAL.ENV.tif", format="GTiff", overwrite=TRUE)
+
+
+# Difference between maps (Fst and ENV) 
+diffFst.ENV <- RGBdiffMap(pred.Fst.complete, pred.ENV.complete, rast, env_trns.SE.complete$ID)
+plot(diffFst.ENV[[2]])
+writeRaster(diffFst.ENV[[2]], "/.../diffFst.ENV.tif", format="GTiff", overwrite=TRUE)
+
+```
 
 
 
