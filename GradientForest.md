@@ -450,7 +450,7 @@ labels=vec)   ##label the arrows
 ##for the sampling locations:
 
 ENV.Trns.site <- predict(gf.ENVcandidates.model.SEtemp)
-PCsites <- predict(PCs.NEUTRAL, ENV.Trns.site[, vec])
+PCsites <- predict(PCs.ENV, ENV.Trns.site[, vec])
 
 > PCsites
                PC1          PC2           PC3           PC4           PC5
