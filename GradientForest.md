@@ -361,7 +361,9 @@ extract all the information from the raster layers. Remove unwanted layers. Remo
 
 First I extract all the bioclim data for the extent of the bioclim rasterbrick. 
 
-Second I show a way to create a polygon and then extract data only for this region. This is what I will use for the analysis. 
+Second I show a way to create a polygon and then extract data only for this region. 
+
+Lastly I show how to mask a rast with a polygon, and then extract raster data from this. This is what I will use for the analysis. 
 ```
 library(rgdal)
 #install.packages("raster")
@@ -369,6 +371,9 @@ library(raster)
 climate <- getData('worldclim', var='bio', res=2.5)
 climate  ##make sure it's a RasterStack
 names(climate)  ##lists bio1-19
+
+
+
 plot(climate$bio1) ##This should be of the whole world
 climate2 <- crop(climate, extent(9,23,52,70)) ##crop to map extent
 climate2
@@ -409,6 +414,17 @@ env_trns.SE.polygon2 <- subset(env_trns.SE.polygon, select=c("ID", "bio5", "bio1
 env_trns.SE.polygon2.complete <- env_trns.SE.polygon2[complete.cases(env_trns.SE.polygon2),] #remove all missing data. 
 ```
 
+DataMask: the method I use in the end: 
+```
+mask.test <- mask(climate.SE, SE.polygon5)  ##use the polygon created above to mask the raster stack created above (i.e. already subset).
+env.trns.mask <- extract(mask.test, 1:ncell(mask.test), df=T) ##extract the data to a dataframe
+env.trns.mask.SE <- subset(env.trns.mask, select=c("ID", "bio5", "bio15", "bio18", "bio2", "bio13"))  ##make sure the correct variables are included
+env.trns.mask.SE.complte <- env.trns.mask.SE[complete.cases(env.trns.mask.SE),]  ##only complete cases
+
+###see below how this is used to create new predictor maps. 
+```
+
+
 ###3. Predictor maps
 ```
 #library(gradientForest)
@@ -422,6 +438,21 @@ pred.NEUTRAL.complete <- pred.NEUTRAL[complete.cases(pred.NEUTRAL),]  ##remove a
 pred.Fst.complete <- pred.Fst[complete.cases(pred.Fst),]
 pred.ENV.complete <- pred.ENV[complete.cases(pred.ENV),]
 ```
+
+Predictor maps with raster mask
+```
+#library(gradientForest)
+# transform env using gf models, see ?predict.gradientForest
+
+pred.NEUTRAL.mask <- predict(gf.NEUTRAL.model.SEtemp, env.trns.mask.SE[,-1]) ##remove ID column
+pred.Fst.mask <- predict(gf.Fst.model.SEtemp, env.trns.mask.SE[,-1])
+pred.ENV.mask <- predict(gf.ENV.model.SEtemp, env.trns.mask.SE[,-1])
+
+pred.NEUTRAL.mask.complete <- pred.NEUTRAL.mask[complete.cases(pred.NEUTRAL.mask),]  ##remove all missing data
+pred.Fst.mask.complete <- pred.Fst.mask[complete.cases(pred.Fst.mask),]
+pred.ENV.mask.complete <- pred.ENV.mask[complete.cases(pred.ENV.mask),]
+```
+
 
 ###4. Define functions
 
@@ -554,26 +585,59 @@ plot(SE.coords, pch=20, cex=1, add=T)
 writeRaster(ENV.RGBmap, "/.../ENV.RGBmap_map.tif", format="GTiff", overwrite=TRUE)
 ```
 
+MAPS using the raster mask
+
+```
+# OK, on to mapping. Script assumes:
+# (1) a dataframe named env_trns containing extracted raster data (w/ cell IDs)
+# and env. variables used in the models & with columns as follows: cell, bio1, bio2, etc.
+#
+# (2) a raster mask of the study region to which the RGB data will be written
+
+
+# map continuous variation - NEUTRAL SNPs
+NEUTRAL.RGBmap.mask <- pcaToRaster(pred.NEUTRAL.mask.complete, rast, env.trns.mask.SE.complete$ID)
+plotRGB(NEUTRAL.RGBmap.mask)
+plot(SE.coords, pch=20, cex=1, add=T)
+writeRaster(NEUTRAL.RGBmap.mask, "/.../NEUTRAL.RGBmap.mask_map.tif", format="GTiff", overwrite=TRUE)
+
+# map continuous variation - Fst SNPs
+Fst.RGBmap.mask <- pcaToRaster(pred.Fst.mask.complete, rast, env.trns.mask.SE.complete$ID)
+plotRGB(Fst.RGBmap.mask)
+plot(SE.coords, pch=20, cex=1, add=T)
+writeRaster(Fst.RGBmap.mask, "/.../Fst.RGBmap.mask_map.tif", format="GTiff", overwrite=TRUE)
+
+# map continuous variation - ENV SNPs
+ENV.RGBmap.mask <- pcaToRaster(pred.ENV.mask.complete, rast, env.trns.mask.SE.complete$ID)
+plotRGB(ENV.RGBmap.mask)
+plot(SE.coords, pch=20, cex=1, add=T)
+writeRaster(ENV.RGBmap.mask, "/.../ENV.RGBmap.mask_map.tif", format="GTiff", overwrite=TRUE)
+```
+
+
+
+
+
 ####Differences between maps
 ```
 
 # Difference between maps (NEUTRAL and Fst) 
-diffNEUTRAL.Fst <- RGBdiffMap(pred.NEUTRAL.complete, pred.Fst.complete, rast, env_trns.SE.complete$ID)
-plot(diffNEUTRAL.Fst[[2]])
+diffNEUTRAL.Fst.mask <- RGBdiffMap(pred.NEUTRAL.mask.complete, pred.Fst.mask.complete, rast, env.trns.mask.SE.complete$ID)
+plot(diffNEUTRAL.Fst.mask[[2]])
 plot(SE.coords, pch=20, cex=1, add=T)
-writeRaster(diffNEUTRAL.Fst[[2]], "/.../diffNEUTRAL.Fst.tif", format="GTiff", overwrite=TRUE)
+writeRaster(diffNEUTRAL.Fst.mask[[2]], "/.../diffNEUTRAL.Fst.mask.tif", format="GTiff", overwrite=TRUE)
 
 
 # Difference between maps (NEUTRAL and ENV) 
-diffNEUTRAL.ENV <- RGBdiffMap(pred.NEUTRAL.complete, pred.ENV.complete, rast, env_trns.SE.complete$ID)
-plot(diffNEUTRAL.ENV[[2]])
-writeRaster(diffNEUTRAL.ENV[[2]], "/.../diffNEUTRAL.ENV.tif", format="GTiff", overwrite=TRUE)
+diffNEUTRAL.ENV.mask <- RGBdiffMap(pred.NEUTRAL.mask.complete, pred.ENV.mask.complete, rast, env.trns.mask.SE.complete$ID)
+plot(diffNEUTRAL.ENV.mask[[2]])
+writeRaster(diffNEUTRAL.ENV.mask[[2]], "/.../diffNEUTRAL.ENV.mask.tif", format="GTiff", overwrite=TRUE)
 
 
 # Difference between maps (Fst and ENV) 
-diffFst.ENV <- RGBdiffMap(pred.Fst.complete, pred.ENV.complete, rast, env_trns.SE.complete$ID)
-plot(diffFst.ENV[[2]])
-writeRaster(diffFst.ENV[[2]], "/.../diffFst.ENV.tif", format="GTiff", overwrite=TRUE)
+diffFst.ENV.mask <- RGBdiffMap(pred.Fst.complete, pred.ENV.mask.complete, rast, env.trns.mask.SE.complete$ID)
+plot(diffFst.ENV.mask[[2]])
+writeRaster(diffFst.ENV.mask[[2]], "/.../diffFst.ENV.mask.tif", format="GTiff", overwrite=TRUE)
 
 ```
 
