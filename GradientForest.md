@@ -362,7 +362,7 @@ PCsites <- predict(PCs.NEUTRAL, NEUTRAL.Trns.site[, vec])
 [14,] -0.015354907  0.011452598  0.0052569741  0.0016329271  1.612022e-03
 [15,] -0.003796294  0.009527998  0.0237646832 -0.0077324617 -1.655614e-03
 
-points(PCsites[,1:2], pch=pch.SE)
+points(PCsites[,1:2], pch=pch.SE, cex=2)
 
 dev.off()
 ```
@@ -416,7 +416,7 @@ PCsites <- predict(PCs.Fst, Fst.Trns.site[, vec])
 [14,] -0.015354907  0.011452598  0.0052569741  0.0016329271  1.612022e-03
 [15,] -0.003796294  0.009527998  0.0237646832 -0.0077324617 -1.655614e-03
 
-points(PCsites[,1:2], pch=pch.SE)
+points(PCsites[,1:2], pch=pch.SE, cex=2)
 
 dev.off()
 ```
@@ -470,7 +470,7 @@ PCsites <- predict(PCs.ENV, ENV.Trns.site[, vec])
 [14,] -0.015354907  0.011452598  0.0052569741  0.0016329271  1.612022e-03
 [15,] -0.003796294  0.009527998  0.0237646832 -0.0077324617 -1.655614e-03
 
-points(PCsites[,1:2], pch=pch.SE)
+points(PCsites[,1:2], pch=pch.SE, cex=2)
 
 dev.off()
 ```
