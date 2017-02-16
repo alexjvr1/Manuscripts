@@ -358,6 +358,10 @@ A raster base layer to be mapped on. Here I create a srtm elevation map in grey 
 ###2. env_Trns.SE.complete
 
 extract all the information from the raster layers. Remove unwanted layers. Remove missing data. 
+
+First I extract all the bioclim data for the extent of the bioclim rasterbrick. 
+
+Second I show a way to create a polygon and then extract data only for this region. This is what I will use for the analysis. 
 ```
 library(rgdal)
 #install.packages("raster")
@@ -374,6 +378,35 @@ env_trns <- extract(climate2,1:ncell(climate2), df=T)   ##extract all the biocli
 env_trns.SE <- subset(env_trns, select=c("ID", "bio5", "bio15", "bio18", "bio2", "bio13"))
 
 env_trns.SE.complete <- env_trns.SE[complete.cases(env_trns.SE),]  ##remove missing data
+
+
+###From polygon
+
+##Get coordinates of the polygon from here: http://www.birdtheme.org/useful/v3tool.html
+##paste them into a file 
+
+SE.polygon.coords <- read.table("SE.polygon.coords", header=F, sep=",") ##read into R
+SE.polygon2 <- SE.polygon.coords[,1:2]  ##select the first two columns (long & Lat)
+summary(SE.polygon2)  
+head(SE.polygon2)
+colnames(SE.polygon2) <- c("Long", "Lat")  
+head(SE.polygon2)
+SE.polygon3 <- Polygon(SE.polygon2) 
+plot(SE.polygon3)
+SE.polygon3 <- SpatialPolygons(SE.polygon3)
+
+crs.geo <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")  #define the projection (make sure this is the same as the raster to be used)
+
+SE.polygon5 <- SpatialPolygons(list(Polygons(list(SE.polygon3), ID="a")), 
+proj4string=crs.geo)
+plot(SE.polygon5, axes=T)  ##make sure its the right shape and that all the samples are inside the polygon
+plotRGB(NEUTRAL.RGBmap)
+plot(SE.polygon5, add=T)
+plot(SE.coords, pch=20, cex=1, add=T)   
+
+env_trns.SE.polygon <- extract(climate2, SE.polygon5, df=T)  ##extract all variables inside the polygon
+env_trns.SE.polygon2 <- subset(env_trns.SE.polygon, select=c("ID", "bio5", "bio15", "bio18", "bio2", "bio13"))  ##select only the important variables
+env_trns.SE.polygon2.complete <- env_trns.SE.polygon2[complete.cases(env_trns.SE.polygon2),] #remove all missing data. 
 ```
 
 ###3. Predictor maps
