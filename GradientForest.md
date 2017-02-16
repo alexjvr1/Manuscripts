@@ -425,7 +425,7 @@ ENV PCA
 ```
 pdf(file="ENV.PCA.pdf")
 Trns.grid.ENV.mask <- cbind(env.trns.mask.SE.complete$ID, 
-predict(gf.ENV.model.SEtemp, env.trns.mask.SE.complete[,vec]))  ##define the Trns.grid
+predict(gf.ENVcandidates.model.SEtemp, env.trns.mask.SE.complete[,vec]))  ##define the Trns.grid
 PCs.ENV <- prcomp(Trns.grid.ENV.mask[,vec])   ##calculate PCs
 a1 <- PCs.ENV$x[,1]   ##assign colour
 a2 <- PCs.ENV$x[,2]
@@ -449,7 +449,7 @@ labels=vec)   ##label the arrows
 
 ##for the sampling locations:
 
-ENV.Trns.site <- predict(gf.ENV.model.SEtemp)
+ENV.Trns.site <- predict(gf.ENVcandidates.model.SEtemp)
 PCsites <- predict(PCs.NEUTRAL, ENV.Trns.site[, vec])
 
 > PCsites
