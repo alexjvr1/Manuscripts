@@ -751,27 +751,92 @@ Left to right: Neutral, Fst, ENV
 
 
 ####Differences between maps
+
+
+Neutral vs Fst
+```
+pdf(file="diffNEUTRAL.FST.map.pdf")
+
+diff.NEUTRAL.FST.mask <- RGBdiffMap(pred.NEUTRAL.mask.complete, pred.Fst.mask.complete, mask.test$bio2, env.trns.mask.SE.complete$ID)   ##I have to make sure that the rast.mask is used - i.e. only some cells. And same with the env.trns file. 
+
+##Now I have to normalise the raster from 0-1.
+
+r <- diff.NEUTRAL.FST.mask[[2]]  ##get the raster layer on its own
+r.min =cellStats(r, "min")
+r.max = cellStats(r, "max")  ##determine the min and max values
+r.scale <- ((r-r.min)/(r.max-r.min))  ##rescale (0-1)
+
+##Define a colour palette that will best show the difference
+cool = rainbow(50, start=rgb2hsv(col2rgb('cyan'))[1], end=rgb2hsv(col2rgb('blue'))[1])
+warm = rainbow(50, start=rgb2hsv(col2rgb('red'))[1], end=rgb2hsv(col2rgb('yellow'))[1])
+cols = c(rev(cool), rev(warm))
+mypalette <- colorRampPalette(cols)(255)
+
+
+##plot
+plot(climate2$bio2, col="grey30", legend=F) ##Then I plot a base map in grey (make sure its the same scale as the raster file
+plot(r.scale, col=mypalette, add=T) 
+plot(SE.coords, pch=pch.SE, cex=1, add=T)
+
+dev.off()
 ```
 
+
+Neutral vs ENV
+```
+pdf(file="diffNEUTRAL.ENV.map.pdf")
+diff.NEUTRAL.ENV.mask <- RGBdiffMap(pred.NEUTRAL.mask.complete, pred.ENV.mask.complete, mask.test$bio2, env.trns.mask.SE.complete$ID)   ##I have to make sure that the rast.mask is used - i.e. only some cells. And same with the env.trns file. 
+
+##Now I have to normalise the raster from 0-1.
+
+r <- diff.NEUTRAL.ENV.mask[[2]]  ##get the raster layer on its own
+r.min =cellStats(r, "min")
+r.max = cellStats(r, "max")  ##determine the min and max values
+r.scale <- ((r-r.min)/(r.max-r.min))  ##rescale (0-1)
+
+##Define a colour palette that will best show the difference
+cool = rainbow(50, start=rgb2hsv(col2rgb('cyan'))[1], end=rgb2hsv(col2rgb('blue'))[1])
+warm = rainbow(50, start=rgb2hsv(col2rgb('red'))[1], end=rgb2hsv(col2rgb('yellow'))[1])
+cols = c(rev(cool), rev(warm))
+mypalette <- colorRampPalette(cols)(255)
+
+
+##plot
+plot(climate2$bio2, col="grey30", legend=F) ##Then I plot a base map in grey (make sure its the same scale as the raster file
+plot(r.scale, col=mypalette, add=T) 
+plot(SE.coords, pch=pch.SE, cex=1, add=T)
+
+dev.off()
+```
+
+
+
+
+
+
+
+Old script
+```
 # Difference between maps (NEUTRAL and Fst) 
-diffNEUTRAL.Fst.mask <- RGBdiffMap(pred.NEUTRAL.mask.complete, pred.Fst.mask.complete, rast, env.trns.mask.SE.complete$ID)
-plot(diffNEUTRAL.Fst.mask[[2]])
+diffNEUTRAL.Fst <- RGBdiffMap(pred.NEUTRAL.complete, pred.Fst.complete, rast, env.trns.SE.complete$ID)
+plot(diffNEUTRAL.Fst[[2]])
 plot(SE.coords, pch=20, cex=1, add=T)
-writeRaster(diffNEUTRAL.Fst.mask[[2]], "/.../diffNEUTRAL.Fst.mask.tif", format="GTiff", overwrite=TRUE)
+writeRaster(diffNEUTRAL.Fst[[2]], "/.../diffNEUTRAL.Fst.tif", format="GTiff", overwrite=TRUE)
 
 
 # Difference between maps (NEUTRAL and ENV) 
-diffNEUTRAL.ENV.mask <- RGBdiffMap(pred.NEUTRAL.mask.complete, pred.ENV.mask.complete, rast, env.trns.mask.SE.complete$ID)
-plot(diffNEUTRAL.ENV.mask[[2]])
-writeRaster(diffNEUTRAL.ENV.mask[[2]], "/.../diffNEUTRAL.ENV.mask.tif", format="GTiff", overwrite=TRUE)
+diffNEUTRAL.ENV <- RGBdiffMap(pred.NEUTRAL.complete, pred.ENV.complete, rast, env.trns.SE.complete$ID)
+plot(diffNEUTRAL.ENV[[2]])
+writeRaster(diffNEUTRAL.ENV[[2]], "/.../diffNEUTRAL.ENV.tif", format="GTiff", overwrite=TRUE)
 
 
 # Difference between maps (Fst and ENV) 
-diffFst.ENV.mask <- RGBdiffMap(pred.Fst.complete, pred.ENV.mask.complete, rast, env.trns.mask.SE.complete$ID)
-plot(diffFst.ENV.mask[[2]])
-writeRaster(diffFst.ENV.mask[[2]], "/.../diffFst.ENV.mask.tif", format="GTiff", overwrite=TRUE)
+diffFst.ENV <- RGBdiffMap(pred.Fst.complete, pred.ENV.complete, rast, env.trns.SE.complete$ID)
+plot(diffFst.ENV[[2]])
+writeRaster(diffFst.ENV[[2]], "/.../diffFst.ENV.tif", format="GTiff", overwrite=TRUE)
 
 ```
+
 
 
 
