@@ -742,6 +742,10 @@ dev.off()
 writeRaster(ENV.RGBmap.mask, "/.../ENV.RGBmap.mask_map.tif", format="GTiff", overwrite=TRUE)
 ```
 
+Left to right: Neutral, Fst, ENV
+
+![alt_txt][GF.maps.PCA]
+[GF.maps.PCA]:https://cloud.githubusercontent.com/assets/12142475/23069483/eb4e0c82-f527-11e6-98c7-3da7fb9eeecc.png
 
 
 
