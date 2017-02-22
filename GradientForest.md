@@ -538,7 +538,7 @@ env_trns.SE.polygon2.complete <- env_trns.SE.polygon2[complete.cases(env_trns.SE
 
 DataMask: the method I use in the end: 
 ```
-mask.test <- mask(climate.SE, SE.polygon5)  ##use the polygon created above to mask the raster stack created above (i.e. already subset).
+mask.test <- mask(climate2, SE.polygon5)  ##use the polygon created above to mask the raster stack created above (i.e. already subset).
 env.trns.mask <- extract(mask.test, 1:ncell(mask.test), df=T) ##extract the data to a dataframe
 env.trns.mask.SE <- subset(env.trns.mask, select=c("ID", "bio5", "bio15", "bio18", "bio2", "bio13"))  ##make sure the correct variables are included
 env.trns.mask.SE.complte <- env.trns.mask.SE[complete.cases(env.trns.mask.SE),]  ##only complete cases
@@ -554,7 +554,7 @@ env.trns.mask.SE.complte <- env.trns.mask.SE[complete.cases(env.trns.mask.SE),] 
 
 pred.NEUTRAL <- predict(gf.NEUTRAL.model.SEtemp, env_trns.SE[,-1]) ##remove ID column
 pred.Fst <- predict(gf.Fst.model.SEtemp, env_trns.SE[,-1])
-pred.ENV <- predict(gf.ENV.model.SEtemp, env_trns.SE[,-1])
+pred.ENV <- predict(gf.ENVcandidates.model.SEtemp, env_trns.SE[,-1])
 
 pred.NEUTRAL.complete <- pred.NEUTRAL[complete.cases(pred.NEUTRAL),]  ##remove all missing data
 pred.Fst.complete <- pred.Fst[complete.cases(pred.Fst),]
@@ -568,7 +568,7 @@ Predictor maps with raster mask
 
 pred.NEUTRAL.mask <- predict(gf.NEUTRAL.model.SEtemp, env.trns.mask.SE[,-1]) ##remove ID column
 pred.Fst.mask <- predict(gf.Fst.model.SEtemp, env.trns.mask.SE[,-1])
-pred.ENV.mask <- predict(gf.ENV.model.SEtemp, env.trns.mask.SE[,-1])
+pred.ENV.mask <- predict(gf.ENVcandidates.model.SEtemp, env.trns.mask.SE[,-1])
 
 pred.NEUTRAL.mask.complete <- pred.NEUTRAL.mask[complete.cases(pred.NEUTRAL.mask),]  ##remove all missing data
 pred.Fst.mask.complete <- pred.Fst.mask[complete.cases(pred.Fst.mask),]
