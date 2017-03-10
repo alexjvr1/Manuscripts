@@ -177,6 +177,7 @@ stba had to be removed from CHS.TI, because of missing data in the env. variable
 
 First calculate the lambda for each K to determine what the correct K is: 
 
+
 #####CHN
 snmf K = 4
 
@@ -203,11 +204,11 @@ lambda=median(zs.d1.median^2)/0.4549364
 lambda
    # [1] 1.330662
     
-lambda=median(zs.d1.median^2)/0.85
+lambda=median(zs.d1.median^2)/0.6
 lambda
-  #  [1] 0.7121958
+  #  [1] 1.008944
 
-adj.p.values.d1 =pchisq(zs.d1.median^2/0.4549364, df=1, lower=F)
+adj.p.values.d1 =pchisq(zs.d1.median^2/0.6, df=1, lower=F)
 q = 0.05
 L = length(adj.p.values.d1)
 w = which(sort(adj.p.values.d1) < q * (1:L) / L)
@@ -215,14 +216,14 @@ candidates.d1.k5 = order(adj.p.values.d1)[w]
 
 
 
-zs.d2 <- z.scores(project, K=5, d=2)
+zs.d2 <- z.scores(project, K=4, d=2)
 zs.d2.median =apply(zs.d2, MARGIN=1, median)
 lambda=median(zs.d2.median^2)/0.4549364
 lambda
- #   [1] 0.9810137
+ #   [1]  0.9677428
 lambda=median(zs.d2.median^2)/0.85
 lambda
-   # [1] 0.5250574
+   # [1] 0.5179546
 adj.p.values.d2 =pchisq(zs.d2.median^2/0.4549364, df=1, lower=F)
 
 q = 0.05
@@ -233,16 +234,16 @@ candidates.d2.k5 = order(adj.p.values.d2)[w]
 
 
 
-zs.d3 <- z.scores(project, K=5, d=3)
+zs.d3 <- z.scores(project, K=4, d=3)
 zs.d3.median =apply(zs.d3, MARGIN=1, median)
 lambda=median(zs.d3.median^2)/0.4549364
 lambda
-   # [1] 1.377389
+   # [1] 1.47406
 
-lambda=median(zs.d3.median^2)/0.85
+lambda=median(zs.d3.median^2)/0.65
 lambda
-   # [1] 0.737205
-adj.p.values.d3 =pchisq(zs.d3.median^2/0.4549364, df=1, lower=F)
+   # [1] 1.031698
+adj.p.values.d3 =pchisq(zs.d3.median^2/0.65, df=1, lower=F)
 q = 0.05
 L = length(adj.p.values.d3)
 w = which(sort(adj.p.values.d3) < q * (1:L) / L)
@@ -251,15 +252,15 @@ candidates.d3.k5 = order(adj.p.values.d3)[w]
 
 
 
-zs.d4 <- z.scores(project, K=5, d=4)
+zs.d4 <- z.scores(project, K=4, d=4)
 zs.d4.median =apply(zs.d4, MARGIN=1, median)
 lambda=median(zs.d4.median^2)/0.4549364
 lambda
  #   [1] 1.569119
-lambda=median(zs.d4.median^2)/0.85
+lambda=median(zs.d4.median^2)/0.75
 lambda
- #   [1] 0.8398226
-adj.p.values.d4 =pchisq(zs.d4.median^2/0.85, df=1, lower=F)
+ #   [1] 1.059071
+adj.p.values.d4 =pchisq(zs.d4.median^2/0.75, df=1, lower=F)
 
 q = 0.05
 L = length(adj.p.values.d4)
@@ -268,7 +269,7 @@ candidates.d4.k5 = order(adj.p.values.d4)[w]
 
 
 
-zs.d5 <- z.scores(project, K=5, d=5)
+zs.d5 <- z.scores(project, K=4, d=5)
 zs.d5.median =apply(zs.d5, MARGIN=1, median)
 lambda=median(zs.d5.median^2)/0.4549364
 lambda
@@ -276,7 +277,7 @@ lambda
 lambda=median(zs.d5.median^2)/0.85
 lambda
    # [1] 1.034839
-adj.p.values.d5 =pchisq(zs.d5.median^2/0.4549364, df=1, lower=F)
+adj.p.values.d5 =pchisq(zs.d5.median^2/0.85, df=1, lower=F)
 
 q = 0.05
 L = length(adj.p.values.d5)
@@ -297,7 +298,7 @@ dev.off()
 
 
 ![alt_txt][CHN.hist]
-[CHN.hist]:https://cloud.githubusercontent.com/assets/12142475/23806921/e38370da-05c3-11e7-8ae0-90025261e203.png
+[CHN.hist]:https://cloud.githubusercontent.com/assets/12142475/23813391/fa8b7f82-05de-11e7-8bd4-67543795a244.png
 
 
 
@@ -399,6 +400,9 @@ fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
 dev.off()
 ```
 
+![alt_txt][CHN.Venn]
+[CHN.Venn]:https://cloud.githubusercontent.com/assets/12142475/23813445/3b901f38-05df-11e7-8bcd-235099f82013.png
+
 
 Prepare the data to incorporate with the Fst outlier graph
 ```
@@ -421,8 +425,257 @@ write.table(d12345.names$d12345.names, "LFMM.alloutliers", col.names=F, row.name
 
 #Read into R
 
+colnames(CHS.LFMM.outliers) <- ("loci")
+CHS.LFMM.outliers <- as.character(CHS.LFMM.outliers$loci)
+colnames(CHS.LFMM.outliers) <- ("loci")
+CHS.LFMM.outliers <- as.character(CHS.LFMM.outliers$loci)
+```
+
+
+#####CHS
+snmf K = 10
+
+These datasets all have less individuals than the full dataset. I have to find out why. 
+
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/LFMM/CHS
+
+Open R and import project. This CHN project contains K3-5. 5 runs for each K. d1-5. I show only results from K=4 here: 
+```
+CHS.lfmm=import.lfmm("CHS.275.9315.n5.recode.lfmm")
+
+project <- CHS.lfmm
+
+zs.d1 <- z.scores(project, K=10, d=1)
+zs.d1.median =apply(zs.d1, MARGIN=1, median)
+
+
+lambda=median(zs.d1.median^2)/0.4549364
+lambda
+   # [1] 1.636302
+    
+lambda=median(zs.d1.median^2)/0.75
+lambda
+  #  [1] 0.9925513
+
+adj.p.values.d1 =pchisq(zs.d1.median^2/0.75, df=1, lower=F)
+q = 0.05
+L = length(adj.p.values.d1)
+w = which(sort(adj.p.values.d1) < q * (1:L) / L)
+candidates.d1.k5 = order(adj.p.values.d1)[w]
+
+
+
+zs.d2 <- z.scores(project, K=10, d=2)
+zs.d2.median =apply(zs.d2, MARGIN=1, median)
+lambda=median(zs.d2.median^2)/0.4549364
+lambda
+ #   [1] 1.476016
+lambda=median(zs.d2.median^2)/0.65
+lambda
+   # [1] 1.033067
+adj.p.values.d2 =pchisq(zs.d2.median^2/0.65, df=1, lower=F)
+
+q = 0.05
+L = length(adj.p.values.d2)
+w = which(sort(adj.p.values.d2) < q * (1:L) / L)
+candidates.d2.k5 = order(adj.p.values.d2)[w]
+
+
+
+
+zs.d3 <- z.scores(project, K=10, d=3)
+zs.d3.median =apply(zs.d3, MARGIN=1, median)
+lambda=median(zs.d3.median^2)/0.4549364
+lambda
+   # [1] 1.614991
+
+lambda=median(zs.d3.median^2)/0.75
+lambda
+   # [1] 0.9796242
+adj.p.values.d3 =pchisq(zs.d3.median^2/0.75, df=1, lower=F)
+q = 0.05
+L = length(adj.p.values.d3)
+w = which(sort(adj.p.values.d3) < q * (1:L) / L)
+candidates.d3.k5 = order(adj.p.values.d3)[w]
+
+
+
+
+zs.d4 <- z.scores(project, K=10, d=4)
+zs.d4.median =apply(zs.d4, MARGIN=1, median)
+lambda=median(zs.d4.median^2)/0.4549364
+lambda
+ #   [1] 1.649681
+lambda=median(zs.d4.median^2)/0.75
+lambda
+ #   [1] 1.000667
+adj.p.values.d4 =pchisq(zs.d4.median^2/0.75, df=1, lower=F)
+
+q = 0.05
+L = length(adj.p.values.d4)
+w = which(sort(adj.p.values.d4) < q * (1:L) / L)
+candidates.d4.k5 = order(adj.p.values.d4)[w]
+
+
+
+zs.d5 <- z.scores(project, K=10, d=5)
+zs.d5.median =apply(zs.d5, MARGIN=1, median)
+lambda=median(zs.d5.median^2)/0.4549364
+lambda
+   # [1] 1.712181
+lambda=median(zs.d5.median^2)/0.8
+lambda
+   # [1] 0.9736667
+adj.p.values.d5 =pchisq(zs.d5.median^2/0.8, df=1, lower=F)
+
+q = 0.05
+L = length(adj.p.values.d5)
+w = which(sort(adj.p.values.d5) < q * (1:L) / L)
+candidates.d5.k5 = order(adj.p.values.d5)[w]
+
+
+pdf(file="CHS.LFMM.hist.pdf")
+par(mfrow=c(3,2))
+hist(adj.p.values.d1)
+hist(adj.p.values.d2)
+hist(adj.p.values.d3)
+hist(adj.p.values.d4)
+hist(adj.p.values.d5)
+dev.off()
+
+```
+
+
+![alt_txt][CHS.hist]
+[CHS.hist]:https://cloud.githubusercontent.com/assets/12142475/23814596/658c4456-05e4-11e7-9f03-97fcdef0012c.png
+
+
+
+Select all the candidates from the full list of SNPs
+
+```
+#read the SNP names into R
+
+locus.names <- read.table("CHS.275.9315.plink.map", header=F)
+colnames(locus.names) <- c("V1", "SNP", "V3", "V4")
+locus.names$ID <- seq.int(nrow(locus.names)) #add an index of the SNP numbers, since the LFMM output is a numbered list corresponding to the original genotype input order
+candidates.d1.k5 <- as.character(candidates.d1.k5)  ##change the list of candidates from LFMM output to a list of characters
+candidates.d1.k5.names <- locus.names[locus.names$ID %in% candidates.d1.k5,]  ##select from locus.names$ID the rows that match candidates vector
+
+candidates.d1.k5.names <- paste("X", candidates.d1.k5.names$SNP, sep=".") #rename the SNPs so that they don't get renamed in excel
+
+
+candidates.d2.k5 <- as.character(candidates.d2.k5)  ##change the list of candidates from LFMM output to a list of characters
+candidates.d2.k5.names <- locus.names[locus.names$ID %in% candidates.d2.k5,]  ##select from locus.names$ID the rows that match candidates vector
+
+candidates.d2.k5.names <- paste("X", candidates.d2.k5.names$SNP, sep=".") #rename the SNPs so that they don't get renamed in excel
+
+
+
+
+candidates.d3.k5 <- as.character(candidates.d3.k5)  ##change the list of candidates from LFMM output to a list of characters
+candidates.d3.k5.names <- locus.names[locus.names$ID %in% candidates.d3.k5,]  ##select from locus.names$ID the rows that match candidates vector
+
+candidates.d3.k5.names <- paste("X", candidates.d3.k5.names$SNP, sep=".") #rename the SNPs so that they don't get renamed in excel
+
+
+
+candidates.d4.k5 <- as.character(candidates.d4.k5)  ##change the list of candidates from LFMM output to a list of characters
+candidates.d4.k5.names <- locus.names[locus.names$ID %in% candidates.d4.k5,]  ##select from locus.names$ID the rows that match candidates vector
+
+candidates.d4.k5.names <- paste("X", candidates.d4.k5.names$SNP, sep=".") #rename the SNPs so that they don't get renamed in excel
+
+
+
+candidates.d5.k5 <- as.character(candidates.d5.k5)  ##change the list of candidates from LFMM output to a list of characters
+candidates.d5.k5.names <- locus.names[locus.names$ID %in% candidates.d5.k5,]  ##select from locus.names$ID the rows that match candidates vector
+
+candidates.d5.k5.names <- paste("X", candidates.d5.k5.names$SNP, sep=".") #rename the SNPs so that they don't get renamed in excel
+```
+
+VennDiagram of data
+
+```
+library(VennDiagram)
+
+d1 <- length(candidates.d1.k5.names)
+d2 <- length(candidates.d2.k5.names)
+d3 <- length(candidates.d3.k5.names)
+d4 <- length(candidates.d4.k5.names)
+d5 <- length(candidates.d5.k5.names)
+
+d12 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d2.k5.names)))
+d13 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d3.k5.names)))
+d14 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d4.k5.names)))
+d15 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d5.k5.names)))
+d23 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d3.k5.names)))
+d24 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d4.k5.names)))
+d25 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d5.k5.names)))
+d34 <- length(Reduce(intersect, list(candidates.d3.k5.names, candidates.d4.k5.names)))
+d35 <- length(Reduce(intersect, list(candidates.d3.k5.names, candidates.d5.k5.names)))
+d45 <- length(Reduce(intersect, list(candidates.d4.k5.names, candidates.d5.k5.names)))
+
+d123 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d2.k5.names,candidates.d3.k5.names)))
+d124 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d2.k5.names,candidates.d4.k5.names)))
+d125 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d2.k5.names,candidates.d5.k5.names)))
+d234 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d3.k5.names,candidates.d4.k5.names)))
+d134 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d3.k5.names,candidates.d4.k5.names)))
+d135 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d3.k5.names,candidates.d5.k5.names)))
+d145 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d4.k5.names,candidates.d5.k5.names)))
+d235 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d3.k5.names,candidates.d5.k5.names)))
+d245 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d4.k5.names,candidates.d5.k5.names)))
+d345 <- length(Reduce(intersect, list(candidates.d3.k5.names, candidates.d4.k5.names,candidates.d5.k5.names)))
+
+d1234 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d2.k5.names, candidates.d3.k5.names, candidates.d4.k5.names)))
+d1235 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d2.k5.names, candidates.d3.k5.names, candidates.d5.k5.names)))
+d2345 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d3.k5.names,
+candidates.d4.k5.names, candidates.d5.k5.names)))
+d1245 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d1.k5.names,
+candidates.d4.k5.names, candidates.d5.k5.names)))
+d1345 <- length(Reduce(intersect, list(candidates.d3.k5.names, candidates.d1.k5.names,
+candidates.d4.k5.names, candidates.d5.k5.names)))
+d12345 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d2.k5.names, candidates.d3.k5.names, 
+candidates.d4.k5.names, candidates.d5.k5.names)))
+
+pdf(file="Venn.CHN.n5.LFMMonly_20170310.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("shadow.days", "sol.rad.60d", "pcpt.60d", "day10cm", "temp.laying.date"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+```
+
+![alt_txt][CHN.Venn]
+[CHN.Venn]:https://cloud.githubusercontent.com/assets/12142475/23812983/07cd431c-05dd-11e7-8ed3-8e65fba84a5c.png
+
+
+Prepare the data to incorporate with the Fst outlier graph
+```
+colnames(d1.names) <- "names"
+colnames(d2.names) <- "names"
+colnames(d3.names) <- "names"
+colnames(d4.names) <- "names"
+colnames(d5.names) <- "names"
+
+d12345.names <- rbind(d1.names, d2.names, d3.names, d4.names, d5.names)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
+d12345.names <- lapply(d12345.names, unique)  #select only the unique rows. 
+
+d12345.names <- sub(":", ".", d12345.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
+
+write.table(d12345.names$d12345.names, "CHN.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+
 colnames(LFMM.outliers) <- ("loci")
-LFMM.outliers <- as.character(LFMM.outliers$loci)
-colnames(LFMM.outliers) <- ("loci")
-LFMM.outliers <- as.character(LFMM.outliers$loci)
+CHN.LFMM.outliers <- as.character(CHN.LFMM.outliers$loci)
+colnames(CHN.LFMM.outliers) <- ("loci")
+CHN.LFMM.outliers <- as.character(CHN.LFMM.outliers$loci)
 ```
