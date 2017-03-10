@@ -4,7 +4,7 @@ I want to identify loci associated with environment for the 6 CH datasets
 
 1. CHall.940.9608
 
-2. CHN.229.9608
+2. CHN.229.8951 (lfmm removes all non-variant loci)
 
 3. CHS.283.9608
 
@@ -81,9 +81,9 @@ all individuals. Make sure that all the empty cells are deleted in the .csv. Any
 But once I removed the NA's from the .env file the run started without problems. 
 
 ```
-env <- read.csv("BIOclim_allindivs_SEsubset.csv.env", header=F) ###read in the environmental data
-write.env(env, "SE.env")   ##convert to correct .env format
-[1] "SE.env"
+env <- read.csv("CHN.n5.env.txt", header=F) ###read in the environmental data
+write.env(env, "CHN.n5.env")   ##convert to correct .env format
+[1] "CHN.n5.env"
 ```
 
 
@@ -144,11 +144,24 @@ CHall K19 or 20  - but what about overfitting???
 
 
 
+Take note of the K for each sub-group. ie. It makes sense that CHS.VS + CHS.TI = CHStotal
+
+
+
+#####Run LFMM
 
 And run lfmm at the chosen K. This should be run on the server. 
 ```
-
 project = lfmm("SEsubset.Final2.geno", "SE.env", K = 2, repetitions = 5, project = "new")  ##run LFMM with this .env file
+
+```
+
+Runs can be exported for easier transfer from server to local computer
+
+```
+export.lfmmProject(obj.lfmmProject)   ##this creates a .zip file in the current directory, which can easily be transferred to other folders. 
+
+import.lfmmProject(obj.lfmmProject) ##to import the project into R from the new folder
 
 ```
 
@@ -167,7 +180,9 @@ First calculate the lambda for each K to determine what the correct K is:
 #####CHN
 snmf K = 4
 
-Copy everything to the mac. And remember to change all the paths in the .lfmmProject file
+This is the old way of doing it (but I keep this here since this is how these projects were run). The new way is to export and import LFMM: 
+
+Copy everything to the mac. And remember to change all the paths in the .lfmmProject file.
 
 delimiter can be anything. I'm using # here because I have / in my filenames. 
 ```
@@ -175,209 +190,239 @@ sed -i -e 's#old/path#new/path#g' file.lfmmProject
 ```
 
 
+Open R and import project. This CHN project contains K3-5. 5 runs for each K. d1-5. I show only results from K=4 here: 
 ```
-zs3.1 = z.scores(project, K = 3, d=1)
-zs.stouffer3.1 = apply(zs3.1, MARGIN = 1, median)
-lambda3.1 = median(zs3.1^2)/.456  
-lambda3.1  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values3.1 = pchisq(zs.stouffer3.1^2/lambda3.1, df = 1, lower = FALSE)
-
-zs3.2 = z.scores(project, K = 3, d=2)
-zs.stouffer3.2 = apply(zs3.2, MARGIN = 1, median)
-lambda3.2 = median(zs3.2^2)/.456  
-lambda3.2  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values3.2 = pchisq(zs.stouffer3.2^2/lambda3.2, df = 1, lower = FALSE)
-
-zs3.3 = z.scores(project, K = 3, d=3)
-zs.stouffer3.3 = apply(zs3.3, MARGIN = 1, median)
-lambda3.3 = median(zs3.3^2)/.456  
-lambda3.3  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values3.3 = pchisq(zs.stouffer3.3^2/lambda3.3, df = 1, lower = FALSE)
-
-zs3.4 = z.scores(project, K = 3, d=4)
-zs.stouffer3.4 = apply(zs3.4, MARGIN = 1, median)
-lambda3.4 = median(zs3.4^2)/.456  
-lambda3.4  ##note down lambda for the different K
-# calculate adjusted p-values
-cp.values3.4 = pchisq(zs.stouffer3.4^2/lambda3.4, df = 1, lower = FALSE)
-
-zs3.5 = z.scores(project, K = 3, d=5)
-zs.stouffer3.5 = apply(zs3.5, MARGIN = 1, median)
-lambda3.5 = median(zs3.5^2)/.456  
-lambda3.5  ##note down lambda for the different K
-# calculate adjusted p-values
-cp.values3.5 = pchisq(zs.stouffer3.5^2/lambda3.5, df = 1, lower = FALSE)
+project=import.lfmm("CHN.229.8951.recode_CHN.lfmmProject")
 
 
-zs4.1 = z.scores(project, K = 4, d=1)
-zs.stouffer4.1 = apply(zs4.1, MARGIN = 1, median)
-lambda4.1 = median(zs4.1^2)/.456  
-lambda4.1  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values4.1 = pchisq(zs.stouffer4.1^2/lambda4.1, df = 1, lower = FALSE)
+zs.d1 <- z.scores(project, K=4, d=1)
+zs.d1.median =apply(zs.d1, MARGIN=1, median)
 
 
-zs4.2 = z.scores(project, K = 4, d=2)
-zs.stouffer4.2 = apply(zs4.2, MARGIN = 1, median)
-lambda4.2 = median(zs4.2^2)/.456  
-lambda4.2  ##note down lambda for the different K2
+lambda=median(zs.d1.median^2)/0.4549364
+lambda
+   # [1] 1.330662
+    
+lambda=median(zs.d1.median^2)/0.85
+lambda
+  #  [1] 0.7121958
 
-# calculate adjusted p-values
-cp.values4.2 = pchisq(zs.stouffer4.2^2/lambda4.2, df = 1, lower = FALSE)
-
-zs4.3 = z.scores(project, K = 4, d=3)
-zs.stouffer4.3 = apply(zs4.3, MARGIN = 1, median)
-lambda4.3 = median(zs4.3^2)/.456  
-lambda4.3  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values4.3 = pchisq(zs.stouffer4.3^2/lambda4.3, df = 1, lower = FALSE)
-
-zs4.4 = z.scores(project, K = 4, d=4)
-zs.stouffer4.4 = apply(zs4.4, MARGIN = 1, median)
-lambda4.4 = median(zs4.4^2)/.456  
-lambda4.4  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values4.4 = pchisq(zs.stouffer4.4^2/lambda4.4, df = 1, lower = FALSE)
-
-zs4.5 = z.scores(project, K = 4, d=5)
-zs.stouffer4.5 = apply(zs4.5, MARGIN = 1, median)
-lambda4.5 = median(zs4.5^2)/.456  
-lambda4.5  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values4.5 = pchisq(zs.stouffer4.5^2/lambda4.5, df = 1, lower = FALSE)
-
-zs5.1 = z.scores(project, K = 5, d=1)
-zs.stouffer5.1 = apply(zs5.1, MARGIN = 1, median)
-lambda5.1 = median(zs5.1^2)/.456  
-lambda5.1  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values5.1 = pchisq(zs.stouffer5.1^2/lambda5.1, df = 1, lower = FALSE)
-
-zs5.2 = z.scores(project, K = 5, d=2)
-zs.stouffer5.2 = apply(zs5.2, MARGIN = 1, median)
-lambda5.2 = median(zs5.2^2)/.456  
-lambda5.2  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values5.2 = pchisq(zs.stouffer5.2^2/lambda5.2, df = 1, lower = FALSE)
-
-zs5.3 = z.scores(project, K = 5, d=3)
-zs.stouffer5.3 = apply(zs5.3, MARGIN = 1, median)
-lambda5.3 = median(zs5.3^2)/.456  
-lambda5.3  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values5.3 = pchisq(zs.stouffer5.3^2/lambda5.3, df = 1, lower = FALSE)
-
-zs5.4 = z.scores(project, K = 5, d=4)
-zs.stouffer5.4 = apply(zs5.4, MARGIN = 1, median)
-lambda5.4 = median(zs5.4^2)/.456  
-lambda5.4  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values5.4 = pchisq(zs.stouffer5.4^2/lambda5.4, df = 1, lower = FALSE)
-
-zs5.5 = z.scores(project, K = 5, d=5)
-zs.stouffer5.5 = apply(zs5.5, MARGIN = 1, median)
-lambda5.5 = median(zs5.5^2)/.456  
-lambda5.5  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values5.5 = pchisq(zs.stouffer5.5^2/lambda5.5, df = 1, lower = FALSE)
-
-zs6.1 = z.scores(project, K = 6, d=1)
-zs.stouffer6.1 = apply(zs6.1, MARGIN = 1, median)
-lambda6.1 = median(zs6.1^2)/.456  
-lambda  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values6.1 = pchisq(zs.stouffer6.1^2/lambda6.1, df = 1, lower = FALSE)
-
-zs6.2 = z.scores(project, K = 6, d=2)
-zs.stouffer6.2 = apply(zs6.2, MARGIN = 1, median)
-lambda6.2 = median(zs6.2^2)/.456  
-lambda  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values6.2 = pchisq(zs.stouffer6.2^2/lambda6.2, df = 1, lower = FALSE)
-
-zs6.3 = z.scores(project, K = 6, d=3)
-zs.stouffer6.3 = apply(zs6.3, MARGIN = 1, median)
-lambda6.3 = median(zs6.3^2)/.456  
-lambda  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values6.3 = pchisq(zs.stouffer6.3^2/lambda6.3, df = 1, lower = FALSE)
-
-zs6.4 = z.scores(project, K = 6, d=4)
-zs.stouffer6.4 = apply(zs6.4, MARGIN = 1, median)
-lambda6.4 = median(zs6.4^2)/.456  
-lambda  ##note down lambda for the different K
-# calculate adjusted p-values
-cp.values6.4 = pchisq(zs.stouffer6.4^2/lambda6.4, df = 1, lower = FALSE)
-
-zs6.5 = z.scores(project, K = 6, d=5)
-zs.stouffer6.5 = apply(zs6.5, MARGIN = 1, median)
-lambda6.5 = median(zs6.5^2)/.456  
-lambda  ##note down lambda for the different K
-
-# calculate adjusted p-values
-cp.values6.5 = pchisq(zs.stouffer6.5^2/lambda6.5, df = 1, lower = FALSE)
+adj.p.values.d1 =pchisq(zs.d1.median^2/0.4549364, df=1, lower=F)
+q = 0.05
+L = length(adj.p.values.d1)
+w = which(sort(adj.p.values.d1) < q * (1:L) / L)
+candidates.d1.k5 = order(adj.p.values.d1)[w]
 
 
 
-par(mfrow=c(5,3))
+zs.d2 <- z.scores(project, K=5, d=2)
+zs.d2.median =apply(zs.d2, MARGIN=1, median)
+lambda=median(zs.d2.median^2)/0.4549364
+lambda
+ #   [1] 0.9810137
+lambda=median(zs.d2.median^2)/0.85
+lambda
+   # [1] 0.5250574
+adj.p.values.d2 =pchisq(zs.d2.median^2/0.4549364, df=1, lower=F)
 
-hist(cp.values4.1)
-hist(cp.values4.2)
-hist(cp.values4.3)
-hist(cp.values4.4)
-hist(cp.values4.5)
-hist(cp.values5.1)
-hist(cp.values5.2)
-hist(cp.values5.3)
-hist(cp.values5.4)
-hist(cp.values5.5)
-hist(cp.values6.1)
-hist(cp.values6.2)
-hist(cp.values6.3)
-hist(cp.values6.4)
-hist(cp.values6.5)
+q = 0.05
+L = length(adj.p.values.d2)
+w = which(sort(adj.p.values.d2) < q * (1:L) / L)
+candidates.d2.k5 = order(adj.p.values.d2)[w]
 
-#FDR correction
-q = 0.05 
-L = length(cp.values4.1) 
-w = which(sort(cp.values4.1) < q * (1:L) / L) 
-candidates4.1 = order(cp.values4.1)[w]
 
-##print out candidates
 
-```
-LFMM lists the loci 1-nLoci
 
-To get the real name of the locus, I need to look at the .loci file output from pgdspider when the BayENV2 input is created.
+zs.d3 <- z.scores(project, K=5, d=3)
+zs.d3.median =apply(zs.d3, MARGIN=1, median)
+lambda=median(zs.d3.median^2)/0.4549364
+lambda
+   # [1] 1.377389
 
-Copy the .loci file to the LFMM subfolder. 
+lambda=median(zs.d3.median^2)/0.85
+lambda
+   # [1] 0.737205
+adj.p.values.d3 =pchisq(zs.d3.median^2/0.4549364, df=1, lower=F)
+q = 0.05
+L = length(adj.p.values.d3)
+w = which(sort(adj.p.values.d3) < q * (1:L) / L)
+candidates.d3.k5 = order(adj.p.values.d3)[w]
 
-Number the lines in this file: 
-```
-nl CHS.VS.pgdspider_loci.txt > CHS.VS.8779.loci
-```
 
-And select the specific lines that were identified as outliers
-```
-sed -n "$(sed 's/$/p/' numbers.n1)" CHS.VS.8779.loci
+
+
+zs.d4 <- z.scores(project, K=5, d=4)
+zs.d4.median =apply(zs.d4, MARGIN=1, median)
+lambda=median(zs.d4.median^2)/0.4549364
+lambda
+ #   [1] 1.569119
+lambda=median(zs.d4.median^2)/0.85
+lambda
+ #   [1] 0.8398226
+adj.p.values.d4 =pchisq(zs.d4.median^2/0.85, df=1, lower=F)
+
+q = 0.05
+L = length(adj.p.values.d4)
+w = which(sort(adj.p.values.d4) < q * (1:L) / L)
+candidates.d4.k5 = order(adj.p.values.d4)[w]
+
+
+
+zs.d5 <- z.scores(project, K=5, d=5)
+zs.d5.median =apply(zs.d5, MARGIN=1, median)
+lambda=median(zs.d5.median^2)/0.4549364
+lambda
+   # [1] 2.888479
+lambda=median(zs.d5.median^2)/0.85
+lambda
+   # [1] 1.034839
+adj.p.values.d5 =pchisq(zs.d5.median^2/0.4549364, df=1, lower=F)
+
+q = 0.05
+L = length(adj.p.values.d5)
+w = which(sort(adj.p.values.d5) < q * (1:L) / L)
+candidates.d5.k5 = order(adj.p.values.d5)[w]
+
+
+pdf(file="CHN.LFMM.hist.pdf")
+par(mfrow=c(3,2))
+hist(adj.p.values.d1)
+hist(adj.p.values.d2)
+hist(adj.p.values.d3)
+hist(adj.p.values.d4)
+hist(adj.p.values.d5)
+dev.off()
+
 ```
 
 
+![alt_txt][CHN.hist]
+[CHN.hist]:https://cloud.githubusercontent.com/assets/12142475/23806921/e38370da-05c3-11e7-8ae0-90025261e203.png
+
+
+
+Select all the candidates from the full list of SNPs
+
+```
+#read the SNP names into R
+
+locus.names <- read.table("CHN/CHN.229.8951.plink.map", header=F)
+colnames(locus.names) <- c("V1", "SNP", "V3", "V4")
+locus.names$ID <- seq.int(nrow(locus.names)) #add an index of the SNP numbers, since the LFMM output is a numbered list corresponding to the original genotype input order
+candidates.d1.k5 <- as.character(candidates.d1.k5)  ##change the list of candidates from LFMM output to a list of characters
+candidates.d1.k5.names <- locus.names[locus.names$ID %in% candidates.d1.k5,]  ##select from locus.names$ID the rows that match candidates vector
+
+candidates.d1.k5.names <- paste("X", candidates.d1.k5.names$SNP, sep=".") #rename the SNPs so that they don't get renamed in excel
+
+
+candidates.d2.k5 <- as.character(candidates.d2.k5)  ##change the list of candidates from LFMM output to a list of characters
+candidates.d2.k5.names <- locus.names[locus.names$ID %in% candidates.d2.k5,]  ##select from locus.names$ID the rows that match candidates vector
+
+candidates.d2.k5.names <- paste("X", candidates.d2.k5.names$SNP, sep=".") #rename the SNPs so that they don't get renamed in excel
+
+
+
+
+candidates.d3.k5 <- as.character(candidates.d3.k5)  ##change the list of candidates from LFMM output to a list of characters
+candidates.d3.k5.names <- locus.names[locus.names$ID %in% candidates.d3.k5,]  ##select from locus.names$ID the rows that match candidates vector
+
+candidates.d3.k5.names <- paste("X", candidates.d3.k5.names$SNP, sep=".") #rename the SNPs so that they don't get renamed in excel
+
+
+
+candidates.d4.k5 <- as.character(candidates.d4.k5)  ##change the list of candidates from LFMM output to a list of characters
+candidates.d4.k5.names <- locus.names[locus.names$ID %in% candidates.d4.k5,]  ##select from locus.names$ID the rows that match candidates vector
+
+candidates.d4.k5.names <- paste("X", candidates.d4.k5.names$SNP, sep=".") #rename the SNPs so that they don't get renamed in excel
+
+
+
+candidates.d5.k5 <- as.character(candidates.d5.k5)  ##change the list of candidates from LFMM output to a list of characters
+candidates.d5.k5.names <- locus.names[locus.names$ID %in% candidates.d5.k5,]  ##select from locus.names$ID the rows that match candidates vector
+
+candidates.d5.k5.names <- paste("X", candidates.d5.k5.names$SNP, sep=".") #rename the SNPs so that they don't get renamed in excel
+```
+
+VennDiagram of data
+
+```
+library(VennDiagram)
+
+d1 <- length(candidates.d1.k5.names)
+d2 <- length(candidates.d2.k5.names)
+d3 <- length(candidates.d3.k5.names)
+d4 <- length(candidates.d4.k5.names)
+d5 <- length(candidates.d5.k5.names)
+
+d12 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d2.k5.names)))
+d13 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d3.k5.names)))
+d14 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d4.k5.names)))
+d15 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d5.k5.names)))
+d23 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d3.k5.names)))
+d24 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d4.k5.names)))
+d25 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d5.k5.names)))
+d34 <- length(Reduce(intersect, list(candidates.d3.k5.names, candidates.d4.k5.names)))
+d35 <- length(Reduce(intersect, list(candidates.d3.k5.names, candidates.d5.k5.names)))
+d45 <- length(Reduce(intersect, list(candidates.d4.k5.names, candidates.d5.k5.names)))
+
+d123 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d2.k5.names,candidates.d3.k5.names)))
+d124 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d2.k5.names,candidates.d4.k5.names)))
+d125 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d2.k5.names,candidates.d5.k5.names)))
+d234 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d3.k5.names,candidates.d4.k5.names)))
+d134 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d3.k5.names,candidates.d4.k5.names)))
+d135 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d3.k5.names,candidates.d5.k5.names)))
+d145 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d4.k5.names,candidates.d5.k5.names)))
+d235 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d3.k5.names,candidates.d5.k5.names)))
+d245 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d4.k5.names,candidates.d5.k5.names)))
+d345 <- length(Reduce(intersect, list(candidates.d3.k5.names, candidates.d4.k5.names,candidates.d5.k5.names)))
+
+d1234 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d2.k5.names, candidates.d3.k5.names, candidates.d4.k5.names)))
+d1235 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d2.k5.names, candidates.d3.k5.names, candidates.d5.k5.names)))
+d2345 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d3.k5.names,
+candidates.d4.k5.names, candidates.d5.k5.names)))
+d1245 <- length(Reduce(intersect, list(candidates.d2.k5.names, candidates.d1.k5.names,
+candidates.d4.k5.names, candidates.d5.k5.names)))
+d1345 <- length(Reduce(intersect, list(candidates.d3.k5.names, candidates.d1.k5.names,
+candidates.d4.k5.names, candidates.d5.k5.names)))
+d12345 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d2.k5.names, candidates.d3.k5.names, 
+candidates.d4.k5.names, candidates.d5.k5.names)))
+
+pdf(file="Venn.CHN.n5.LFMMonly_20170310.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("shadow.days", "sol.rad.60d", "pcpt.60d", "day10cm", "temp.laying.date"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+```
+
+
+Prepare the data to incorporate with the Fst outlier graph
+```
+colnames(d1.names) <- "names"
+colnames(d2.names) <- "names"
+colnames(d3.names) <- "names"
+colnames(d4.names) <- "names"
+colnames(d5.names) <- "names"
+
+d12345.names <- rbind(d1.names, d2.names, d3.names, d4.names, d5.names)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
+d12345.names <- lapply(d12345.names, unique)  #select only the unique rows. 
+
+d12345.names <- sub(":", ".", d12345.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
+
+write.table(d12345.names$d12345.names, "LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+
+colnames(LFMM.outliers) <- ("loci")
+LFMM.outliers <- as.character(LFMM.outliers$loci)
+colnames(LFMM.outliers) <- ("loci")
+LFMM.outliers <- as.character(LFMM.outliers$loci)
+```
