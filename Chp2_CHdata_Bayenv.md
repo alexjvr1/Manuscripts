@@ -59,6 +59,8 @@ I estimated Fst distributions per locus for each of the six datasets. To make su
 
 3. Convert vcf to bayenv2 format
 
+4. Calculate covariance matrix1 + 2
+
 ####CHall
 
 1. Fst<0.6
@@ -270,4 +272,43 @@ bayenv sample file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subset
 
 bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CZ/CZ404.1000
 
+####4. Calculate covariance matrix
 
+Copy all input files to the bayenv2 directory: 
+
+/Users/alexjvr/Applications/bayenv2/compiled_on_a_mac
+
+Calculate 2 matrices for each dataset. This takes a long time to run. 
+```
+#check how far the run has progressed: 
+cat CHS.VS.matrix1.out |grep "ITER"
+
+./bayenv2 -i CHall940.1000Neutral.bayenv.txt -p 82 -k 100000 -r 19866 > CHall.matrix1.out
+./bayenv2 -i CHall940.1000Neutral.bayenv.txt -p 82 -k 100000 -r 74626 > CHall.matrix2.out
+
+./bayenv2 -i CHN.229.1000Neutral.bayenv.txt -p 19 -k 100000 -r 46843 > CHN229.matrix1.out
+./bayenv2 -i CHN.229.1000Neutral.bayenv.txt -p 19 -k 100000 -r 87292 > CHN229.matrix2.out
+
+./bayenv2 -i CZ404.1000Neutral.bayenv.txt -p 38 -k 100000 -r 54839 > CZ404.matrix1.out
+./bayenv2 -i CZ404.1000Neutral.bayenv.txt -p 38 -k 100000 -r 27362 > CZ404.matrix2.out
+
+./bayenv2 -i CHS.283.1000Neutral.bayenv.txt -p 25 -k 100000 -r 76290 > CHS283.matrix1.out
+./bayenv2 -i CHS.283.1000Neutral.bayenv.txt -p 25 -k 100000 -r 65829 > CHS283.matrix2.out
+
+#./bayenv2 -i CHS.283.1000Neutral.bayenv.txt -p 25 -k 100000 -r 76290 > CHS283.matrix1.out
+#./bayenv2 -i CHS.283.1000Neutral.bayenv.txt -p 25 -k 100000 -r 65829 > CHS283.matrix2.out
+
+./bayenv2 -i CHS.VS135.1000Neutral.bayenv.txt -p 10 -k 100000 -r 93863 > CHS.VS.matrix1.out
+./bayenv2 -i CHS.VS135.1000Neutral.bayenv.txt -p 10 -k 100000 -r 74952 > CHS.VS.matrix2.out
+```
+
+
+Estimate convergence within and between matrices
+```
+#Compare distance trees
+
+
+#Calculate correlation between matrices
+
+
+```
