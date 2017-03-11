@@ -1,8 +1,8 @@
 #LFMM analyses of CHdata
 
-I want to identify loci associated with environment for the 6 CH datasets
+I want to identify loci associated with environment for the 6 CH datasets. Stba is removed from all datasets, hence 8 less individuals in CHall, CHS, and CHS.TI. 
 
-1. CHall.940.9608
+1. CHall.932.9608
 
 2. CHN.229.8951 (lfmm removes all non-variant loci)
 
