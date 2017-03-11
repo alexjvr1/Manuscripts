@@ -113,7 +113,7 @@ dev.off()
 ```
 
 ![alt_txt][CHS.Fst]
-[CHS.Fst]:
+[CHS.Fst]:https://cloud.githubusercontent.com/assets/12142475/23823039/ba436b4e-0659-11e7-859f-e4ede291522d.png
 
 
 
