@@ -195,3 +195,17 @@ dev.off()
 ![alt_txt][CZ.Fst]
 [CZ.Fst]:https://cloud.githubusercontent.com/assets/12142475/23823234/7ab4f0ce-065e-11e7-9661-042543640401.png
 
+
+FstPlots together
+```
+par(mfrow=c(2,3))
+hist(stats.hier.CHall940.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=120)
+hist(stats.hier.CHN229.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=240)
+hist(stats.hier.CZ404.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=120)
+hist(stats.hier.CHS283.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=120)
+hist(stats.hier.CHS.TI148.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=360)
+hist(stats.hier.CHS.VS135.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=240)
+
+```
+![alt_txt][Fstplots]
+[Fstplots]:https://cloud.githubusercontent.com/assets/12142475/23823297/e0e925da-065f-11e7-8c5f-216c9718e084.png
