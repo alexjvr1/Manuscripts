@@ -87,7 +87,7 @@ dev.off()
 ```
 
 ![alt_txt][CHN.Fst]
-[CHN.Fst]:
+[CHN.Fst]:https://cloud.githubusercontent.com/assets/12142475/23822918/191f2318-0657-11e7-9baf-1d8c660f0192.png
 
 
 3. CHS
