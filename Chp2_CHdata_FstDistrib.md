@@ -82,12 +82,12 @@ stats.hier.CHN229 <- basic.stats(hier.CHN229)
 stats.hier.CHN229.perlocus <- stats.hier.CHN229$perloc
 
 pdf(file="CHN229.NeutralFst.pdf")
-hist(stats.hier.CHN229.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=120)
+hist(stats.hier.CHN229.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=240)
 dev.off()
 ```
 
 ![alt_txt][CHN.Fst]
-[CHN.Fst]:https://cloud.githubusercontent.com/assets/12142475/23822918/191f2318-0657-11e7-9baf-1d8c660f0192.png
+[CHN.Fst]:https://cloud.githubusercontent.com/assets/12142475/23823217/2b018b46-065e-11e7-8613-c1ca3cf518fb.png
 
 
 3. CHS
@@ -108,7 +108,7 @@ stats.hier.CHS283 <- basic.stats(hier.CHS283)
 stats.hier.CHS283.perlocus <- stats.hier.CHS283$perloc
 
 pdf(file="CHS283.NeutralFst.pdf")
-hist(stats.hier.CHS283.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=120)
+hist(stats.hier.CHS283.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=240)
 dev.off()
 ```
 
@@ -122,7 +122,7 @@ dev.off()
 #R
 library(adegenet)
 library(hierfstat)
-CHS.TI148.genind <- read.structure("CHS.TI148.9608.str")
+CHS.TI148.genind <- read.structure("CHS.TI.148.9608.str")
 
 CHS.TI148.genind@pop
 CHS.TI148.pop <- read.table("CHS.TI148.pop", header=T)
@@ -135,12 +135,12 @@ stats.hier.CHS.TI148 <- basic.stats(hier.CHS.TI148)
 stats.hier.CHS.TI148.perlocus <- stats.hier.CHS.TI148$perloc
 
 pdf(file="CHS.TI148.NeutralFst.pdf")
-hist(stats.hier.CHS.TI148.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=120)
+hist(stats.hier.CHS.TI148.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=240)
 dev.off()
 ```
 
 ![alt_txt][CHS.TI.Fst]
-[CHS.TI.Fst]:
+[CHS.TI.Fst]:https://cloud.githubusercontent.com/assets/12142475/23823123/e9663aa8-065b-11e7-89f4-c7520ddce7a2.png
 
 
 5. CHS.VS
@@ -148,7 +148,7 @@ dev.off()
 #R
 library(adegenet)
 library(hierfstat)
-CHS.VS135.genind <- read.structure("CHS.VS135.9608.str")
+CHS.VS135.genind <- read.structure("CHS.VS.135.9608.str")
 
 CHS.VS135.genind@pop
 CHS.VS135.pop <- read.table("CHS.VS135.pop", header=T)
@@ -161,12 +161,12 @@ stats.hier.CHS.VS135 <- basic.stats(hier.CHS.VS135)
 stats.hier.CHS.VS135.perlocus <- stats.hier.CHS.VS135$perloc
 
 pdf(file="CHS.VS135.NeutralFst.pdf")
-hist(stats.hier.CHS.VS135.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=120)
+hist(stats.hier.CHS.VS135.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=240)
 dev.off()
 ```
 
 ![alt_txt][CHS.VS.Fst]
-[CHS.VS.Fst]:
+[CHS.VS.Fst]:https://cloud.githubusercontent.com/assets/12142475/23823223/47246762-065e-11e7-8bad-32198b51f306.png
 
 
 
@@ -175,7 +175,7 @@ dev.off()
 #R
 library(adegenet)
 library(hierfstat)
-CZ404.genind <- read.structure("CZ404.9608.str")
+CZ404.genind <- read.structure("CZ.404.9608.str")
 
 CZ404.genind@pop
 CZ404.pop <- read.table("CZ404.pop", header=T)
@@ -188,10 +188,10 @@ stats.hier.CZ404 <- basic.stats(hier.CZ404)
 stats.hier.CZ404.perlocus <- stats.hier.CZ404$perloc
 
 pdf(file="CZ404.NeutralFst.pdf")
-hist(stats.hier.CHall940.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=120)
+hist(stats.hier.CZ404.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=120)
 dev.off()
 ```
 
 ![alt_txt][CZ.Fst]
-[CZ.Fst]:
+[CZ.Fst]:https://cloud.githubusercontent.com/assets/12142475/23823234/7ab4f0ce-065e-11e7-9661-042543640401.png
 
