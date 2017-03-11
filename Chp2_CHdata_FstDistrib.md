@@ -125,7 +125,7 @@ library(hierfstat)
 CHS.TI148.genind <- read.structure("CHS.TI148.9608.str")
 
 CHS.TI148.genind@pop
-CHS.TI148.pop <- read.table("CHall940.pop", header=T)
+CHS.TI148.pop <- read.table("CHS.TI148.pop", header=T)
 CHS.TI148.pop.factor <- as.factor(CHS.TI148.pop$pop)
 CHS.TI148.genind@pop <- CHS.TI148.pop.factor
 CHS.TI148.genind@pop
