@@ -305,10 +305,121 @@ cat CHS.VS.matrix1.out |grep "ITER"
 
 Estimate convergence within and between matrices
 ```
+#linux
+#copy matrices 500, 50k, 75k, and 100k from matrix1 and matrix2
+
+#read into R
+
+matrix1.500 <- read.table("CHS.VS.500")
+matrix1.500 <- as.matrix(matrix1.500)
+
+matrix1.500.2 <- read.table("CHS.VS.500.2")
+matrix1.500.2 <- as.matrix(matrix1.500.2)
+
+matrix1.50k <- read.table("CHS.VS.50k")
+matrix1.50k <- as.matrix(matrix1.50k)
+
+matrix1.50k.2 <- read.table("CHS.VS.50k.2")
+matrix1.50k.2 <- as.matrix(matrix1.50k.2)
+
+matrix1.100k <- read.table("CHS.VS.100k")
+matrix1.100k <- as.matrix(matrix1.100k)
+
+matrix1.100k.2 <- read.table("CHS.VS.100k.2")
+matrix1.100k.2 <- as.matrix(matrix1.100k.2)
+
+matrix1.75k <- read.table("CHS.VS.75k")
+matrix1.75k <- as.matrix(matrix1.75k)
+
+matrix1.75k.2 <- read.table("CHS.VS.75k.2")
+matrix1.75k.2 <- as.matrix(matrix1.75k.2)
+
+#par(mfrow=c(1,2))
+#image(matrix1.10)
+#image(matrix2.10)
+```
+
+
+
+
+```
 #Compare distance trees
+##calculate a distance
+diss500 <- 1-cor(matrix1.500)
+diss50k <- 1-cor(matrix1.50k)
+diss75k <- 1-cor(matrix1.75k)
+diss100k <- 1-cor(matrix1.9)
+
+diss500.2 <- 1-cor(matrix1.500.2)
+diss50k.2 <- 1-cor(matrix1.50k.2)
+diss75k.2 <- 1-cor(matrix1.75k.2)
+diss100k.2 <- 1-cor(matrix1.100k.2)
 
 
-#Calculate correlation between matrices
+##change the df type
+diss500 <- as.dist(diss500)
+diss50k <- as.dist(diss50k)
+diss75k <- as.dist(diss75k)
+diss100k <- as.dist(diss100k)
 
+diss500.2 <- as.dist(diss500.2)
+diss50k.2 <- as.dist(diss50k.2)
+diss75k.2 <- as.dist(diss75k.2)
+diss100k.2 <- as.dist(diss100k.2)
+
+
+##plot and inspect
+par(mfrow=c(2,4))
+
+plot(hclust(diss500), main="matrix500", xlab="")
+plot(hclust(diss50k), main="matrix50k", xlab="")
+plot(hclust(diss75k), main="matrix75k", xlab="")
+plot(hclust(diss100k), main="matrix100k", xlab="")
+
+plot(hclust(diss500.2), main="matrix500.2", xlab="")
+plot(hclust(diss50k.2), main="matrix50k.2", xlab="")
+plot(hclust(diss75k.2), main="matrix75k.2", xlab="")
+plot(hclust(diss100k.2), main="matrix100k.2", xlab="")
+
+
+
+
+#Calculate correlation between matrices within a run
+
+#Run1
+
+cor.test(diss500, diss100k)
+cor.test(diss50k, diss100k)
+cor.test(diss75k, diss100k)
+
+#Pearson's correlation. Results
+
+0.6511991 
+0.9105099 
+0.9568654 
+
+
+#Run2
+
+cor.test(diss500.2, diss100k.2)
+cor.test(diss50k.2, diss100k.2)
+cor.test(diss75k.2, diss100k.2)
+
+0.6663041 
+0.9018106 
+0.9105807 
+
+
+#Between runs
+cor.test(diss100k, diss100k.2)
+
+#Pearson's correlation result: 
+
+1.0 (I double checked that I was using the correct matrices). 
+
+##plot
+par(mfrow=c(1,2))
+image(matrix1.10)
+image(matrix2.10)
 
 ```
