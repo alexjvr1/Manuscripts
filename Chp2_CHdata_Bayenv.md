@@ -680,8 +680,8 @@ image(matrix1.10)
 image(matrix2.10)
 
 ```
-![alt_txt][CHS.trees]
-[CHS.tree]:https://cloud.githubusercontent.com/assets/12142475/23826787/806b92de-06a4-11e7-8eee-169dc07b2c7d.png
+![alt_txt][CHS.tree]
+[CHS.tree]:https://cloud.githubusercontent.com/assets/12142475/23836579/d39e3d5e-077a-11e7-84be-862d29565441.png
 
 
 
