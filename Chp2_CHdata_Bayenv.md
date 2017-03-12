@@ -1053,3 +1053,56 @@ image(matrix1.10)
 image(matrix2.10)
 
 ```
+
+
+#BayEnv2 Run
+
+Once all the input files have been created, copy them to the fgcz47 server and fun BayEnv2: 
+
+###1. Normalised .env file 
+
+These have been created before and are already in the BayEnv2 folder on my computer.
+
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2
+
+###2. MATRIX file: copy the last matrix from one of the covariance matrices. 
+
+Make sure to copy the file to excel first to check the spacing between all numbers. Also to remove stba from the CHS, CHall, and CHS.VS 
+datasets. Copy and nano into a .env file on the server. 
+
+###3. BayEnv2 input file 
+
+Created using pgdspider. These were all created before. And are in the same folder as above. For code, see: https://github.com/alexjvr1/Manuscripts/blob/master/5.CHP2_CH_LandscapeGenomics.md
+
+
+Start the various runs: 
+```
+##1. split the bayenv2 large input into single loci
+##2. loop over the input with bayenv2
+
+#CHall
+split -d -a 10 -l 2 CHall.932.9608.BayEnv.txt snp_batch
+for f in $(ls snp_batch*); do ./bayenv2 -i $f -e CHall.5n.ENV -m CHall.March.MATRIX -k 100000 -p 81 -n 5 -r $RANDOM -t -c -X; done
+
+
+#CHN
+split -d -a 10 -l 2 CHN.229.8951.bayENV2.txt snp_batch
+for f in $(ls snp_batch*); do ./bayenv2 -i $f -e ENVIRONFILE.CHN.p19.env -m CHN.March.MATRIX -k 100000 -p 19 -n 5 -r $RANDOM -t -c -X; done
+
+#CHS
+split -d -a 10 -l 2 CHS.275.9608.bayenv2.txt snp_batch
+for f in $(ls snp_batch*); do ./bayenv2 -i $f -e ENVIRONFILE.CHS.n5.env -m CHS.March.MATRIX -p 24 -k 100000 -n 5 -r $RANDOM -t -c -X; done
+
+#CHS.VS
+split -d -a 10 -l 2 CHS.VS.135.8779.bayEnv2.txt snp_batch
+for f in $(ls snp_batch*); do ./bayenv2 -i $f -e standardised.5env.env -m CHS.VS.MATRIX -k 100000 -p 10 -n 5 -r $RANDOM -t -c -X; done
+
+#CHS.TI
+
+
+#CZ
+split -d -a 10 -l 2 CZ.404.9528.bayENV2.txt snp_batch
+for f in $(ls snp_batch*); do ./bayenv2 -i $f -e ENVIRON.CZ.5n.env -m CZ.March.MATRIX -k 100000 -p 38 -n 6 -r $RANDOM -t -c -X; done
+```
+
+Run analysis three times for all datasets. 
