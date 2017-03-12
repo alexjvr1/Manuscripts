@@ -406,6 +406,12 @@ dev.off()
 
 Prepare the data to incorporate with the Fst outlier graph
 ```
+d1.names <- as.data.frame(candidates.d1.k5.names)
+d2.names <- as.data.frame(candidates.d2.k5.names)
+d3.names <- as.data.frame(candidates.d3.k5.names)
+d4.names <- as.data.frame(candidates.d4.k5.names)
+d5.names <- as.data.frame(candidates.d5.k5.names)
+
 colnames(d1.names) <- "names"
 colnames(d2.names) <- "names"
 colnames(d3.names) <- "names"
@@ -418,17 +424,18 @@ d12345.names <- lapply(d12345.names, unique)  #select only the unique rows.
 
 d12345.names <- sub(":", ".", d12345.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
 
-write.table(d12345.names$d12345.names, "LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+write.table(d12345.names$d12345.names, "CHN.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
 
 ##linux.
 ##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
 
 #Read into R
 
-colnames(CHS.LFMM.outliers) <- ("loci")
-CHS.LFMM.outliers <- as.character(CHS.LFMM.outliers$loci)
-colnames(CHS.LFMM.outliers) <- ("loci")
-CHS.LFMM.outliers <- as.character(CHS.LFMM.outliers$loci)
+CHN.LFMM.outliers <- read.table("CHN.LFMM.alloutliers", header=F)
+
+colnames(CHN.LFMM.outliers) <- ("loci")
+CHN.LFMM.outliers <- as.character(CHN.LFMM.outliers$loci)
+
 ```
 
 
@@ -655,6 +662,12 @@ dev.off()
 
 Prepare the data to incorporate with the Fst outlier graph
 ```
+d1.names <- as.data.frame(candidates.d1.k5.names)
+d2.names <- as.data.frame(candidates.d2.k5.names)
+d3.names <- as.data.frame(candidates.d3.k5.names)
+d4.names <- as.data.frame(candidates.d4.k5.names)
+d5.names <- as.data.frame(candidates.d5.k5.names)
+
 colnames(d1.names) <- "names"
 colnames(d2.names) <- "names"
 colnames(d3.names) <- "names"
@@ -667,17 +680,16 @@ d12345.names <- lapply(d12345.names, unique)  #select only the unique rows.
 
 d12345.names <- sub(":", ".", d12345.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
 
-write.table(d12345.names$d12345.names, "CHN.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+write.table(d12345.names$d12345.names, "CHS.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
 
 ##linux.
 ##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
 
 #Read into R
 
-colnames(LFMM.outliers) <- ("loci")
-CHN.LFMM.outliers <- as.character(CHN.LFMM.outliers$loci)
-colnames(CHN.LFMM.outliers) <- ("loci")
-CHN.LFMM.outliers <- as.character(CHN.LFMM.outliers$loci)
+CHS.LFMM.outlier <- read.table("CHS.LFMM.alloutliers", header=F)
+colnames(CHS.LFMM.outliers) <- ("loci")
+CHS.LFMM.outliers <- as.character(CHS.LFMM.outliers$loci)
 ```
 
 
@@ -904,6 +916,12 @@ dev.off()
 
 Prepare the data to incorporate with the Fst outlier graph
 ```
+d1.names <- as.data.frame(candidates.d1.k5.names)
+d2.names <- as.data.frame(candidates.d2.k5.names)
+d3.names <- as.data.frame(candidates.d3.k5.names)
+d4.names <- as.data.frame(candidates.d4.k5.names)
+d5.names <- as.data.frame(candidates.d5.k5.names)
+
 colnames(d1.names) <- "names"
 colnames(d2.names) <- "names"
 colnames(d3.names) <- "names"
@@ -916,17 +934,17 @@ d12345.names <- lapply(d12345.names, unique)  #select only the unique rows.
 
 d12345.names <- sub(":", ".", d12345.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
 
-write.table(d12345.names$d12345.names, "CHN.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+write.table(d12345.names$d12345.names, "CHS.VS.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
 
 ##linux.
 ##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
 
 #Read into R
 
-colnames(LFMM.outliers) <- ("loci")
-CHN.LFMM.outliers <- as.character(CHN.LFMM.outliers$loci)
-colnames(CHN.LFMM.outliers) <- ("loci")
-CHN.LFMM.outliers <- as.character(CHN.LFMM.outliers$loci)
+CHS.VS.LFMM.outliers <- read.table("CHS.VS.LFMM.outliers", header=F)
+colnames(CHS.VS.LFMM.outliers) <- ("loci")
+CHS.VS.LFMM.outliers <- as.character(CHS.VS.LFMM.outliers$loci)
+
 ```
 
 
@@ -1152,6 +1170,12 @@ dev.off()
 
 Prepare the data to incorporate with the Fst outlier graph
 ```
+d1.names <- as.data.frame(candidates.d1.k5.names)
+d2.names <- as.data.frame(candidates.d2.k5.names)
+d3.names <- as.data.frame(candidates.d3.k5.names)
+d4.names <- as.data.frame(candidates.d4.k5.names)
+d5.names <- as.data.frame(candidates.d5.k5.names)
+
 colnames(d1.names) <- "names"
 colnames(d2.names) <- "names"
 colnames(d3.names) <- "names"
@@ -1164,17 +1188,16 @@ d12345.names <- lapply(d12345.names, unique)  #select only the unique rows.
 
 d12345.names <- sub(":", ".", d12345.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
 
-write.table(d12345.names$d12345.names, "CHN.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+write.table(d12345.names$d12345.names, "CHS.TI.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
 
 ##linux.
 ##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
 
 #Read into R
 
-colnames(LFMM.outliers) <- ("loci")
-CHN.LFMM.outliers <- as.character(CHN.LFMM.outliers$loci)
-colnames(CHN.LFMM.outliers) <- ("loci")
-CHN.LFMM.outliers <- as.character(CHN.LFMM.outliers$loci)
+CHS.TI.LFMM.outliers <- read.table("CHS.TI.LFMM.alloutliers", header=F)
+colnames(CHS.TI.LFMM.outliers) <- ("loci")
+CHS.TI.LFMM.outliers <- as.character(CHS.TI.LFMM.outliers$loci)
 ```
 
 
@@ -1400,6 +1423,12 @@ dev.off()
 
 Prepare the data to incorporate with the Fst outlier graph
 ```
+d1.names <- as.data.frame(candidates.d1.k5.names)
+d2.names <- as.data.frame(candidates.d2.k5.names)
+d3.names <- as.data.frame(candidates.d3.k5.names)
+d4.names <- as.data.frame(candidates.d4.k5.names)
+d5.names <- as.data.frame(candidates.d5.k5.names)
+
 colnames(d1.names) <- "names"
 colnames(d2.names) <- "names"
 colnames(d3.names) <- "names"
@@ -1412,15 +1441,14 @@ d12345.names <- lapply(d12345.names, unique)  #select only the unique rows.
 
 d12345.names <- sub(":", ".", d12345.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
 
-write.table(d12345.names$d12345.names, "CHN.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+write.table(d12345.names$d12345.names, "CZ.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
 
 ##linux.
 ##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
 
 #Read into R
 
-colnames(LFMM.outliers) <- ("loci")
-CHN.LFMM.outliers <- as.character(CHN.LFMM.outliers$loci)
-colnames(CHN.LFMM.outliers) <- ("loci")
-CHN.LFMM.outliers <- as.character(CHN.LFMM.outliers$loci)
+CZ.LFMM.outliers <- read.table("CZ.LFMM.alloutliers", header=F)
+colnames(CZ.LFMM.outliers) <- ("loci")
+CZ.LFMM.outliers <- as.character(CZ.LFMM.outliers$loci)
 ```
