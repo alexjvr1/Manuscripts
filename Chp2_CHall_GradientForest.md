@@ -2,6 +2,8 @@
 
 ###Datasets:
 
+3 Datasets for each regions: Neutral, EAA, Fstoutliers
+
 1. CHall
 
 2. CHN
@@ -19,9 +21,11 @@
 
 Here I aim to: 
 
-1)determine the environmental and spatial determinants of variation in allele frequency across the Swedish latitudinal gradient. 
+1)determine the environmental and spatial determinants of variation in allele frequency across the Switzerland. 
 
-2)map the current and future patterns of genomic variation in relation to climate
+2)compare global vs local effects
+
+3)map the current and future patterns of genomic variation in relation to climate
 
 I'm using the package GradientForest and the method described by FitzPatrick & Keller 2013
 
