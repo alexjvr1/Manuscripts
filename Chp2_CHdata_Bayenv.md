@@ -398,9 +398,9 @@ cor.test(diss75k, diss100k)
 
 #Pearson's correlation. Results
 
-0.6511991 
-0.9105099 
-0.9568654 
+0.989983 
+0.9915622 
+0.9929452 
 
 
 #Run2
@@ -409,9 +409,9 @@ cor.test(diss500.2, diss100k.2)
 cor.test(diss50k.2, diss100k.2)
 cor.test(diss75k.2, diss100k.2)
 
-0.6663041 
-0.9018106 
-0.9105807 
+0.9874641 
+0.9939042 
+0.9927469
 
 
 #Between runs
@@ -419,7 +419,7 @@ cor.test(diss100k, diss100k.2)
 
 #Pearson's correlation result: 
 
-1.0 (I double checked that I was using the correct matrices). 
+0.996168 
 
 ##plot
 par(mfrow=c(1,2))
@@ -428,6 +428,8 @@ image(matrix2.10)
 
 ```
 
+![alt_txt][]
+[]:https://cloud.githubusercontent.com/assets/12142475/23836525/0d7a437a-077a-11e7-8d01-e4582d5a05a9.png
 
 ######CHN
 
@@ -522,9 +524,9 @@ cor.test(diss75k, diss100k)
 
 #Pearson's correlation. Results
 
-0.6511991 
-0.9105099 
-0.9568654 
+0.817711  
+0.9464372  
+0.9704053  
 
 
 #Run2
@@ -533,9 +535,9 @@ cor.test(diss500.2, diss100k.2)
 cor.test(diss50k.2, diss100k.2)
 cor.test(diss75k.2, diss100k.2)
 
-0.6663041 
-0.9018106 
-0.9105807 
+0.7877207 
+0.9695955 
+0.9758337
 
 
 #Between runs
@@ -543,7 +545,7 @@ cor.test(diss100k, diss100k.2)
 
 #Pearson's correlation result: 
 
-1.0 (I double checked that I was using the correct matrices). 
+0.9661045 
 
 ##plot
 par(mfrow=c(1,2))
@@ -551,6 +553,9 @@ image(matrix1.10)
 image(matrix2.10)
 
 ```
+![alt_txt][CHN.tree]
+[CHN.tree]:https://cloud.githubusercontent.com/assets/12142475/23836421/20e1f586-0778-11e7-9577-7e48b87b5ccb.png
+
 
 
 ######CHS
