@@ -305,7 +305,7 @@ cat CHS.VS.matrix1.out |grep "ITER"
 
 #####Estimate convergence within and between matrices
 
-######CHS
+######CHall
 
 /Users/alexjvr/Applications/bayenv2/compiled_on_a_mac/CHall
 ```
@@ -1024,9 +1024,9 @@ cor.test(diss75k, diss100k)
 
 #Pearson's correlation. Results
 
-0.6511991 
-0.9105099 
-0.9568654 
+0.9633814  
+0.9742568 
+0.9611082 
 
 
 #Run2
@@ -1035,9 +1035,9 @@ cor.test(diss500.2, diss100k.2)
 cor.test(diss50k.2, diss100k.2)
 cor.test(diss75k.2, diss100k.2)
 
-0.6663041 
-0.9018106 
-0.9105807 
+0.942456 
+0.9802239  
+0.9747231 
 
 
 #Between runs
@@ -1045,7 +1045,7 @@ cor.test(diss100k, diss100k.2)
 
 #Pearson's correlation result: 
 
-1.0 (I double checked that I was using the correct matrices). 
+0.9793455
 
 ##plot
 par(mfrow=c(1,2))
@@ -1053,6 +1053,9 @@ image(matrix1.10)
 image(matrix2.10)
 
 ```
+
+![alt_txt][CZ.tree]
+[CZ.tree]:https://cloud.githubusercontent.com/assets/12142475/23836376/5f027792-0777-11e7-96ed-b82309e1c4c3.png
 
 
 #BayEnv2 Run
