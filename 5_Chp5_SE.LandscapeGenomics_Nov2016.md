@@ -1,4 +1,4 @@
-#SE Landscape genomics
+# SE Landscape genomics
 
 
 
@@ -51,8 +51,7 @@ EOF
 
 ```
 
-![alt_txt][Fig1]
-[Fig1]:https://cloud.githubusercontent.com/assets/12142475/20273129/6a5aba12-aa90-11e6-83fa-015ec87310ac.png
+![Fig1](https://cloud.githubusercontent.com/assets/12142475/20273129/6a5aba12-aa90-11e6-83fa-015ec87310ac.png)
 
 
 rename
@@ -81,8 +80,7 @@ qplot(BIN_START, N_VARIANTS, data=SE.10pisort, geom=c("boxplot", "jitter"), main
 qplot(BIN_START, PI, data=SE.10pisort, geom=c("boxplot", "jitter"), main="Nucleotide diversity SNPs in 10bp sliding window: SE dataset")
 ```
 
-![alt_txt][Fig2]
-[Fig2]:https://cloud.githubusercontent.com/assets/12142475/20315078/ca502278-ab5c-11e6-950b-c76421030338.png
+![Fig2](https://cloud.githubusercontent.com/assets/12142475/20315078/ca502278-ab5c-11e6-950b-c76421030338.png)
 
 test for significant difference: 
 
@@ -105,8 +103,7 @@ ggplot(SE.10pisort, aes(N_VARIANTS, fill=start))+ geom_histogram(binwidth=0.5, p
 
 ```
 
-![alt_txt][Fig3]
-[Fig3]:https://cloud.githubusercontent.com/assets/12142475/20316362/c72a86f6-ab61-11e6-8496-86a974ab15b8.png
+![Fig3](https://cloud.githubusercontent.com/assets/12142475/20316362/c72a86f6-ab61-11e6-8496-86a974ab15b8.png)
 
 ```
 summary(m1 <- glm(N_VARIANTS ~start, family="poisson", data=SE.10pisort))
@@ -428,8 +425,7 @@ test.table <- data.frame(table(SE.hwe.remove.file$SNP))
 hist(test.table$Freq, xlab="Number of pops in which locus occurs", ylab="Frequency", main="Frequency of SNPs deviating from HWE and H.Obs>0.5")
 ```
 
-![alt_txt][HWE.SNPs]
-[HWE.SNPs]:https://cloud.githubusercontent.com/assets/12142475/20355442/a0eedf80-ac21-11e6-8966-a6368d69f7e9.png
+![HWE.SNPs](https://cloud.githubusercontent.com/assets/12142475/20355442/a0eedf80-ac21-11e6-8966-a6368d69f7e9.png)
 
 
 Sturgeon paper removes loci that deviate from HWE in >60% of the population. I will us 5pops as the cutoff
@@ -501,14 +497,13 @@ test.table.keep <- data.frame(table(SE.hwe.keep.file$SNP))
 hist(test.table.keep$Freq, xlab="Number of pops", ylab="Frequency", main="Frequency of loci found in increasing number of populations")
 ```
 
-![alt_txt][HWE.SNPtokeep]
-[HWE.SNPtokeep]:https://cloud.githubusercontent.com/assets/12142475/20355441/a0ed449a-ac21-11e6-8d28-a99956ed553e.png
+![HWE.SNPtokeep](https://cloud.githubusercontent.com/assets/12142475/20355441/a0ed449a-ac21-11e6-8d28-a99956ed553e.png)
 
 
 
 
 
-##5. Filter loci with Linkage of r2 > 0.8 in >10 pops (>60% of populations)
+## 5. Filter loci with Linkage of r2 > 0.8 in >10 pops (>60% of populations)
 
 
 Subset the plink file with the HWE s3 filter and look only at variable loci. 
@@ -693,15 +688,13 @@ hist(FIN.ld$R2, main="FIN")
 
 ```
 
-![alt_txt][SE.R2]
-[SE.R2]:https://cloud.githubusercontent.com/assets/12142475/20363125/622b4168-ac3e-11e6-9b87-d74cb1e74738.png
+![SE.R2](https://cloud.githubusercontent.com/assets/12142475/20363125/622b4168-ac3e-11e6-9b87-d74cb1e74738.png)
 
 
-![alt_txt][SE.R2.2]
-[SE.R2.2]:https://cloud.githubusercontent.com/assets/12142475/20384698/0faffbaa-acb5-11e6-800b-dcb3eb42802f.png
+![SE.R2.2](https://cloud.githubusercontent.com/assets/12142475/20384698/0faffbaa-acb5-11e6-800b-dcb3eb42802f.png)
 
 
-###6. Remove individuals with too much missing data
+### 6. Remove individuals with too much missing data
 
 ```
 vcftools --vcf SE.Final.3963.vcf --missing-indv
@@ -721,8 +714,7 @@ q <- qplot(pop, F_MISS, data=dat.sort, geom=c("boxplot", "jitter"))
 vcftools --vcf SE.Final.3963.vcf --remove remove.imiss.names --recode --recode-INFO-all --out SE.Final.3963.171
 ```
 
-![alt_txt][SE.missing]
-[SE.missing]:https://cloud.githubusercontent.com/assets/12142475/20384838/82a04174-acb5-11e6-967f-2019a234b18f.png
+![SE.missing](https://cloud.githubusercontent.com/assets/12142475/20384838/82a04174-acb5-11e6-967f-2019a234b18f.png)
 
 
 
@@ -741,7 +733,7 @@ Genotyping rate: 0.701687
 
 
 
-###Final checks: 
+### Final checks: 
 
 convert the final dataset to plink and split into populations: 
 ```
@@ -883,11 +875,9 @@ ggplot(SE.MAF.file, aes(MAF, fill=pop))+ geom_histogram(binwidth=0.05, position=
 ```
 
 
-![alt_txt][maf.perpop.1]
-[maf.perpop.1]:https://cloud.githubusercontent.com/assets/12142475/20389651/01358e94-accb-11e6-8872-08406c2bd1d8.png
+![maf.perpop.1](https://cloud.githubusercontent.com/assets/12142475/20389651/01358e94-accb-11e6-8872-08406c2bd1d8.png)
 
-![alt_txt][maf.perpop.2]
-[maf.perpop.2]:https://cloud.githubusercontent.com/assets/12142475/20389661/06b313a0-accb-11e6-8abb-47c8279af9db.png
+![maf.perpop.2](https://cloud.githubusercontent.com/assets/12142475/20389661/06b313a0-accb-11e6-8abb-47c8279af9db.png)
 
 
 Nr of loci variable in >1 pop
@@ -920,8 +910,7 @@ summary(SE.SNPs.keep.var5pops)
 
 ```
 
-![alt_txt][Variable.loci]
-[Variable.loci]:https://cloud.githubusercontent.com/assets/12142475/20389920/6e275b30-accc-11e6-9c57-733562108857.png
+![Variable.loci](https://cloud.githubusercontent.com/assets/12142475/20389920/6e275b30-accc-11e6-9c57-733562108857.png)
 
 
 
@@ -938,7 +927,7 @@ vcftools --vcf SE.Final.3963.171.names.vcf --snps SE.SNPs.keep.var10pops --recod
 ```
 
 
-##RDA
+## RDA
 
 Redundancy Analysis. 
 
@@ -964,8 +953,7 @@ plink --file SE.var10pops.1353.171.plink --recode --recodeA --out SE.var10pops.1
 Look at the *nosex* file and create a file with an third column specifying the cluster level (here pop): 
 
 
-![alt_txt][cluster]
-[cluster]:https://cloud.githubusercontent.com/assets/12142475/20393131/022f5b26-acdb-11e6-87d4-7b8be12f5b14.png
+![cluster](https://cloud.githubusercontent.com/assets/12142475/20393131/022f5b26-acdb-11e6-87d4-7b8be12f5b14.png)
 
 
 Calculate allele frequency within each cluster level for both plink files
