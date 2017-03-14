@@ -1,4 +1,4 @@
-#SE: Adaptation to temperature across latitude
+# SE: Adaptation to temperature across latitude
 
 Population structure and adaptation to temperature across latitude in Scandinavia. 
 
@@ -17,7 +17,7 @@ Genomic patterns across environment.
 		- Environmental parameter that is particularly important?
 
 
-#Data
+# Data
 
 193 samples were de novo assembed using pyRAD
 
@@ -30,10 +30,10 @@ minDP = 4x between individuals
 max sites with Quality <20 = 4
 
 
-##Filtering: 
+## Filtering: 
 
 
-####Step 1: 
+#### Step 1: 
 
 Remove loci with >0.5 missingness across all individuals: 
 
@@ -131,7 +131,7 @@ I had to increase the memory allowance here. And remember to include the path to
 The conversion ran for >1 hour. (not sure how long. I left it running overnight)
 
 
-####step 2: rename
+#### step 2: rename
 
 ```
 
@@ -141,7 +141,7 @@ The conversion ran for >1 hour. (not sure how long. I left it running overnight)
 
 
 
-####Step 3: Missingness
+#### Step 3: Missingness
 
 Check the missingness across individuals
 ```
@@ -168,7 +168,7 @@ EOF
 
 
 
-##Dataset1
+## Dataset1
 
 This is the dataset filtered for missingnes with which I can calculate summary statistics. 
 
