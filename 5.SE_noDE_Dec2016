@@ -1,8 +1,8 @@
-#SE: Final dataset
+# SE: Final dataset
 
 After speaking with Victoria, I will include all the populations (even with <5 individuals per population) in the final dataset. Also, based on population structure analyses, I will exclude the DE populations, as they are from a different gene pool. 
 
-##Step 1: Remove DE
+## Step 1: Remove DE
 
 ```
 vcftools --vcf SEFinalc94d6m4p3.vcf --recode --recode-INFO-all --out SEFinalc94d6m4p3.vcf
@@ -39,8 +39,7 @@ SE.163.s1.sort$pop <- factor(SE.163.s1.sort$pop, levels=SE.163.s1.sort$pop)   ##
 qplot(pop, F_MISS, data=SE.163.s1.sort, geom=c("boxplot", "jitter"))
 ```
 
-![alt_txt][s1.missing]
-[s1.missing]:https://cloud.githubusercontent.com/assets/12142475/20754370/dd1ec17a-b70a-11e6-977d-08cf89dd767e.png
+![s1.missing](https://cloud.githubusercontent.com/assets/12142475/20754370/dd1ec17a-b70a-11e6-977d-08cf89dd767e.png)
 
 
 Calculate SFS & LD for s1
@@ -53,7 +52,7 @@ plink --file SE163.s1.plink --r2 --out SE163.s1.plink
 ```
 
 
-##Step 3-5 MAF, HWE, LD, thin
+## Step 3-5 MAF, HWE, LD, thin
 
 After each step, calculate LD & SFS
 ```
@@ -122,8 +121,7 @@ hist(Kir.L.frq$MAF, main="Kir.L (10, 3918, 94.7%) SFS")
 hist(FIN.frq$MAF, main="FIN (10, 3918, 75.4%) SFS")
 ```
 
-![alt_txt][SFS.s2]
-[SFS.s2]:https://cloud.githubusercontent.com/assets/12142475/20756148/dd752716-b711-11e6-84bb-20cad8635e76.png
+![SFS.s2](https://cloud.githubusercontent.com/assets/12142475/20756148/dd752716-b711-11e6-84bb-20cad8635e76.png)
 
 Only variable loci
 ```
@@ -146,8 +144,7 @@ for(i in names(SE.s2.freq.var.list))
 
 ```
 
-![alt_txt][SFS.s2]
-[SFS.s2]:https://cloud.githubusercontent.com/assets/12142475/20760255/c883f4aa-b71f-11e6-97c9-0aea039f5bf6.png
+![SFS.s2](https://cloud.githubusercontent.com/assets/12142475/20760255/c883f4aa-b71f-11e6-97c9-0aea039f5bf6.png)
 
 Variable loci across all populations
 ```
@@ -161,8 +158,7 @@ hist(SE.s2.var.loci.freq.keep$Freq, xlab="Nr pops", ylab="Frequency", main="Freq
 detach(SE.s2.freq.var.list)
 ```
 
-![alt_txt][variable.s2]
-[variable.s2]:https://cloud.githubusercontent.com/assets/12142475/20762249/09d0d094-b726-11e6-8946-1814e6810cad.png
+![variable.s2](https://cloud.githubusercontent.com/assets/12142475/20762249/09d0d094-b726-11e6-8946-1814e6810cad.png)
 
 Fixed loci across all populations
 ```
@@ -178,14 +174,13 @@ SE.s2.fixed.loci.freq.keep <- data.frame(table(SE.s2.fixed.loci.freq$SNP))
 hist(SE.s2.fixed.loci.freq.keep$Freq, xlab="Nr pops", ylab="Frequency", main="Frequency of fixed loci across 15 pops", breaks=seq(0,14, by=1.0))
 detach(SE.s2.freq.fixed.list)
 ```
-![alt_txt][fixed.s2]
-[fixed.s2]:https://cloud.githubusercontent.com/assets/12142475/20762566/1249f51a-b727-11e6-909f-99a857a6a39d.png
+![fixed.s2](https://cloud.githubusercontent.com/assets/12142475/20762566/1249f51a-b727-11e6-909f-99a857a6a39d.png)
 
 
 
 
 
-##step 6: Final checks: HWE, LD, missingness
+## step 6: Final checks: HWE, LD, missingness
 
 
 
