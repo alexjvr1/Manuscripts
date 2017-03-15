@@ -1,4 +1,4 @@
-#LFMM analyses of CHdata
+#  LFMM analyses of CHdata
 
 I want to identify loci associated with environment for the 6 CH datasets. Stba is removed from all datasets, hence 8 less individuals in CHall, CHS, and CHS.TI. 
 
@@ -15,7 +15,7 @@ I want to identify loci associated with environment for the 6 CH datasets. Stba 
 6. CZ.404.9608
 
 
-####Env Variables
+#### Env Variables
 
 Identified in https://github.com/alexjvr1/Manuscripts/blob/master/5.CHP2_CH_LandscapeGenomics.md
 
@@ -37,7 +37,7 @@ For CHS.VS temp.laying.date was mistakenly repeated as d=1. So there are 6 env v
 
 
 
-###Input files for LFMM
+### Input files for LFMM
 
 Working in this directory: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/LFMM
 
@@ -55,7 +55,7 @@ Input files
 2. Genotype file
 
 
-####Prepare input files
+#### Prepare input files
 
 Make sure that R3.3.1 is launched. (Or later than R3.2)
 
@@ -73,7 +73,7 @@ library(LEA)
 ```
 
 
-######1. .env file
+###### 1. .env file
 
 Convert the environmental data to the specific .ENV format needed by lfmm. Remember that .csv environmental input file needs env data for 
 all individuals. Make sure that all the empty cells are deleted in the .csv. Any NA's in the .env file will cause problems 
@@ -87,7 +87,7 @@ write.env(env, "CHN.n5.env")   ##convert to correct .env format
 ```
 
 
-######2. .geno file
+###### 2. .geno file
 
 Convert the vcf file to lfmm format in R
 
@@ -98,7 +98,7 @@ genotype = vcf2geno("name.vcf")
 ```
 
 
-#####Pop structure
+##### Pop structure
 
 
 use snmf to determine how many latent factors best describe the population structure:
@@ -148,7 +148,7 @@ Take note of the K for each sub-group. ie. It makes sense that CHS.VS + CHS.TI =
 
 
 
-#####Run LFMM
+##### Run LFMM
 
 And run lfmm at the chosen K. This should be run on the server. 
 ```
@@ -167,7 +167,7 @@ import.lfmmProject(obj.lfmmProject) ##to import the project into R from the new 
 
 
 
-######Postprocessing: 
+###### Postprocessing: 
 
 Based on the lambda calculated from run 1, I have decided to run 3 K for each dataset. Lambda should be close to or just below 1. Mine were all just above 1. 
 
@@ -178,7 +178,7 @@ stba had to be removed from CHS.TI, because of missing data in the env. variable
 First calculate the lambda for each K to determine what the correct K is: 
 
 
-#####CHN
+##### CHN
 snmf K = 4
 
 This is the old way of doing it (but I keep this here since this is how these projects were run). The new way is to export and import LFMM: 
@@ -298,6 +298,7 @@ dev.off()
 
 
 ![alt_txt][CHN.hist]
+
 [CHN.hist]:https://cloud.githubusercontent.com/assets/12142475/23813391/fa8b7f82-05de-11e7-8bd4-67543795a244.png
 
 
@@ -401,6 +402,7 @@ dev.off()
 ```
 
 ![alt_txt][CHN.Venn]
+
 [CHN.Venn]:https://cloud.githubusercontent.com/assets/12142475/23813445/3b901f38-05df-11e7-8bcd-235099f82013.png
 
 
@@ -439,7 +441,7 @@ CHN.LFMM.outliers <- as.character(CHN.LFMM.outliers$loci)
 ```
 
 
-#####CHS
+##### CHS
 snmf K = 10
 
 These datasets all have less individuals than the full dataset. I have to find out why. 
@@ -554,6 +556,7 @@ dev.off()
 
 
 ![alt_txt][CHS.hist]
+
 [CHS.hist]:https://cloud.githubusercontent.com/assets/12142475/23814596/658c4456-05e4-11e7-9f03-97fcdef0012c.png
 
 
@@ -657,6 +660,7 @@ dev.off()
 ```
 
 ![alt_txt][CHS.Venn]
+
 [CHS.Venn]:https://cloud.githubusercontent.com/assets/12142475/23814852/797d9432-05e5-11e7-99c7-7065ddcd6934.png
 
 
@@ -693,7 +697,7 @@ CHS.LFMM.outliers <- as.character(CHS.LFMM.outliers$loci)
 ```
 
 
-#####CHS.VS
+##### CHS.VS
 snmf K = 4
 
 These datasets all have less individuals than the full dataset. I have to find out why. 
@@ -808,6 +812,7 @@ dev.off()
 
 
 ![alt_txt][CHS.VS.hist]
+
 [CHS.VS.hist]:https://cloud.githubusercontent.com/assets/12142475/23815160/1997090c-05e7-11e7-8dc2-192d19014de5.png
 
 
@@ -911,6 +916,7 @@ dev.off()
 ```
 
 ![alt_txt][CHS.VS.Venn]
+
 [CHS.VS.Venn]:https://cloud.githubusercontent.com/assets/12142475/23815254/a9a2939a-05e7-11e7-8f4d-95d03f22a6de.png
 
 
@@ -948,7 +954,7 @@ CHS.VS.LFMM.outliers <- as.character(CHS.VS.LFMM.outliers$loci)
 ```
 
 
-#####CHS.TI
+##### CHS.TI
 snmf K = 6
 
 These datasets all have less individuals than the full dataset. I have to find out why. 
@@ -1062,6 +1068,7 @@ dev.off()
 
 
 ![alt_txt][CHS.TI.hist]
+
 [CHS.TI.hist]:https://cloud.githubusercontent.com/assets/12142475/23815917/34ad2138-05ea-11e7-82c6-10f980fe1a38.png
 
 
@@ -1165,6 +1172,7 @@ dev.off()
 ```
 
 ![alt_txt][CHS.TI.Venn]
+
 [CHS.TI.Venn]:https://cloud.githubusercontent.com/assets/12142475/23816013/c0d2f1c4-05ea-11e7-88ea-ad27439ba45f.png
 
 
@@ -1201,7 +1209,7 @@ CHS.TI.LFMM.outliers <- as.character(CHS.TI.LFMM.outliers$loci)
 ```
 
 
-#####CZ
+##### CZ
 snmf K = 9
 
 These datasets all have less individuals than the full dataset. I have to find out why. 
@@ -1315,6 +1323,7 @@ dev.off()
 
 
 ![alt_txt][CZ.hist]
+
 [CZ.hist]:https://cloud.githubusercontent.com/assets/12142475/23816379/c7afae0e-05ec-11e7-9ed4-c01e0793d8f8.png
 
 
@@ -1418,6 +1427,7 @@ dev.off()
 ```
 
 ![alt_txt][CZ.Venn]
+
 [CZ.Venn]:https://cloud.githubusercontent.com/assets/12142475/23816562/bb491226-05ed-11e7-8a5d-39ba2fcc19f7.png
 
 
