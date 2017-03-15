@@ -1,4 +1,4 @@
-#RDA analysis of CH dataset
+# RDA analysis of CH dataset
 
 RDA: Effect of Climate & Geog on genetic variation
 
@@ -11,25 +11,25 @@ And Victoria's paper: http://www.amjbot.org/content/103/1/33.full.pdf+html
 
 Paul Gugger tutorial: http://pgugger.al.umces.edu/assets/redundancy-analysis-for-landscape-genetics.pdf
 
-###Data:
+### Data:
 
 I'm using the full CH dataset. I have to run the analysis seperately for all the different partitions of the data to investigate adaptation
 at different geographic scales. 
 
-####1. CHall.n940.loci9608
+#### 1. CHall.n940.loci9608
 
-####2. CHN.n229.loci9608
+#### 2. CHN.n229.loci9608
 
-####3. CHS.n283.loci9608
+#### 3. CHS.n283.loci9608
 
-####4. CHS.VS.n135.loci9608
+#### 4. CHS.VS.n135.loci9608
 
-####5. CHS.TI.n148.loci9608
+#### 5. CHS.TI.n148.loci9608
 
-####6. CZ.n404.loci9608
+#### 6. CZ.n404.loci9608
 
 
-###Input files:
+### Input files:
 
 Plink files need to be generated on the server. The data are too large to subset on my Mac. Gives the fault: 
 
@@ -247,7 +247,7 @@ write.csv(CZ404.MAF4, file="CZ404.MAF.csv")
 
 
 
-####2. Geographic coordinates
+#### 2. Geographic coordinates
 
 paste coordinates into the MAF.csv file from Env.Data.all_20161025.csv
 
@@ -258,7 +258,7 @@ I will include elevation for geographic information for the CH data.
 i.e. lat, long, elev
 
 
-####3. Climate variables
+#### 3. Climate variables
 
 ```
 1. solar.rad.60d (amt of solar radiation 60 days after egg laying)
@@ -277,9 +277,9 @@ paste the 5 variables from /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics
 Note that stba has missing data here. I could remove this population from the rest of these analyses. 
 
 
-###Run RDA
+### Run RDA
 
-####1. CHall
+#### 1. CHall
 
 See this tutorial for the interpretation: REDUNDANCY ANALYSIS TUTORIAL: Landscape Genetics Paul Gugger redundancy-analysis-for-landscape-genetics.pdf on mac
 
@@ -357,6 +357,7 @@ dev.off()
 ```
 
 ![alt_txt][CH940.full.fig1]
+
 [CH940.full.fig1]:https://cloud.githubusercontent.com/assets/12142475/23798623/c56ded96-05a5-11e7-8085-70fb6aad317d.png
 
 
@@ -423,6 +424,7 @@ dev.off()
 
 
 ![alt_txt][CH940.Fig2]
+
 [CH940.Fig2]:https://cloud.githubusercontent.com/assets/12142475/23798791/6cee94bc-05a6-11e7-91e8-587383b3428c.png
 
 
@@ -486,6 +488,7 @@ dev.off()
 ```
 
 ![alt_txt][CH940.Fig3]
+
 [CH940.Fig3]:https://cloud.githubusercontent.com/assets/12142475/23798964/19945ab2-05a7-11e7-8465-30d221431940.png
 
 
@@ -544,7 +547,7 @@ write.table(CH940.RDA2.outliers.1percent, "CH940.RDA2.outliers", sep=" ", col.na
 
 
 
-####2. CHN
+#### 2. CHN
 
 See this tutorial for the interpretation: REDUNDANCY ANALYSIS TUTORIAL: Landscape Genetics Paul Gugger redundancy-analysis-for-landscape-genetics.pdf on mac
 
@@ -619,6 +622,7 @@ dev.off()
 ```
 
 ![alt_txt][CHN.Fig1]
+
 [CHN.Fig1]:https://cloud.githubusercontent.com/assets/12142475/23800453/c1e573cc-05ac-11e7-8b04-e0c335d1edcd.png
 
 
@@ -680,6 +684,7 @@ dev.off()
 ```
 
 ![alt_txt][pRDA.CHNgeog]
+
 [pRDA.CHNgeog]:https://cloud.githubusercontent.com/assets/12142475/23800567/323bcdce-05ad-11e7-9ea7-11de9c4df627.png
 
 ```
@@ -740,12 +745,13 @@ dev.off()
 
 
 ![alt_txt][pRDA.CHNclimate]
+
 [pRDA.CHNclimate]:https://cloud.githubusercontent.com/assets/12142475/23801293/eef1e2b2-05af-11e7-9318-7a09fc6317fd.png
 
 
 Find the most important loci associated with Climate
 
-##NBNB Still need to do this for the CHNdata
+## NBNB Still need to do this for the CHNdata
 ```
 summary(pRDA.CHNgeog)
 
@@ -798,7 +804,7 @@ write.table(CHN.RDA2.outliers.1percent, "CHN.RDA2.outliers", sep=" ", col.names=
 ```
 
 
-####3. CHS
+#### 3. CHS
 
 See this tutorial for the interpretation: REDUNDANCY ANALYSIS TUTORIAL: Landscape Genetics Paul Gugger redundancy-analysis-for-landscape-genetics.pdf on mac
 
@@ -876,6 +882,7 @@ dev.off()
 ```
 
 ![alt_txt][CHS.Fig1]
+
 [CHS.Fig1]:https://cloud.githubusercontent.com/assets/12142475/23801930/0bf1bc5a-05b2-11e7-8954-fd562989513f.png
 
 
@@ -939,6 +946,7 @@ dev.off()
 ```
 
 ![alt_txt][pRDA.CHSgeog]
+
 [pRDA.CHSgeog]:https://cloud.githubusercontent.com/assets/12142475/23802059/75764916-05b2-11e7-8dc8-71d3e8c19f74.png
 
 ```
@@ -1001,12 +1009,13 @@ dev.off()
 
 
 ![alt_txt][pRDA.CHSclimate]
+
 [pRDA.CHSclimate]:https://cloud.githubusercontent.com/assets/12142475/23802225/f27c7a7a-05b2-11e7-86b8-6c12e8b3f767.png
 
 
 Find the most important loci associated with Climate
 
-##NBNB Still need to do this for the CHNdata
+## NBNB Still need to do this for the CHNdata
 ```
 head(summary(pRDA.CHSgeog))
 
@@ -1062,7 +1071,7 @@ write.table(CHS.RDA2.outliers.1percent, "CHS.RDA2.outliers", sep=" ", col.names=
 
 
 
-####4. CHS.VS
+#### 4. CHS.VS
 
 ```
 library(vegan)
@@ -1134,6 +1143,7 @@ dev.off()
 ```
 
 ![alt_txt][CHS.VS.full.fig1]
+
 [CHS.VS.full.fig1]:https://cloud.githubusercontent.com/assets/12142475/23802427/97841474-05b3-11e7-8d44-cd92159a3fee.png
 
 
@@ -1193,6 +1203,7 @@ dev.off()
 
 
 ![alt_txt][CHS.VS.Fig2]
+
 [CHS.VS.Fig2]:https://cloud.githubusercontent.com/assets/12142475/23802573/0b9f49a0-05b4-11e7-886b-01d9b7b4defb.png
 
 
@@ -1253,6 +1264,7 @@ dev.off()
 ```
 
 ![alt_txt][CHS.VS.Fig3]
+
 [CHS.VS.Fig3]:https://cloud.githubusercontent.com/assets/12142475/23802708/67e21b8e-05b4-11e7-936a-9170ff6b281e.png
 
 
@@ -1309,7 +1321,7 @@ write.table(CHS.VS.RDA2.outliers.1percent, "CHS.VS.RDA2.outliers", sep=" ", col.
 
 ```
 
-####5. CHS.TI
+#### 5. CHS.TI
 
 ```
 library(vegan)
@@ -1378,6 +1390,7 @@ dev.off()
 ```
 
 ![alt_txt][CHS.TI.full.fig1]
+
 [CHS.TI.full.fig1]:https://cloud.githubusercontent.com/assets/12142475/23803001/6abec66c-05b5-11e7-8b04-71fca5e9b5b3.png
 
 
@@ -1440,6 +1453,7 @@ dev.off()
 
 
 ![alt_txt][CHS.TI.Fig2]
+
 [CHS.TI.Fig2]:https://cloud.githubusercontent.com/assets/12142475/23803098/bcd8240c-05b5-11e7-89ed-c659e6d6a900.png
 
 
@@ -1500,6 +1514,7 @@ dev.off()
 ```
 
 ![alt_txt][CHS.TI.Fig3]
+
 [CHS.TI.Fig3]:https://cloud.githubusercontent.com/assets/12142475/23803199/12397ee6-05b6-11e7-9214-24205ceae95d.png
 
 
@@ -1558,7 +1573,7 @@ write.table(CHS.TI.RDA2.outliers.1percent, "CHS.TI.RDA2.outliers", sep=" ", col.
 
 ```
 
-####6. CZ
+#### 6. CZ
 
 ```
 library(vegan)
@@ -1634,6 +1649,7 @@ dev.off()
 ```
 
 ![alt_txt][CZ.full.fig1]
+
 [CZ.full.fig1]:https://cloud.githubusercontent.com/assets/12142475/23803552/338e3dd8-05b7-11e7-9d71-d147c99a23db.png
 
 
@@ -1700,6 +1716,7 @@ dev.off()
 
 
 ![alt_txt][CZ.Fig2]
+
 [CZ.Fig2]:https://cloud.githubusercontent.com/assets/12142475/23803843/1dc60d18-05b8-11e7-97b3-fdf1c32ff38d.png
 
 
@@ -1763,6 +1780,7 @@ dev.off()
 ```
 
 ![alt_txt][CZ.Fig3]
+
 [CZ.Fig3]:https://cloud.githubusercontent.com/assets/12142475/23803964/937a0118-05b8-11e7-89c1-720883a40a06.png
 
 
