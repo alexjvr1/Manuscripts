@@ -1,4 +1,4 @@
-#Migration-selection balance
+# Migration-selection balance
 
 Authors:
 Alexandra Jansen van Rensburg, Martin Stervander, Paulette Bloomer, Bengt Hansson, Sam Cushman, Erin Landguth, Peter Ryan, Reik Leiterer, Fred Guillaume
