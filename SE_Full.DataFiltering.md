@@ -1,4 +1,4 @@
-#SE Full Data Filtering
+# SE Full Data Filtering
 
 I'm getting strange results with the 1Million reads/sample subset of the SE dataset. The SFS and LD (r2) are unexpected. 
 
@@ -37,7 +37,7 @@ Step 6. removed fixed loci per pop/region
 
 
 
-##Step 1: Filter for missingness across loci
+## Step 1: Filter for missingness across loci
 
 Remove loci genotyped in <80% individuals. 
 
@@ -89,10 +89,12 @@ qplot(pop, F_MISS, data=SE.Full.s1.sort, geom=c("boxplot", "jitter"))
 ```
 
 ![alt_txt][Fig1.s1]
+
 [Fig1.s1]:https://cloud.githubusercontent.com/assets/12142475/20427224/300d40c8-ad83-11e6-88d3-fb0c1ea68ee9.png
 
 
 ![alt_txt][Fig2.s1]
+
 [Fig2.s1]:https://cloud.githubusercontent.com/assets/12142475/20428010/3105762c-ad87-11e6-82c7-f53c1988d402.png
 
 
@@ -116,15 +118,17 @@ hist(SE.s1.r2$R2, main="SE s1 (max.miss0.8; 15294; 193) R2")
 ```
 
 ![alt_txt][SFS.s1]
+
 [SFS.s1]:https://cloud.githubusercontent.com/assets/12142475/20428334/c9cbff2e-ad88-11e6-8793-8247b7530f27.png
 
 
 ![alt_txt][R2.s1]
+
 [R2.s1]:https://cloud.githubusercontent.com/assets/12142475/20428410/452de7ae-ad89-11e6-9acf-0f8773e34525.png
 
 
 
-##Step 2-4. Filter MAF 0.05, thin, max-missing 0.25 
+## Step 2-4. Filter MAF 0.05, thin, max-missing 0.25 
 
 ```
 vcftools --vcf SE.s1.maxmiss0.8.names.recode.vcf --maf 0.05 --recode --recode-INFO-all --out SE.s2.0.8.maf0.05
@@ -158,20 +162,21 @@ plink --file SE.s5.plink --exclude HWE.loci.remove.names --recode --recodeA --ou
 ```
 
 
-##Removing Sk_Ho from the analyses
+## Removing Sk_Ho from the analyses
 
 It looks like Sk_Ho is problematic: there is more variation in this population compared with the others. 
 All of the individuals in this population are based on concatenated datasets: i.e. data from 2 or more runs that have been added together. I think there might be a problem with how the data were concatenated (perhaps individuals were not correctly combined?) or one of the plates (I think perhaps H22 is problematic - based on the misassignment of CH individuals from this plate) has mislabeled samples. 
 
 These data will have to be re-analysed. But I will do this at a later stage. For now I will remove these samples from the analysis to finish this chapter. 
 
-##Removing Sk.Ho from analyses
+## Removing Sk.Ho from analyses
 
 ![alt_txt][SFS.Sk.pops]
+
 [SFS.Sk.pops]:https://cloud.githubusercontent.com/assets/12142475/20597838/46e279c2-b246-11e6-8ee8-752cc48daa91.png
 
 
-##remove Sk.Ho from dataset
+## remove Sk.Ho from dataset
 ```
 vcftools --vcf SE.s4.171.recode.vcf --remove lowDP.indiv --recode --recode-INFO-all --out SE.s4.148
 vcftools --vcf SE.s4.148.recode.vcf --maf 0.05 --recode --recode-INFO-all --out SE.s5.148.maf0.05
@@ -213,6 +218,7 @@ hist(SE.s5.148.freq$MAF, main="SE s5 (max.miss0.8; maf 0.05; thin; 2118; 148) SF
 ```
 
 ![alt_txt][SFS.Final.148]
+
 [SFS.Final.148]:https://cloud.githubusercontent.com/assets/12142475/20598485/93144f2a-b249-11e6-9b6a-0a5edbf95ee4.png
 
 
@@ -241,6 +247,7 @@ hist(SE.s6.freq$MAF, main="SE s4 (max.miss0.8; maf 0.05; thin; 2167; 167) SFS", 
 
 
 ![alt_txt][SFS.s1-6]
+
 [SFS.s1-4]:https://cloud.githubusercontent.com/assets/12142475/20595904/36f88ede-b23c-11e6-9f04-9112c431147a.png
 
 
@@ -282,13 +289,15 @@ qplot(pop, F_MISS, data=SE.s6.miss.sort, geom=c("boxplot", "jitter"))
 ```
 
 ![alt_txt][miss.s4]
+
 [miss.s4]:https://cloud.githubusercontent.com/assets/12142475/20431948/394aada0-ad9d-11e6-9162-12229591b63e.png
 
 ![alt_txt][miss.s6]
+
 [miss.s6]:https://cloud.githubusercontent.com/assets/12142475/20599639/7968fe1c-b24f-11e6-8f66-fbbf2776ee2b.png
 
 
-##Subset data
+## Subset data
 
 into populations and regions
 
@@ -407,52 +416,62 @@ hist(SE.fix.region.table.keep$Freq, xlab="Number of pops", ylab="Frequency", mai
 ```
 
 
-##SFS.s4.regions
+## SFS.s4.regions
 ![alt_txt][SFS.s4.regions]
+
 [SFS.s4.regions]:https://cloud.githubusercontent.com/assets/12142475/20433442/df6d3152-ada3-11e6-9a02-4123ad1ff7f4.png
 
 
-##SFS.s6.regions
+## SFS.s6.regions
 ![alt_txt][SFS.s6.regions]
+
 [SFS.s6.regions]:https://cloud.githubusercontent.com/assets/12142475/20599759/32c752e6-b250-11e6-92a7-61b9f659ddf5.png
 
 
-##SFS.s4.variable only
+## SFS.s4.variable only
 ![alt_txt][var.only]
+
 [var.only]:https://cloud.githubusercontent.com/assets/12142475/20435155/4d959fb4-adab-11e6-99d7-cc0fd54519f2.png
 
-##SFS.s6.variable only
+## SFS.s6.variable only
 ![alt_txt][var.only.s6]
+
 [var.only.s6]:https://cloud.githubusercontent.com/assets/12142475/20599880/e3c6013c-b250-11e6-9d94-b3108f2b0269.png
 
 
 
-##s4 Frequency fixed loci
+## s4 Frequency fixed loci
 ![alt_txt][freq.fixed]
+
 [freq.fixed]:https://cloud.githubusercontent.com/assets/12142475/20435161/56ab279a-adab-11e6-8ad5-2a512cb2c689.png
 
 
-##s4 Frequency variable loci
+## s4 Frequency variable loci
 ![alt_txt][freq.var]
+
 [freq.var]:https://cloud.githubusercontent.com/assets/12142475/20495176/452bf2ac-b020-11e6-87bb-ec23ccb29357.png
 
-##s4 Variable sites only
+## s4 Variable sites only
 ![alt_txt][SFS.var.allregions]
+
 [SFS.var.allregions]:https://cloud.githubusercontent.com/assets/12142475/20478502/ad6c623e-afda-11e6-8607-c630767538ba.png
 
-##s4 Adjusted bin width increments of ~MAC 1 
+## s4 Adjusted bin width increments of ~MAC 1 
 ![alt_txt][SFS.var.allregions.adjbinwidth]
+
 [SFS.var.allregions.adjbinwidth]:https://cloud.githubusercontent.com/assets/12142475/20478501/ad4d9f84-afda-11e6-9e3e-c936431fac6e.png
 
 
 
-##s6 Frequency fixed loci
+## s6 Frequency fixed loci
 ![alt_txt][freq.fixed.s6]
+
 [freq.fixed.s6]:https://cloud.githubusercontent.com/assets/12142475/20600482/25939de2-b254-11e6-9a58-949041539ccd.png
 
 
-##s6 Frequency variable loci
+## s6 Frequency variable loci
 ![alt_txt][freq.var.s6]
+
 [freq.var.s6]:https://cloud.githubusercontent.com/assets/12142475/20600481/25935440-b254-11e6-8840-2c3640e46715.png
 
 
@@ -460,7 +479,7 @@ hist(SE.fix.region.table.keep$Freq, xlab="Number of pops", ylab="Frequency", mai
 
 
 
-##R2 LD
+## R2 LD
 
 Checking for linkage 
 ```
@@ -536,19 +555,21 @@ Starts at 0.2, because:
 Finland still has high R2, because: 
 
 ![alt_txt][R2.variableLoci]
+
 [R2.variableLoci]:https://cloud.githubusercontent.com/assets/12142475/20603559/5b809c3a-b262-11e6-9a90-d9c0da234060.png
 
 
 
 Frequency of loci R2>0.8
 ![alt_txt][R2.3pop]
+
 [R2.3pop]:https://cloud.githubusercontent.com/assets/12142475/20603558/5b804d16-b262-11e6-984e-54cd5a71c70a.png
 
 
 
-##Population structure
+## Population structure
 
-###Fst
+### Fst
 
 Convert plink s5 to structure using pgdspider, and import into R
 ```
@@ -619,15 +640,17 @@ legend("bottomleft", c("DE", "SK", "Upp", "Um", "Lul", "Kir", "FIN"), xpd = TRUE
 
 
 ![alt_txt][Fst.17pops]
+
 [Fst.17pops]:https://cloud.githubusercontent.com/assets/12142475/20605840/a3af1652-b26d-11e6-81a9-fffef37154d4.png
 
 ![alt_txt][Fst.7regions]
+
 [Fst.7regions]:https://cloud.githubusercontent.com/assets/12142475/20605871/d05a0996-b26d-11e6-80f3-176b2086edff.png
 
 
 
 
-###IBD
+### IBD
 
 Fst/(1-Fst) vs log.dist(km) - according to Rousset et al. 1997, this is correlated with the effective population density (De) and effective dispersal distance (variance)
 
@@ -712,18 +735,21 @@ title("Isolation by distance plot - SE regions")
 ```
 
 ![alt_txt][IBD.SEall]
+
 [IBD.SEall]:https://cloud.githubusercontent.com/assets/12142475/20606328/7690e44a-b270-11e6-97af-4cc2eb089190.png
 
 ![alt_txt][IBD.SEonly]
+
 [IBD.SEonly]:https://cloud.githubusercontent.com/assets/12142475/20606327/7690b54c-b270-11e6-806b-9abe07862590.png
 
 
 ![alt_txt][IBD.region]
+
 [IBD.region]:https://cloud.githubusercontent.com/assets/12142475/20490586/cbf78402-b00e-11e6-9866-bc70d20398db.png
 
 
 
-###AMOVA
+### AMOVA
 
 http://grunwaldlab.github.io/Population_Genetics_in_R/AMOVA.html
 
@@ -788,6 +814,7 @@ Permutation number:   999
 ```
 
 ![alt_txt][AMOVA]
+
 [AMOVA]:https://cloud.githubusercontent.com/assets/12142475/20623482/1040a2be-b308-11e6-92ad-570212235f23.png
 
 
@@ -851,11 +878,12 @@ Permutation number:   999
 Randomised samples
 
 ![alt_txt][AMOVA.random]
+
 [AMOVA.random]:https://cloud.githubusercontent.com/assets/12142475/20623863/faefc384-b309-11e6-8e13-44fd4d78190e.png
 
 
 
-###DAPC
+### DAPC
 
 tutorial-dapc: A tutorial for Discriminant Analysis of Principal Components (DAPC) using adegenet 2.0.0
 
@@ -894,17 +922,20 @@ scatter(dapc1.SE148)
 ```
 
 ![alt_txt][DAPC.148]
+
 [DAPC.148]:https://cloud.githubusercontent.com/assets/12142475/20624232/0ea393ae-b30c-11e6-8840-3685e3fd023f.png
 
 ![alt_txt][DAPC.148.2]
+
 [DAPC.148.2]:https://cloud.githubusercontent.com/assets/12142475/20625975/b2dbf8ee-b316-11e6-8b64-c0bca7d057eb.png
 
 ![alt_txt][DAPC.148.3]
+
 [DAPC.148.3]:https://cloud.githubusercontent.com/assets/12142475/20625944/8461363c-b316-11e6-8c10-5e490c976210.png
 
 
 
-###PCA
+### PCA
 
 
 PCAdapt in R:
@@ -945,6 +976,7 @@ plot(x, option="screeplot")  ##PC for pop structure = on the steep curve
 ```
 
 ![alt_txt][pcadapt.148.scree]
+
 [pcadapt.148.scree]:https://cloud.githubusercontent.com/assets/12142475/20627427/399c5d0c-b320-11e6-8492-cb21faea7f8c.png
 
 
@@ -968,21 +1000,23 @@ plot(x,option="scores",pop=poplist)
 ```
 
 ![alt_txt][pcadapt.pop]
+
 [pcadapt.pop]:https://cloud.githubusercontent.com/assets/12142475/20627810/cd7147c0-b322-11e6-95b4-a61f35f7ec7c.png
 
 ![alt_txt][pcadapt.regions]
+
 [pcadapt.regions]:https://cloud.githubusercontent.com/assets/12142475/20627811/cd719086-b322-11e6-99ef-531d948b7f0c.png
 
 
-###fastStructure
+### fastStructure
 
 
 
-###TESS3
+### TESS3
 
 
 
-##RDA
+## RDA
 
 Input files: 
 
