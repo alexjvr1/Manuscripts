@@ -1,10 +1,10 @@
-#Genomics of adaptation. 
+# Genomics of adaptation. 
 
-##What to expect, and how to search for the signals. 
+## What to expect, and how to search for the signals. 
 
 A Summary of the literature
 
-##What to expect: 
+## What to expect: 
 
 Most of this is from theory (models)
 
@@ -114,12 +114,13 @@ Positive: genotype-first approach. I.e. no bias in deciding what the phenotype u
 
 
 ![alt_txt][joost.table1]
+
 [joost.table1]:https://cloud.githubusercontent.com/assets/12142475/15557079/f310ed42-2285-11e6-864e-468724ef4495.png
 
 
-####Demographic effects on loci: 
+#### Demographic effects on loci: 
 
-#####Gene-flow/selection balance
+##### Gene-flow/selection balance
 
 When gene flow is high, loci are unlikely to become fixed. But if gene-flow is low, a new selected allele is much more likely to become fixed in a geographically heterogeneous environment. 
 
@@ -132,7 +133,7 @@ When gene flow is high, loci are unlikely to become fixed. But if gene-flow is l
 
 
 
-#####Population size changes
+##### Population size changes
 
 Large populations: more likey for new mutations to arise, thus hard sweeps. 
 
@@ -145,11 +146,12 @@ How do I identify sweeps under different demographic scenarios?
 
 
 
-##Landscape genomics/Environmental association analyses
+## Landscape genomics/Environmental association analyses
 
 These methods corrolate allele frequencies with environmental variables. They are more likely to identify ecologically relevant loci (Eckert et al 2010). But these methods do not take population structure or demographic history into account, which could lead to false positives. 
 
 ![alt_txt][Joost2]
+
 [Joost2]:https://cloud.githubusercontent.com/assets/12142475/15559047/d54f6d84-2293-11e6-8b9d-af6c5d8d598e.png
 
 
@@ -173,25 +175,26 @@ Ways to correct for population structure:
 
 
 
-###Why are we detecting different loci with the different methods?
+### Why are we detecting different loci with the different methods?
 
 
 
 
-###Combining methods
+### Combining methods
 
 We should be combining population genomic and landscape genomic methods when looking for adaptation/selection in natural populations. 
 
 -> Explain why allele frequencies differ between populations + spatial genetic variation in relation to environmental adaptation, while correcting for demographic history and population structure. 
 
 ![alt_txt][comb]
+
 [comb]:https://cloud.githubusercontent.com/assets/12142475/15559116/415d5d42-2294-11e6-9375-1a676905be4b.png
 
 
-##Repeatability of selection
+## Repeatability of selection
 
 
-###How frequent is parallel patterns of adaptation? 
+### How frequent is parallel patterns of adaptation? 
 
 
 
@@ -205,15 +208,15 @@ Genes
 Mutations
 
 
-###Parallelism in quantitative traits?
+### Parallelism in quantitative traits?
 
 
 
-##What are the appropriate methods to use and when? 
+## What are the appropriate methods to use and when? 
 
 
 
-##Describing neutral demographic history of populations
+## Describing neutral demographic history of populations
 
 Based on expected site frequency spectrum (ie. frequencies of the segregating sites), linkage disequilibrium (ie. association between segregating mutations), divergence data (i.e. fixed differences between populations/species). 
 
@@ -223,7 +226,7 @@ LD - Genomic scans for adaptive sweeps/fixations (Pavlidis et al. 2010)
 
 Recurrent hitchiking estimation (e.g. Jensen et al. 2008). 
 
-###ML-based approaches
+### ML-based approaches
 
 
 ###Approximate Bayesian approaches
