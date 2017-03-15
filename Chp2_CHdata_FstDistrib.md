@@ -1,4 +1,4 @@
-#CH Data: Fst distributions
+# CH Data: Fst distributions
 
 1. Neutral Fst distribution 
 
@@ -16,7 +16,7 @@
 
 Total: 42 distributions
 
-###Input files
+### Input files
 
 This is to find loci that explain differentiation between populations more than neutral expectation
 ```
@@ -34,7 +34,7 @@ copy everything to here: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/s
 
 
 
-###Neutral Frequency distributions of Fst per locus
+### Neutral Frequency distributions of Fst per locus
 
 1. CHall
 ```
@@ -61,6 +61,7 @@ dev.off()
 CHall940.neutral Fst
 
 ![alt_txt][CH940.Fst]
+
 [CH940.Fst]:https://cloud.githubusercontent.com/assets/12142475/23822706/939bf45e-0652-11e7-93cc-25a8ec1ed89e.png
 
 
@@ -87,6 +88,7 @@ dev.off()
 ```
 
 ![alt_txt][CHN.Fst]
+
 [CHN.Fst]:https://cloud.githubusercontent.com/assets/12142475/23823217/2b018b46-065e-11e7-8613-c1ca3cf518fb.png
 
 
@@ -113,6 +115,7 @@ dev.off()
 ```
 
 ![alt_txt][CHS.Fst]
+
 [CHS.Fst]:https://cloud.githubusercontent.com/assets/12142475/23823039/ba436b4e-0659-11e7-859f-e4ede291522d.png
 
 
@@ -140,6 +143,7 @@ dev.off()
 ```
 
 ![alt_txt][CHS.TI.Fst]
+
 [CHS.TI.Fst]:https://cloud.githubusercontent.com/assets/12142475/23823123/e9663aa8-065b-11e7-89f4-c7520ddce7a2.png
 
 
@@ -166,6 +170,7 @@ dev.off()
 ```
 
 ![alt_txt][CHS.VS.Fst]
+
 [CHS.VS.Fst]:https://cloud.githubusercontent.com/assets/12142475/23823223/47246762-065e-11e7-8bad-32198b51f306.png
 
 
@@ -193,6 +198,7 @@ dev.off()
 ```
 
 ![alt_txt][CZ.Fst]
+
 [CZ.Fst]:https://cloud.githubusercontent.com/assets/12142475/23823234/7ab4f0ce-065e-11e7-9661-042543640401.png
 
 
@@ -208,4 +214,5 @@ hist(stats.hier.CHS.VS135.perlocus$Fst, xlim=c(-0.2, 1.0), breaks=240)
 
 ```
 ![alt_txt][Fstplots]
+
 [Fstplots]:https://cloud.githubusercontent.com/assets/12142475/23823297/e0e925da-065f-11e7-8c5f-216c9718e084.png
