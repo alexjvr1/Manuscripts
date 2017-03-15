@@ -1,4 +1,4 @@
-#Bayenv2: CHall data
+# Bayenv2: CHall data
 
 
 I want to identify loci associated with environment for the 6 CH datasets. stba is removed from all datasets (due to missing env data),
@@ -47,7 +47,7 @@ https://bitbucket.org/tguenther/bayenv2_public/src/8e4039f64d61?at=default
 NB: population order in the input files should all be the same.
 
 
-##1. Covariance matrix estimation
+## 1. Covariance matrix estimation
 
 Use a random set of 1000SNPs for matrix estimation. 
 
@@ -61,7 +61,7 @@ I estimated Fst distributions per locus for each of the six datasets. To make su
 
 4. Calculate covariance matrix1 + 2
 
-####CHall
+#### CHall
 
 1. Fst<0.6
 ```
@@ -97,7 +97,7 @@ bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets
 
 
 
-####CHN
+#### CHN
 
 1. Fst<0.4
 ```
@@ -132,7 +132,7 @@ bayenv sample file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subset
 bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHN/CHN229.1000
 
 
-####CHS
+#### CHS
 
 1. Fst<0.5
 ```
@@ -167,7 +167,7 @@ bayenv sample file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subset
 bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHS/CHS283.1000
 
 
-####CHS.TI
+#### CHS.TI
 
 1. Fst<0.5
 ```
@@ -202,7 +202,7 @@ bayenv sample file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subset
 bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHS.TI/CHS.TI148.1000
 
 
-####CHS.VS
+#### CHS.VS
 
 1. Fst<0.5
 ```
@@ -238,7 +238,7 @@ bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets
 
 
 
-####CZ
+#### CZ
 
 1. Fst<0.4
 ```
@@ -303,9 +303,9 @@ cat CHS.VS.matrix1.out |grep "ITER"
 ```
 
 
-#####Estimate convergence within and between matrices
+##### Estimate convergence within and between matrices
 
-######CHall
+###### CHall
 
 /Users/alexjvr/Applications/bayenv2/compiled_on_a_mac/CHall
 ```
@@ -429,9 +429,10 @@ image(matrix2.10)
 ```
 
 ![alt_txt][CHall.tree]
+
 [CHall.tree]:https://cloud.githubusercontent.com/assets/12142475/23836525/0d7a437a-077a-11e7-8d01-e4582d5a05a9.png
 
-######CHN
+###### CHN
 
 /Users/alexjvr/Applications/bayenv2/compiled_on_a_mac/CHN
 ```
@@ -554,11 +555,12 @@ image(matrix2.10)
 
 ```
 ![alt_txt][CHN.tree]
+
 [CHN.tree]:https://cloud.githubusercontent.com/assets/12142475/23836421/20e1f586-0778-11e7-9577-7e48b87b5ccb.png
 
 
 
-######CHS
+###### CHS
 
 /Users/alexjvr/Applications/bayenv2/compiled_on_a_mac/CHS
 ```
@@ -681,11 +683,12 @@ image(matrix2.10)
 
 ```
 ![alt_txt][CHS.tree]
+
 [CHS.tree]:https://cloud.githubusercontent.com/assets/12142475/23836579/d39e3d5e-077a-11e7-84be-862d29565441.png
 
 
 
-######CHS.VS
+###### CHS.VS
 
 /Users/alexjvr/Applications/bayenv2/compiled_on_a_mac/CHS.VS
 ```
@@ -809,11 +812,12 @@ image(matrix2.10)
 ```
 
 ![alt_txt][CHS.VS.tree]
+
 [CHS.VS.tree]:https://cloud.githubusercontent.com/assets/12142475/23826814/525b433e-06a5-11e7-84ed-948b4f9f15da.png
 
 
 
-######CHS.TI
+###### CHS.TI
 
 /Users/alexjvr/Applications/bayenv2/compiled_on_a_mac/CHS.TI
 ```
@@ -1060,25 +1064,26 @@ image(matrix2.10)
 ```
 
 ![alt_txt][CZ.tree]
+
 [CZ.tree]:https://cloud.githubusercontent.com/assets/12142475/23836376/5f027792-0777-11e7-96ed-b82309e1c4c3.png
 
 
-#BayEnv2 Run
+# BayEnv2 Run
 
 Once all the input files have been created, copy them to the fgcz47 server and fun BayEnv2: 
 
-###1. Normalised .env file 
+### 1. Normalised .env file 
 
 These have been created before and are already in the BayEnv2 folder on my computer.
 
 /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2
 
-###2. MATRIX file: copy the last matrix from one of the covariance matrices. 
+### 2. MATRIX file: copy the last matrix from one of the covariance matrices. 
 
 Make sure to copy the file to excel first to check the spacing between all numbers. Also to remove stba from the CHS, CHall, and CHS.VS 
 datasets. Copy and nano into a .env file on the server. 
 
-###3. BayEnv2 input file 
+### 3. BayEnv2 input file 
 
 Created using pgdspider. These were all created before. And are in the same folder as above. For code, see: https://github.com/alexjvr1/Manuscripts/blob/master/5.CHP2_CH_LandscapeGenomics.md
 
