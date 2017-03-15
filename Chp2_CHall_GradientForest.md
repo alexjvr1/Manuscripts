@@ -1,6 +1,6 @@
-#Gradient Forest CHall
+# Gradient Forest CHall
 
-###Datasets:
+### Datasets:
 
 3 Datasets for each regions: Neutral, EAA, Fstoutliers
 
@@ -17,7 +17,7 @@
 6. CHS.TI
 
 
-#Gradient Forest Analysis
+# Gradient Forest Analysis
 
 Here I aim to: 
 
@@ -30,7 +30,7 @@ Here I aim to:
 I'm using the package GradientForest and the method described by FitzPatrick & Keller 2013
 
 
-##Data
+## Data
 
 I'm using 3 different datasets: 
 
@@ -41,7 +41,7 @@ I'm using 3 different datasets:
 3. "Neutral" loci (all - Data1+2)
 
 
-##Presenting Results
+## Presenting Results
 
 As in the Fitzpatric paper.
 
@@ -65,7 +65,7 @@ As in the Fitzpatric paper.
 I had a lot of problems creating the geographic maps. I got scripts from Karina (from Victoria Sork's lab) which created "greengrid" raster files with data extracted from 2-10k points. However, the resolution for this was always really low. It turns out I can create the maps using the scripts from Fitzpatrick & Keller 2015 by just using the raster layers directly (i.e. all the points rather than a subset of random points). 
 
 
-###Table 1
+### Table 1
 
 The R2 can be obtained from the importance of each "Species" in the gf model:  see getAnywhere(performance.plot)
 ```
@@ -101,7 +101,7 @@ hist(perf.Fst)
 
 
 
-###Fig1: R2 heatmap
+### Fig1: R2 heatmap
 ```
 #R
 
@@ -133,11 +133,12 @@ theme(axis.title.x=element_blank(), axis.title.y=element_blank())   ##remove nam
 ```
 
 ![alt_txt][Fig1]
+
 [Fig1]:https://cloud.githubusercontent.com/assets/12142475/22826395/85140a42-ef92-11e6-8dea-5c885369b22b.png
 
 
 
-###Fig2: Average allelic turnover across all three datasets. 
+### Fig2: Average allelic turnover across all three datasets. 
 
 It took me a while to find the code for the gf plots so that I could figure out what was being plotted, and so combine the plots. 
 ```
@@ -318,19 +319,21 @@ dev.off()
 ```
 
 ![alt_txt][Fig2]
+
 [Fig2]:https://cloud.githubusercontent.com/assets/12142475/22886423/13fc2d1c-f1fe-11e6-9f5b-2fbad3e0ca54.png
 
 
-#4 Individual SNPs
+# 4 Individual SNPs
 Plot of individual SNPs for a specific dataset and environmental variable
 ```
 plot(gf.Fst.model.SEtemp, plot.type="C", imp.vars="bio5", show.species=T, ylim=c(0,0.5))
 
 ```
 ![alt_txt][Fig3]
+
 [Fig3]:https://cloud.githubusercontent.com/assets/12142475/22886425/19e50622-f1fe-11e6-9b8e-8d91624e3b87.png
 
-#5. PCA for each map
+# 5. PCA for each map
 
 Plot the first two PCs for each dataset. Include samples on the PCA, and the first two axes of differentiation. 
 
@@ -465,7 +468,7 @@ dev.off()
 
 
 
-#6. Geographic plots
+# 6. Geographic plots
 
 I'm using the Fitzpatric & Keller 2015 code for best results. 
 
@@ -498,7 +501,7 @@ A raster base layer to be mapped on. Here I create a srtm elevation map in grey 
 
 
 
-###2. env_Trns.SE.complete
+### 2. env_Trns.SE.complete
 
 extract all the information from the raster layers. Remove unwanted layers. Remove missing data. 
 
@@ -568,7 +571,7 @@ env.trns.mask.SE.complte <- env.trns.mask.SE[complete.cases(env.trns.mask.SE),] 
 ```
 
 
-###3. Predictor maps
+### 3. Predictor maps
 ```
 #library(gradientForest)
 # transform env using gf models, see ?predict.gradientForest
@@ -597,7 +600,7 @@ pred.ENV.mask.complete <- pred.ENV.mask[complete.cases(pred.ENV.mask),]
 ```
 
 
-###4. Define functions
+###  4. Define functions
 
 ```
 # Mapping spatial genetic variation --------------------------------------------
@@ -646,7 +649,7 @@ RGBdiffMap <- function(predMap1, predMap2, rast, mapCells){
 }
 ```
 
-###5. Rast & sampling coordinates
+### 5. Rast & sampling coordinates
 
 I just used one of the raster layers from climate2. 
 
@@ -699,7 +702,7 @@ srtm.SEall.crop <- crop(srtm.SEall, extent(9,23,52,70)) ##crop to the same exten
 
 ```
 
-###6. Mapping
+### 6. Mapping
 
 ```
 # OK, on to mapping. Script assumes:
@@ -766,12 +769,13 @@ writeRaster(ENV.RGBmap.mask, "/.../ENV.RGBmap.mask_map.tif", format="GTiff", ove
 Left to right: Neutral, Fst, ENV
 
 ![alt_txt][GF.maps.PCA]
+
 [GF.maps.PCA]:https://cloud.githubusercontent.com/assets/12142475/23069483/eb4e0c82-f527-11e6-98c7-3da7fb9eeecc.png
 
 
 
 
-####Differences between maps
+#### Differences between maps
 
 
 Neutral vs Fst
@@ -861,7 +865,7 @@ writeRaster(diffFst.ENV[[2]], "/.../diffFst.ENV.tif", format="GTiff", overwrite=
 
 
 
-###Code for plot.gradientForest
+### Code for plot.gradientForest
 
 I couldn't find the code for the gradient forest plots, so I couldn't figure out what was actually being plotted! 
 
