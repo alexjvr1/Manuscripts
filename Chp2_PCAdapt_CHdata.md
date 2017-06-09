@@ -24,6 +24,95 @@ cp /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/input.files_sub
 
 ```
 
+
+## 1. CHall
+
+### 1. Calculate the number of Principal Components
+
+```
+library(pcadapt)
+
+CHall <- read.pcadapt("CH.940.9760.plink.ped", type="ped")
+Summary:
+
+        - input file      CH.940.9760.plink.ped
+        - output file     CH.940.9760.plink.pcadapt
+
+	- number of individuals detected:	940
+	- number of loci detected:		9696
+
+File has been sucessfully converted.
+
+##Check the nr of PCs
+
+x.CHall <- pcadapt(CHall, K=20)
+
+Reading file CH.940.9760.plink.pcadapt...
+Number of SNPs: 9696
+Number of individuals: 940
+Number of SNPs with minor allele frequency lower than 0.05 ignored: 530
+2661689 out of 9114240 missing data ignored.
+
+plot(x.CHall, option="screeplot")  ##PC for pop structure = on the steep curve
+```
+
+Based on this I choose K=5
+
+Plot the PCA using population information
+
+```
+pop.CHall <- read.table("CH940.cluster.pop", header=F)
+pop.CHall
+poplist <- as.character(pop.CHall[,3])
+poplist
+plot(x.CHall, option="scores", pop=poplist)
+```
+
+
+### 2.Determine outliers
+
+I chose K=5 following the scree plot from PCAdapt and DAPC results
+
+```
+x.CHall.maf0.05 <- pcadapt(CHall, K=5, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
+x.CHall.maf0.1 <- pcadapt(CHall, K=5, min.maf=0.1) #calculate for maf 0.1
+
+pdf(file="pcadapt.pvalues.CHall.pdf")
+par(mfrow=c(2,1))
+hist(x.CHall.maf0.05$pvalues,xlab="p-values CHall maf0.05",main=NULL,breaks=50)
+hist(x.CHall.maf0.1$pvalues,xlab="p-values CHall maf0.1",main=NULL,breaks=50)
+dev.off()
+```
+
+
+
+I used x.maf0.05 since the p-distribution was flat
+
+```
+library(qvalue)
+alpha <- 0.05  ##FDR
+qval <- qvalue(x.CHall$pvalues)$qvalues
+outliers.CHall <- which(qval<alpha)
+outliers.CHall
+snp_pc <- get.pc(x.CHall.maf0.1,outliers) ##see PCs associated with the outliers
+```
+
+
+### 3.Rename loci
+
+```
+locus.names.CHall <- read.table("CHall.940.9608.plink.map", header=F)
+locus.names.CHall
+locus.names.CHall$ID <- seq.int(nrow(locus.names.CHall)) #add an index of the SNP numbers
+CHall.outliers.pcadapt <- as.character(outliers.CHN)
+CHall.outliers.pcadapt.names <- locus.names.CHall[locus.names.CHall$ID %in% CHall.outliers.pcadapt,]
+CHall.outliers.pcadapt.names <- paste("X", CHall.outliers.pcadapt.names$V2, sep=".")
+
+write.table(CHall.outliers.pcadapt.names, "CHall.pcadapt.outliers", col.names=F, row.names=F, quote=F)  ##write the table #write to file
+```
+
+
+
 ## 2. CHN
 
 ### 1. Calculate the number of Principal Components
