@@ -334,7 +334,7 @@ I chose K=3 following the scree plot from PCAdapt and DAPC results
 
 ```
 x.CHS.TI.maf0.05 <- pcadapt(CHS.TI, K=3, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
-x.CHS.TI.maf0.1 <- pcadapt(x.CHS.TI, K=3, min.maf=0.1) #calculate for maf 0.1
+x.CHS.TI.maf0.1 <- pcadapt(CHS.TI, K=3, min.maf=0.1) #calculate for maf 0.1
 
 pdf(file="pcadapt.pvalues.CHS.TI.pdf")
 par(mfrow=c(2,1))
@@ -360,7 +360,7 @@ snp_pc <- get.pc(x.CHS.TI.maf0.05,outliers.CHS.TI) ##see PCs associated with the
 ### 3.Rename loci
 
 ```
-locus.names.CHS.TI <- read.table("CHS.TI.283.9608.plink.map", header=F)
+locus.names.CHS.TI <- read.table("CHS.TI.148.plink.map", header=F)
 locus.names.CHS.TI
 locus.names.CHS.TI$ID <- seq.int(nrow(locus.names.CHS.TI)) #add an index of the SNP numbers
 CHS.TI.outliers.pcadapt <- as.character(outliers.CHS.TI)
@@ -377,13 +377,13 @@ write.table(CHS.TI.outliers.pcadapt.names, "CHS.TI.pcadapt.outliers", col.names=
 ```
 library(pcadapt)
 
-CZ <- read.pcadapt("CZ.ped", type="ped")
+CZ <- read.pcadapt("CZ.404.9608.plink.ped", type="ped")
 Summary:
 
-        - input file      CHS.283.9608.plink.ped
-        - output file     CHS.283.9608.plink.pcadapt
+        - input file      CZ.404.9608.plink.ped
+        - output file     CZ.404.9608.plink.pcadapt
 
-	- number of individuals detected:	283
+	- number of individuals detected:	404
 	- number of loci detected:		9608
 
 File has been sucessfully converted.
@@ -392,11 +392,11 @@ File has been sucessfully converted.
 
 x.CZ <- pcadapt(CZ, K=20)
 
-Reading file CHS.283.9608.plink.pcadapt...
+Reading file CZ.404.9608.plink.pcadapt...
 Number of SNPs: 9608
-Number of individuals: 283
-Number of SNPs with minor allele frequency lower than 0.05 ignored: 2509
-640938 out of 2719064 missing data ignored.
+Number of individuals: 404
+Number of SNPs with minor allele frequency lower than 0.05 ignored: 1493
+988533 out of 3881632 missing data ignored.
 
 plot(x.CZ, option="screeplot")  ##PC for pop structure = on the steep curve
 ```
@@ -406,7 +406,7 @@ Based on this I choose K=3
 Plot the PCA using population information
 
 ```
-pop.CZ <- read.table("CZ.cluster.pop", header=F)
+pop.CZ <- read.table("CZ404.cluster.pop", header=F)
 pop.CZ
 poplist <- as.character(pop.CZ[,3])
 poplist
@@ -420,7 +420,7 @@ I chose K=3 following the scree plot from PCAdapt and DAPC results
 
 ```
 x.CZ.maf0.05 <- pcadapt(CZ, K=3, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
-x.CZ.maf0.1 <- pcadapt(x.CZ, K=3, min.maf=0.1) #calculate for maf 0.1
+x.CZ.maf0.1 <- pcadapt(CZ, K=3, min.maf=0.1) #calculate for maf 0.1
 
 pdf(file="pcadapt.pvalues.CZ.pdf")
 par(mfrow=c(2,1))
