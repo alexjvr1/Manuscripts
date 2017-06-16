@@ -982,3 +982,42 @@ species.cumulative.plot <- function (obj, imp.vars = NULL, imp.vars.names = imp.
 
 
 ```
+
+
+##Figure: heatmap of change in allele frequency
+
+Heatmap of the 3 datasets showing the change in allele frequency across the gradient. 
+I've generated the files containing the MAF of each dataset before. 
+
+
+```
+getwd()
+#/Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/GradientForest
+
+library(gplot)
+
+SE.MAF3.Fst.matrix <- data.matrix(SE.MAF3.Fst.matrix)
+#SE.MAF3.Fst.matrix <- SE.MAF3.Fst.matrix[,order(SE.MAF3.Fst.matrix[1,])]  #order by row 1 to exaggerate the effects
+
+SE.MAF3.Env.matrix <- data.matrix(SE.MAF3.Env)
+SE.MAF3.Neutral.matrix <- data.matrix(SE.MAF3.Neutral)
+SE.MAF3.Neutral.matrix <- SE.MAF3.Neutral.matrix[,order(SE.MAF3.Neutral.matrix[1,])]
+
+pdf(file="heatmap.ENV.MAF.pdf")
+heatmap.ENV <- heatmap.2(SE.MAF3.Env.matrix, col=shadesOfGrey, trace="none", scale="column", labCol=F, Rowv=F)
+dev.off()
+
+pdf(file="heatmap.Ref.MAF.pdf")
+heatmap.Ref <- heatmap.2(SE.MAF3.Neutral.matrix, col=shadesOfGrey, trace="none", scale="column", labCol=F, Rowv=F)
+dev.off()
+
+pdf(file="heatmap.Fst.MAF.pdf")
+heatmap.Fst <- heatmap.2(SE.MAF3.Fst.matrix2, col=shadesOfGrey, trace="none", scale="column", labCol=F, Rowv=F)
+dev.off()
+```
+
+Write to pdf and import into Adobe illustrator to edit the images. 
+
+
+
+
