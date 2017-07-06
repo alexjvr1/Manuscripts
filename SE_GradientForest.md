@@ -660,8 +660,132 @@ Then I want the map to be in grey scale.
 Download all the tiles from here: http://www.viewfinderpanoramas.org/Coverage%20map%20viewfinderpanoramas_org3.htm
 ```
 #extract .zip files in Downloads. Navigate to each folder and import the list of raster files. 
+#I'm using R33, R34, Q32, Q33, Q34, P32, P33, P34, O32, O33, O34, N33
 
+#make mos from R33
+setwd("/Users/alexjvr/Downloads/R33")  ##go to the directory
+SE2 <- list.files(pattern="hgt")  ##list all the files of a certain type
+srtm.SE.R33 <- sapply(SE2, function(filename){
+r=raster(filename)
+})   ##function to import all these as a raster list into R
+
+names(srtm.SE.R33) <- NULL
+srtm.SE.R33$fun <- mean  ##function with which they will be joined together. For only two layers: raster.mos <- mosaic(ras1, ras2, fun=mean)
+mos <- do.call(mosaic, srtm.SE.R33)   ##mosaic these together
+
+##mos1 from R34
+setwd("/Users/alexjvr/Downloads/R34")  ##go to the directory
+SE2 <- NULL
+SE2 <- list.files(pattern="hgt")  ##list all the files of a certain type
+srtm.SE.R34 <- sapply(SE2, function(filename){
+r=raster(filename)
+})   ##function to import all these as a raster list into R
+
+names(srtm.SE.R34) <- NULL
+srtm.SE.R34$fun <- mean  ##function with which they will be joined together. For only two layers: raster.mos <- mosaic(ras1, ras2, fun=mean)
+mos1 <- do.call(mosaic, srtm.SE.R34)   ##mosaic these together
+
+##mos2 from Q33
+setwd("/Users/alexjvr/Downloads/Q33")  ##go to the directory
+SE2 <- NULL
+SE2 <- list.files(pattern="hgt")  ##list all the files of a certain type
+srtm.SE.Q33 <- sapply(SE2, function(filename){
+r=raster(filename)
+})   ##function to import all these as a raster list into R
+
+names(srtm.SE.Q33) <- NULL
+srtm.SE.Q33$fun <- mean  ##function with which they will be joined together. For only two layers: raster.mos <- mosaic(ras1, ras2, fun=mean)
+mos2 <- do.call(mosaic, srtm.SE.Q33)   ##mosaic these together
+
+##mos3 from Q34
+setwd("/Users/alexjvr/Downloads/Q34")  ##go to the directory
+SE2 <- NULL
+SE2 <- list.files(pattern="hgt")  ##list all the files of a certain type
+srtm.SE.Q34 <- sapply(SE2, function(filename){
+r=raster(filename)
+})   ##function to import all these as a raster list into R
+
+names(srtm.SE.Q34) <- NULL
+srtm.SE.Q34$fun <- mean  ##function with which they will be joined together. For only two layers: raster.mos <- mosaic(ras1, ras2, fun=mean)
+mos3 <- do.call(mosaic, srtm.SE.Q34)   ##mosaic these together
+
+##mos4 from P33
+setwd("/Users/alexjvr/Downloads/P33")  ##go to the directory
+SE2 <- NULL
+SE2 <- list.files(pattern="hgt")  ##list all the files of a certain type
+srtm.SE.P33 <- sapply(SE2, function(filename){
+r=raster(filename)
+})   ##function to import all these as a raster list into R
+
+names(srtm.SE.P33) <- NULL
+srtm.SE.P33$fun <- mean  ##function with which they will be joined together. For only two layers: raster.mos <- mosaic(ras1, ras2, fun=mean)
+mos4 <- do.call(mosaic, srtm.SE.P33)   ##mosaic these together
+
+##mos5 from P34
+setwd("/Users/alexjvr/Downloads/P34")  ##go to the directory
+SE2 <- NULL
+SE2 <- list.files(pattern="hgt")  ##list all the files of a certain type
+srtm.SE.P34 <- sapply(SE2, function(filename){
+r=raster(filename)
+})   ##function to import all these as a raster list into R
+
+names(srtm.SE.P34) <- NULL
+srtm.SE.P34$fun <- mean  ##function with which they will be joined together. For only two layers: raster.mos <- mosaic(ras1, ras2, fun=mean)
+mos5 <- do.call(mosaic, srtm.SE.P34)   ##mosaic these together
+
+
+##mos6 from O33
+setwd("/Users/alexjvr/Downloads/O33")  ##go to the directory
+SE2 <- NULL
+SE2 <- list.files(pattern="hgt")  ##list all the files of a certain type
+srtm.SE.O33 <- sapply(SE2, function(filename){
+r=raster(filename)
+})   ##function to import all these as a raster list into R
+
+names(srtm.SE.O33) <- NULL
+srtm.SE.O33$fun <- mean  ##function with which they will be joined together. For only two layers: raster.mos <- mosaic(ras1, ras2, fun=mean)
+mos6 <- do.call(mosaic, srtm.SE.O33)   ##mosaic these together
+
+##mos7 from O34
+setwd("/Users/alexjvr/Downloads/O34")  ##go to the directory
+SE2 <- NULL
+SE2 <- list.files(pattern="hgt")  ##list all the files of a certain type
+srtm.SE.O34 <- sapply(SE2, function(filename){
+r=raster(filename)
+})   ##function to import all these as a raster list into R
+
+names(srtm.SE.O34) <- NULL
+srtm.SE.O34$fun <- mean  ##function with which they will be joined together. For only two layers: raster.mos <- mosaic(ras1, ras2, fun=mean)
+mos7 <- do.call(mosaic, srtm.SE.O34)   ##mosaic these together
+
+
+##mos8 from N33
+setwd("/Users/alexjvr/Downloads/N33")  ##go to the directory
+SE2 <- NULL
+SE2 <- list.files(pattern="hgt")  ##list all the files of a certain type
+srtm.SE.N33 <- sapply(SE2, function(filename){
+r=raster(filename)
+})   ##function to import all these as a raster list into R
+
+names(srtm.SE.N33) <- NULL
+srtm.SE.N33$fun <- mean  ##function with which they will be joined together. For only two layers: raster.mos <- mosaic(ras1, ras2, fun=mean)
+mos8 <- do.call(mosaic, srtm.SE.N33)   ##mosaic these together
+
+##mos9 from O32
+setwd("/Users/alexjvr/Downloads/O32")  ##go to the directory
+SE2 <- NULL
+SE2 <- list.files(pattern="hgt")  ##list all the files of a certain type
+srtm.SE.O32 <- sapply(SE2, function(filename){
+r=raster(filename)
+})   ##function to import all these as a raster list into R
+
+names(srtm.SE.O32) <- NULL
+srtm.SE.O32$fun <- mean  ##function with which they will be joined together. For only two layers: raster.mos <- mosaic(ras1, ras2, fun=mean)
+mos9 <- do.call(mosaic, srtm.SE.O32)   ##mosaic these together
+
+##mos10 from P32
 setwd("/Users/alexjvr/Downloads/P32")  ##go to the directory
+SE2 <- NULL
 SE2 <- list.files(pattern="hgt")  ##list all the files of a certain type
 srtm.SE.P32 <- sapply(SE2, function(filename){
 r=raster(filename)
@@ -669,12 +793,26 @@ r=raster(filename)
 
 names(srtm.SE.P32) <- NULL
 srtm.SE.P32$fun <- mean  ##function with which they will be joined together. For only two layers: raster.mos <- mosaic(ras1, ras2, fun=mean)
-mos <- do.call(mosaic, srtm.SE.P32)   ##mosaic these together
+mos10 <- do.call(mosaic, srtm.SE.P32)   ##mosaic these together
 
-srtm.SEall <- mosaic(srtm123, mos, mos2, mos3, mos4, mos5, mos6, fun=mean)  ##mosaic all the individual rasters together. 
+##mos11 from Q32
+setwd("/Users/alexjvr/Downloads/Q32")  ##go to the directory
+SE2 <- NULL
+SE2 <- list.files(pattern="hgt")  ##list all the files of a certain type
+srtm.SE.Q32 <- sapply(SE2, function(filename){
+r=raster(filename)
+})   ##function to import all these as a raster list into R
+
+names(srtm.SE.Q32) <- NULL
+srtm.SE.Q32$fun <- mean  ##function with which they will be joined together. For only two layers: raster.mos <- mosaic(ras1, ras2, fun=mean)
+mos11 <- do.call(mosaic, srtm.SE.Q32)   ##mosaic these together
+
+##########
+###Mosaic all the rasters together
+srtm.SEall <- mosaic(mos, mos1, mos2, mos3, mos4, mos5, mos6, mos7, mos8, mos9, mos10, mos11, fun=mean)  ##mosaic all the individual rasters together. 
 plot(srtm.SEall)  ##check visually
 srtm.SEall  ##check extent
-srtm.SEall <- mosaic(srtm.SEall, mos7, mos8, mos9, mos10, mos11, mos12, mos13, fun=mean) ##I had to add more tiles
+##srtm.SEall <- mosaic(srtm.SEall, mos7, mos8, mos9, mos10, mos11, mos12, mos13, fun=mean) ##I had to add more tiles
 
 srtm.SEall.crop <- crop(srtm.SEall, extent(9,23,52,70)) ##crop to the same extent as the bioclim data
 
@@ -719,6 +857,7 @@ MAPS using the raster mask
 #
 # (2) a raster mask of the study region to which the RGB data will be written
 
+setwd("/Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/GradientForest")
 
 # map continuous variation - NEUTRAL SNPs
 NEUTRAL.RGBmap.mask <- pcaToRaster(pred.NEUTRAL.mask.complete, rast, env.trns.mask.SE.complete$ID)
@@ -726,7 +865,7 @@ pdf(file="NEUTRAL.RGBmap.mask.pdf")
 plotRGB(NEUTRAL.RGBmap.mask)
 plot(SE.coords, pch=pch.SE, cex=1, add=T)
 dev.off()
-writeRaster(NEUTRAL.RGBmap.mask, "/.../NEUTRAL.RGBmap.mask_map.tif", format="GTiff", overwrite=TRUE)
+writeRaster(NEUTRAL.RGBmap.mask, "NEUTRAL.RGBmap.mask_map.tif", format="GTiff", overwrite=TRUE)
 
 # map continuous variation - Fst SNPs
 Fst.RGBmap.mask <- pcaToRaster(pred.Fst.mask.complete, rast, env.trns.mask.SE.complete$ID)
@@ -734,7 +873,7 @@ pdf(file="FST.RGBmap.mask.pdf")
 plotRGB(Fst.RGBmap.mask)
 plot(SE.coords, pch=pch.SE, cex=1, add=T)
 dev.off()
-writeRaster(Fst.RGBmap.mask, "/.../Fst.RGBmap.mask_map.tif", format="GTiff", overwrite=TRUE)
+writeRaster(Fst.RGBmap.mask, "Fst.RGBmap.mask_map.tif", format="GTiff", overwrite=TRUE)
 
 # map continuous variation - ENV SNPs
 ENV.RGBmap.mask <- pcaToRaster(pred.ENV.mask.complete, rast, env.trns.mask.SE.complete$ID)
@@ -742,7 +881,7 @@ pdf(file="ENV.RGBmap.mask.pdf")
 plotRGB(ENV.RGBmap.mask)
 plot(SE.coords, pch=pch.SE, cex=1, add=T)
 dev.off()
-writeRaster(ENV.RGBmap.mask, "/.../ENV.RGBmap.mask_map.tif", format="GTiff", overwrite=TRUE)
+writeRaster(ENV.RGBmap.mask, "ENV.RGBmap.mask_map.tif", format="GTiff", overwrite=TRUE)
 ```
 
 Left to right: Neutral, Fst, ENV
