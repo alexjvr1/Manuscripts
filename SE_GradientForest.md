@@ -952,9 +952,35 @@ plot(SE.coords, pch=pch.SE, cex=1, add=T)
 dev.off()
 ```
 
+ENV vs Fst
 
+```
+pdf(file="diffENV.Fst.map.pdf")
+diff.ENV.Fst.mask <- RGBdiffMap(pred.ENV.mask.complete, pred.Fst.mask.complete, mask.test$bio2, env.trns.mask.SE.complete$ID)
+##I have to make sure that the rast.mask is used - i.e. only some cells. And same with the env.trns file. 
 
+##Now I have to normalise the raster from 0-1.
 
+r <- diff.ENV.Fst.mask[[2]]
+r.min =cellStats(r, "min")
+r.max = cellStats(r, "max")  ##determine the min and max values
+r.scale <- ((r-r.min)/(r.max-r.min))  ##rescale (0-1)
+
+##Define a colour palette that will best show the difference
+
+cool = rainbow(50, start=rgb2hsv(col2rgb('cyan'))[1], end=rgb2hsv(col2rgb('blue'))[1])
+warm = rainbow(50, start=rgb2hsv(col2rgb('red'))[1], end=rgb2hsv(col2rgb('yellow'))[1])
+cols = c(rev(cool), rev(warm))
+mypalette <- colorRampPalette(cols)(255)
+
+#plot
+
+plot(climate2$bio2, col="grey30", legend=F) ##Then I plot a base map in grey (make sure its the same scale as the raster file
+plot(r.scale, col=mypalette, add=T) 
+plot(SE.coords, pch=pch.SE, cex=1, add=T)
+
+dev.off()
+```
 
 
 
@@ -1133,7 +1159,7 @@ I've generated the files containing the MAF of each dataset before.
 getwd()
 #/Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/GradientForest
 
-library(gplot)
+library(gplots)
 
 SE.MAF3.Fst.matrix <- data.matrix(SE.MAF3.Fst.matrix)
 #SE.MAF3.Fst.matrix <- SE.MAF3.Fst.matrix[,order(SE.MAF3.Fst.matrix[1,])]  #order by row 1 to exaggerate the effects
