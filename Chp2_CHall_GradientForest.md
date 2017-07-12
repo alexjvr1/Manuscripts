@@ -154,7 +154,58 @@ write.table (scores$vectors[,3], "scores_MEM3.txt")
 
 ```
 
+## Great circle distance between all sampling points
 
+```
+##Geographic distance between all CH populations
+##using package Rdist
+
+library(fields)
+#Import .csv with coordinates
+
+setwd("/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GradientForest/CHall")
+
+env.data.CHall <- read.table("Env.Data.all_20161025.txt", header=T)
+head(env.data.CHall)
+
+
+
+#rdist.earth (in fields package) wants only long & lat
+CHall_lon.lat <- cbind(env.data.CHall$long, env.data.CHall$lat)
+CHall_lon.lat
+
+#calculate great circle distances
+distance.matrix.CHallRAD <- rdist.earth(CHall_lon.lat)
+summary(distance.matrix.CHallRAD)
+dim(distance.matrix.CHallRAD)
+
+#and use only the lower half of the matrix
+upper.tri(distance.matrix.CHallRAD)
+distance.matrix.CHallRAD[lower.tri(distance.matrix.CHallRAD)]<-NA
+distance.matrix.CHallRAD
+
+#change from matrix to dataframe
+bli <- as.data.frame(distance.matrix.CHallRAD)
+head(bli)
+colnames(bli) <- env.data.CHall$site
+rownames(bli) <- env.data.CHall$site
+
+bli[lower.tri(bli,diag=TRUE)]=NA  #Prepare to drop duplicates and meaningless information
+bli=as.data.frame(as.table(as.matrix(bli)))  #Turn into a 3-column table
+bli
+bli=na.omit(bli)  #Get rid of the junk we flagged above
+bli
+colnames(bli)<-c("site1", "site2", "dist(km)")
+head(bli)
+
+bli2 <- bli[sort(bli$site2),]
+
+head(bli2)
+
+
+##write to csv
+write.csv(bli, file="distance.CHall.csv",row.names=F)
+```
 
 ## Presenting Results
 
