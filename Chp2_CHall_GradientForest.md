@@ -372,7 +372,19 @@ BIO15: precipitation seasonality
 BIO18: precipitation warmest quarter
 
 
+### Run GF
 
+```
+gf.CHall <- read.csv("CHall.81pops.4BioClim.MEM.csv", header=T)
+envGF <- gf.CHall[,-1]
+colnames(envGF)
+
+CHall.inputSNPS <- CHall.MAF3[,grep("X.", colnames(CHall.MAF3))]
+maxLevel <- log2(0.368*nrow(envGF)/2)
+maxLevel
+
+gf.CHall.allSNPs <- gradientForest(cbind(envGF, CHall.inputSNPS), predictor.vars=colnames(envGF), response.vars=colnames(CHall.inputSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+```
 
 
 ## Presenting Results
