@@ -207,6 +207,174 @@ head(bli2)
 write.csv(bli, file="distance.CHall.csv",row.names=F)
 ```
 
+## Create a SNP input file 
+
+I'm using the full dataset, as I am going to use these to identify loci associated with important variables
+
+```
+#Create a plink file from the vcf file. 
+#For the CHall file, I need to convert to plink on the server, because the file is too large to process on my mac (limited memory). 
+#...error cannot read temporary files
+
+cd /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GradientForest/Chall
+
+scp CHall.932.9608.recode.vcf fgcz47:/srv/kenlab/alexjvr_p1795/CHall/
+
+## on the server
+vcftools --vcf CHall.932.9608.recode.vcf --plink --out CHall.932.plink
+
+## on the mac
+
+scp fgcz47:/srv/kenlab/alexjvr_p1795/CHall/CHall.932.plink* .
+plink --file CHall.932.plink --recode --recodeA --out CHall.932.plink
+
+```
+
+Find the sample names in the *nosex file, and add pop names (i.e. 3 columns) to create a file for specifying clusters > CHall932.9608.PlinkCluster
+
+And calculate MAF with Plink
+
+```
+
+plink --file CHall.932.plink --within CHall932.9608.PlinkCluster --freq --out CHall.932.plink
+
+```
+
+Import into R to reformat the output - by population and loci as columns
+```
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+setwd("/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GradientForest/Chall")
+
+CHall.MAF <- read.table("CHall.932.plink.frq.strat", header=T)
+head(Chall.MAF)
+
+CHall.MAF <- CHall.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CHall.MAF2 <- melt(CHall.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHall.MAF2)
+head(CHall.MAF2)
+
+
+CHall.MAF3 <- dcast(CHall.MAF2, formula= CLST ~ SNP)
+head(CHall.MAF3)
+colnames(CHall.MAF3) <- paste("X", colnames(CHall.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CHall.MAF3, file="CHall.932.9608.MAF.csv")
+```
+
+
+## Extract BioClim data
+
+```
+## extract env data
+##Tutorial: https://ecologicaconciencia.wordpress.com/2013/11/29/obtaining-macroclimate-data-with-r-to-model-species-distributions/
+
+#install.packages("rgdal") ##had to install gdal first: brew install gdal on comp command line
+library(rgdal)
+#install.packages("raster")
+library(raster)
+
+climate <- getData('worldclim', var='bio', res=2.5) ##extracts 19 BioClim variables from worldclim at 2.5' resolution. 
+
+climate  ##make sure it's a RasterStack
+names(climate)  ##lists bio1-19
+plot(climate$bio1) ##This should be of the whole world
+
+climate2 <- crop(climate, extent(5.8,10.6,45.5,47.9)) ##crop to map extent
+climate2    
+spplot(climate2, main="BioClim Variables", xlim=c(5.8, 10.6) , ylim=c(45.5,47.6))
+
+spplot(climate2$bio1, main="BIO1:Annual Mean Temperature")
+spplot(climate2$bio2, main="BIO2:Mean Diurnal Range")
+spplot(climate2$bio3, main="BIO3:Isothermality (BIO2/BIO7) (* 100)")
+spplot(climate2$bio4, main="BIO4:Temperature Seasonality (standard deviation *100)")
+spplot(climate2$bio5, main="BIO5:Max Temperature of Warmest Month")
+spplot(climate2$bio6, main="BIO6:Min Temperature of Coldest Month")
+spplot(climate2$bio7, main="BIO7:Temperature Annual Range (BIO5-BIO6)")
+spplot(climate2$bio8, main="BIO8:Mean Temperature of Wettest Quarter")
+spplot(climate2$bio9, main="BIO9:Mean Temperature of Driest Quarter")
+spplot(climate2$bio10, main="BIO10:Mean Temperature of Warmest Quarter")
+spplot(climate2$bio11, main="BIO11:Mean Temperature of Coldest Quarter")
+spplot(climate2$bio12, main="BIO12:Annual Precipitation")
+spplot(climate2$bio13, main="BIO13:Precipitation of Wettest Month")
+spplot(climate2$bio14, main="BIO14:Precipitation of Driest Month")
+spplot(climate2$bio15, main="BIO15:Precipitation Seasonality (Coefficient of Variation)")
+spplot(climate2$bio16, main="BIO16:Precipitation of Wettest Quarter")
+spplot(climate2$bio17, main="BIO17:Precipitation of Driest Quarter")
+spplot(climate2$bio18, main="BIO18:Precipitation of Warmest Quarter")
+spplot(climate2$bio19, main="BIO19:Precipitation of Coldest Quarter")
+```
+
+And with sample locations plotted:
+```
+###plot sample localities on one of these maps: 
+
+##coordinates file created before.
+
+xy
+xy.forbioclim <- xy[,c(1,2)]
+spdf <- SpatialPointsDataFrame(coords = xy.forbioclim, data=xy, proj4string = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+spdf
+spplot(climate2$bio2, main="BIO2:Mean Diurnal Range", 
+       sp.layout = c("sp.points", spdf, col="black", pch=16))
+```
+
+Extract point location information:
+```
+presvals <- extract(climate2, xy)   ##extract bioclim data for point locations
+head(presvals)
+
+setwd("/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GradientForest/Chall")
+write.csv(presvals, file = "CHall.BIOclim.csv")  ###write to .csv
+```
+
+### Identify uncorrelated BIOClim variables to use in GF
+
+```
+##https://www.r-bloggers.com/introduction-to-feature-selection-for-bioinformaticians-using-r-correlation-matrix-filters-pca-backward-selection/
+library(corrplot)
+library(caret)
+
+datMy <- read.csv("CHall.81pops.nostba.BIOclim.MEM.csv", header=T)  ##read data
+datMy
+
+datMy.env <- datMy[,2:20]  ##get bioclim variables on their own
+colnames(datMy.env)
+datMyenv.scale <- scale(datMy.env, center=T, scale = T) 
+corMatMy.CHall <- cor((datMyenv.scale), use="complete") #compute the correlation matrix
+corrplot(corMatMy.CHall, order = "hclust", tl.cex = 0.5)
+highlyCor <- findCorrelation(corMatMy.CHall, 0.80) #After inspection, apply correlation filter at 0.80,
+corrplot(corMatMy.CHall, order = "hclust", tl.cex = 0.8)
+highlyCor <- findCorrelation(corMatMy.CHall, 0.80) #After inspection, apply correlation filter at 0.80,
+
+datMyFiltered.scale <- datMyenv.scale[,-highlyCor]
+
+corMatMy0.8.CHall <- cor(datMyFiltered.scale, use="complete")
+corrplot(corMatMy.CHall, order = "hclust", tl.cex = 0.8)
+corrplot(corMatMy0.8.CHall, order = "hclust")
+
+```
+
+Variables used: 
+
+BIO8: mean temp wettest quarter
+
+BIO9: mean temp driest quarter
+
+BIO15: precipitation seasonality
+
+BIO18: precipitation warmest quarter
+
+
+
+
+
 ## Presenting Results
 
 As in the Fitzpatric paper.
