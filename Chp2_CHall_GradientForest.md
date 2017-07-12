@@ -34,11 +34,126 @@ I'm using the package GradientForest and the method described by FitzPatrick & K
 
 I'm using 3 different datasets: 
 
-1. Fst outliers as determined by BayEnv2 XtX, and RDA (RD1 & 2)
+1. Fst outliers as determined by BayEnv2 XtX, PCAdapt
 
 2. Loci associated with environment as determined by LFMM & BayEnv2 
 
 3. "Neutral" loci (all - Data1+2)
+
+
+## Input files
+
+
+
+```
+#Calculating MEM variables
+#install.packages("tripack")
+#install.packages("spacemakeR", repos="http://R-Forge.R-project.org")
+library(spacemakeR)
+
+
+env.data.CHall <- read.table("Env.Data.all_20161025.txt", header=T)
+head(env.data.CHall)
+#extract x and y
+xy <- env.data.CHall[, c("long","lat")]
+
+#install.packages("geosphere")
+library(geosphere) #calculate a matrix of geographic distances
+dxy <- distm(xy)
+dxy <- as.dist(dxy)
+
+#Function that returns the maximum distance of the minimum spanning tree based on a distance matrix.
+th <- give.thresh(dxy)
+#Function to compute neighborhood based on the minimum spanning tree. Returns an object of the class nb (see spdep package).
+nb1 <- mst.nb(dxy)
+wh1 <- which(as.matrix(dxy)==th,arr.ind=TRUE)
+plot(nb1,xy,pch=20,cex=2,lty=3)
+lines(xy[wh1[1,],1],xy[wh1[1,],2],lwd=2)
+title(main="Maximum distance of the minimum spanning tree in bold")
+#thershold distance
+th 
+#[1] 36721.81
+nb1
+#Neighbour list object:
+#Number of regions: 82 
+#Number of nonzero links: 162
+#Percentage nonzero weights: 2.40928 
+#Average number of links: 1.97561 
+
+#install.packages("spdep")
+library(spdep)
+#transform nb to listw (spdep package)
+listw=nb2listw(nb1, glist=NULL, style="W", zero.policy=NULL)
+#The can.be.simmed helper function checks whether a spatial weights object is similar to
+#symmetric and can be so transformed to yield real eigenvalues or for Cholesky decomposition.
+can.be.simmed(listw)
+#[1] TRUE
+ 
+#Function to compute Moran's eigenvectors of a listw object
+#This functions compute eigenvector's of a doubly centered spatial weighting matrix. 
+#Corresponding eigenvalues are linearly related to Moran's index of spatial autocorrelation.
+#scores=scores.listw(listw, echo = FALSE, MEM.autocor = c("all","positive", "negative"))
+#MEM.autocor: A string indicating if all MEMs must be returned or only those corresponding to positive or negative autocorrelation.
+#Only positive correlations:
+scores=scores.listw(listw, echo = FALSE, MEM.autocor = "positive")
+	#listw not symmetric, (w+t(w)) used in the place of w 
+
+#Function to compute and test Moran's I for eigenvectors of spatial weighting matrices. 
+#This function tests Moran's I for each eigenvector of a spatial weighting matrix
+test.scores(scores,listw,nsim=999)
+
+
+#         stat  pval
+           stat  pval
+#1  1.0687696076 0.001
+#2  1.0606062379 0.001
+#3  1.0352390834 0.001
+#4  1.0249554852 0.001
+#5  1.0107884002 0.001
+#6  1.0030537107 0.001
+#7  0.9926759074 0.001
+#8  0.9877842003 0.001
+#9  0.9687820857 0.001
+#10 0.9624302350 0.001
+#11 0.9386901036 0.001
+#12 0.9131028309 0.001
+#13 0.9065946721 0.001
+#14 0.8664053816 0.001
+#15 0.8246362833 0.001
+#16 0.7903622167 0.001
+#17 0.7818969268 0.001
+#18 0.7563364193 0.001
+#19 0.7500000000 0.001
+#20 0.7209375815 0.001
+#21 0.6991948339 0.001
+#22 0.6512887097 0.001
+#23 0.6301710544 0.001
+#24 0.5828343922 0.001
+#25 0.5589577435 0.001
+#26 0.5527488467 0.001
+#27 0.5186968559 0.001
+#28 0.4611378483 0.001
+#29 0.4400610398 0.001
+#30 0.4117706289 0.001
+#31 0.3899096599 0.001
+#32 0.3519663318 0.001
+#33 0.2670263414 0.004
+#34 0.2193572647 0.024
+#35 0.2001956533 0.027
+#36 0.1746192322 0.036
+#37 0.1275267370 0.088
+#38 0.0003458407 0.463
+
+
+#36 significant MEM eigenfunctions with positive correlations. OBS. use first half (18 in our case)
+
+write.table (scores$vectors[,1], "scores_MEM1.txt") 
+write.table (scores$vectors[,2], "scores_MEM2.txt") 
+write.table (scores$vectors[,3], "scores_MEM3.txt") 
+....
+
+```
+
 
 
 ## Presenting Results
