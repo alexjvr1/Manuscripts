@@ -726,7 +726,7 @@ dev.off()
 
 Find the most important loci associated with Climate
 
-## NBNB Still need to do this for the CHNdata
+
 ```
 summary(pRDA.CHNgeog.noelev)
 
@@ -982,7 +982,7 @@ dev.off()
 
 Find the most important loci associated with Climate
 
-## NBNB Still need to do this for the CHNdata
+
 ```
 head(summary(pRDA.CHSgeog.noelev))
 
