@@ -1119,3 +1119,20 @@ for f in $(ls snp_batch*); do ./bayenv2 -i $f -e ENVIRON.CZ.5n.env -m CZ.March.M
 ```
 
 Run analysis three times for all datasets. 
+
+Something went wrong with the output here. My output files for the three runs is not always the same. I can figure out which snps are missing with the following command: 
+
+'''
+##this prints the first line of each snp output file 
+awk '{print $1}' CHS.Run1/bf_environ.ENVIRONFILE.CHS.n5.env > CHS.Run1.names   
+awk '{print $1}' CHS.Run2/bf_environ.ENVIRONFILE.CHS.n5.env > CHS.Run2.names
+awk '{print $1}' CHS.Run3/bf_environ.ENVIRONFILE.CHS.n5.env > CHS.Run3.names
+
+##this compares the files and prints the differences
+diff CHS.Run1.names CHS.Run2.names 
+diff CHS.Run1.names CHS.Run3.names 
+
+###to print the last word in a line use NF
+##awk 'NF>{print $NF}' CHS.Run1/bf_environ.ENVIRONFILE.CHS.n5.env > CHS.Run1.names   
+'''
+
