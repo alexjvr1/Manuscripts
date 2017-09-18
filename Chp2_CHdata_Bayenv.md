@@ -1122,7 +1122,7 @@ Run analysis three times for all datasets.
 
 Something went wrong with the output here. My output files for the three runs is not always the same. I can figure out which snps are missing with the following command: 
 
-'''
+```
 ##this prints the first line of each snp output file 
 awk '{print $1}' CHS.Run1/bf_environ.ENVIRONFILE.CHS.n5.env > CHS.Run1.names   
 awk '{print $1}' CHS.Run2/bf_environ.ENVIRONFILE.CHS.n5.env > CHS.Run2.names
@@ -1134,5 +1134,1674 @@ diff CHS.Run1.names CHS.Run3.names
 
 ###to print the last word in a line use NF
 ##awk 'NF>{print $NF}' CHS.Run1/bf_environ.ENVIRONFILE.CHS.n5.env > CHS.Run1.names   
-'''
+```
 
+After rerunning several of the analyes here: 
+
+/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/CHP2
+
+I have to rerun individual loci that seem to skip during the analysis. 
+
+CHS.Run3 needs snp_batch0000004291
+
+CHS.VS.run3 needs snp_batch0000006240
+
+CZ.run2 needs snp_batch0000005442
+
+CZ.run3 needs snp_batch0000001203
+
+Once this was done, I could concatenate the results as before 
+
+
+I need to calculate convergence of BF, p, and ranking 1000 loci between the 3 runs for each of the 5 environmental variables. (i.e. 45 correlations)
+
+
+In R:
+```
+###CHall
+BF.CHall.Run1 <- read.table("CHall.Run1/bf_environ.CHall.5n.ENV", header=F)
+colnames(BF.CHall.Run1) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+BF.CHall.Run2 <- read.table("CHall.Run2/bf_environ.CHall.5n.ENV", header=F)
+colnames(BF.CHall.Run2) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+BF.CHall.Run3 <- read.table("CHall.Run3/bf_environ.CHall.5n.ENV", header=F)
+colnames(BF.CHall.Run3) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+
+##CHN
+BF.CHN.Run1 <- read.table("CHN.Run1/bf_environ.ENVIRONFILE.CHN.p19.env", header=F)
+colnames(BF.CHN.Run1) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+BF.CHN.Run2 <- read.table("CHN.Run2/bf_environ.ENVIRONFILE.CHN.p19.env", header=F)
+colnames(BF.CHN.Run2) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+BF.CHN.Run3 <- read.table("CHN.Run3/bf_environ.ENVIRONFILE.CHN.p19.env", header=F)
+colnames(BF.CHN.Run3) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+
+###CHS
+BF.CHS.Run1 <- read.table("CHS.Run1/bf_environ.ENVIRONFILE.CHS.n5.env", header=F)
+colnames(BF.CHS.Run1) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+BF.CHS.Run2 <- read.table("CHS.Run2/bf_environ.ENVIRONFILE.CHS.n5.env", header=F)
+colnames(BF.CHS.Run2) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+BF.CHS.Run3 <- read.table("CHS.Run3/bf_environ.ENVIRONFILE.CHS.n5.env", header=F)
+colnames(BF.CHS.Run3) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+
+###CZ
+BF.CZ.Run1 <- read.table("CZ.Run1/bf_environ.ENVIRON.CZ.5n.env", header=F)
+colnames(BF.CZ.Run1) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+BF.CZ.Run2 <- read.table("CZ.Run2/bf_environ.ENVIRON.CZ.5n.env", header=F)
+colnames(BF.CZ.Run2) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+BF.CZ.Run3 <- read.table("CZ.Run3/bf_environ.ENVIRON.CZ.5n.env", header=F)
+colnames(BF.CZ.Run3) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+###CHS.VS
+BF.CHS.VS.Run1 <- read.table("CHS.VS.Run1/bf_environ.CHS.VS.p10.n5.ENVIRONFILE.env", header=F)
+colnames(BF.CHS.VS.Run1) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+BF.CHS.VS.Run2 <- read.table("CHS.VS.Run2/bf_environ.CHS.VS.p10.n5.ENVIRONFILE.env", header=F)
+colnames(BF.CHS.VS.Run2) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+BF.CHS.VS.Run3 <- read.table("CHS.VS.Run3/bf_environ.CHS.VS.p10.n5.ENVIRONFILE.env", header=F)
+colnames(BF.CHS.VS.Run3) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+###CHS.TI
+BF.CHS.TI.Run1 <- read.table("CHS.TI.Run1/bf_environ.standardised.5env.env", header=F)
+colnames(BF.CHS.TI.Run1) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+####STILL NEED TO RUN
+BF.CHS.TI.Run2 <- read.table("CHS.TI.Run2/bf_environ.standardised.5env.env", header=F)
+colnames(BF.CHS.TI.Run2) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+
+BF.CHS.TI.Run3 <- read.table("CHS.TI.Run3/bf_environ.standardised.5env.env", header=F)
+colnames(BF.CHS.TI.Run3) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
+```
+
+
+
+
+Compare ranking SNPs 5% at a time
+
+####CHall
+
+1. rad
+```
+CHall.rad.run1.top100 <- BF.CHall.Run1[order(-BF.CHall.Run1$rad.rho),]  ##descending order by rho
+CHall.rad.run2.top100 <- BF.CHall.Run2[order(-BF.CHall.Run2$rad.rho),]  ##descending order by rho
+CHall.rad.run3.top100 <- BF.CHall.Run3[order(-BF.CHall.Run3$rad.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHall.rad
+###############
+```
+CHall.rad.run1.top100.set1 <- head(CHall.rad.run1.top100, 100)
+CHall.rad.run2.top100.set1 <- head(CHall.rad.run2.top100, 100)
+CHall.rad.run3.top100.set1 <- head(CHall.rad.run3.top100, 100)
+CHall.rad.12 <- Reduce(intersect, list(CHall.rad.run2.top100.set1$snp, CHall.rad.run1.top100.set1$snp))
+CHall.rad.13 <- Reduce(intersect, list(CHall.rad.run3.top100.set1$snp, CHall.rad.run1.top100.set1$snp))
+CHall.rad.23 <- Reduce(intersect, list(CHall.rad.run2.top100.set1$snp, CHall.rad.run3.top100.set1$snp))
+CHall.rad.123 <- Reduce(intersect, list(CHall.rad.run2.top100.set1$snp, CHall.rad.run3.top100.set1$snp, CHall.rad.run1.top100.set1$snp))
+
+summary(CHall.rad.123)
+#70
+```
+
+##overlap in 6-10% of outlier loci for CHall.rad
+###############
+```
+CHall.rad.run1.top100.set2 <- CHall.rad.run1.top100[101:200,]
+CHall.rad.run2.top100.set2 <- CHall.rad.run2.top100[101:200,]
+CHall.rad.run3.top100.set2 <- CHall.rad.run3.top100[101:200,]
+CHall.rad.12 <- Reduce(intersect, list(CHall.rad.run2.top100.set2$snp, CHall.rad.run1.top100.set2$snp))
+CHall.rad.13 <- Reduce(intersect, list(CHall.rad.run3.top100.set2$snp, CHall.rad.run1.top100.set2$snp))
+CHall.rad.23 <- Reduce(intersect, list(CHall.rad.run2.top100.set2$snp, CHall.rad.run3.top100.set2$snp))
+CHall.rad.123 <- Reduce(intersect, list(CHall.rad.run2.top100.set2$snp, CHall.rad.run3.top100.set2$snp, CHall.rad.run1.top100.set2$snp))
+
+summary(CHall.rad.123)
+#26
+```
+
+##overlap in 11-15% of outlier loci for CHall.rad
+###############
+```
+CHall.rad.run1.top100.set2 <- CHall.rad.run1.top100[201:300,]
+CHall.rad.run2.top100.set2 <- CHall.rad.run2.top100[201:300,]
+CHall.rad.run3.top100.set2 <- CHall.rad.run3.top100[201:300,]
+CHall.rad.12 <- Reduce(intersect, list(CHall.rad.run2.top100.set2$snp, CHall.rad.run1.top100.set2$snp))
+CHall.rad.13 <- Reduce(intersect, list(CHall.rad.run3.top100.set2$snp, CHall.rad.run1.top100.set2$snp))
+CHall.rad.23 <- Reduce(intersect, list(CHall.rad.run2.top100.set2$snp, CHall.rad.run3.top100.set2$snp))
+CHall.rad.123 <- Reduce(intersect, list(CHall.rad.run2.top100.set2$snp, CHall.rad.run3.top100.set2$snp, CHall.rad.run1.top100.set2$snp))
+
+summary(CHall.rad.123)
+#10
+```
+
+2. shadow.days
+
+```
+CHall.shadow.days.run1.top100 <- BF.CHall.Run1[order(-BF.CHall.Run1$shadow.days.rho),]  ##descending order by rho
+CHall.shadow.days.run2.top100 <- BF.CHall.Run2[order(-BF.CHall.Run2$shadow.days.rho),]  ##descending order by rho
+CHall.shadow.days.run3.top100 <- BF.CHall.Run3[order(-BF.CHall.Run3$shadow.days.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHall.shadow.days
+###############
+```
+CHall.shadow.days.run1.top100.set1 <- head(CHall.shadow.days.run1.top100, 100)
+CHall.shadow.days.run2.top100.set1 <- head(CHall.shadow.days.run2.top100, 100)
+CHall.shadow.days.run3.top100.set1 <- head(CHall.shadow.days.run3.top100, 100)
+CHall.shadow.days.12 <- Reduce(intersect, list(CHall.shadow.days.run2.top100.set1$snp, CHall.shadow.days.run1.top100.set1$snp))
+CHall.shadow.days.13 <- Reduce(intersect, list(CHall.shadow.days.run3.top100.set1$snp, CHall.shadow.days.run1.top100.set1$snp))
+CHall.shadow.days.23 <- Reduce(intersect, list(CHall.shadow.days.run2.top100.set1$snp, CHall.shadow.days.run3.top100.set1$snp))
+CHall.shadow.days.123 <- Reduce(intersect, list(CHall.shadow.days.run2.top100.set1$snp, CHall.shadow.days.run3.top100.set1$snp, CHall.shadow.days.run1.top100.set1$snp))
+
+summary(CHall.shadow.days.123)
+#69
+```
+
+##overlap in 6-10% of outlier loci for CHall.shadow.days
+###############
+```
+CHall.shadow.days.run1.top100.set2 <- CHall.shadow.days.run1.top100[101:200,]
+CHall.shadow.days.run2.top100.set2 <- CHall.shadow.days.run2.top100[101:200,]
+CHall.shadow.days.run3.top100.set2 <- CHall.shadow.days.run3.top100[101:200,]
+CHall.shadow.days.12 <- Reduce(intersect, list(CHall.shadow.days.run2.top100.set2$snp, CHall.shadow.days.run1.top100.set2$snp))
+CHall.shadow.days.13 <- Reduce(intersect, list(CHall.shadow.days.run3.top100.set2$snp, CHall.shadow.days.run1.top100.set2$snp))
+CHall.shadow.days.23 <- Reduce(intersect, list(CHall.shadow.days.run2.top100.set2$snp, CHall.shadow.days.run3.top100.set2$snp))
+CHall.shadow.days.123 <- Reduce(intersect, list(CHall.shadow.days.run2.top100.set2$snp, CHall.shadow.days.run3.top100.set2$snp, CHall.shadow.days.run1.top100.set2$snp))
+
+summary(CHall.shadow.days.123)
+#29
+```
+
+##overlap in 11-15% of outlier loci for CHall.shadow.days
+###############
+```
+CHall.shadow.days.run1.top100.set2 <- CHall.shadow.days.run1.top100[201:300,]
+CHall.shadow.days.run2.top100.set2 <- CHall.shadow.days.run2.top100[201:300,]
+CHall.shadow.days.run3.top100.set2 <- CHall.shadow.days.run3.top100[201:300,]
+CHall.shadow.days.12 <- Reduce(intersect, list(CHall.shadow.days.run2.top100.set2$snp, CHall.shadow.days.run1.top100.set2$snp))
+CHall.shadow.days.13 <- Reduce(intersect, list(CHall.shadow.days.run3.top100.set2$snp, CHall.shadow.days.run1.top100.set2$snp))
+CHall.shadow.days.23 <- Reduce(intersect, list(CHall.shadow.days.run2.top100.set2$snp, CHall.shadow.days.run3.top100.set2$snp))
+CHall.shadow.days.123 <- Reduce(intersect, list(CHall.shadow.days.run2.top100.set2$snp, CHall.shadow.days.run3.top100.set2$snp, CHall.shadow.days.run1.top100.set2$snp))
+
+summary(CHall.shadow.days.123)
+#15
+```
+
+3. temp
+
+```
+CHall.temp.run1.top100 <- BF.CHall.Run1[order(-BF.CHall.Run1$temp.rho),]  ##descending order by rho
+CHall.temp.run2.top100 <- BF.CHall.Run2[order(-BF.CHall.Run2$temp.rho),]  ##descending order by rho
+CHall.temp.run3.top100 <- BF.CHall.Run3[order(-BF.CHall.Run3$temp.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHall.temp
+###############
+```
+CHall.temp.run1.top100.set1 <- head(CHall.temp.run1.top100, 100)
+CHall.temp.run2.top100.set1 <- head(CHall.temp.run2.top100, 100)
+CHall.temp.run3.top100.set1 <- head(CHall.temp.run3.top100, 100)
+CHall.temp.12 <- Reduce(intersect, list(CHall.temp.run2.top100.set1$snp, CHall.temp.run1.top100.set1$snp))
+CHall.temp.13 <- Reduce(intersect, list(CHall.temp.run3.top100.set1$snp, CHall.temp.run1.top100.set1$snp))
+CHall.temp.23 <- Reduce(intersect, list(CHall.temp.run2.top100.set1$snp, CHall.temp.run3.top100.set1$snp))
+CHall.temp.123 <- Reduce(intersect, list(CHall.temp.run2.top100.set1$snp, CHall.temp.run3.top100.set1$snp, CHall.temp.run1.top100.set1$snp))
+
+summary(CHall.temp.123)
+#77
+```
+
+##overlap in 6-10% of outlier loci for CHall.temp
+###############
+```
+CHall.temp.run1.top100.set2 <- CHall.temp.run1.top100[101:200,]
+CHall.temp.run2.top100.set2 <- CHall.temp.run2.top100[101:200,]
+CHall.temp.run3.top100.set2 <- CHall.temp.run3.top100[101:200,]
+CHall.temp.12 <- Reduce(intersect, list(CHall.temp.run2.top100.set2$snp, CHall.temp.run1.top100.set2$snp))
+CHall.temp.13 <- Reduce(intersect, list(CHall.temp.run3.top100.set2$snp, CHall.temp.run1.top100.set2$snp))
+CHall.temp.23 <- Reduce(intersect, list(CHall.temp.run2.top100.set2$snp, CHall.temp.run3.top100.set2$snp))
+CHall.temp.123 <- Reduce(intersect, list(CHall.temp.run2.top100.set2$snp, CHall.temp.run3.top100.set2$snp, CHall.temp.run1.top100.set2$snp))
+summary(CHall.temp.123)
+#34
+```
+
+##overlap in 11-15% of outlier loci for CHall.temp
+###############
+```
+CHall.temp.run1.top100.set2 <- CHall.temp.run1.top100[201:300,]
+CHall.temp.run2.top100.set2 <- CHall.temp.run2.top100[201:300,]
+CHall.temp.run3.top100.set2 <- CHall.temp.run3.top100[201:300,]
+CHall.temp.12 <- Reduce(intersect, list(CHall.temp.run2.top100.set2$snp, CHall.temp.run1.top100.set2$snp))
+CHall.temp.13 <- Reduce(intersect, list(CHall.temp.run3.top100.set2$snp, CHall.temp.run1.top100.set2$snp))
+CHall.temp.23 <- Reduce(intersect, list(CHall.temp.run2.top100.set2$snp, CHall.temp.run3.top100.set2$snp))
+CHall.temp.123 <- Reduce(intersect, list(CHall.temp.run2.top100.set2$snp, CHall.temp.run3.top100.set2$snp, CHall.temp.run1.top100.set2$snp))
+
+summary(CHall.temp.123)
+#12
+```
+
+4. pcpt
+
+```
+CHall.pcpt.run1.top100 <- BF.CHall.Run1[order(-BF.CHall.Run1$pcpt.rho),]  ##descending order by rho
+CHall.pcpt.run2.top100 <- BF.CHall.Run2[order(-BF.CHall.Run2$pcpt.rho),]  ##descending order by rho
+CHall.pcpt.run3.top100 <- BF.CHall.Run3[order(-BF.CHall.Run3$pcpt.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHall.pcpt
+###############
+```
+CHall.pcpt.run1.top100.set1 <- head(CHall.pcpt.run1.top100, 100)
+CHall.pcpt.run2.top100.set1 <- head(CHall.pcpt.run2.top100, 100)
+CHall.pcpt.run3.top100.set1 <- head(CHall.pcpt.run3.top100, 100)
+CHall.pcpt.12 <- Reduce(intersect, list(CHall.pcpt.run2.top100.set1$snp, CHall.pcpt.run1.top100.set1$snp))
+CHall.pcpt.13 <- Reduce(intersect, list(CHall.pcpt.run3.top100.set1$snp, CHall.pcpt.run1.top100.set1$snp))
+CHall.pcpt.23 <- Reduce(intersect, list(CHall.pcpt.run2.top100.set1$snp, CHall.pcpt.run3.top100.set1$snp))
+CHall.pcpt.123 <- Reduce(intersect, list(CHall.pcpt.run2.top100.set1$snp, CHall.pcpt.run3.top100.set1$snp, CHall.pcpt.run1.top100.set1$snp))
+
+summary(CHall.pcpt.123)
+#68
+```
+
+##overlap in 6-10% of outlier loci for CHall.pcpt
+###############
+```
+CHall.pcpt.run1.top100.set2 <- CHall.pcpt.run1.top100[101:200,]
+CHall.pcpt.run2.top100.set2 <- CHall.pcpt.run2.top100[101:200,]
+CHall.pcpt.run3.top100.set2 <- CHall.pcpt.run3.top100[101:200,]
+CHall.pcpt.12 <- Reduce(intersect, list(CHall.pcpt.run2.top100.set2$snp, CHall.pcpt.run1.top100.set2$snp))
+CHall.pcpt.13 <- Reduce(intersect, list(CHall.pcpt.run3.top100.set2$snp, CHall.pcpt.run1.top100.set2$snp))
+CHall.pcpt.23 <- Reduce(intersect, list(CHall.pcpt.run2.top100.set2$snp, CHall.pcpt.run3.top100.set2$snp))
+CHall.pcpt.123 <- Reduce(intersect, list(CHall.pcpt.run2.top100.set2$snp, CHall.pcpt.run3.top100.set2$snp, CHall.pcpt.run1.top100.set2$snp))
+
+summary(CHall.pcpt.123)
+#25
+```
+
+##overlap in 11-15% of outlier loci for CHall.pcpt
+###############
+```
+CHall.pcpt.run1.top100.set2 <- CHall.pcpt.run1.top100[201:300,]
+CHall.pcpt.run2.top100.set2 <- CHall.pcpt.run2.top100[201:300,]
+CHall.pcpt.run3.top100.set2 <- CHall.pcpt.run3.top100[201:300,]
+CHall.pcpt.12 <- Reduce(intersect, list(CHall.pcpt.run2.top100.set2$snp, CHall.pcpt.run1.top100.set2$snp))
+CHall.pcpt.13 <- Reduce(intersect, list(CHall.pcpt.run3.top100.set2$snp, CHall.pcpt.run1.top100.set2$snp))
+CHall.pcpt.23 <- Reduce(intersect, list(CHall.pcpt.run2.top100.set2$snp, CHall.pcpt.run3.top100.set2$snp))
+CHall.pcpt.123 <- Reduce(intersect, list(CHall.pcpt.run2.top100.set2$snp, CHall.pcpt.run3.top100.set2$snp, CHall.pcpt.run1.top100.set2$snp))
+
+summary(CHall.pcpt.123)
+#12
+```
+
+5. day.10cm
+```
+CHall.day.10cm.run1.top100 <- BF.CHall.Run1[order(-BF.CHall.Run1$day.10cm.rho),]  ##descending order by rho
+CHall.day.10cm.run2.top100 <- BF.CHall.Run2[order(-BF.CHall.Run2$day.10cm.rho),]  ##descending order by rho
+CHall.day.10cm.run3.top100 <- BF.CHall.Run3[order(-BF.CHall.Run3$day.10cm.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHall.day.10cm
+###############
+```
+CHall.day.10cm.run1.top100.set1 <- head(CHall.day.10cm.run1.top100, 100)
+CHall.day.10cm.run2.top100.set1 <- head(CHall.day.10cm.run2.top100, 100)
+CHall.day.10cm.run3.top100.set1 <- head(CHall.day.10cm.run3.top100, 100)
+CHall.day.10cm.12 <- Reduce(intersect, list(CHall.day.10cm.run2.top100.set1$snp, CHall.day.10cm.run1.top100.set1$snp))
+CHall.day.10cm.13 <- Reduce(intersect, list(CHall.day.10cm.run3.top100.set1$snp, CHall.day.10cm.run1.top100.set1$snp))
+CHall.day.10cm.23 <- Reduce(intersect, list(CHall.day.10cm.run2.top100.set1$snp, CHall.day.10cm.run3.top100.set1$snp))
+CHall.day.10cm.123 <- Reduce(intersect, list(CHall.day.10cm.run2.top100.set1$snp, CHall.day.10cm.run3.top100.set1$snp, CHall.day.10cm.run1.top100.set1$snp))
+
+summary(CHall.day.10cm.123)
+#73
+```
+
+##overlap in 6-10% of outlier loci for CHall.day.10cm
+###############
+```
+CHall.day.10cm.run1.top100.set2 <- CHall.day.10cm.run1.top100[101:200,]
+CHall.day.10cm.run2.top100.set2 <- CHall.day.10cm.run2.top100[101:200,]
+CHall.day.10cm.run3.top100.set2 <- CHall.day.10cm.run3.top100[101:200,]
+CHall.day.10cm.12 <- Reduce(intersect, list(CHall.day.10cm.run2.top100.set2$snp, CHall.day.10cm.run1.top100.set2$snp))
+CHall.day.10cm.13 <- Reduce(intersect, list(CHall.day.10cm.run3.top100.set2$snp, CHall.day.10cm.run1.top100.set2$snp))
+CHall.day.10cm.23 <- Reduce(intersect, list(CHall.day.10cm.run2.top100.set2$snp, CHall.day.10cm.run3.top100.set2$snp))
+CHall.day.10cm.123 <- Reduce(intersect, list(CHall.day.10cm.run2.top100.set2$snp, CHall.day.10cm.run3.top100.set2$snp, CHall.day.10cm.run1.top100.set2$snp))
+summary(CHall.day.10cm.123)
+#31
+```
+
+##overlap in 11-15% of outlier loci for CHall.day.10cm
+###############
+```
+CHall.day.10cm.run1.top100.set2 <- CHall.day.10cm.run1.top100[201:300,]
+CHall.day.10cm.run2.top100.set2 <- CHall.day.10cm.run2.top100[201:300,]
+CHall.day.10cm.run3.top100.set2 <- CHall.day.10cm.run3.top100[201:300,]
+CHall.day.10cm.12 <- Reduce(intersect, list(CHall.day.10cm.run2.top100.set2$snp, CHall.day.10cm.run1.top100.set2$snp))
+CHall.day.10cm.13 <- Reduce(intersect, list(CHall.day.10cm.run3.top100.set2$snp, CHall.day.10cm.run1.top100.set2$snp))
+CHall.day.10cm.23 <- Reduce(intersect, list(CHall.day.10cm.run2.top100.set2$snp, CHall.day.10cm.run3.top100.set2$snp))
+CHall.day.10cm.123 <- Reduce(intersect, list(CHall.day.10cm.run2.top100.set2$snp, CHall.day.10cm.run3.top100.set2$snp, CHall.day.10cm.run1.top100.set2$snp))
+
+summary(CHall.day.10cm.123)
+#10
+```
+
+####CHN
+
+1. rad
+```
+CHN.rad.run1.top100 <- BF.CHN.Run1[order(-BF.CHN.Run1$rad.rho),]  ##descending order by rho
+CHN.rad.run2.top100 <- BF.CHN.Run2[order(-BF.CHN.Run2$rad.rho),]  ##descending order by rho
+CHN.rad.run3.top100 <- BF.CHN.Run3[order(-BF.CHN.Run3$rad.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHN.rad
+###############
+```
+CHN.rad.run1.top100.set1 <- head(CHN.rad.run1.top100, 100)
+CHN.rad.run2.top100.set1 <- head(CHN.rad.run2.top100, 100)
+CHN.rad.run3.top100.set1 <- head(CHN.rad.run3.top100, 100)
+CHN.rad.12 <- Reduce(intersect, list(CHN.rad.run2.top100.set1$snp, CHN.rad.run1.top100.set1$snp))
+CHN.rad.13 <- Reduce(intersect, list(CHN.rad.run3.top100.set1$snp, CHN.rad.run1.top100.set1$snp))
+CHN.rad.23 <- Reduce(intersect, list(CHN.rad.run2.top100.set1$snp, CHN.rad.run3.top100.set1$snp))
+CHN.rad.123 <- Reduce(intersect, list(CHN.rad.run2.top100.set1$snp, CHN.rad.run3.top100.set1$snp, CHN.rad.run1.top100.set1$snp))
+
+summary(CHN.rad.123)
+#70
+```
+
+##overlap in 6-10% of outlier loci for CHN.rad
+###############
+```
+CHN.rad.run1.top100.set2 <- CHN.rad.run1.top100[101:200,]
+CHN.rad.run2.top100.set2 <- CHN.rad.run2.top100[101:200,]
+CHN.rad.run3.top100.set2 <- CHN.rad.run3.top100[101:200,]
+CHN.rad.12 <- Reduce(intersect, list(CHN.rad.run2.top100.set2$snp, CHN.rad.run1.top100.set2$snp))
+CHN.rad.13 <- Reduce(intersect, list(CHN.rad.run3.top100.set2$snp, CHN.rad.run1.top100.set2$snp))
+CHN.rad.23 <- Reduce(intersect, list(CHN.rad.run2.top100.set2$snp, CHN.rad.run3.top100.set2$snp))
+CHN.rad.123 <- Reduce(intersect, list(CHN.rad.run2.top100.set2$snp, CHN.rad.run3.top100.set2$snp, CHN.rad.run1.top100.set2$snp))
+
+summary(CHN.rad.123)
+#26
+```
+
+##overlap in 11-15% of outlier loci for CHN.rad
+###############
+```
+CHN.rad.run1.top100.set2 <- CHN.rad.run1.top100[201:300,]
+CHN.rad.run2.top100.set2 <- CHN.rad.run2.top100[201:300,]
+CHN.rad.run3.top100.set2 <- CHN.rad.run3.top100[201:300,]
+CHN.rad.12 <- Reduce(intersect, list(CHN.rad.run2.top100.set2$snp, CHN.rad.run1.top100.set2$snp))
+CHN.rad.13 <- Reduce(intersect, list(CHN.rad.run3.top100.set2$snp, CHN.rad.run1.top100.set2$snp))
+CHN.rad.23 <- Reduce(intersect, list(CHN.rad.run2.top100.set2$snp, CHN.rad.run3.top100.set2$snp))
+CHN.rad.123 <- Reduce(intersect, list(CHN.rad.run2.top100.set2$snp, CHN.rad.run3.top100.set2$snp, CHN.rad.run1.top100.set2$snp))
+
+summary(CHN.rad.123)
+#10
+```
+
+2. shadow.days
+
+```
+CHN.shadow.days.run1.top100 <- BF.CHN.Run1[order(-BF.CHN.Run1$shadow.days.rho),]  ##descending order by rho
+CHN.shadow.days.run2.top100 <- BF.CHN.Run2[order(-BF.CHN.Run2$shadow.days.rho),]  ##descending order by rho
+CHN.shadow.days.run3.top100 <- BF.CHN.Run3[order(-BF.CHN.Run3$shadow.days.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHN.shadow.days
+###############
+```
+CHN.shadow.days.run1.top100.set1 <- head(CHN.shadow.days.run1.top100, 100)
+CHN.shadow.days.run2.top100.set1 <- head(CHN.shadow.days.run2.top100, 100)
+CHN.shadow.days.run3.top100.set1 <- head(CHN.shadow.days.run3.top100, 100)
+CHN.shadow.days.12 <- Reduce(intersect, list(CHN.shadow.days.run2.top100.set1$snp, CHN.shadow.days.run1.top100.set1$snp))
+CHN.shadow.days.13 <- Reduce(intersect, list(CHN.shadow.days.run3.top100.set1$snp, CHN.shadow.days.run1.top100.set1$snp))
+CHN.shadow.days.23 <- Reduce(intersect, list(CHN.shadow.days.run2.top100.set1$snp, CHN.shadow.days.run3.top100.set1$snp))
+CHN.shadow.days.123 <- Reduce(intersect, list(CHN.shadow.days.run2.top100.set1$snp, CHN.shadow.days.run3.top100.set1$snp, CHN.shadow.days.run1.top100.set1$snp))
+
+summary(CHN.shadow.days.123)
+#69
+```
+
+##overlap in 6-10% of outlier loci for CHN.shadow.days
+###############
+```
+CHN.shadow.days.run1.top100.set2 <- CHN.shadow.days.run1.top100[101:200,]
+CHN.shadow.days.run2.top100.set2 <- CHN.shadow.days.run2.top100[101:200,]
+CHN.shadow.days.run3.top100.set2 <- CHN.shadow.days.run3.top100[101:200,]
+CHN.shadow.days.12 <- Reduce(intersect, list(CHN.shadow.days.run2.top100.set2$snp, CHN.shadow.days.run1.top100.set2$snp))
+CHN.shadow.days.13 <- Reduce(intersect, list(CHN.shadow.days.run3.top100.set2$snp, CHN.shadow.days.run1.top100.set2$snp))
+CHN.shadow.days.23 <- Reduce(intersect, list(CHN.shadow.days.run2.top100.set2$snp, CHN.shadow.days.run3.top100.set2$snp))
+CHN.shadow.days.123 <- Reduce(intersect, list(CHN.shadow.days.run2.top100.set2$snp, CHN.shadow.days.run3.top100.set2$snp, CHN.shadow.days.run1.top100.set2$snp))
+
+summary(CHN.shadow.days.123)
+#29
+```
+
+##overlap in 11-15% of outlier loci for CHN.shadow.days
+###############
+```
+CHN.shadow.days.run1.top100.set2 <- CHN.shadow.days.run1.top100[201:300,]
+CHN.shadow.days.run2.top100.set2 <- CHN.shadow.days.run2.top100[201:300,]
+CHN.shadow.days.run3.top100.set2 <- CHN.shadow.days.run3.top100[201:300,]
+CHN.shadow.days.12 <- Reduce(intersect, list(CHN.shadow.days.run2.top100.set2$snp, CHN.shadow.days.run1.top100.set2$snp))
+CHN.shadow.days.13 <- Reduce(intersect, list(CHN.shadow.days.run3.top100.set2$snp, CHN.shadow.days.run1.top100.set2$snp))
+CHN.shadow.days.23 <- Reduce(intersect, list(CHN.shadow.days.run2.top100.set2$snp, CHN.shadow.days.run3.top100.set2$snp))
+CHN.shadow.days.123 <- Reduce(intersect, list(CHN.shadow.days.run2.top100.set2$snp, CHN.shadow.days.run3.top100.set2$snp, CHN.shadow.days.run1.top100.set2$snp))
+
+summary(CHN.shadow.days.123)
+#15
+```
+
+3. temp
+
+```
+CHN.temp.run1.top100 <- BF.CHN.Run1[order(-BF.CHN.Run1$temp.rho),]  ##descending order by rho
+CHN.temp.run2.top100 <- BF.CHN.Run2[order(-BF.CHN.Run2$temp.rho),]  ##descending order by rho
+CHN.temp.run3.top100 <- BF.CHN.Run3[order(-BF.CHN.Run3$temp.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHN.temp
+###############
+```
+CHN.temp.run1.top100.set1 <- head(CHN.temp.run1.top100, 100)
+CHN.temp.run2.top100.set1 <- head(CHN.temp.run2.top100, 100)
+CHN.temp.run3.top100.set1 <- head(CHN.temp.run3.top100, 100)
+CHN.temp.12 <- Reduce(intersect, list(CHN.temp.run2.top100.set1$snp, CHN.temp.run1.top100.set1$snp))
+CHN.temp.13 <- Reduce(intersect, list(CHN.temp.run3.top100.set1$snp, CHN.temp.run1.top100.set1$snp))
+CHN.temp.23 <- Reduce(intersect, list(CHN.temp.run2.top100.set1$snp, CHN.temp.run3.top100.set1$snp))
+CHN.temp.123 <- Reduce(intersect, list(CHN.temp.run2.top100.set1$snp, CHN.temp.run3.top100.set1$snp, CHN.temp.run1.top100.set1$snp))
+
+summary(CHN.temp.123)
+#77
+```
+
+##overlap in 6-10% of outlier loci for CHN.temp
+###############
+```
+CHN.temp.run1.top100.set2 <- CHN.temp.run1.top100[101:200,]
+CHN.temp.run2.top100.set2 <- CHN.temp.run2.top100[101:200,]
+CHN.temp.run3.top100.set2 <- CHN.temp.run3.top100[101:200,]
+CHN.temp.12 <- Reduce(intersect, list(CHN.temp.run2.top100.set2$snp, CHN.temp.run1.top100.set2$snp))
+CHN.temp.13 <- Reduce(intersect, list(CHN.temp.run3.top100.set2$snp, CHN.temp.run1.top100.set2$snp))
+CHN.temp.23 <- Reduce(intersect, list(CHN.temp.run2.top100.set2$snp, CHN.temp.run3.top100.set2$snp))
+CHN.temp.123 <- Reduce(intersect, list(CHN.temp.run2.top100.set2$snp, CHN.temp.run3.top100.set2$snp, CHN.temp.run1.top100.set2$snp))
+summary(CHN.temp.123)
+#34
+```
+
+##overlap in 11-15% of outlier loci for CHN.temp
+###############
+```
+CHN.temp.run1.top100.set2 <- CHN.temp.run1.top100[201:300,]
+CHN.temp.run2.top100.set2 <- CHN.temp.run2.top100[201:300,]
+CHN.temp.run3.top100.set2 <- CHN.temp.run3.top100[201:300,]
+CHN.temp.12 <- Reduce(intersect, list(CHN.temp.run2.top100.set2$snp, CHN.temp.run1.top100.set2$snp))
+CHN.temp.13 <- Reduce(intersect, list(CHN.temp.run3.top100.set2$snp, CHN.temp.run1.top100.set2$snp))
+CHN.temp.23 <- Reduce(intersect, list(CHN.temp.run2.top100.set2$snp, CHN.temp.run3.top100.set2$snp))
+CHN.temp.123 <- Reduce(intersect, list(CHN.temp.run2.top100.set2$snp, CHN.temp.run3.top100.set2$snp, CHN.temp.run1.top100.set2$snp))
+
+summary(CHN.temp.123)
+#12
+```
+
+4. pcpt
+
+```
+CHN.pcpt.run1.top100 <- BF.CHN.Run1[order(-BF.CHN.Run1$pcpt.rho),]  ##descending order by rho
+CHN.pcpt.run2.top100 <- BF.CHN.Run2[order(-BF.CHN.Run2$pcpt.rho),]  ##descending order by rho
+CHN.pcpt.run3.top100 <- BF.CHN.Run3[order(-BF.CHN.Run3$pcpt.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHN.pcpt
+###############
+```
+CHN.pcpt.run1.top100.set1 <- head(CHN.pcpt.run1.top100, 100)
+CHN.pcpt.run2.top100.set1 <- head(CHN.pcpt.run2.top100, 100)
+CHN.pcpt.run3.top100.set1 <- head(CHN.pcpt.run3.top100, 100)
+CHN.pcpt.12 <- Reduce(intersect, list(CHN.pcpt.run2.top100.set1$snp, CHN.pcpt.run1.top100.set1$snp))
+CHN.pcpt.13 <- Reduce(intersect, list(CHN.pcpt.run3.top100.set1$snp, CHN.pcpt.run1.top100.set1$snp))
+CHN.pcpt.23 <- Reduce(intersect, list(CHN.pcpt.run2.top100.set1$snp, CHN.pcpt.run3.top100.set1$snp))
+CHN.pcpt.123 <- Reduce(intersect, list(CHN.pcpt.run2.top100.set1$snp, CHN.pcpt.run3.top100.set1$snp, CHN.pcpt.run1.top100.set1$snp))
+
+summary(CHN.pcpt.123)
+#68
+```
+
+##overlap in 6-10% of outlier loci for CHN.pcpt
+###############
+```
+CHN.pcpt.run1.top100.set2 <- CHN.pcpt.run1.top100[101:200,]
+CHN.pcpt.run2.top100.set2 <- CHN.pcpt.run2.top100[101:200,]
+CHN.pcpt.run3.top100.set2 <- CHN.pcpt.run3.top100[101:200,]
+CHN.pcpt.12 <- Reduce(intersect, list(CHN.pcpt.run2.top100.set2$snp, CHN.pcpt.run1.top100.set2$snp))
+CHN.pcpt.13 <- Reduce(intersect, list(CHN.pcpt.run3.top100.set2$snp, CHN.pcpt.run1.top100.set2$snp))
+CHN.pcpt.23 <- Reduce(intersect, list(CHN.pcpt.run2.top100.set2$snp, CHN.pcpt.run3.top100.set2$snp))
+CHN.pcpt.123 <- Reduce(intersect, list(CHN.pcpt.run2.top100.set2$snp, CHN.pcpt.run3.top100.set2$snp, CHN.pcpt.run1.top100.set2$snp))
+
+summary(CHN.pcpt.123)
+#25
+```
+
+##overlap in 11-15% of outlier loci for CHN.pcpt
+###############
+```
+CHN.pcpt.run1.top100.set2 <- CHN.pcpt.run1.top100[201:300,]
+CHN.pcpt.run2.top100.set2 <- CHN.pcpt.run2.top100[201:300,]
+CHN.pcpt.run3.top100.set2 <- CHN.pcpt.run3.top100[201:300,]
+CHN.pcpt.12 <- Reduce(intersect, list(CHN.pcpt.run2.top100.set2$snp, CHN.pcpt.run1.top100.set2$snp))
+CHN.pcpt.13 <- Reduce(intersect, list(CHN.pcpt.run3.top100.set2$snp, CHN.pcpt.run1.top100.set2$snp))
+CHN.pcpt.23 <- Reduce(intersect, list(CHN.pcpt.run2.top100.set2$snp, CHN.pcpt.run3.top100.set2$snp))
+CHN.pcpt.123 <- Reduce(intersect, list(CHN.pcpt.run2.top100.set2$snp, CHN.pcpt.run3.top100.set2$snp, CHN.pcpt.run1.top100.set2$snp))
+
+summary(CHN.pcpt.123)
+#12
+```
+
+5. day.10cm
+```
+CHN.day.10cm.run1.top100 <- BF.CHN.Run1[order(-BF.CHN.Run1$day.10cm.rho),]  ##descending order by rho
+CHN.day.10cm.run2.top100 <- BF.CHN.Run2[order(-BF.CHN.Run2$day.10cm.rho),]  ##descending order by rho
+CHN.day.10cm.run3.top100 <- BF.CHN.Run3[order(-BF.CHN.Run3$day.10cm.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHN.day.10cm
+###############
+```
+CHN.day.10cm.run1.top100.set1 <- head(CHN.day.10cm.run1.top100, 100)
+CHN.day.10cm.run2.top100.set1 <- head(CHN.day.10cm.run2.top100, 100)
+CHN.day.10cm.run3.top100.set1 <- head(CHN.day.10cm.run3.top100, 100)
+CHN.day.10cm.12 <- Reduce(intersect, list(CHN.day.10cm.run2.top100.set1$snp, CHN.day.10cm.run1.top100.set1$snp))
+CHN.day.10cm.13 <- Reduce(intersect, list(CHN.day.10cm.run3.top100.set1$snp, CHN.day.10cm.run1.top100.set1$snp))
+CHN.day.10cm.23 <- Reduce(intersect, list(CHN.day.10cm.run2.top100.set1$snp, CHN.day.10cm.run3.top100.set1$snp))
+CHN.day.10cm.123 <- Reduce(intersect, list(CHN.day.10cm.run2.top100.set1$snp, CHN.day.10cm.run3.top100.set1$snp, CHN.day.10cm.run1.top100.set1$snp))
+
+summary(CHN.day.10cm.123)
+#73
+```
+
+##overlap in 6-10% of outlier loci for CHN.day.10cm
+###############
+```
+CHN.day.10cm.run1.top100.set2 <- CHN.day.10cm.run1.top100[101:200,]
+CHN.day.10cm.run2.top100.set2 <- CHN.day.10cm.run2.top100[101:200,]
+CHN.day.10cm.run3.top100.set2 <- CHN.day.10cm.run3.top100[101:200,]
+CHN.day.10cm.12 <- Reduce(intersect, list(CHN.day.10cm.run2.top100.set2$snp, CHN.day.10cm.run1.top100.set2$snp))
+CHN.day.10cm.13 <- Reduce(intersect, list(CHN.day.10cm.run3.top100.set2$snp, CHN.day.10cm.run1.top100.set2$snp))
+CHN.day.10cm.23 <- Reduce(intersect, list(CHN.day.10cm.run2.top100.set2$snp, CHN.day.10cm.run3.top100.set2$snp))
+CHN.day.10cm.123 <- Reduce(intersect, list(CHN.day.10cm.run2.top100.set2$snp, CHN.day.10cm.run3.top100.set2$snp, CHN.day.10cm.run1.top100.set2$snp))
+summary(CHN.day.10cm.123)
+#31
+```
+
+##overlap in 11-15% of outlier loci for CHN.day.10cm
+###############
+```
+CHN.day.10cm.run1.top100.set2 <- CHN.day.10cm.run1.top100[201:300,]
+CHN.day.10cm.run2.top100.set2 <- CHN.day.10cm.run2.top100[201:300,]
+CHN.day.10cm.run3.top100.set2 <- CHN.day.10cm.run3.top100[201:300,]
+CHN.day.10cm.12 <- Reduce(intersect, list(CHN.day.10cm.run2.top100.set2$snp, CHN.day.10cm.run1.top100.set2$snp))
+CHN.day.10cm.13 <- Reduce(intersect, list(CHN.day.10cm.run3.top100.set2$snp, CHN.day.10cm.run1.top100.set2$snp))
+CHN.day.10cm.23 <- Reduce(intersect, list(CHN.day.10cm.run2.top100.set2$snp, CHN.day.10cm.run3.top100.set2$snp))
+CHN.day.10cm.123 <- Reduce(intersect, list(CHN.day.10cm.run2.top100.set2$snp, CHN.day.10cm.run3.top100.set2$snp, CHN.day.10cm.run1.top100.set2$snp))
+
+summary(CHN.day.10cm.123)
+#10
+```
+
+####CHS
+
+1. rad
+```
+CHS.rad.run1.top100 <- BF.CHS.Run1[order(-BF.CHS.Run1$rad.rho),]  ##descending order by rho
+CHS.rad.run2.top100 <- BF.CHS.Run2[order(-BF.CHS.Run2$rad.rho),]  ##descending order by rho
+CHS.rad.run3.top100 <- BF.CHS.Run3[order(-BF.CHS.Run3$rad.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHS.rad
+###############
+```
+CHS.rad.run1.top100.set1 <- head(CHS.rad.run1.top100, 100)
+CHS.rad.run2.top100.set1 <- head(CHS.rad.run2.top100, 100)
+CHS.rad.run3.top100.set1 <- head(CHS.rad.run3.top100, 100)
+CHS.rad.12 <- Reduce(intersect, list(CHS.rad.run2.top100.set1$snp, CHS.rad.run1.top100.set1$snp))
+CHS.rad.13 <- Reduce(intersect, list(CHS.rad.run3.top100.set1$snp, CHS.rad.run1.top100.set1$snp))
+CHS.rad.23 <- Reduce(intersect, list(CHS.rad.run2.top100.set1$snp, CHS.rad.run3.top100.set1$snp))
+CHS.rad.123 <- Reduce(intersect, list(CHS.rad.run2.top100.set1$snp, CHS.rad.run3.top100.set1$snp, CHS.rad.run1.top100.set1$snp))
+
+summary(CHS.rad.123)
+#70
+```
+
+##overlap in 6-10% of outlier loci for CHS.rad
+###############
+```
+CHS.rad.run1.top100.set2 <- CHS.rad.run1.top100[101:200,]
+CHS.rad.run2.top100.set2 <- CHS.rad.run2.top100[101:200,]
+CHS.rad.run3.top100.set2 <- CHS.rad.run3.top100[101:200,]
+CHS.rad.12 <- Reduce(intersect, list(CHS.rad.run2.top100.set2$snp, CHS.rad.run1.top100.set2$snp))
+CHS.rad.13 <- Reduce(intersect, list(CHS.rad.run3.top100.set2$snp, CHS.rad.run1.top100.set2$snp))
+CHS.rad.23 <- Reduce(intersect, list(CHS.rad.run2.top100.set2$snp, CHS.rad.run3.top100.set2$snp))
+CHS.rad.123 <- Reduce(intersect, list(CHS.rad.run2.top100.set2$snp, CHS.rad.run3.top100.set2$snp, CHS.rad.run1.top100.set2$snp))
+
+summary(CHS.rad.123)
+#26
+```
+
+##overlap in 11-15% of outlier loci for CHS.rad
+###############
+```
+CHS.rad.run1.top100.set2 <- CHS.rad.run1.top100[201:300,]
+CHS.rad.run2.top100.set2 <- CHS.rad.run2.top100[201:300,]
+CHS.rad.run3.top100.set2 <- CHS.rad.run3.top100[201:300,]
+CHS.rad.12 <- Reduce(intersect, list(CHS.rad.run2.top100.set2$snp, CHS.rad.run1.top100.set2$snp))
+CHS.rad.13 <- Reduce(intersect, list(CHS.rad.run3.top100.set2$snp, CHS.rad.run1.top100.set2$snp))
+CHS.rad.23 <- Reduce(intersect, list(CHS.rad.run2.top100.set2$snp, CHS.rad.run3.top100.set2$snp))
+CHS.rad.123 <- Reduce(intersect, list(CHS.rad.run2.top100.set2$snp, CHS.rad.run3.top100.set2$snp, CHS.rad.run1.top100.set2$snp))
+
+summary(CHS.rad.123)
+#10
+```
+
+2. shadow.days
+
+```
+CHS.shadow.days.run1.top100 <- BF.CHS.Run1[order(-BF.CHS.Run1$shadow.days.rho),]  ##descending order by rho
+CHS.shadow.days.run2.top100 <- BF.CHS.Run2[order(-BF.CHS.Run2$shadow.days.rho),]  ##descending order by rho
+CHS.shadow.days.run3.top100 <- BF.CHS.Run3[order(-BF.CHS.Run3$shadow.days.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHS.shadow.days
+###############
+```
+CHS.shadow.days.run1.top100.set1 <- head(CHS.shadow.days.run1.top100, 100)
+CHS.shadow.days.run2.top100.set1 <- head(CHS.shadow.days.run2.top100, 100)
+CHS.shadow.days.run3.top100.set1 <- head(CHS.shadow.days.run3.top100, 100)
+CHS.shadow.days.12 <- Reduce(intersect, list(CHS.shadow.days.run2.top100.set1$snp, CHS.shadow.days.run1.top100.set1$snp))
+CHS.shadow.days.13 <- Reduce(intersect, list(CHS.shadow.days.run3.top100.set1$snp, CHS.shadow.days.run1.top100.set1$snp))
+CHS.shadow.days.23 <- Reduce(intersect, list(CHS.shadow.days.run2.top100.set1$snp, CHS.shadow.days.run3.top100.set1$snp))
+CHS.shadow.days.123 <- Reduce(intersect, list(CHS.shadow.days.run2.top100.set1$snp, CHS.shadow.days.run3.top100.set1$snp, CHS.shadow.days.run1.top100.set1$snp))
+
+summary(CHS.shadow.days.123)
+#69
+```
+
+##overlap in 6-10% of outlier loci for CHS.shadow.days
+###############
+```
+CHS.shadow.days.run1.top100.set2 <- CHS.shadow.days.run1.top100[101:200,]
+CHS.shadow.days.run2.top100.set2 <- CHS.shadow.days.run2.top100[101:200,]
+CHS.shadow.days.run3.top100.set2 <- CHS.shadow.days.run3.top100[101:200,]
+CHS.shadow.days.12 <- Reduce(intersect, list(CHS.shadow.days.run2.top100.set2$snp, CHS.shadow.days.run1.top100.set2$snp))
+CHS.shadow.days.13 <- Reduce(intersect, list(CHS.shadow.days.run3.top100.set2$snp, CHS.shadow.days.run1.top100.set2$snp))
+CHS.shadow.days.23 <- Reduce(intersect, list(CHS.shadow.days.run2.top100.set2$snp, CHS.shadow.days.run3.top100.set2$snp))
+CHS.shadow.days.123 <- Reduce(intersect, list(CHS.shadow.days.run2.top100.set2$snp, CHS.shadow.days.run3.top100.set2$snp, CHS.shadow.days.run1.top100.set2$snp))
+
+summary(CHS.shadow.days.123)
+#29
+```
+
+##overlap in 11-15% of outlier loci for CHS.shadow.days
+###############
+```
+CHS.shadow.days.run1.top100.set2 <- CHS.shadow.days.run1.top100[201:300,]
+CHS.shadow.days.run2.top100.set2 <- CHS.shadow.days.run2.top100[201:300,]
+CHS.shadow.days.run3.top100.set2 <- CHS.shadow.days.run3.top100[201:300,]
+CHS.shadow.days.12 <- Reduce(intersect, list(CHS.shadow.days.run2.top100.set2$snp, CHS.shadow.days.run1.top100.set2$snp))
+CHS.shadow.days.13 <- Reduce(intersect, list(CHS.shadow.days.run3.top100.set2$snp, CHS.shadow.days.run1.top100.set2$snp))
+CHS.shadow.days.23 <- Reduce(intersect, list(CHS.shadow.days.run2.top100.set2$snp, CHS.shadow.days.run3.top100.set2$snp))
+CHS.shadow.days.123 <- Reduce(intersect, list(CHS.shadow.days.run2.top100.set2$snp, CHS.shadow.days.run3.top100.set2$snp, CHS.shadow.days.run1.top100.set2$snp))
+
+summary(CHS.shadow.days.123)
+#15
+```
+
+3. temp
+
+```
+CHS.temp.run1.top100 <- BF.CHS.Run1[order(-BF.CHS.Run1$temp.rho),]  ##descending order by rho
+CHS.temp.run2.top100 <- BF.CHS.Run2[order(-BF.CHS.Run2$temp.rho),]  ##descending order by rho
+CHS.temp.run3.top100 <- BF.CHS.Run3[order(-BF.CHS.Run3$temp.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHS.temp
+###############
+```
+CHS.temp.run1.top100.set1 <- head(CHS.temp.run1.top100, 100)
+CHS.temp.run2.top100.set1 <- head(CHS.temp.run2.top100, 100)
+CHS.temp.run3.top100.set1 <- head(CHS.temp.run3.top100, 100)
+CHS.temp.12 <- Reduce(intersect, list(CHS.temp.run2.top100.set1$snp, CHS.temp.run1.top100.set1$snp))
+CHS.temp.13 <- Reduce(intersect, list(CHS.temp.run3.top100.set1$snp, CHS.temp.run1.top100.set1$snp))
+CHS.temp.23 <- Reduce(intersect, list(CHS.temp.run2.top100.set1$snp, CHS.temp.run3.top100.set1$snp))
+CHS.temp.123 <- Reduce(intersect, list(CHS.temp.run2.top100.set1$snp, CHS.temp.run3.top100.set1$snp, CHS.temp.run1.top100.set1$snp))
+
+summary(CHS.temp.123)
+#77
+```
+
+##overlap in 6-10% of outlier loci for CHS.temp
+###############
+```
+CHS.temp.run1.top100.set2 <- CHS.temp.run1.top100[101:200,]
+CHS.temp.run2.top100.set2 <- CHS.temp.run2.top100[101:200,]
+CHS.temp.run3.top100.set2 <- CHS.temp.run3.top100[101:200,]
+CHS.temp.12 <- Reduce(intersect, list(CHS.temp.run2.top100.set2$snp, CHS.temp.run1.top100.set2$snp))
+CHS.temp.13 <- Reduce(intersect, list(CHS.temp.run3.top100.set2$snp, CHS.temp.run1.top100.set2$snp))
+CHS.temp.23 <- Reduce(intersect, list(CHS.temp.run2.top100.set2$snp, CHS.temp.run3.top100.set2$snp))
+CHS.temp.123 <- Reduce(intersect, list(CHS.temp.run2.top100.set2$snp, CHS.temp.run3.top100.set2$snp, CHS.temp.run1.top100.set2$snp))
+summary(CHS.temp.123)
+#34
+```
+
+##overlap in 11-15% of outlier loci for CHS.temp
+###############
+```
+CHS.temp.run1.top100.set2 <- CHS.temp.run1.top100[201:300,]
+CHS.temp.run2.top100.set2 <- CHS.temp.run2.top100[201:300,]
+CHS.temp.run3.top100.set2 <- CHS.temp.run3.top100[201:300,]
+CHS.temp.12 <- Reduce(intersect, list(CHS.temp.run2.top100.set2$snp, CHS.temp.run1.top100.set2$snp))
+CHS.temp.13 <- Reduce(intersect, list(CHS.temp.run3.top100.set2$snp, CHS.temp.run1.top100.set2$snp))
+CHS.temp.23 <- Reduce(intersect, list(CHS.temp.run2.top100.set2$snp, CHS.temp.run3.top100.set2$snp))
+CHS.temp.123 <- Reduce(intersect, list(CHS.temp.run2.top100.set2$snp, CHS.temp.run3.top100.set2$snp, CHS.temp.run1.top100.set2$snp))
+
+summary(CHS.temp.123)
+#12
+```
+
+4. pcpt
+
+```
+CHS.pcpt.run1.top100 <- BF.CHS.Run1[order(-BF.CHS.Run1$pcpt.rho),]  ##descending order by rho
+CHS.pcpt.run2.top100 <- BF.CHS.Run2[order(-BF.CHS.Run2$pcpt.rho),]  ##descending order by rho
+CHS.pcpt.run3.top100 <- BF.CHS.Run3[order(-BF.CHS.Run3$pcpt.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHS.pcpt
+###############
+```
+CHS.pcpt.run1.top100.set1 <- head(CHS.pcpt.run1.top100, 100)
+CHS.pcpt.run2.top100.set1 <- head(CHS.pcpt.run2.top100, 100)
+CHS.pcpt.run3.top100.set1 <- head(CHS.pcpt.run3.top100, 100)
+CHS.pcpt.12 <- Reduce(intersect, list(CHS.pcpt.run2.top100.set1$snp, CHS.pcpt.run1.top100.set1$snp))
+CHS.pcpt.13 <- Reduce(intersect, list(CHS.pcpt.run3.top100.set1$snp, CHS.pcpt.run1.top100.set1$snp))
+CHS.pcpt.23 <- Reduce(intersect, list(CHS.pcpt.run2.top100.set1$snp, CHS.pcpt.run3.top100.set1$snp))
+CHS.pcpt.123 <- Reduce(intersect, list(CHS.pcpt.run2.top100.set1$snp, CHS.pcpt.run3.top100.set1$snp, CHS.pcpt.run1.top100.set1$snp))
+
+summary(CHS.pcpt.123)
+#68
+```
+
+##overlap in 6-10% of outlier loci for CHS.pcpt
+###############
+```
+CHS.pcpt.run1.top100.set2 <- CHS.pcpt.run1.top100[101:200,]
+CHS.pcpt.run2.top100.set2 <- CHS.pcpt.run2.top100[101:200,]
+CHS.pcpt.run3.top100.set2 <- CHS.pcpt.run3.top100[101:200,]
+CHS.pcpt.12 <- Reduce(intersect, list(CHS.pcpt.run2.top100.set2$snp, CHS.pcpt.run1.top100.set2$snp))
+CHS.pcpt.13 <- Reduce(intersect, list(CHS.pcpt.run3.top100.set2$snp, CHS.pcpt.run1.top100.set2$snp))
+CHS.pcpt.23 <- Reduce(intersect, list(CHS.pcpt.run2.top100.set2$snp, CHS.pcpt.run3.top100.set2$snp))
+CHS.pcpt.123 <- Reduce(intersect, list(CHS.pcpt.run2.top100.set2$snp, CHS.pcpt.run3.top100.set2$snp, CHS.pcpt.run1.top100.set2$snp))
+
+summary(CHS.pcpt.123)
+#25
+```
+
+##overlap in 11-15% of outlier loci for CHS.pcpt
+###############
+```
+CHS.pcpt.run1.top100.set2 <- CHS.pcpt.run1.top100[201:300,]
+CHS.pcpt.run2.top100.set2 <- CHS.pcpt.run2.top100[201:300,]
+CHS.pcpt.run3.top100.set2 <- CHS.pcpt.run3.top100[201:300,]
+CHS.pcpt.12 <- Reduce(intersect, list(CHS.pcpt.run2.top100.set2$snp, CHS.pcpt.run1.top100.set2$snp))
+CHS.pcpt.13 <- Reduce(intersect, list(CHS.pcpt.run3.top100.set2$snp, CHS.pcpt.run1.top100.set2$snp))
+CHS.pcpt.23 <- Reduce(intersect, list(CHS.pcpt.run2.top100.set2$snp, CHS.pcpt.run3.top100.set2$snp))
+CHS.pcpt.123 <- Reduce(intersect, list(CHS.pcpt.run2.top100.set2$snp, CHS.pcpt.run3.top100.set2$snp, CHS.pcpt.run1.top100.set2$snp))
+
+summary(CHS.pcpt.123)
+#12
+```
+
+5. day.10cm
+```
+CHS.day.10cm.run1.top100 <- BF.CHS.Run1[order(-BF.CHS.Run1$day.10cm.rho),]  ##descending order by rho
+CHS.day.10cm.run2.top100 <- BF.CHS.Run2[order(-BF.CHS.Run2$day.10cm.rho),]  ##descending order by rho
+CHS.day.10cm.run3.top100 <- BF.CHS.Run3[order(-BF.CHS.Run3$day.10cm.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHS.day.10cm
+###############
+```
+CHS.day.10cm.run1.top100.set1 <- head(CHS.day.10cm.run1.top100, 100)
+CHS.day.10cm.run2.top100.set1 <- head(CHS.day.10cm.run2.top100, 100)
+CHS.day.10cm.run3.top100.set1 <- head(CHS.day.10cm.run3.top100, 100)
+CHS.day.10cm.12 <- Reduce(intersect, list(CHS.day.10cm.run2.top100.set1$snp, CHS.day.10cm.run1.top100.set1$snp))
+CHS.day.10cm.13 <- Reduce(intersect, list(CHS.day.10cm.run3.top100.set1$snp, CHS.day.10cm.run1.top100.set1$snp))
+CHS.day.10cm.23 <- Reduce(intersect, list(CHS.day.10cm.run2.top100.set1$snp, CHS.day.10cm.run3.top100.set1$snp))
+CHS.day.10cm.123 <- Reduce(intersect, list(CHS.day.10cm.run2.top100.set1$snp, CHS.day.10cm.run3.top100.set1$snp, CHS.day.10cm.run1.top100.set1$snp))
+
+summary(CHS.day.10cm.123)
+#73
+```
+
+##overlap in 6-10% of outlier loci for CHS.day.10cm
+###############
+```
+CHS.day.10cm.run1.top100.set2 <- CHS.day.10cm.run1.top100[101:200,]
+CHS.day.10cm.run2.top100.set2 <- CHS.day.10cm.run2.top100[101:200,]
+CHS.day.10cm.run3.top100.set2 <- CHS.day.10cm.run3.top100[101:200,]
+CHS.day.10cm.12 <- Reduce(intersect, list(CHS.day.10cm.run2.top100.set2$snp, CHS.day.10cm.run1.top100.set2$snp))
+CHS.day.10cm.13 <- Reduce(intersect, list(CHS.day.10cm.run3.top100.set2$snp, CHS.day.10cm.run1.top100.set2$snp))
+CHS.day.10cm.23 <- Reduce(intersect, list(CHS.day.10cm.run2.top100.set2$snp, CHS.day.10cm.run3.top100.set2$snp))
+CHS.day.10cm.123 <- Reduce(intersect, list(CHS.day.10cm.run2.top100.set2$snp, CHS.day.10cm.run3.top100.set2$snp, CHS.day.10cm.run1.top100.set2$snp))
+summary(CHS.day.10cm.123)
+#31
+```
+
+##overlap in 11-15% of outlier loci for CHS.day.10cm
+###############
+```
+CHS.day.10cm.run1.top100.set2 <- CHS.day.10cm.run1.top100[201:300,]
+CHS.day.10cm.run2.top100.set2 <- CHS.day.10cm.run2.top100[201:300,]
+CHS.day.10cm.run3.top100.set2 <- CHS.day.10cm.run3.top100[201:300,]
+CHS.day.10cm.12 <- Reduce(intersect, list(CHS.day.10cm.run2.top100.set2$snp, CHS.day.10cm.run1.top100.set2$snp))
+CHS.day.10cm.13 <- Reduce(intersect, list(CHS.day.10cm.run3.top100.set2$snp, CHS.day.10cm.run1.top100.set2$snp))
+CHS.day.10cm.23 <- Reduce(intersect, list(CHS.day.10cm.run2.top100.set2$snp, CHS.day.10cm.run3.top100.set2$snp))
+CHS.day.10cm.123 <- Reduce(intersect, list(CHS.day.10cm.run2.top100.set2$snp, CHS.day.10cm.run3.top100.set2$snp, CHS.day.10cm.run1.top100.set2$snp))
+
+summary(CHS.day.10cm.123)
+#10
+```
+
+####CZ
+
+1. rad
+```
+CZ.rad.run1.top100 <- BF.CZ.Run1[order(-BF.CZ.Run1$rad.rho),]  ##descending order by rho
+CZ.rad.run2.top100 <- BF.CZ.Run2[order(-BF.CZ.Run2$rad.rho),]  ##descending order by rho
+CZ.rad.run3.top100 <- BF.CZ.Run3[order(-BF.CZ.Run3$rad.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CZ.rad
+###############
+```
+CZ.rad.run1.top100.set1 <- head(CZ.rad.run1.top100, 100)
+CZ.rad.run2.top100.set1 <- head(CZ.rad.run2.top100, 100)
+CZ.rad.run3.top100.set1 <- head(CZ.rad.run3.top100, 100)
+CZ.rad.12 <- Reduce(intersect, list(CZ.rad.run2.top100.set1$snp, CZ.rad.run1.top100.set1$snp))
+CZ.rad.13 <- Reduce(intersect, list(CZ.rad.run3.top100.set1$snp, CZ.rad.run1.top100.set1$snp))
+CZ.rad.23 <- Reduce(intersect, list(CZ.rad.run2.top100.set1$snp, CZ.rad.run3.top100.set1$snp))
+CZ.rad.123 <- Reduce(intersect, list(CZ.rad.run2.top100.set1$snp, CZ.rad.run3.top100.set1$snp, CZ.rad.run1.top100.set1$snp))
+
+summary(CZ.rad.123)
+#70
+```
+
+##overlap in 6-10% of outlier loci for CZ.rad
+###############
+```
+CZ.rad.run1.top100.set2 <- CZ.rad.run1.top100[101:200,]
+CZ.rad.run2.top100.set2 <- CZ.rad.run2.top100[101:200,]
+CZ.rad.run3.top100.set2 <- CZ.rad.run3.top100[101:200,]
+CZ.rad.12 <- Reduce(intersect, list(CZ.rad.run2.top100.set2$snp, CZ.rad.run1.top100.set2$snp))
+CZ.rad.13 <- Reduce(intersect, list(CZ.rad.run3.top100.set2$snp, CZ.rad.run1.top100.set2$snp))
+CZ.rad.23 <- Reduce(intersect, list(CZ.rad.run2.top100.set2$snp, CZ.rad.run3.top100.set2$snp))
+CZ.rad.123 <- Reduce(intersect, list(CZ.rad.run2.top100.set2$snp, CZ.rad.run3.top100.set2$snp, CZ.rad.run1.top100.set2$snp))
+
+summary(CZ.rad.123)
+#26
+```
+
+##overlap in 11-15% of outlier loci for CZ.rad
+###############
+```
+CZ.rad.run1.top100.set2 <- CZ.rad.run1.top100[201:300,]
+CZ.rad.run2.top100.set2 <- CZ.rad.run2.top100[201:300,]
+CZ.rad.run3.top100.set2 <- CZ.rad.run3.top100[201:300,]
+CZ.rad.12 <- Reduce(intersect, list(CZ.rad.run2.top100.set2$snp, CZ.rad.run1.top100.set2$snp))
+CZ.rad.13 <- Reduce(intersect, list(CZ.rad.run3.top100.set2$snp, CZ.rad.run1.top100.set2$snp))
+CZ.rad.23 <- Reduce(intersect, list(CZ.rad.run2.top100.set2$snp, CZ.rad.run3.top100.set2$snp))
+CZ.rad.123 <- Reduce(intersect, list(CZ.rad.run2.top100.set2$snp, CZ.rad.run3.top100.set2$snp, CZ.rad.run1.top100.set2$snp))
+
+summary(CZ.rad.123)
+#10
+```
+
+2. shadow.days
+
+```
+CZ.shadow.days.run1.top100 <- BF.CZ.Run1[order(-BF.CZ.Run1$shadow.days.rho),]  ##descending order by rho
+CZ.shadow.days.run2.top100 <- BF.CZ.Run2[order(-BF.CZ.Run2$shadow.days.rho),]  ##descending order by rho
+CZ.shadow.days.run3.top100 <- BF.CZ.Run3[order(-BF.CZ.Run3$shadow.days.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CZ.shadow.days
+###############
+```
+CZ.shadow.days.run1.top100.set1 <- head(CZ.shadow.days.run1.top100, 100)
+CZ.shadow.days.run2.top100.set1 <- head(CZ.shadow.days.run2.top100, 100)
+CZ.shadow.days.run3.top100.set1 <- head(CZ.shadow.days.run3.top100, 100)
+CZ.shadow.days.12 <- Reduce(intersect, list(CZ.shadow.days.run2.top100.set1$snp, CZ.shadow.days.run1.top100.set1$snp))
+CZ.shadow.days.13 <- Reduce(intersect, list(CZ.shadow.days.run3.top100.set1$snp, CZ.shadow.days.run1.top100.set1$snp))
+CZ.shadow.days.23 <- Reduce(intersect, list(CZ.shadow.days.run2.top100.set1$snp, CZ.shadow.days.run3.top100.set1$snp))
+CZ.shadow.days.123 <- Reduce(intersect, list(CZ.shadow.days.run2.top100.set1$snp, CZ.shadow.days.run3.top100.set1$snp, CZ.shadow.days.run1.top100.set1$snp))
+
+summary(CZ.shadow.days.123)
+#69
+```
+
+##overlap in 6-10% of outlier loci for CZ.shadow.days
+###############
+```
+CZ.shadow.days.run1.top100.set2 <- CZ.shadow.days.run1.top100[101:200,]
+CZ.shadow.days.run2.top100.set2 <- CZ.shadow.days.run2.top100[101:200,]
+CZ.shadow.days.run3.top100.set2 <- CZ.shadow.days.run3.top100[101:200,]
+CZ.shadow.days.12 <- Reduce(intersect, list(CZ.shadow.days.run2.top100.set2$snp, CZ.shadow.days.run1.top100.set2$snp))
+CZ.shadow.days.13 <- Reduce(intersect, list(CZ.shadow.days.run3.top100.set2$snp, CZ.shadow.days.run1.top100.set2$snp))
+CZ.shadow.days.23 <- Reduce(intersect, list(CZ.shadow.days.run2.top100.set2$snp, CZ.shadow.days.run3.top100.set2$snp))
+CZ.shadow.days.123 <- Reduce(intersect, list(CZ.shadow.days.run2.top100.set2$snp, CZ.shadow.days.run3.top100.set2$snp, CZ.shadow.days.run1.top100.set2$snp))
+
+summary(CZ.shadow.days.123)
+#29
+```
+
+##overlap in 11-15% of outlier loci for CZ.shadow.days
+###############
+```
+CZ.shadow.days.run1.top100.set2 <- CZ.shadow.days.run1.top100[201:300,]
+CZ.shadow.days.run2.top100.set2 <- CZ.shadow.days.run2.top100[201:300,]
+CZ.shadow.days.run3.top100.set2 <- CZ.shadow.days.run3.top100[201:300,]
+CZ.shadow.days.12 <- Reduce(intersect, list(CZ.shadow.days.run2.top100.set2$snp, CZ.shadow.days.run1.top100.set2$snp))
+CZ.shadow.days.13 <- Reduce(intersect, list(CZ.shadow.days.run3.top100.set2$snp, CZ.shadow.days.run1.top100.set2$snp))
+CZ.shadow.days.23 <- Reduce(intersect, list(CZ.shadow.days.run2.top100.set2$snp, CZ.shadow.days.run3.top100.set2$snp))
+CZ.shadow.days.123 <- Reduce(intersect, list(CZ.shadow.days.run2.top100.set2$snp, CZ.shadow.days.run3.top100.set2$snp, CZ.shadow.days.run1.top100.set2$snp))
+
+summary(CZ.shadow.days.123)
+#15
+```
+
+3. temp
+
+```
+CZ.temp.run1.top100 <- BF.CZ.Run1[order(-BF.CZ.Run1$temp.rho),]  ##descending order by rho
+CZ.temp.run2.top100 <- BF.CZ.Run2[order(-BF.CZ.Run2$temp.rho),]  ##descending order by rho
+CZ.temp.run3.top100 <- BF.CZ.Run3[order(-BF.CZ.Run3$temp.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CZ.temp
+###############
+```
+CZ.temp.run1.top100.set1 <- head(CZ.temp.run1.top100, 100)
+CZ.temp.run2.top100.set1 <- head(CZ.temp.run2.top100, 100)
+CZ.temp.run3.top100.set1 <- head(CZ.temp.run3.top100, 100)
+CZ.temp.12 <- Reduce(intersect, list(CZ.temp.run2.top100.set1$snp, CZ.temp.run1.top100.set1$snp))
+CZ.temp.13 <- Reduce(intersect, list(CZ.temp.run3.top100.set1$snp, CZ.temp.run1.top100.set1$snp))
+CZ.temp.23 <- Reduce(intersect, list(CZ.temp.run2.top100.set1$snp, CZ.temp.run3.top100.set1$snp))
+CZ.temp.123 <- Reduce(intersect, list(CZ.temp.run2.top100.set1$snp, CZ.temp.run3.top100.set1$snp, CZ.temp.run1.top100.set1$snp))
+
+summary(CZ.temp.123)
+#77
+```
+
+##overlap in 6-10% of outlier loci for CZ.temp
+###############
+```
+CZ.temp.run1.top100.set2 <- CZ.temp.run1.top100[101:200,]
+CZ.temp.run2.top100.set2 <- CZ.temp.run2.top100[101:200,]
+CZ.temp.run3.top100.set2 <- CZ.temp.run3.top100[101:200,]
+CZ.temp.12 <- Reduce(intersect, list(CZ.temp.run2.top100.set2$snp, CZ.temp.run1.top100.set2$snp))
+CZ.temp.13 <- Reduce(intersect, list(CZ.temp.run3.top100.set2$snp, CZ.temp.run1.top100.set2$snp))
+CZ.temp.23 <- Reduce(intersect, list(CZ.temp.run2.top100.set2$snp, CZ.temp.run3.top100.set2$snp))
+CZ.temp.123 <- Reduce(intersect, list(CZ.temp.run2.top100.set2$snp, CZ.temp.run3.top100.set2$snp, CZ.temp.run1.top100.set2$snp))
+summary(CZ.temp.123)
+#34
+```
+
+##overlap in 11-15% of outlier loci for CZ.temp
+###############
+```
+CZ.temp.run1.top100.set2 <- CZ.temp.run1.top100[201:300,]
+CZ.temp.run2.top100.set2 <- CZ.temp.run2.top100[201:300,]
+CZ.temp.run3.top100.set2 <- CZ.temp.run3.top100[201:300,]
+CZ.temp.12 <- Reduce(intersect, list(CZ.temp.run2.top100.set2$snp, CZ.temp.run1.top100.set2$snp))
+CZ.temp.13 <- Reduce(intersect, list(CZ.temp.run3.top100.set2$snp, CZ.temp.run1.top100.set2$snp))
+CZ.temp.23 <- Reduce(intersect, list(CZ.temp.run2.top100.set2$snp, CZ.temp.run3.top100.set2$snp))
+CZ.temp.123 <- Reduce(intersect, list(CZ.temp.run2.top100.set2$snp, CZ.temp.run3.top100.set2$snp, CZ.temp.run1.top100.set2$snp))
+
+summary(CZ.temp.123)
+#12
+```
+
+4. pcpt
+
+```
+CZ.pcpt.run1.top100 <- BF.CZ.Run1[order(-BF.CZ.Run1$pcpt.rho),]  ##descending order by rho
+CZ.pcpt.run2.top100 <- BF.CZ.Run2[order(-BF.CZ.Run2$pcpt.rho),]  ##descending order by rho
+CZ.pcpt.run3.top100 <- BF.CZ.Run3[order(-BF.CZ.Run3$pcpt.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CZ.pcpt
+###############
+```
+CZ.pcpt.run1.top100.set1 <- head(CZ.pcpt.run1.top100, 100)
+CZ.pcpt.run2.top100.set1 <- head(CZ.pcpt.run2.top100, 100)
+CZ.pcpt.run3.top100.set1 <- head(CZ.pcpt.run3.top100, 100)
+CZ.pcpt.12 <- Reduce(intersect, list(CZ.pcpt.run2.top100.set1$snp, CZ.pcpt.run1.top100.set1$snp))
+CZ.pcpt.13 <- Reduce(intersect, list(CZ.pcpt.run3.top100.set1$snp, CZ.pcpt.run1.top100.set1$snp))
+CZ.pcpt.23 <- Reduce(intersect, list(CZ.pcpt.run2.top100.set1$snp, CZ.pcpt.run3.top100.set1$snp))
+CZ.pcpt.123 <- Reduce(intersect, list(CZ.pcpt.run2.top100.set1$snp, CZ.pcpt.run3.top100.set1$snp, CZ.pcpt.run1.top100.set1$snp))
+
+summary(CZ.pcpt.123)
+#68
+```
+
+##overlap in 6-10% of outlier loci for CZ.pcpt
+###############
+```
+CZ.pcpt.run1.top100.set2 <- CZ.pcpt.run1.top100[101:200,]
+CZ.pcpt.run2.top100.set2 <- CZ.pcpt.run2.top100[101:200,]
+CZ.pcpt.run3.top100.set2 <- CZ.pcpt.run3.top100[101:200,]
+CZ.pcpt.12 <- Reduce(intersect, list(CZ.pcpt.run2.top100.set2$snp, CZ.pcpt.run1.top100.set2$snp))
+CZ.pcpt.13 <- Reduce(intersect, list(CZ.pcpt.run3.top100.set2$snp, CZ.pcpt.run1.top100.set2$snp))
+CZ.pcpt.23 <- Reduce(intersect, list(CZ.pcpt.run2.top100.set2$snp, CZ.pcpt.run3.top100.set2$snp))
+CZ.pcpt.123 <- Reduce(intersect, list(CZ.pcpt.run2.top100.set2$snp, CZ.pcpt.run3.top100.set2$snp, CZ.pcpt.run1.top100.set2$snp))
+
+summary(CZ.pcpt.123)
+#25
+```
+
+##overlap in 11-15% of outlier loci for CZ.pcpt
+###############
+```
+CZ.pcpt.run1.top100.set2 <- CZ.pcpt.run1.top100[201:300,]
+CZ.pcpt.run2.top100.set2 <- CZ.pcpt.run2.top100[201:300,]
+CZ.pcpt.run3.top100.set2 <- CZ.pcpt.run3.top100[201:300,]
+CZ.pcpt.12 <- Reduce(intersect, list(CZ.pcpt.run2.top100.set2$snp, CZ.pcpt.run1.top100.set2$snp))
+CZ.pcpt.13 <- Reduce(intersect, list(CZ.pcpt.run3.top100.set2$snp, CZ.pcpt.run1.top100.set2$snp))
+CZ.pcpt.23 <- Reduce(intersect, list(CZ.pcpt.run2.top100.set2$snp, CZ.pcpt.run3.top100.set2$snp))
+CZ.pcpt.123 <- Reduce(intersect, list(CZ.pcpt.run2.top100.set2$snp, CZ.pcpt.run3.top100.set2$snp, CZ.pcpt.run1.top100.set2$snp))
+
+summary(CZ.pcpt.123)
+#12
+```
+
+5. day.10cm
+```
+CZ.day.10cm.run1.top100 <- BF.CZ.Run1[order(-BF.CZ.Run1$day.10cm.rho),]  ##descending order by rho
+CZ.day.10cm.run2.top100 <- BF.CZ.Run2[order(-BF.CZ.Run2$day.10cm.rho),]  ##descending order by rho
+CZ.day.10cm.run3.top100 <- BF.CZ.Run3[order(-BF.CZ.Run3$day.10cm.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CZ.day.10cm
+###############
+```
+CZ.day.10cm.run1.top100.set1 <- head(CZ.day.10cm.run1.top100, 100)
+CZ.day.10cm.run2.top100.set1 <- head(CZ.day.10cm.run2.top100, 100)
+CZ.day.10cm.run3.top100.set1 <- head(CZ.day.10cm.run3.top100, 100)
+CZ.day.10cm.12 <- Reduce(intersect, list(CZ.day.10cm.run2.top100.set1$snp, CZ.day.10cm.run1.top100.set1$snp))
+CZ.day.10cm.13 <- Reduce(intersect, list(CZ.day.10cm.run3.top100.set1$snp, CZ.day.10cm.run1.top100.set1$snp))
+CZ.day.10cm.23 <- Reduce(intersect, list(CZ.day.10cm.run2.top100.set1$snp, CZ.day.10cm.run3.top100.set1$snp))
+CZ.day.10cm.123 <- Reduce(intersect, list(CZ.day.10cm.run2.top100.set1$snp, CZ.day.10cm.run3.top100.set1$snp, CZ.day.10cm.run1.top100.set1$snp))
+
+summary(CZ.day.10cm.123)
+#73
+```
+
+##overlap in 6-10% of outlier loci for CZ.day.10cm
+###############
+```
+CZ.day.10cm.run1.top100.set2 <- CZ.day.10cm.run1.top100[101:200,]
+CZ.day.10cm.run2.top100.set2 <- CZ.day.10cm.run2.top100[101:200,]
+CZ.day.10cm.run3.top100.set2 <- CZ.day.10cm.run3.top100[101:200,]
+CZ.day.10cm.12 <- Reduce(intersect, list(CZ.day.10cm.run2.top100.set2$snp, CZ.day.10cm.run1.top100.set2$snp))
+CZ.day.10cm.13 <- Reduce(intersect, list(CZ.day.10cm.run3.top100.set2$snp, CZ.day.10cm.run1.top100.set2$snp))
+CZ.day.10cm.23 <- Reduce(intersect, list(CZ.day.10cm.run2.top100.set2$snp, CZ.day.10cm.run3.top100.set2$snp))
+CZ.day.10cm.123 <- Reduce(intersect, list(CZ.day.10cm.run2.top100.set2$snp, CZ.day.10cm.run3.top100.set2$snp, CZ.day.10cm.run1.top100.set2$snp))
+summary(CZ.day.10cm.123)
+#31
+```
+
+##overlap in 11-15% of outlier loci for CZ.day.10cm
+###############
+```
+CZ.day.10cm.run1.top100.set2 <- CZ.day.10cm.run1.top100[201:300,]
+CZ.day.10cm.run2.top100.set2 <- CZ.day.10cm.run2.top100[201:300,]
+CZ.day.10cm.run3.top100.set2 <- CZ.day.10cm.run3.top100[201:300,]
+CZ.day.10cm.12 <- Reduce(intersect, list(CZ.day.10cm.run2.top100.set2$snp, CZ.day.10cm.run1.top100.set2$snp))
+CZ.day.10cm.13 <- Reduce(intersect, list(CZ.day.10cm.run3.top100.set2$snp, CZ.day.10cm.run1.top100.set2$snp))
+CZ.day.10cm.23 <- Reduce(intersect, list(CZ.day.10cm.run2.top100.set2$snp, CZ.day.10cm.run3.top100.set2$snp))
+CZ.day.10cm.123 <- Reduce(intersect, list(CZ.day.10cm.run2.top100.set2$snp, CZ.day.10cm.run3.top100.set2$snp, CZ.day.10cm.run1.top100.set2$snp))
+
+summary(CZ.day.10cm.123)
+#10
+```
+
+####CHS.VS
+
+1. rad
+```
+CHS.VS.rad.run1.top100 <- BF.CHS.VS.Run1[order(-BF.CHS.VS.Run1$rad.rho),]  ##descending order by rho
+CHS.VS.rad.run2.top100 <- BF.CHS.VS.Run2[order(-BF.CHS.VS.Run2$rad.rho),]  ##descending order by rho
+CHS.VS.rad.run3.top100 <- BF.CHS.VS.Run3[order(-BF.CHS.VS.Run3$rad.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHS.VS.rad
+###############
+```
+CHS.VS.rad.run1.top100.set1 <- head(CHS.VS.rad.run1.top100, 100)
+CHS.VS.rad.run2.top100.set1 <- head(CHS.VS.rad.run2.top100, 100)
+CHS.VS.rad.run3.top100.set1 <- head(CHS.VS.rad.run3.top100, 100)
+CHS.VS.rad.12 <- Reduce(intersect, list(CHS.VS.rad.run2.top100.set1$snp, CHS.VS.rad.run1.top100.set1$snp))
+CHS.VS.rad.13 <- Reduce(intersect, list(CHS.VS.rad.run3.top100.set1$snp, CHS.VS.rad.run1.top100.set1$snp))
+CHS.VS.rad.23 <- Reduce(intersect, list(CHS.VS.rad.run2.top100.set1$snp, CHS.VS.rad.run3.top100.set1$snp))
+CHS.VS.rad.123 <- Reduce(intersect, list(CHS.VS.rad.run2.top100.set1$snp, CHS.VS.rad.run3.top100.set1$snp, CHS.VS.rad.run1.top100.set1$snp))
+
+summary(CHS.VS.rad.123)
+#70
+```
+
+##overlap in 6-10% of outlier loci for CHS.VS.rad
+###############
+```
+CHS.VS.rad.run1.top100.set2 <- CHS.VS.rad.run1.top100[101:200,]
+CHS.VS.rad.run2.top100.set2 <- CHS.VS.rad.run2.top100[101:200,]
+CHS.VS.rad.run3.top100.set2 <- CHS.VS.rad.run3.top100[101:200,]
+CHS.VS.rad.12 <- Reduce(intersect, list(CHS.VS.rad.run2.top100.set2$snp, CHS.VS.rad.run1.top100.set2$snp))
+CHS.VS.rad.13 <- Reduce(intersect, list(CHS.VS.rad.run3.top100.set2$snp, CHS.VS.rad.run1.top100.set2$snp))
+CHS.VS.rad.23 <- Reduce(intersect, list(CHS.VS.rad.run2.top100.set2$snp, CHS.VS.rad.run3.top100.set2$snp))
+CHS.VS.rad.123 <- Reduce(intersect, list(CHS.VS.rad.run2.top100.set2$snp, CHS.VS.rad.run3.top100.set2$snp, CHS.VS.rad.run1.top100.set2$snp))
+
+summary(CHS.VS.rad.123)
+#26
+```
+
+##overlap in 11-15% of outlier loci for CHS.VS.rad
+###############
+```
+CHS.VS.rad.run1.top100.set2 <- CHS.VS.rad.run1.top100[201:300,]
+CHS.VS.rad.run2.top100.set2 <- CHS.VS.rad.run2.top100[201:300,]
+CHS.VS.rad.run3.top100.set2 <- CHS.VS.rad.run3.top100[201:300,]
+CHS.VS.rad.12 <- Reduce(intersect, list(CHS.VS.rad.run2.top100.set2$snp, CHS.VS.rad.run1.top100.set2$snp))
+CHS.VS.rad.13 <- Reduce(intersect, list(CHS.VS.rad.run3.top100.set2$snp, CHS.VS.rad.run1.top100.set2$snp))
+CHS.VS.rad.23 <- Reduce(intersect, list(CHS.VS.rad.run2.top100.set2$snp, CHS.VS.rad.run3.top100.set2$snp))
+CHS.VS.rad.123 <- Reduce(intersect, list(CHS.VS.rad.run2.top100.set2$snp, CHS.VS.rad.run3.top100.set2$snp, CHS.VS.rad.run1.top100.set2$snp))
+
+summary(CHS.VS.rad.123)
+#10
+```
+
+2. shadow.days
+
+```
+CHS.VS.shadow.days.run1.top100 <- BF.CHS.VS.Run1[order(-BF.CHS.VS.Run1$shadow.days.rho),]  ##descending order by rho
+CHS.VS.shadow.days.run2.top100 <- BF.CHS.VS.Run2[order(-BF.CHS.VS.Run2$shadow.days.rho),]  ##descending order by rho
+CHS.VS.shadow.days.run3.top100 <- BF.CHS.VS.Run3[order(-BF.CHS.VS.Run3$shadow.days.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHS.VS.shadow.days
+###############
+```
+CHS.VS.shadow.days.run1.top100.set1 <- head(CHS.VS.shadow.days.run1.top100, 100)
+CHS.VS.shadow.days.run2.top100.set1 <- head(CHS.VS.shadow.days.run2.top100, 100)
+CHS.VS.shadow.days.run3.top100.set1 <- head(CHS.VS.shadow.days.run3.top100, 100)
+CHS.VS.shadow.days.12 <- Reduce(intersect, list(CHS.VS.shadow.days.run2.top100.set1$snp, CHS.VS.shadow.days.run1.top100.set1$snp))
+CHS.VS.shadow.days.13 <- Reduce(intersect, list(CHS.VS.shadow.days.run3.top100.set1$snp, CHS.VS.shadow.days.run1.top100.set1$snp))
+CHS.VS.shadow.days.23 <- Reduce(intersect, list(CHS.VS.shadow.days.run2.top100.set1$snp, CHS.VS.shadow.days.run3.top100.set1$snp))
+CHS.VS.shadow.days.123 <- Reduce(intersect, list(CHS.VS.shadow.days.run2.top100.set1$snp, CHS.VS.shadow.days.run3.top100.set1$snp, CHS.VS.shadow.days.run1.top100.set1$snp))
+
+summary(CHS.VS.shadow.days.123)
+#69
+```
+
+##overlap in 6-10% of outlier loci for CHS.VS.shadow.days
+###############
+```
+CHS.VS.shadow.days.run1.top100.set2 <- CHS.VS.shadow.days.run1.top100[101:200,]
+CHS.VS.shadow.days.run2.top100.set2 <- CHS.VS.shadow.days.run2.top100[101:200,]
+CHS.VS.shadow.days.run3.top100.set2 <- CHS.VS.shadow.days.run3.top100[101:200,]
+CHS.VS.shadow.days.12 <- Reduce(intersect, list(CHS.VS.shadow.days.run2.top100.set2$snp, CHS.VS.shadow.days.run1.top100.set2$snp))
+CHS.VS.shadow.days.13 <- Reduce(intersect, list(CHS.VS.shadow.days.run3.top100.set2$snp, CHS.VS.shadow.days.run1.top100.set2$snp))
+CHS.VS.shadow.days.23 <- Reduce(intersect, list(CHS.VS.shadow.days.run2.top100.set2$snp, CHS.VS.shadow.days.run3.top100.set2$snp))
+CHS.VS.shadow.days.123 <- Reduce(intersect, list(CHS.VS.shadow.days.run2.top100.set2$snp, CHS.VS.shadow.days.run3.top100.set2$snp, CHS.VS.shadow.days.run1.top100.set2$snp))
+
+summary(CHS.VS.shadow.days.123)
+#29
+```
+
+##overlap in 11-15% of outlier loci for CHS.VS.shadow.days
+###############
+```
+CHS.VS.shadow.days.run1.top100.set2 <- CHS.VS.shadow.days.run1.top100[201:300,]
+CHS.VS.shadow.days.run2.top100.set2 <- CHS.VS.shadow.days.run2.top100[201:300,]
+CHS.VS.shadow.days.run3.top100.set2 <- CHS.VS.shadow.days.run3.top100[201:300,]
+CHS.VS.shadow.days.12 <- Reduce(intersect, list(CHS.VS.shadow.days.run2.top100.set2$snp, CHS.VS.shadow.days.run1.top100.set2$snp))
+CHS.VS.shadow.days.13 <- Reduce(intersect, list(CHS.VS.shadow.days.run3.top100.set2$snp, CHS.VS.shadow.days.run1.top100.set2$snp))
+CHS.VS.shadow.days.23 <- Reduce(intersect, list(CHS.VS.shadow.days.run2.top100.set2$snp, CHS.VS.shadow.days.run3.top100.set2$snp))
+CHS.VS.shadow.days.123 <- Reduce(intersect, list(CHS.VS.shadow.days.run2.top100.set2$snp, CHS.VS.shadow.days.run3.top100.set2$snp, CHS.VS.shadow.days.run1.top100.set2$snp))
+
+summary(CHS.VS.shadow.days.123)
+#15
+```
+
+3. temp
+
+```
+CHS.VS.temp.run1.top100 <- BF.CHS.VS.Run1[order(-BF.CHS.VS.Run1$temp.rho),]  ##descending order by rho
+CHS.VS.temp.run2.top100 <- BF.CHS.VS.Run2[order(-BF.CHS.VS.Run2$temp.rho),]  ##descending order by rho
+CHS.VS.temp.run3.top100 <- BF.CHS.VS.Run3[order(-BF.CHS.VS.Run3$temp.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHS.VS.temp
+###############
+```
+CHS.VS.temp.run1.top100.set1 <- head(CHS.VS.temp.run1.top100, 100)
+CHS.VS.temp.run2.top100.set1 <- head(CHS.VS.temp.run2.top100, 100)
+CHS.VS.temp.run3.top100.set1 <- head(CHS.VS.temp.run3.top100, 100)
+CHS.VS.temp.12 <- Reduce(intersect, list(CHS.VS.temp.run2.top100.set1$snp, CHS.VS.temp.run1.top100.set1$snp))
+CHS.VS.temp.13 <- Reduce(intersect, list(CHS.VS.temp.run3.top100.set1$snp, CHS.VS.temp.run1.top100.set1$snp))
+CHS.VS.temp.23 <- Reduce(intersect, list(CHS.VS.temp.run2.top100.set1$snp, CHS.VS.temp.run3.top100.set1$snp))
+CHS.VS.temp.123 <- Reduce(intersect, list(CHS.VS.temp.run2.top100.set1$snp, CHS.VS.temp.run3.top100.set1$snp, CHS.VS.temp.run1.top100.set1$snp))
+
+summary(CHS.VS.temp.123)
+#77
+```
+
+##overlap in 6-10% of outlier loci for CHS.VS.temp
+###############
+```
+CHS.VS.temp.run1.top100.set2 <- CHS.VS.temp.run1.top100[101:200,]
+CHS.VS.temp.run2.top100.set2 <- CHS.VS.temp.run2.top100[101:200,]
+CHS.VS.temp.run3.top100.set2 <- CHS.VS.temp.run3.top100[101:200,]
+CHS.VS.temp.12 <- Reduce(intersect, list(CHS.VS.temp.run2.top100.set2$snp, CHS.VS.temp.run1.top100.set2$snp))
+CHS.VS.temp.13 <- Reduce(intersect, list(CHS.VS.temp.run3.top100.set2$snp, CHS.VS.temp.run1.top100.set2$snp))
+CHS.VS.temp.23 <- Reduce(intersect, list(CHS.VS.temp.run2.top100.set2$snp, CHS.VS.temp.run3.top100.set2$snp))
+CHS.VS.temp.123 <- Reduce(intersect, list(CHS.VS.temp.run2.top100.set2$snp, CHS.VS.temp.run3.top100.set2$snp, CHS.VS.temp.run1.top100.set2$snp))
+summary(CHS.VS.temp.123)
+#34
+```
+
+##overlap in 11-15% of outlier loci for CHS.VS.temp
+###############
+```
+CHS.VS.temp.run1.top100.set2 <- CHS.VS.temp.run1.top100[201:300,]
+CHS.VS.temp.run2.top100.set2 <- CHS.VS.temp.run2.top100[201:300,]
+CHS.VS.temp.run3.top100.set2 <- CHS.VS.temp.run3.top100[201:300,]
+CHS.VS.temp.12 <- Reduce(intersect, list(CHS.VS.temp.run2.top100.set2$snp, CHS.VS.temp.run1.top100.set2$snp))
+CHS.VS.temp.13 <- Reduce(intersect, list(CHS.VS.temp.run3.top100.set2$snp, CHS.VS.temp.run1.top100.set2$snp))
+CHS.VS.temp.23 <- Reduce(intersect, list(CHS.VS.temp.run2.top100.set2$snp, CHS.VS.temp.run3.top100.set2$snp))
+CHS.VS.temp.123 <- Reduce(intersect, list(CHS.VS.temp.run2.top100.set2$snp, CHS.VS.temp.run3.top100.set2$snp, CHS.VS.temp.run1.top100.set2$snp))
+
+summary(CHS.VS.temp.123)
+#12
+```
+
+4. pcpt
+
+```
+CHS.VS.pcpt.run1.top100 <- BF.CHS.VS.Run1[order(-BF.CHS.VS.Run1$pcpt.rho),]  ##descending order by rho
+CHS.VS.pcpt.run2.top100 <- BF.CHS.VS.Run2[order(-BF.CHS.VS.Run2$pcpt.rho),]  ##descending order by rho
+CHS.VS.pcpt.run3.top100 <- BF.CHS.VS.Run3[order(-BF.CHS.VS.Run3$pcpt.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHS.VS.pcpt
+###############
+```
+CHS.VS.pcpt.run1.top100.set1 <- head(CHS.VS.pcpt.run1.top100, 100)
+CHS.VS.pcpt.run2.top100.set1 <- head(CHS.VS.pcpt.run2.top100, 100)
+CHS.VS.pcpt.run3.top100.set1 <- head(CHS.VS.pcpt.run3.top100, 100)
+CHS.VS.pcpt.12 <- Reduce(intersect, list(CHS.VS.pcpt.run2.top100.set1$snp, CHS.VS.pcpt.run1.top100.set1$snp))
+CHS.VS.pcpt.13 <- Reduce(intersect, list(CHS.VS.pcpt.run3.top100.set1$snp, CHS.VS.pcpt.run1.top100.set1$snp))
+CHS.VS.pcpt.23 <- Reduce(intersect, list(CHS.VS.pcpt.run2.top100.set1$snp, CHS.VS.pcpt.run3.top100.set1$snp))
+CHS.VS.pcpt.123 <- Reduce(intersect, list(CHS.VS.pcpt.run2.top100.set1$snp, CHS.VS.pcpt.run3.top100.set1$snp, CHS.VS.pcpt.run1.top100.set1$snp))
+
+summary(CHS.VS.pcpt.123)
+#68
+```
+
+##overlap in 6-10% of outlier loci for CHS.VS.pcpt
+###############
+```
+CHS.VS.pcpt.run1.top100.set2 <- CHS.VS.pcpt.run1.top100[101:200,]
+CHS.VS.pcpt.run2.top100.set2 <- CHS.VS.pcpt.run2.top100[101:200,]
+CHS.VS.pcpt.run3.top100.set2 <- CHS.VS.pcpt.run3.top100[101:200,]
+CHS.VS.pcpt.12 <- Reduce(intersect, list(CHS.VS.pcpt.run2.top100.set2$snp, CHS.VS.pcpt.run1.top100.set2$snp))
+CHS.VS.pcpt.13 <- Reduce(intersect, list(CHS.VS.pcpt.run3.top100.set2$snp, CHS.VS.pcpt.run1.top100.set2$snp))
+CHS.VS.pcpt.23 <- Reduce(intersect, list(CHS.VS.pcpt.run2.top100.set2$snp, CHS.VS.pcpt.run3.top100.set2$snp))
+CHS.VS.pcpt.123 <- Reduce(intersect, list(CHS.VS.pcpt.run2.top100.set2$snp, CHS.VS.pcpt.run3.top100.set2$snp, CHS.VS.pcpt.run1.top100.set2$snp))
+
+summary(CHS.VS.pcpt.123)
+#25
+```
+
+##overlap in 11-15% of outlier loci for CHS.VS.pcpt
+###############
+```
+CHS.VS.pcpt.run1.top100.set2 <- CHS.VS.pcpt.run1.top100[201:300,]
+CHS.VS.pcpt.run2.top100.set2 <- CHS.VS.pcpt.run2.top100[201:300,]
+CHS.VS.pcpt.run3.top100.set2 <- CHS.VS.pcpt.run3.top100[201:300,]
+CHS.VS.pcpt.12 <- Reduce(intersect, list(CHS.VS.pcpt.run2.top100.set2$snp, CHS.VS.pcpt.run1.top100.set2$snp))
+CHS.VS.pcpt.13 <- Reduce(intersect, list(CHS.VS.pcpt.run3.top100.set2$snp, CHS.VS.pcpt.run1.top100.set2$snp))
+CHS.VS.pcpt.23 <- Reduce(intersect, list(CHS.VS.pcpt.run2.top100.set2$snp, CHS.VS.pcpt.run3.top100.set2$snp))
+CHS.VS.pcpt.123 <- Reduce(intersect, list(CHS.VS.pcpt.run2.top100.set2$snp, CHS.VS.pcpt.run3.top100.set2$snp, CHS.VS.pcpt.run1.top100.set2$snp))
+
+summary(CHS.VS.pcpt.123)
+#12
+```
+
+5. day.10cm
+```
+CHS.VS.day.10cm.run1.top100 <- BF.CHS.VS.Run1[order(-BF.CHS.VS.Run1$day.10cm.rho),]  ##descending order by rho
+CHS.VS.day.10cm.run2.top100 <- BF.CHS.VS.Run2[order(-BF.CHS.VS.Run2$day.10cm.rho),]  ##descending order by rho
+CHS.VS.day.10cm.run3.top100 <- BF.CHS.VS.Run3[order(-BF.CHS.VS.Run3$day.10cm.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHS.VS.day.10cm
+###############
+```
+CHS.VS.day.10cm.run1.top100.set1 <- head(CHS.VS.day.10cm.run1.top100, 100)
+CHS.VS.day.10cm.run2.top100.set1 <- head(CHS.VS.day.10cm.run2.top100, 100)
+CHS.VS.day.10cm.run3.top100.set1 <- head(CHS.VS.day.10cm.run3.top100, 100)
+CHS.VS.day.10cm.12 <- Reduce(intersect, list(CHS.VS.day.10cm.run2.top100.set1$snp, CHS.VS.day.10cm.run1.top100.set1$snp))
+CHS.VS.day.10cm.13 <- Reduce(intersect, list(CHS.VS.day.10cm.run3.top100.set1$snp, CHS.VS.day.10cm.run1.top100.set1$snp))
+CHS.VS.day.10cm.23 <- Reduce(intersect, list(CHS.VS.day.10cm.run2.top100.set1$snp, CHS.VS.day.10cm.run3.top100.set1$snp))
+CHS.VS.day.10cm.123 <- Reduce(intersect, list(CHS.VS.day.10cm.run2.top100.set1$snp, CHS.VS.day.10cm.run3.top100.set1$snp, CHS.VS.day.10cm.run1.top100.set1$snp))
+
+summary(CHS.VS.day.10cm.123)
+#73
+```
+
+##overlap in 6-10% of outlier loci for CHS.VS.day.10cm
+###############
+```
+CHS.VS.day.10cm.run1.top100.set2 <- CHS.VS.day.10cm.run1.top100[101:200,]
+CHS.VS.day.10cm.run2.top100.set2 <- CHS.VS.day.10cm.run2.top100[101:200,]
+CHS.VS.day.10cm.run3.top100.set2 <- CHS.VS.day.10cm.run3.top100[101:200,]
+CHS.VS.day.10cm.12 <- Reduce(intersect, list(CHS.VS.day.10cm.run2.top100.set2$snp, CHS.VS.day.10cm.run1.top100.set2$snp))
+CHS.VS.day.10cm.13 <- Reduce(intersect, list(CHS.VS.day.10cm.run3.top100.set2$snp, CHS.VS.day.10cm.run1.top100.set2$snp))
+CHS.VS.day.10cm.23 <- Reduce(intersect, list(CHS.VS.day.10cm.run2.top100.set2$snp, CHS.VS.day.10cm.run3.top100.set2$snp))
+CHS.VS.day.10cm.123 <- Reduce(intersect, list(CHS.VS.day.10cm.run2.top100.set2$snp, CHS.VS.day.10cm.run3.top100.set2$snp, CHS.VS.day.10cm.run1.top100.set2$snp))
+summary(CHS.VS.day.10cm.123)
+#31
+```
+
+##overlap in 11-15% of outlier loci for CHS.VS.day.10cm
+###############
+```
+CHS.VS.day.10cm.run1.top100.set2 <- CHS.VS.day.10cm.run1.top100[201:300,]
+CHS.VS.day.10cm.run2.top100.set2 <- CHS.VS.day.10cm.run2.top100[201:300,]
+CHS.VS.day.10cm.run3.top100.set2 <- CHS.VS.day.10cm.run3.top100[201:300,]
+CHS.VS.day.10cm.12 <- Reduce(intersect, list(CHS.VS.day.10cm.run2.top100.set2$snp, CHS.VS.day.10cm.run1.top100.set2$snp))
+CHS.VS.day.10cm.13 <- Reduce(intersect, list(CHS.VS.day.10cm.run3.top100.set2$snp, CHS.VS.day.10cm.run1.top100.set2$snp))
+CHS.VS.day.10cm.23 <- Reduce(intersect, list(CHS.VS.day.10cm.run2.top100.set2$snp, CHS.VS.day.10cm.run3.top100.set2$snp))
+CHS.VS.day.10cm.123 <- Reduce(intersect, list(CHS.VS.day.10cm.run2.top100.set2$snp, CHS.VS.day.10cm.run3.top100.set2$snp, CHS.VS.day.10cm.run1.top100.set2$snp))
+
+summary(CHS.VS.day.10cm.123)
+#10
+```
+
+####CHS.TI
+
+1. rad
+```
+CHS.TI.rad.run1.top100 <- BF.CHS.TI.Run1[order(-BF.CHS.TI.Run1$rad.rho),]  ##descending order by rho
+CHS.TI.rad.run2.top100 <- BF.CHS.TI.Run2[order(-BF.CHS.TI.Run2$rad.rho),]  ##descending order by rho
+CHS.TI.rad.run3.top100 <- BF.CHS.TI.Run3[order(-BF.CHS.TI.Run3$rad.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHS.TI.rad
+###############
+```
+CHS.TI.rad.run1.top100.set1 <- head(CHS.TI.rad.run1.top100, 100)
+CHS.TI.rad.run2.top100.set1 <- head(CHS.TI.rad.run2.top100, 100)
+CHS.TI.rad.run3.top100.set1 <- head(CHS.TI.rad.run3.top100, 100)
+CHS.TI.rad.12 <- Reduce(intersect, list(CHS.TI.rad.run2.top100.set1$snp, CHS.TI.rad.run1.top100.set1$snp))
+CHS.TI.rad.13 <- Reduce(intersect, list(CHS.TI.rad.run3.top100.set1$snp, CHS.TI.rad.run1.top100.set1$snp))
+CHS.TI.rad.23 <- Reduce(intersect, list(CHS.TI.rad.run2.top100.set1$snp, CHS.TI.rad.run3.top100.set1$snp))
+CHS.TI.rad.123 <- Reduce(intersect, list(CHS.TI.rad.run2.top100.set1$snp, CHS.TI.rad.run3.top100.set1$snp, CHS.TI.rad.run1.top100.set1$snp))
+
+summary(CHS.TI.rad.123)
+#70
+```
+
+##overlap in 6-10% of outlier loci for CHS.TI.rad
+###############
+```
+CHS.TI.rad.run1.top100.set2 <- CHS.TI.rad.run1.top100[101:200,]
+CHS.TI.rad.run2.top100.set2 <- CHS.TI.rad.run2.top100[101:200,]
+CHS.TI.rad.run3.top100.set2 <- CHS.TI.rad.run3.top100[101:200,]
+CHS.TI.rad.12 <- Reduce(intersect, list(CHS.TI.rad.run2.top100.set2$snp, CHS.TI.rad.run1.top100.set2$snp))
+CHS.TI.rad.13 <- Reduce(intersect, list(CHS.TI.rad.run3.top100.set2$snp, CHS.TI.rad.run1.top100.set2$snp))
+CHS.TI.rad.23 <- Reduce(intersect, list(CHS.TI.rad.run2.top100.set2$snp, CHS.TI.rad.run3.top100.set2$snp))
+CHS.TI.rad.123 <- Reduce(intersect, list(CHS.TI.rad.run2.top100.set2$snp, CHS.TI.rad.run3.top100.set2$snp, CHS.TI.rad.run1.top100.set2$snp))
+
+summary(CHS.TI.rad.123)
+#26
+```
+
+##overlap in 11-15% of outlier loci for CHS.TI.rad
+###############
+```
+CHS.TI.rad.run1.top100.set2 <- CHS.TI.rad.run1.top100[201:300,]
+CHS.TI.rad.run2.top100.set2 <- CHS.TI.rad.run2.top100[201:300,]
+CHS.TI.rad.run3.top100.set2 <- CHS.TI.rad.run3.top100[201:300,]
+CHS.TI.rad.12 <- Reduce(intersect, list(CHS.TI.rad.run2.top100.set2$snp, CHS.TI.rad.run1.top100.set2$snp))
+CHS.TI.rad.13 <- Reduce(intersect, list(CHS.TI.rad.run3.top100.set2$snp, CHS.TI.rad.run1.top100.set2$snp))
+CHS.TI.rad.23 <- Reduce(intersect, list(CHS.TI.rad.run2.top100.set2$snp, CHS.TI.rad.run3.top100.set2$snp))
+CHS.TI.rad.123 <- Reduce(intersect, list(CHS.TI.rad.run2.top100.set2$snp, CHS.TI.rad.run3.top100.set2$snp, CHS.TI.rad.run1.top100.set2$snp))
+
+summary(CHS.TI.rad.123)
+#10
+```
+
+2. shadow.days
+
+```
+CHS.TI.shadow.days.run1.top100 <- BF.CHS.TI.Run1[order(-BF.CHS.TI.Run1$shadow.days.rho),]  ##descending order by rho
+CHS.TI.shadow.days.run2.top100 <- BF.CHS.TI.Run2[order(-BF.CHS.TI.Run2$shadow.days.rho),]  ##descending order by rho
+CHS.TI.shadow.days.run3.top100 <- BF.CHS.TI.Run3[order(-BF.CHS.TI.Run3$shadow.days.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHS.TI.shadow.days
+###############
+```
+CHS.TI.shadow.days.run1.top100.set1 <- head(CHS.TI.shadow.days.run1.top100, 100)
+CHS.TI.shadow.days.run2.top100.set1 <- head(CHS.TI.shadow.days.run2.top100, 100)
+CHS.TI.shadow.days.run3.top100.set1 <- head(CHS.TI.shadow.days.run3.top100, 100)
+CHS.TI.shadow.days.12 <- Reduce(intersect, list(CHS.TI.shadow.days.run2.top100.set1$snp, CHS.TI.shadow.days.run1.top100.set1$snp))
+CHS.TI.shadow.days.13 <- Reduce(intersect, list(CHS.TI.shadow.days.run3.top100.set1$snp, CHS.TI.shadow.days.run1.top100.set1$snp))
+CHS.TI.shadow.days.23 <- Reduce(intersect, list(CHS.TI.shadow.days.run2.top100.set1$snp, CHS.TI.shadow.days.run3.top100.set1$snp))
+CHS.TI.shadow.days.123 <- Reduce(intersect, list(CHS.TI.shadow.days.run2.top100.set1$snp, CHS.TI.shadow.days.run3.top100.set1$snp, CHS.TI.shadow.days.run1.top100.set1$snp))
+
+summary(CHS.TI.shadow.days.123)
+#69
+```
+
+##overlap in 6-10% of outlier loci for CHS.TI.shadow.days
+###############
+```
+CHS.TI.shadow.days.run1.top100.set2 <- CHS.TI.shadow.days.run1.top100[101:200,]
+CHS.TI.shadow.days.run2.top100.set2 <- CHS.TI.shadow.days.run2.top100[101:200,]
+CHS.TI.shadow.days.run3.top100.set2 <- CHS.TI.shadow.days.run3.top100[101:200,]
+CHS.TI.shadow.days.12 <- Reduce(intersect, list(CHS.TI.shadow.days.run2.top100.set2$snp, CHS.TI.shadow.days.run1.top100.set2$snp))
+CHS.TI.shadow.days.13 <- Reduce(intersect, list(CHS.TI.shadow.days.run3.top100.set2$snp, CHS.TI.shadow.days.run1.top100.set2$snp))
+CHS.TI.shadow.days.23 <- Reduce(intersect, list(CHS.TI.shadow.days.run2.top100.set2$snp, CHS.TI.shadow.days.run3.top100.set2$snp))
+CHS.TI.shadow.days.123 <- Reduce(intersect, list(CHS.TI.shadow.days.run2.top100.set2$snp, CHS.TI.shadow.days.run3.top100.set2$snp, CHS.TI.shadow.days.run1.top100.set2$snp))
+
+summary(CHS.TI.shadow.days.123)
+#29
+```
+
+##overlap in 11-15% of outlier loci for CHS.TI.shadow.days
+###############
+```
+CHS.TI.shadow.days.run1.top100.set2 <- CHS.TI.shadow.days.run1.top100[201:300,]
+CHS.TI.shadow.days.run2.top100.set2 <- CHS.TI.shadow.days.run2.top100[201:300,]
+CHS.TI.shadow.days.run3.top100.set2 <- CHS.TI.shadow.days.run3.top100[201:300,]
+CHS.TI.shadow.days.12 <- Reduce(intersect, list(CHS.TI.shadow.days.run2.top100.set2$snp, CHS.TI.shadow.days.run1.top100.set2$snp))
+CHS.TI.shadow.days.13 <- Reduce(intersect, list(CHS.TI.shadow.days.run3.top100.set2$snp, CHS.TI.shadow.days.run1.top100.set2$snp))
+CHS.TI.shadow.days.23 <- Reduce(intersect, list(CHS.TI.shadow.days.run2.top100.set2$snp, CHS.TI.shadow.days.run3.top100.set2$snp))
+CHS.TI.shadow.days.123 <- Reduce(intersect, list(CHS.TI.shadow.days.run2.top100.set2$snp, CHS.TI.shadow.days.run3.top100.set2$snp, CHS.TI.shadow.days.run1.top100.set2$snp))
+
+summary(CHS.TI.shadow.days.123)
+#15
+```
+
+3. temp
+
+```
+CHS.TI.temp.run1.top100 <- BF.CHS.TI.Run1[order(-BF.CHS.TI.Run1$temp.rho),]  ##descending order by rho
+CHS.TI.temp.run2.top100 <- BF.CHS.TI.Run2[order(-BF.CHS.TI.Run2$temp.rho),]  ##descending order by rho
+CHS.TI.temp.run3.top100 <- BF.CHS.TI.Run3[order(-BF.CHS.TI.Run3$temp.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHS.TI.temp
+###############
+```
+CHS.TI.temp.run1.top100.set1 <- head(CHS.TI.temp.run1.top100, 100)
+CHS.TI.temp.run2.top100.set1 <- head(CHS.TI.temp.run2.top100, 100)
+CHS.TI.temp.run3.top100.set1 <- head(CHS.TI.temp.run3.top100, 100)
+CHS.TI.temp.12 <- Reduce(intersect, list(CHS.TI.temp.run2.top100.set1$snp, CHS.TI.temp.run1.top100.set1$snp))
+CHS.TI.temp.13 <- Reduce(intersect, list(CHS.TI.temp.run3.top100.set1$snp, CHS.TI.temp.run1.top100.set1$snp))
+CHS.TI.temp.23 <- Reduce(intersect, list(CHS.TI.temp.run2.top100.set1$snp, CHS.TI.temp.run3.top100.set1$snp))
+CHS.TI.temp.123 <- Reduce(intersect, list(CHS.TI.temp.run2.top100.set1$snp, CHS.TI.temp.run3.top100.set1$snp, CHS.TI.temp.run1.top100.set1$snp))
+
+summary(CHS.TI.temp.123)
+#77
+```
+
+##overlap in 6-10% of outlier loci for CHS.TI.temp
+###############
+```
+CHS.TI.temp.run1.top100.set2 <- CHS.TI.temp.run1.top100[101:200,]
+CHS.TI.temp.run2.top100.set2 <- CHS.TI.temp.run2.top100[101:200,]
+CHS.TI.temp.run3.top100.set2 <- CHS.TI.temp.run3.top100[101:200,]
+CHS.TI.temp.12 <- Reduce(intersect, list(CHS.TI.temp.run2.top100.set2$snp, CHS.TI.temp.run1.top100.set2$snp))
+CHS.TI.temp.13 <- Reduce(intersect, list(CHS.TI.temp.run3.top100.set2$snp, CHS.TI.temp.run1.top100.set2$snp))
+CHS.TI.temp.23 <- Reduce(intersect, list(CHS.TI.temp.run2.top100.set2$snp, CHS.TI.temp.run3.top100.set2$snp))
+CHS.TI.temp.123 <- Reduce(intersect, list(CHS.TI.temp.run2.top100.set2$snp, CHS.TI.temp.run3.top100.set2$snp, CHS.TI.temp.run1.top100.set2$snp))
+summary(CHS.TI.temp.123)
+#34
+```
+
+##overlap in 11-15% of outlier loci for CHS.TI.temp
+###############
+```
+CHS.TI.temp.run1.top100.set2 <- CHS.TI.temp.run1.top100[201:300,]
+CHS.TI.temp.run2.top100.set2 <- CHS.TI.temp.run2.top100[201:300,]
+CHS.TI.temp.run3.top100.set2 <- CHS.TI.temp.run3.top100[201:300,]
+CHS.TI.temp.12 <- Reduce(intersect, list(CHS.TI.temp.run2.top100.set2$snp, CHS.TI.temp.run1.top100.set2$snp))
+CHS.TI.temp.13 <- Reduce(intersect, list(CHS.TI.temp.run3.top100.set2$snp, CHS.TI.temp.run1.top100.set2$snp))
+CHS.TI.temp.23 <- Reduce(intersect, list(CHS.TI.temp.run2.top100.set2$snp, CHS.TI.temp.run3.top100.set2$snp))
+CHS.TI.temp.123 <- Reduce(intersect, list(CHS.TI.temp.run2.top100.set2$snp, CHS.TI.temp.run3.top100.set2$snp, CHS.TI.temp.run1.top100.set2$snp))
+
+summary(CHS.TI.temp.123)
+#12
+```
+
+4. pcpt
+
+```
+CHS.TI.pcpt.run1.top100 <- BF.CHS.TI.Run1[order(-BF.CHS.TI.Run1$pcpt.rho),]  ##descending order by rho
+CHS.TI.pcpt.run2.top100 <- BF.CHS.TI.Run2[order(-BF.CHS.TI.Run2$pcpt.rho),]  ##descending order by rho
+CHS.TI.pcpt.run3.top100 <- BF.CHS.TI.Run3[order(-BF.CHS.TI.Run3$pcpt.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHS.TI.pcpt
+###############
+```
+CHS.TI.pcpt.run1.top100.set1 <- head(CHS.TI.pcpt.run1.top100, 100)
+CHS.TI.pcpt.run2.top100.set1 <- head(CHS.TI.pcpt.run2.top100, 100)
+CHS.TI.pcpt.run3.top100.set1 <- head(CHS.TI.pcpt.run3.top100, 100)
+CHS.TI.pcpt.12 <- Reduce(intersect, list(CHS.TI.pcpt.run2.top100.set1$snp, CHS.TI.pcpt.run1.top100.set1$snp))
+CHS.TI.pcpt.13 <- Reduce(intersect, list(CHS.TI.pcpt.run3.top100.set1$snp, CHS.TI.pcpt.run1.top100.set1$snp))
+CHS.TI.pcpt.23 <- Reduce(intersect, list(CHS.TI.pcpt.run2.top100.set1$snp, CHS.TI.pcpt.run3.top100.set1$snp))
+CHS.TI.pcpt.123 <- Reduce(intersect, list(CHS.TI.pcpt.run2.top100.set1$snp, CHS.TI.pcpt.run3.top100.set1$snp, CHS.TI.pcpt.run1.top100.set1$snp))
+
+summary(CHS.TI.pcpt.123)
+#68
+```
+
+##overlap in 6-10% of outlier loci for CHS.TI.pcpt
+###############
+```
+CHS.TI.pcpt.run1.top100.set2 <- CHS.TI.pcpt.run1.top100[101:200,]
+CHS.TI.pcpt.run2.top100.set2 <- CHS.TI.pcpt.run2.top100[101:200,]
+CHS.TI.pcpt.run3.top100.set2 <- CHS.TI.pcpt.run3.top100[101:200,]
+CHS.TI.pcpt.12 <- Reduce(intersect, list(CHS.TI.pcpt.run2.top100.set2$snp, CHS.TI.pcpt.run1.top100.set2$snp))
+CHS.TI.pcpt.13 <- Reduce(intersect, list(CHS.TI.pcpt.run3.top100.set2$snp, CHS.TI.pcpt.run1.top100.set2$snp))
+CHS.TI.pcpt.23 <- Reduce(intersect, list(CHS.TI.pcpt.run2.top100.set2$snp, CHS.TI.pcpt.run3.top100.set2$snp))
+CHS.TI.pcpt.123 <- Reduce(intersect, list(CHS.TI.pcpt.run2.top100.set2$snp, CHS.TI.pcpt.run3.top100.set2$snp, CHS.TI.pcpt.run1.top100.set2$snp))
+
+summary(CHS.TI.pcpt.123)
+#25
+```
+
+##overlap in 11-15% of outlier loci for CHS.TI.pcpt
+###############
+```
+CHS.TI.pcpt.run1.top100.set2 <- CHS.TI.pcpt.run1.top100[201:300,]
+CHS.TI.pcpt.run2.top100.set2 <- CHS.TI.pcpt.run2.top100[201:300,]
+CHS.TI.pcpt.run3.top100.set2 <- CHS.TI.pcpt.run3.top100[201:300,]
+CHS.TI.pcpt.12 <- Reduce(intersect, list(CHS.TI.pcpt.run2.top100.set2$snp, CHS.TI.pcpt.run1.top100.set2$snp))
+CHS.TI.pcpt.13 <- Reduce(intersect, list(CHS.TI.pcpt.run3.top100.set2$snp, CHS.TI.pcpt.run1.top100.set2$snp))
+CHS.TI.pcpt.23 <- Reduce(intersect, list(CHS.TI.pcpt.run2.top100.set2$snp, CHS.TI.pcpt.run3.top100.set2$snp))
+CHS.TI.pcpt.123 <- Reduce(intersect, list(CHS.TI.pcpt.run2.top100.set2$snp, CHS.TI.pcpt.run3.top100.set2$snp, CHS.TI.pcpt.run1.top100.set2$snp))
+
+summary(CHS.TI.pcpt.123)
+#12
+```
+
+5. day.10cm
+```
+CHS.TI.day.10cm.run1.top100 <- BF.CHS.TI.Run1[order(-BF.CHS.TI.Run1$day.10cm.rho),]  ##descending order by rho
+CHS.TI.day.10cm.run2.top100 <- BF.CHS.TI.Run2[order(-BF.CHS.TI.Run2$day.10cm.rho),]  ##descending order by rho
+CHS.TI.day.10cm.run3.top100 <- BF.CHS.TI.Run3[order(-BF.CHS.TI.Run3$day.10cm.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for CHS.TI.day.10cm
+###############
+```
+CHS.TI.day.10cm.run1.top100.set1 <- head(CHS.TI.day.10cm.run1.top100, 100)
+CHS.TI.day.10cm.run2.top100.set1 <- head(CHS.TI.day.10cm.run2.top100, 100)
+CHS.TI.day.10cm.run3.top100.set1 <- head(CHS.TI.day.10cm.run3.top100, 100)
+CHS.TI.day.10cm.12 <- Reduce(intersect, list(CHS.TI.day.10cm.run2.top100.set1$snp, CHS.TI.day.10cm.run1.top100.set1$snp))
+CHS.TI.day.10cm.13 <- Reduce(intersect, list(CHS.TI.day.10cm.run3.top100.set1$snp, CHS.TI.day.10cm.run1.top100.set1$snp))
+CHS.TI.day.10cm.23 <- Reduce(intersect, list(CHS.TI.day.10cm.run2.top100.set1$snp, CHS.TI.day.10cm.run3.top100.set1$snp))
+CHS.TI.day.10cm.123 <- Reduce(intersect, list(CHS.TI.day.10cm.run2.top100.set1$snp, CHS.TI.day.10cm.run3.top100.set1$snp, CHS.TI.day.10cm.run1.top100.set1$snp))
+
+summary(CHS.TI.day.10cm.123)
+#73
+```
+
+##overlap in 6-10% of outlier loci for CHS.TI.day.10cm
+###############
+```
+CHS.TI.day.10cm.run1.top100.set2 <- CHS.TI.day.10cm.run1.top100[101:200,]
+CHS.TI.day.10cm.run2.top100.set2 <- CHS.TI.day.10cm.run2.top100[101:200,]
+CHS.TI.day.10cm.run3.top100.set2 <- CHS.TI.day.10cm.run3.top100[101:200,]
+CHS.TI.day.10cm.12 <- Reduce(intersect, list(CHS.TI.day.10cm.run2.top100.set2$snp, CHS.TI.day.10cm.run1.top100.set2$snp))
+CHS.TI.day.10cm.13 <- Reduce(intersect, list(CHS.TI.day.10cm.run3.top100.set2$snp, CHS.TI.day.10cm.run1.top100.set2$snp))
+CHS.TI.day.10cm.23 <- Reduce(intersect, list(CHS.TI.day.10cm.run2.top100.set2$snp, CHS.TI.day.10cm.run3.top100.set2$snp))
+CHS.TI.day.10cm.123 <- Reduce(intersect, list(CHS.TI.day.10cm.run2.top100.set2$snp, CHS.TI.day.10cm.run3.top100.set2$snp, CHS.TI.day.10cm.run1.top100.set2$snp))
+summary(CHS.TI.day.10cm.123)
+#31
+```
+
+##overlap in 11-15% of outlier loci for CHS.TI.day.10cm
+###############
+```
+CHS.TI.day.10cm.run1.top100.set2 <- CHS.TI.day.10cm.run1.top100[201:300,]
+CHS.TI.day.10cm.run2.top100.set2 <- CHS.TI.day.10cm.run2.top100[201:300,]
+CHS.TI.day.10cm.run3.top100.set2 <- CHS.TI.day.10cm.run3.top100[201:300,]
+CHS.TI.day.10cm.12 <- Reduce(intersect, list(CHS.TI.day.10cm.run2.top100.set2$snp, CHS.TI.day.10cm.run1.top100.set2$snp))
+CHS.TI.day.10cm.13 <- Reduce(intersect, list(CHS.TI.day.10cm.run3.top100.set2$snp, CHS.TI.day.10cm.run1.top100.set2$snp))
+CHS.TI.day.10cm.23 <- Reduce(intersect, list(CHS.TI.day.10cm.run2.top100.set2$snp, CHS.TI.day.10cm.run3.top100.set2$snp))
+CHS.TI.day.10cm.123 <- Reduce(intersect, list(CHS.TI.day.10cm.run2.top100.set2$snp, CHS.TI.day.10cm.run3.top100.set2$snp, CHS.TI.day.10cm.run1.top100.set2$snp))
+
+summary(CHS.TI.day.10cm.123)
+#10
+```
