@@ -3293,3 +3293,320 @@ CHS.VS.day.10cm.bayenv.candidates <- CHS.VS.BF.all[which(CHS.VS.BF.all$day.10cm.
 
 STILL NEED TO RUN THIS
 ####CHS.TI
+
+
+
+###Determine the names of all the loci. 
+
+My input was obtained using pgdspider 2.1.0.3 (vcf -> bayenv2)
+
+However, this removes all monomorphic loci from the input file. Thus, to match this back to the vcf file, I need to remove all monomorphic loci from this file. 
+
+```
+vcftools --vcf CHall.932.9608.recode.vcf --maf 0.0001 --recode --recode-INFO-all --out CHall.932.
+
+vcftools --vcf CHN.229.9608.recode.vcf --maf 0.000001 --recode --recode-INFO-all --out CHN.229.8951
+
+vcftools --vcf CHS.275.9608.recode.vcf --maf 0.000001 --recode --recode-INFO-all --out CHS.275.9295
+
+vcftools --vcf CZ.404.9608.recode.vcf --maf 0.000001 --recode --recode-INFO-all --out CZ.404.9528
+
+vcftools --vcf CHS.VS.135.9608.recode.vcf --maf 0.000001 --recode --recode-INFO-all --out CHS.VS.135.8779
+
+vcftools --vcf CHS.TI.140.9608.recode.vcf --maf 0.000001 --recode --recode-INFO-all --out CHS.TI.140.8343
+```
+Check that this is the right number of loci by comparing this to the number of snp_batch files found when the .txt input file is split (see above). Remember that these are numbered from 0. 
+
+Next, convert to plink. 
+
+Once this is done, the names can be read into R and indexed. 
+
+```
+#linux
+
+vcftools --vcf CHall.932.9608.recode.vcf --plink --out CHall.932.9608.plink
+
+vcftools --vcf CHN.229.8951.recode.vcf --plink --out CHN.229.8951.plink
+
+vcftools --vcf CHS.275.9295.recode.vcf --plink --out CHS.275.9295.plink
+
+vcftools --vcf CZ.404.9528.recode.vcf --plink --out CZ.404.9528.plink
+
+vcftools --vcf CHS.VS.135.8779.recode.vcf --plink --out CHS.VS.135.8779.plink
+
+vcftools --vcf CHS.TI.140.8343.recode.vcf --plink --out CHS.TI.140.8343.plink
+
+```
+
+
+
+```
+##R
+
+###CHall
+CHall.locus.names <- read.table("/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/CHall.932.9608.plink.map", header=F) #import the locus names into R
+CHall.locus.names$ID <- seq.int(nrow(CHall.locus.names)) ##index the CHall.locus.names file so that all the loci are numbered in order of appearance
+
+CHall.BF.all$ID <- seq.int(nrow(CHall.BF.all))  ##do the same with the CHall.BF.all file. Make sure this is the original output from BayEnv, and not a sorted file. 
+
+##find the candidate loci using the indexed .CHall.BF.all file
+
+##Find all the candidate loci
+CHall.rad.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$rad.log10BF>0.5 & (abs(CHall.BF.all$rad.rho))>0.3),]
+CHall.shadow.days.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$shadow.days.log10BF>0.5 & (abs(CHall.BF.all$shadow.days.rho))>0.3),]
+CHall.temp.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$temp.log10BF>0.5 & (abs(CHall.BF.all$temp.rho))>0.3),]
+CHall.pcpt.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$pcpt.log10BF>0.5 & (abs(CHall.BF.all$pcpt.rho))>0.3),]
+CHall.day.10cm.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$day.10cm.log10BF>0.5 & (abs(CHall.BF.all$day.10cm.rho))>0.3),]
+
+CHall.rad.bayenv.candidates$ID <- as.character(CHall.rad.bayenv.candidates$ID)
+CHall.rad.bayenv.candidates.names <- CHall.locus.names[CHall.locus.names$ID %in% CHall.rad.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHall.rad.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHall.rad.bayenv.candidates.names <- paste("X", CHall.rad.bayenv.candidates.names$SNP, sep=".")
+
+CHall.shadow.days.bayenv.candidates$ID <- as.character(CHall.shadow.days.bayenv.candidates$ID)
+CHall.shadow.days.bayenv.candidates.names <- CHall.locus.names[CHall.locus.names$ID %in% CHall.shadow.days.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHall.shadow.days.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHall.shadow.days.bayenv.candidates.names <- paste("X", CHall.shadow.days.bayenv.candidates.names$SNP, sep=".")
+
+CHall.temp.bayenv.candidates$ID <- as.character(CHall.temp.bayenv.candidates$ID)
+CHall.temp.bayenv.candidates.names <- CHall.locus.names[CHall.locus.names$ID %in% CHall.temp.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHall.temp.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHall.temp.bayenv.candidates.names <- paste("X", CHall.temp.bayenv.candidates.names$SNP, sep=".")
+
+CHall.pcpt.bayenv.candidates$ID <- as.character(CHall.pcpt.bayenv.candidates$ID)
+CHall.pcpt.bayenv.candidates.names <- CHall.locus.names[CHall.locus.names$ID %in% CHall.pcpt.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHall.pcpt.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHall.pcpt.bayenv.candidates.names <- paste("X", CHall.pcpt.bayenv.candidates.names$SNP, sep=".")
+
+CHall.day.10cm.bayenv.candidates$ID <- as.character(CHall.day.10cm.bayenv.candidates$ID)
+CHall.day.10cm.bayenv.candidates.names <- CHall.locus.names[CHall.locus.names$ID %in% CHall.day.10cm.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHall.day.10cm.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHall.day.10cm.bayenv.candidates.names <- paste("X", CHall.day.10cm.bayenv.candidates.names$SNP, sep=".")
+
+```
+
+
+
+```
+####CHN
+CHN.locus.names <- read.table("/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/CHN.229.8951.plink.map", header=F) #import the locus names into R
+CHN.locus.names$ID <- seq.int(nrow(CHN.locus.names)) ##index the CHN.locus.names file so that all the loci are numbered in order of appearance
+
+CHN.BF.all$ID <- seq.int(nrow(CHN.BF.all))  ##do the same with the CHN.BF.all file. Make sure this is the original output from BayEnv, and not a sorted file. 
+
+##find the candidate loci using the indexed .CHN.BF.all file
+
+##Find all the candidate loci
+CHN.rad.bayenv.candidates <- CHN.BF.all[which(CHN.BF.all$rad.log10BF>0.5 & (abs(CHN.BF.all$rad.rho))>0.3),]
+CHN.shadow.days.bayenv.candidates <- CHN.BF.all[which(CHN.BF.all$shadow.days.log10BF>0.5 & (abs(CHN.BF.all$shadow.days.rho))>0.3),]
+CHN.temp.bayenv.candidates <- CHN.BF.all[which(CHN.BF.all$temp.log10BF>0.5 & (abs(CHN.BF.all$temp.rho))>0.3),]
+CHN.pcpt.bayenv.candidates <- CHN.BF.all[which(CHN.BF.all$pcpt.log10BF>0.5 & (abs(CHN.BF.all$pcpt.rho))>0.3),]
+CHN.day.10cm.bayenv.candidates <- CHN.BF.all[which(CHN.BF.all$day.10cm.log10BF>0.5 & (abs(CHN.BF.all$day.10cm.rho))>0.3),]
+
+CHN.rad.bayenv.candidates$ID <- as.character(CHN.rad.bayenv.candidates$ID)
+CHN.rad.bayenv.candidates.names <- CHN.locus.names[CHN.locus.names$ID %in% CHN.rad.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHN.rad.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHN.rad.bayenv.candidates.names <- paste("X", CHN.rad.bayenv.candidates.names$SNP, sep=".")
+
+CHN.shadow.days.bayenv.candidates$ID <- as.character(CHN.shadow.days.bayenv.candidates$ID)
+CHN.shadow.days.bayenv.candidates.names <- CHN.locus.names[CHN.locus.names$ID %in% CHN.shadow.days.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHN.shadow.days.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHN.shadow.days.bayenv.candidates.names <- paste("X", CHN.shadow.days.bayenv.candidates.names$SNP, sep=".")
+
+CHN.temp.bayenv.candidates$ID <- as.character(CHN.temp.bayenv.candidates$ID)
+CHN.temp.bayenv.candidates.names <- CHN.locus.names[CHN.locus.names$ID %in% CHN.temp.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHN.temp.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHN.temp.bayenv.candidates.names <- paste("X", CHN.temp.bayenv.candidates.names$SNP, sep=".")
+
+CHN.pcpt.bayenv.candidates$ID <- as.character(CHN.pcpt.bayenv.candidates$ID)
+CHN.pcpt.bayenv.candidates.names <- CHN.locus.names[CHN.locus.names$ID %in% CHN.pcpt.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHN.pcpt.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHN.pcpt.bayenv.candidates.names <- paste("X", CHN.pcpt.bayenv.candidates.names$SNP, sep=".")
+
+CHN.day.10cm.bayenv.candidates$ID <- as.character(CHN.day.10cm.bayenv.candidates$ID)
+CHN.day.10cm.bayenv.candidates.names <- CHN.locus.names[CHN.locus.names$ID %in% CHN.day.10cm.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHN.day.10cm.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHN.day.10cm.bayenv.candidates.names <- paste("X", CHN.day.10cm.bayenv.candidates.names$SNP, sep=".")
+
+```
+
+
+
+
+```
+#######CHS
+CHS.locus.names <- read.table("/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/CHS.275.9295.plink.map", header=F) #import the locus names into R
+CHS.locus.names$ID <- seq.int(nrow(CHS.locus.names)) ##index the CHS.locus.names file so that all the loci are numbered in order of appearance
+
+CHS.BF.all$ID <- seq.int(nrow(CHS.BF.all))  ##do the same with the CHS.BF.all file. Make sure this is the original output from BayEnv, and not a sorted file. 
+
+##find the candidate loci using the indexed .CHS.BF.all file
+
+##Find all the candidate loci
+CHS.rad.bayenv.candidates <- CHS.BF.all[which(CHS.BF.all$rad.log10BF>0.5 & (abs(CHS.BF.all$rad.rho))>0.3),]
+CHS.shadow.days.bayenv.candidates <- CHS.BF.all[which(CHS.BF.all$shadow.days.log10BF>0.5 & (abs(CHS.BF.all$shadow.days.rho))>0.3),]
+CHS.temp.bayenv.candidates <- CHS.BF.all[which(CHS.BF.all$temp.log10BF>0.5 & (abs(CHS.BF.all$temp.rho))>0.3),]
+CHS.pcpt.bayenv.candidates <- CHS.BF.all[which(CHS.BF.all$pcpt.log10BF>0.5 & (abs(CHS.BF.all$pcpt.rho))>0.3),]
+CHS.day.10cm.bayenv.candidates <- CHS.BF.all[which(CHS.BF.all$day.10cm.log10BF>0.5 & (abs(CHS.BF.all$day.10cm.rho))>0.3),]
+
+CHS.rad.bayenv.candidates$ID <- as.character(CHS.rad.bayenv.candidates$ID)
+CHS.rad.bayenv.candidates.names <- CHS.locus.names[CHS.locus.names$ID %in% CHS.rad.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHS.rad.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHS.rad.bayenv.candidates.names <- paste("X", CHS.rad.bayenv.candidates.names$SNP, sep=".")
+
+CHS.shadow.days.bayenv.candidates$ID <- as.character(CHS.shadow.days.bayenv.candidates$ID)
+CHS.shadow.days.bayenv.candidates.names <- CHS.locus.names[CHS.locus.names$ID %in% CHS.shadow.days.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHS.shadow.days.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHS.shadow.days.bayenv.candidates.names <- paste("X", CHS.shadow.days.bayenv.candidates.names$SNP, sep=".")
+
+CHS.temp.bayenv.candidates$ID <- as.character(CHS.temp.bayenv.candidates$ID)
+CHS.temp.bayenv.candidates.names <- CHS.locus.names[CHS.locus.names$ID %in% CHS.temp.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHS.temp.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHS.temp.bayenv.candidates.names <- paste("X", CHS.temp.bayenv.candidates.names$SNP, sep=".")
+
+CHS.pcpt.bayenv.candidates$ID <- as.character(CHS.pcpt.bayenv.candidates$ID)
+CHS.pcpt.bayenv.candidates.names <- CHS.locus.names[CHS.locus.names$ID %in% CHS.pcpt.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHS.pcpt.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHS.pcpt.bayenv.candidates.names <- paste("X", CHS.pcpt.bayenv.candidates.names$SNP, sep=".")
+
+CHS.day.10cm.bayenv.candidates$ID <- as.character(CHS.day.10cm.bayenv.candidates$ID)
+CHS.day.10cm.bayenv.candidates.names <- CHS.locus.names[CHS.locus.names$ID %in% CHS.day.10cm.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHS.day.10cm.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHS.day.10cm.bayenv.candidates.names <- paste("X", CHS.day.10cm.bayenv.candidates.names$SNP, sep=".")
+
+```
+
+
+```
+#######CZ
+CZ.locus.names <- read.table("/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/CZ.404.9528.plink.map", header=F) #import the locus names into R
+CZ.locus.names$ID <- seq.int(nrow(CZ.locus.names)) ##index the CZ.locus.names file so that all the loci are numbered in order of appearance
+
+CZ.BF.all$ID <- seq.int(nrow(CZ.BF.all))  ##do the same with the CZ.BF.all file. Make sure this is the original output from BayEnv, and not a sorted file. 
+
+##find the candidate loci using the indexed .CZ.BF.all file
+
+##Find all the candidate loci
+CZ.rad.bayenv.candidates <- CZ.BF.all[which(CZ.BF.all$rad.log10BF>0.5 & (abs(CZ.BF.all$rad.rho))>0.3),]
+CZ.shadow.days.bayenv.candidates <- CZ.BF.all[which(CZ.BF.all$shadow.days.log10BF>0.5 & (abs(CZ.BF.all$shadow.days.rho))>0.3),]
+CZ.temp.bayenv.candidates <- CZ.BF.all[which(CZ.BF.all$temp.log10BF>0.5 & (abs(CZ.BF.all$temp.rho))>0.3),]
+CZ.pcpt.bayenv.candidates <- CZ.BF.all[which(CZ.BF.all$pcpt.log10BF>0.5 & (abs(CZ.BF.all$pcpt.rho))>0.3),]
+CZ.day.10cm.bayenv.candidates <- CZ.BF.all[which(CZ.BF.all$day.10cm.log10BF>0.5 & (abs(CZ.BF.all$day.10cm.rho))>0.3),]
+
+CZ.rad.bayenv.candidates$ID <- as.character(CZ.rad.bayenv.candidates$ID)
+CZ.rad.bayenv.candidates.names <- CZ.locus.names[CZ.locus.names$ID %in% CZ.rad.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CZ.rad.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CZ.rad.bayenv.candidates.names <- paste("X", CZ.rad.bayenv.candidates.names$SNP, sep=".")
+
+CZ.shadow.days.bayenv.candidates$ID <- as.character(CZ.shadow.days.bayenv.candidates$ID)
+CZ.shadow.days.bayenv.candidates.names <- CZ.locus.names[CZ.locus.names$ID %in% CZ.shadow.days.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CZ.shadow.days.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CZ.shadow.days.bayenv.candidates.names <- paste("X", CZ.shadow.days.bayenv.candidates.names$SNP, sep=".")
+
+CZ.temp.bayenv.candidates$ID <- as.character(CZ.temp.bayenv.candidates$ID)
+CZ.temp.bayenv.candidates.names <- CZ.locus.names[CZ.locus.names$ID %in% CZ.temp.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CZ.temp.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CZ.temp.bayenv.candidates.names <- paste("X", CZ.temp.bayenv.candidates.names$SNP, sep=".")
+
+CZ.pcpt.bayenv.candidates$ID <- as.character(CZ.pcpt.bayenv.candidates$ID)
+CZ.pcpt.bayenv.candidates.names <- CZ.locus.names[CZ.locus.names$ID %in% CZ.pcpt.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CZ.pcpt.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CZ.pcpt.bayenv.candidates.names <- paste("X", CZ.pcpt.bayenv.candidates.names$SNP, sep=".")
+
+CZ.day.10cm.bayenv.candidates$ID <- as.character(CZ.day.10cm.bayenv.candidates$ID)
+CZ.day.10cm.bayenv.candidates.names <- CZ.locus.names[CZ.locus.names$ID %in% CZ.day.10cm.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CZ.day.10cm.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CZ.day.10cm.bayenv.candidates.names <- paste("X", CZ.day.10cm.bayenv.candidates.names$SNP, sep=".")
+
+```
+
+
+```
+#######CHS.VS
+CHS.VS.locus.names <- read.table("/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/CHS.VS.135.8779.plink.map", header=F) #import the locus names into R
+CHS.VS.locus.names$ID <- seq.int(nrow(CHS.VS.locus.names)) ##index the CHS.VS.locus.names file so that all the loci are numbered in order of appearance
+
+CHS.VS.BF.all$ID <- seq.int(nrow(CHS.VS.BF.all))  ##do the same with the CHS.VS.BF.all file. Make sure this is the original output from BayEnv, and not a sorted file. 
+
+##find the candidate loci using the indexed .CHS.VS.BF.all file
+
+##Find all the candidate loci
+CHS.VS.rad.bayenv.candidates <- CHS.VS.BF.all[which(CHS.VS.BF.all$rad.log10BF>0.5 & (abs(CHS.VS.BF.all$rad.rho))>0.3),]
+CHS.VS.shadow.days.bayenv.candidates <- CHS.VS.BF.all[which(CHS.VS.BF.all$shadow.days.log10BF>0.5 & (abs(CHS.VS.BF.all$shadow.days.rho))>0.3),]
+CHS.VS.temp.bayenv.candidates <- CHS.VS.BF.all[which(CHS.VS.BF.all$temp.log10BF>0.5 & (abs(CHS.VS.BF.all$temp.rho))>0.3),]
+CHS.VS.pcpt.bayenv.candidates <- CHS.VS.BF.all[which(CHS.VS.BF.all$pcpt.log10BF>0.5 & (abs(CHS.VS.BF.all$pcpt.rho))>0.3),]
+CHS.VS.day.10cm.bayenv.candidates <- CHS.VS.BF.all[which(CHS.VS.BF.all$day.10cm.log10BF>0.5 & (abs(CHS.VS.BF.all$day.10cm.rho))>0.3),]
+
+CHS.VS.rad.bayenv.candidates$ID <- as.character(CHS.VS.rad.bayenv.candidates$ID)
+CHS.VS.rad.bayenv.candidates.names <- CHS.VS.locus.names[CHS.VS.locus.names$ID %in% CHS.VS.rad.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHS.VS.rad.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHS.VS.rad.bayenv.candidates.names <- paste("X", CHS.VS.rad.bayenv.candidates.names$SNP, sep=".")
+
+CHS.VS.shadow.days.bayenv.candidates$ID <- as.character(CHS.VS.shadow.days.bayenv.candidates$ID)
+CHS.VS.shadow.days.bayenv.candidates.names <- CHS.VS.locus.names[CHS.VS.locus.names$ID %in% CHS.VS.shadow.days.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHS.VS.shadow.days.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHS.VS.shadow.days.bayenv.candidates.names <- paste("X", CHS.VS.shadow.days.bayenv.candidates.names$SNP, sep=".")
+
+CHS.VS.temp.bayenv.candidates$ID <- as.character(CHS.VS.temp.bayenv.candidates$ID)
+CHS.VS.temp.bayenv.candidates.names <- CHS.VS.locus.names[CHS.VS.locus.names$ID %in% CHS.VS.temp.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHS.VS.temp.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHS.VS.temp.bayenv.candidates.names <- paste("X", CHS.VS.temp.bayenv.candidates.names$SNP, sep=".")
+
+CHS.VS.pcpt.bayenv.candidates$ID <- as.character(CHS.VS.pcpt.bayenv.candidates$ID)
+CHS.VS.pcpt.bayenv.candidates.names <- CHS.VS.locus.names[CHS.VS.locus.names$ID %in% CHS.VS.pcpt.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHS.VS.pcpt.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHS.VS.pcpt.bayenv.candidates.names <- paste("X", CHS.VS.pcpt.bayenv.candidates.names$SNP, sep=".")
+
+CHS.VS.day.10cm.bayenv.candidates$ID <- as.character(CHS.VS.day.10cm.bayenv.candidates$ID)
+CHS.VS.day.10cm.bayenv.candidates.names <- CHS.VS.locus.names[CHS.VS.locus.names$ID %in% CHS.VS.day.10cm.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHS.VS.day.10cm.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHS.VS.day.10cm.bayenv.candidates.names <- paste("X", CHS.VS.day.10cm.bayenv.candidates.names$SNP, sep=".")
+
+```
+
+
+```
+#######CHS.TI
+CHS.TI.locus.names <- read.table("/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/CHS.TI.140.8343.plink.map", header=F) #import the locus names into R
+CHS.TI.locus.names$ID <- seq.int(nrow(CHS.TI.locus.names)) ##index the CHS.TI.locus.names file so that all the loci are numbered in order of appearance
+
+CHS.TI.BF.all$ID <- seq.int(nrow(CHS.TI.BF.all))  ##do the same with the CHS.TI.BF.all file. Make sure this is the original output from BayEnv, and not a sorted file. 
+
+##find the candidate loci using the indexed .CHS.TI.BF.all file
+
+##Find all the candidate loci
+CHS.TI.rad.bayenv.candidates <- CHS.TI.BF.all[which(CHS.TI.BF.all$rad.log10BF>0.5 & (abs(CHS.TI.BF.all$rad.rho))>0.3),]
+CHS.TI.shadow.days.bayenv.candidates <- CHS.TI.BF.all[which(CHS.TI.BF.all$shadow.days.log10BF>0.5 & (abs(CHS.TI.BF.all$shadow.days.rho))>0.3),]
+CHS.TI.temp.bayenv.candidates <- CHS.TI.BF.all[which(CHS.TI.BF.all$temp.log10BF>0.5 & (abs(CHS.TI.BF.all$temp.rho))>0.3),]
+CHS.TI.pcpt.bayenv.candidates <- CHS.TI.BF.all[which(CHS.TI.BF.all$pcpt.log10BF>0.5 & (abs(CHS.TI.BF.all$pcpt.rho))>0.3),]
+CHS.TI.day.10cm.bayenv.candidates <- CHS.TI.BF.all[which(CHS.TI.BF.all$day.10cm.log10BF>0.5 & (abs(CHS.TI.BF.all$day.10cm.rho))>0.3),]
+
+CHS.TI.rad.bayenv.candidates$ID <- as.character(CHS.TI.rad.bayenv.candidates$ID)
+CHS.TI.rad.bayenv.candidates.names <- CHS.TI.locus.names[CHS.TI.locus.names$ID %in% CHS.TI.rad.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHS.TI.rad.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHS.TI.rad.bayenv.candidates.names <- paste("X", CHS.TI.rad.bayenv.candidates.names$SNP, sep=".")
+
+CHS.TI.shadow.days.bayenv.candidates$ID <- as.character(CHS.TI.shadow.days.bayenv.candidates$ID)
+CHS.TI.shadow.days.bayenv.candidates.names <- CHS.TI.locus.names[CHS.TI.locus.names$ID %in% CHS.TI.shadow.days.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHS.TI.shadow.days.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHS.TI.shadow.days.bayenv.candidates.names <- paste("X", CHS.TI.shadow.days.bayenv.candidates.names$SNP, sep=".")
+
+CHS.TI.temp.bayenv.candidates$ID <- as.character(CHS.TI.temp.bayenv.candidates$ID)
+CHS.TI.temp.bayenv.candidates.names <- CHS.TI.locus.names[CHS.TI.locus.names$ID %in% CHS.TI.temp.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHS.TI.temp.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHS.TI.temp.bayenv.candidates.names <- paste("X", CHS.TI.temp.bayenv.candidates.names$SNP, sep=".")
+
+CHS.TI.pcpt.bayenv.candidates$ID <- as.character(CHS.TI.pcpt.bayenv.candidates$ID)
+CHS.TI.pcpt.bayenv.candidates.names <- CHS.TI.locus.names[CHS.TI.locus.names$ID %in% CHS.TI.pcpt.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHS.TI.pcpt.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHS.TI.pcpt.bayenv.candidates.names <- paste("X", CHS.TI.pcpt.bayenv.candidates.names$SNP, sep=".")
+
+CHS.TI.day.10cm.bayenv.candidates$ID <- as.character(CHS.TI.day.10cm.bayenv.candidates$ID)
+CHS.TI.day.10cm.bayenv.candidates.names <- CHS.TI.locus.names[CHS.TI.locus.names$ID %in% CHS.TI.day.10cm.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(CHS.TI.day.10cm.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+CHS.TI.day.10cm.bayenv.candidates.names <- paste("X", CHS.TI.day.10cm.bayenv.candidates.names$SNP, sep=".")
+
+```
+
+
+
