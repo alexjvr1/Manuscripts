@@ -27,19 +27,21 @@ I'm showing:
 
 ### 1.1 Venn Diagram for loci within LFMM
 
+These have already been drawn. 
 
-##### CHall
+See: https://github.com/alexjvr1/Manuscripts/blob/master/Chp2_CHdata_LFMM.md
 
-##### CHN
 
-##### CHS
 
-##### CZ
+Venn.CHN.n5.LFMMonly_20170310.pdf
 
-##### CHS.VS
+Venn.CHS.n5.LFMMonly_20170310.pdf
 
-##### CHS.TI
+Venn.CZ.n5.LFMMonly_20170310.pdf
 
+Venn.CHS.VS.n5.LFMMonly_20170310.pdf
+
+Venn.CHS.TI.n5.LFMMonly_20170310.pdf
 
 ### 1.2 Venn Diagram for loci within BayEnv2
 
