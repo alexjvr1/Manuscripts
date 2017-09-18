@@ -3557,9 +3557,9 @@ CHN.BayEnv.outliers <- as.character(CHN.BayEnv.outliers$loci)
 Write top 100 XtX loci to file
 
 ```
-CHN.XtX.run1 <- read.table("CHN.Run1/XtX_out.CHN.5n.ENV", header=F)
-CHN.XtX.run2 <- read.table("CHN.Run2/XtX_out.CHN.5n.ENV", header=F)
-CHN.XtX.run3 <- read.table("CHN.Run3/XtX_out.CHN.5n.ENV", header=F)
+CHN.XtX.run1 <- read.table("CHN.Run1/XtX_out.ENVIRONFILE.CHN.p19.env", header=F)
+CHN.XtX.run2 <- read.table("CHN.Run2/XtX_out.ENVIRONFILE.CHN.p19.env", header=F)
+CHN.XtX.run3 <- read.table("CHN.Run3/XtX_out.ENVIRONFILE.CHN.p19.env", header=F)
 
 
 CHN.XtX.all <- rbindlist(list(CHN.XtX.run1, CHN.XtX.run2, CHN.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
@@ -3674,9 +3674,9 @@ CHS.BayEnv.outliers <- as.character(CHS.BayEnv.outliers$loci)
 Write top 100 XtX loci to file
 
 ```
-CHS.XtX.run1 <- read.table("CHS.Run1/XtX_out.CHS.5n.ENV", header=F)
-CHS.XtX.run2 <- read.table("CHS.Run2/XtX_out.CHS.5n.ENV", header=F)
-CHS.XtX.run3 <- read.table("CHS.Run3/XtX_out.CHS.5n.ENV", header=F)
+CHS.XtX.run1 <- read.table("CHS.Run1/XtX_out.ENVIRONFILE.CHS.n5.env", header=F)
+CHS.XtX.run2 <- read.table("CHS.Run2/XtX_out.ENVIRONFILE.CHS.n5.env", header=F)
+CHS.XtX.run3 <- read.table("CHS.Run3/XtX_out.ENVIRONFILE.CHS.n5.env", header=F)
 
 
 CHS.XtX.all <- rbindlist(list(CHS.XtX.run1, CHS.XtX.run2, CHS.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
@@ -3792,9 +3792,9 @@ CZ.BayEnv.outliers <- as.character(CZ.BayEnv.outliers$loci)
 Write top 100 XtX loci to file
 
 ```
-CZ.XtX.run1 <- read.table("CZ.Run1/XtX_out.CZ.5n.ENV", header=F)
-CZ.XtX.run2 <- read.table("CZ.Run2/XtX_out.CZ.5n.ENV", header=F)
-CZ.XtX.run3 <- read.table("CZ.Run3/XtX_out.CZ.5n.ENV", header=F)
+CZ.XtX.run1 <- read.table("CZ.Run1/XtX_out.ENVIRON.CZ.5n.env", header=F)
+CZ.XtX.run2 <- read.table("CZ.Run2/XtX_out.ENVIRON.CZ.5n.env", header=F)
+CZ.XtX.run3 <- read.table("CZ.Run3/XtX_out.ENVIRON.CZ.5n.env", header=F)
 
 
 CZ.XtX.all <- rbindlist(list(CZ.XtX.run1, CZ.XtX.run2, CZ.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
@@ -3912,9 +3912,9 @@ CHS.VS.BayEnv.outliers <- as.character(CHS.VS.BayEnv.outliers$loci)
 Write top 100 XtX loci to file
 
 ```
-CHS.VS.XtX.run1 <- read.table("CHS.VS.Run1/XtX_out.CHS.VS.5n.ENV", header=F)
-CHS.VS.XtX.run2 <- read.table("CHS.VS.Run2/XtX_out.CHS.VS.5n.ENV", header=F)
-CHS.VS.XtX.run3 <- read.table("CHS.VS.Run3/XtX_out.CHS.VS.5n.ENV", header=F)
+CHS.VS.XtX.run1 <- read.table("CHS.VS.Run1/XtX_out.CHS.VS.p10.n5.ENVIRONFILE.env", header=F)
+CHS.VS.XtX.run2 <- read.table("CHS.VS.Run2/XtX_out.CHS.VS.p10.n5.ENVIRONFILE.env", header=F)
+CHS.VS.XtX.run3 <- read.table("CHS.VS.Run3/XtX_out.CHS.VS.p10.n5.ENVIRONFILE.env", header=F)
 
 
 CHS.VS.XtX.all <- rbindlist(list(CHS.VS.XtX.run1, CHS.VS.XtX.run2, CHS.VS.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
