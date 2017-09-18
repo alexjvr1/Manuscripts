@@ -2938,6 +2938,7 @@ CHall.day.10cm.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$day.10cm.log
 
 
 
+
 ####CHN
 ```
 #calculate the log10 of BF for each environmental variable
@@ -3117,6 +3118,9 @@ CHS.day.10cm.bayenv.candidates <- CHS.BF.all[which(CHS.BF.all$day.10cm.log10BF>0
 ```
 
 
+
+
+
 ####CZ
 
 ```
@@ -3204,6 +3208,14 @@ CZ.pcpt.bayenv.candidates <- CZ.BF.all[which(CZ.BF.all$pcpt.log10BF>0.5 & (abs(C
 CZ.day.10cm.bayenv.candidates <- CZ.BF.all[which(CZ.BF.all$day.10cm.log10BF>0.5 & (abs(CZ.BF.all$day.10cm.rho))>0.3),]
 ```
 
+
+
+
+
+
+
+
+
 ####CHS.VS
 ```
 #calculate the log10 of BF for each environmental variable
@@ -3289,6 +3301,8 @@ CHS.VS.temp.bayenv.candidates <- CHS.VS.BF.all[which(CHS.VS.BF.all$temp.log10BF>
 CHS.VS.pcpt.bayenv.candidates <- CHS.VS.BF.all[which(CHS.VS.BF.all$pcpt.log10BF>0.5 & (abs(CHS.VS.BF.all$pcpt.rho))>0.3),]
 CHS.VS.day.10cm.bayenv.candidates <- CHS.VS.BF.all[which(CHS.VS.BF.all$day.10cm.log10BF>0.5 & (abs(CHS.VS.BF.all$day.10cm.rho))>0.3),]
 ```
+
+
 
 
 STILL NEED TO RUN THIS
@@ -3384,7 +3398,43 @@ colnames(CHall.day.10cm.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "
 CHall.day.10cm.bayenv.candidates.names <- paste("X", CHall.day.10cm.bayenv.candidates.names$SNP, sep=".")
 
 ```
+find names and write to file
 
+```
+CHall.rad.names <- as.data.frame(CHall.rad.bayenv.candidates.names)
+colnames(CHall.rad.names) <- "names"
+
+CHall.shadow.days.names <- as.data.frame(CHall.shadow.days.bayenv.candidates.names)
+colnames(CHall.shadow.days.names) <- "names"
+
+CHall.temp.names <- as.data.frame(CHall.temp.bayenv.candidates.names)
+colnames(CHall.temp.names) <- "names"
+
+CHall.pcpt.names <- as.data.frame(CHall.pcpt.bayenv.candidates.names)
+colnames(CHall.pcpt.names) <- "names"
+
+CHall.day.10cm.names <- as.data.frame(CHall.day.10cm.bayenv.candidates.names)
+colnames(CHall.day.10cm.names) <- "names"
+
+
+CHall.alloutliers.names <- rbind(CHall.rad.names, CHall.shadow.days.names, CHall.temp.names, CHall.pcpt.names, CHall.day.10cm.names)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
+CHall.alloutliers.names <- lapply(CHall.alloutliers.names, unique)  #select only the unique rows. 
+
+CHall.alloutliers.names <- sub(":", ".", CHall.alloutliers.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
+
+CHall.alloutliers.names <- as.data.frame(CHall.alloutliers.names)
+write.table(CHall.alloutliers.names$CHall.alloutliers.names, "CHall.BayEnv.alloutliers", col.names=F, row.names=F, quote=F)
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+CHall.BayEnv.outliers <- read.table("CHall.BayEnv.alloutliers")
+colnames(CHall.BayEnv.outliers) <- ("loci")
+CHall.BayEnv.outliers <- as.character(CHall.BayEnv.outliers$loci)
+
+```
 
 
 ```
@@ -3430,6 +3480,41 @@ CHN.day.10cm.bayenv.candidates.names <- paste("X", CHN.day.10cm.bayenv.candidate
 
 ```
 
+Find names and write to file
+```
+CHN.rad.names <- as.data.frame(CHN.rad.bayenv.candidates.names)
+colnames(CHN.rad.names) <- "names"
+
+CHN.shadow.days.names <- as.data.frame(CHN.shadow.days.bayenv.candidates.names)
+colnames(CHN.shadow.days.names) <- "names"
+
+CHN.temp.names <- as.data.frame(CHN.temp.bayenv.candidates.names)
+colnames(CHN.temp.names) <- "names"
+
+CHN.pcpt.names <- as.data.frame(CHN.pcpt.bayenv.candidates.names)
+colnames(CHN.pcpt.names) <- "names"
+
+CHN.day.10cm.names <- as.data.frame(CHN.day.10cm.bayenv.candidates.names)
+colnames(CHN.day.10cm.names) <- "names"
+
+
+CHN.alloutliers.names <- rbind(CHN.rad.names, CHN.shadow.days.names, CHN.temp.names, CHN.pcpt.names, CHN.day.10cm.names)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
+CHN.alloutliers.names <- lapply(CHN.alloutliers.names, unique)  #select only the unique rows. 
+
+CHN.alloutliers.names <- sub(":", ".", CHN.alloutliers.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
+
+CHN.alloutliers.names <- as.data.frame(CHN.alloutliers.names)
+write.table(CHN.alloutliers.names$CHN.alloutliers.names, "CHN.BayEnv.alloutliers", col.names=F, row.names=F, quote=F)
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+CHN.BayEnv.outliers <- read.table("CHN.BayEnv.alloutliers")
+colnames(CHN.BayEnv.outliers) <- ("loci")
+CHN.BayEnv.outliers <- as.character(CHN.BayEnv.outliers$loci)
+```
 
 
 
@@ -3476,6 +3561,42 @@ CHS.day.10cm.bayenv.candidates.names <- paste("X", CHS.day.10cm.bayenv.candidate
 
 ```
 
+find names and write to file
+```
+CHS.rad.names <- as.data.frame(CHS.rad.bayenv.candidates.names)
+colnames(CHS.rad.names) <- "names"
+
+CHS.shadow.days.names <- as.data.frame(CHS.shadow.days.bayenv.candidates.names)
+colnames(CHS.shadow.days.names) <- "names"
+
+CHS.temp.names <- as.data.frame(CHS.temp.bayenv.candidates.names)
+colnames(CHS.temp.names) <- "names"
+
+CHS.pcpt.names <- as.data.frame(CHS.pcpt.bayenv.candidates.names)
+colnames(CHS.pcpt.names) <- "names"
+
+CHS.day.10cm.names <- as.data.frame(CHS.day.10cm.bayenv.candidates.names)
+colnames(CHS.day.10cm.names) <- "names"
+
+
+CHS.alloutliers.names <- rbind(CHS.rad.names, CHS.shadow.days.names, CHS.temp.names, CHS.pcpt.names, CHS.day.10cm.names)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
+CHS.alloutliers.names <- lapply(CHS.alloutliers.names, unique)  #select only the unique rows. 
+
+CHS.alloutliers.names <- sub(":", ".", CHS.alloutliers.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
+
+CHS.alloutliers.names <- as.data.frame(CHS.alloutliers.names)
+write.table(CHS.alloutliers.names$CHS.alloutliers.names, "CHS.BayEnv.alloutliers", col.names=F, row.names=F, quote=F)
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+CHS.BayEnv.outliers <- read.table("CHS.BayEnv.alloutliers")
+colnames(CHS.BayEnv.outliers) <- ("loci")
+CHS.BayEnv.outliers <- as.character(CHS.BayEnv.outliers$loci)
+```
+
 
 ```
 #######CZ
@@ -3519,7 +3640,41 @@ colnames(CZ.day.10cm.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID"
 CZ.day.10cm.bayenv.candidates.names <- paste("X", CZ.day.10cm.bayenv.candidates.names$SNP, sep=".")
 
 ```
+find names and write to file
+```
+CZ.rad.names <- as.data.frame(CZ.rad.bayenv.candidates.names)
+colnames(CZ.rad.names) <- "names"
 
+CZ.shadow.days.names <- as.data.frame(CZ.shadow.days.bayenv.candidates.names)
+colnames(CZ.shadow.days.names) <- "names"
+
+CZ.temp.names <- as.data.frame(CZ.temp.bayenv.candidates.names)
+colnames(CZ.temp.names) <- "names"
+
+CZ.pcpt.names <- as.data.frame(CZ.pcpt.bayenv.candidates.names)
+colnames(CZ.pcpt.names) <- "names"
+
+CZ.day.10cm.names <- as.data.frame(CZ.day.10cm.bayenv.candidates.names)
+colnames(CZ.day.10cm.names) <- "names"
+
+
+CZ.alloutliers.names <- rbind(CZ.rad.names, CZ.shadow.days.names, CZ.temp.names, CZ.pcpt.names, CZ.day.10cm.names)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
+CZ.alloutliers.names <- lapply(CZ.alloutliers.names, unique)  #select only the unique rows. 
+
+CZ.alloutliers.names <- sub(":", ".", CZ.alloutliers.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
+
+CZ.alloutliers.names <- as.data.frame(CZ.alloutliers.names)
+write.table(CZ.alloutliers.names$CZ.alloutliers.names, "CZ.BayEnv.alloutliers", col.names=F, row.names=F, quote=F)
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+CZ.BayEnv.outliers <- read.table("CZ.BayEnv.alloutliers")
+colnames(CZ.BayEnv.outliers) <- ("loci")
+CZ.BayEnv.outliers <- as.character(CZ.BayEnv.outliers$loci)
+```
 
 ```
 #######CHS.VS
@@ -3562,6 +3717,42 @@ CHS.VS.day.10cm.bayenv.candidates.names <- CHS.VS.locus.names[CHS.VS.locus.names
 colnames(CHS.VS.day.10cm.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
 CHS.VS.day.10cm.bayenv.candidates.names <- paste("X", CHS.VS.day.10cm.bayenv.candidates.names$SNP, sep=".")
 
+```
+find names and write to file
+
+```
+CHS.VS.rad.names <- as.data.frame(CHS.VS.rad.bayenv.candidates.names)
+colnames(CHS.VS.rad.names) <- "names"
+
+CHS.VS.shadow.days.names <- as.data.frame(CHS.VS.shadow.days.bayenv.candidates.names)
+colnames(CHS.VS.shadow.days.names) <- "names"
+
+CHS.VS.temp.names <- as.data.frame(CHS.VS.temp.bayenv.candidates.names)
+colnames(CHS.VS.temp.names) <- "names"
+
+CHS.VS.pcpt.names <- as.data.frame(CHS.VS.pcpt.bayenv.candidates.names)
+colnames(CHS.VS.pcpt.names) <- "names"
+
+CHS.VS.day.10cm.names <- as.data.frame(CHS.VS.day.10cm.bayenv.candidates.names)
+colnames(CHS.VS.day.10cm.names) <- "names"
+
+
+CHS.VS.alloutliers.names <- rbind(CHS.VS.rad.names, CHS.VS.shadow.days.names, CHS.VS.temp.names, CHS.VS.pcpt.names, CHS.VS.day.10cm.names)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
+CHS.VS.alloutliers.names <- lapply(CHS.VS.alloutliers.names, unique)  #select only the unique rows. 
+
+CHS.VS.alloutliers.names <- sub(":", ".", CHS.VS.alloutliers.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
+
+CHS.VS.alloutliers.names <- as.data.frame(CHS.VS.alloutliers.names)
+write.table(CHS.VS.alloutliers.names$CHS.VS.alloutliers.names, "CHS.VS.BayEnv.alloutliers", col.names=F, row.names=F, quote=F)
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+CHS.VS.BayEnv.outliers <- read.table("CHS.VS.BayEnv.alloutliers")
+colnames(CHS.VS.BayEnv.outliers) <- ("loci")
+CHS.VS.BayEnv.outliers <- as.character(CHS.VS.BayEnv.outliers$loci)
 ```
 
 
@@ -3608,5 +3799,40 @@ CHS.TI.day.10cm.bayenv.candidates.names <- paste("X", CHS.TI.day.10cm.bayenv.can
 
 ```
 
+Find names and write to file
+```
+CHS.TI.rad.names <- as.data.frame(CHS.TI.rad.bayenv.candidates.names)
+colnames(CHS.TI.rad.names) <- "names"
+
+CHS.TI.shadow.days.names <- as.data.frame(CHS.TI.shadow.days.bayenv.candidates.names)
+colnames(CHS.TI.shadow.days.names) <- "names"
+
+CHS.TI.temp.names <- as.data.frame(CHS.TI.temp.bayenv.candidates.names)
+colnames(CHS.TI.temp.names) <- "names"
+
+CHS.TI.pcpt.names <- as.data.frame(CHS.TI.pcpt.bayenv.candidates.names)
+colnames(CHS.TI.pcpt.names) <- "names"
+
+CHS.TI.day.10cm.names <- as.data.frame(CHS.TI.day.10cm.bayenv.candidates.names)
+colnames(CHS.TI.day.10cm.names) <- "names"
+
+
+CHS.TI.alloutliers.names <- rbind(CHS.TI.rad.names, CHS.TI.shadow.days.names, CHS.TI.temp.names, CHS.TI.pcpt.names, CHS.TI.day.10cm.names)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
+CHS.TI.alloutliers.names <- lapply(CHS.TI.alloutliers.names, unique)  #select only the unique rows. 
+
+CHS.TI.alloutliers.names <- sub(":", ".", CHS.TI.alloutliers.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
+
+CHS.TI.alloutliers.names <- as.data.frame(CHS.TI.alloutliers.names)
+write.table(CHS.TI.alloutliers.names$CHS.TI.alloutliers.names, "CHS.TI.BayEnv.alloutliers", col.names=F, row.names=F, quote=F)
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+CHS.TI.BayEnv.outliers <- read.table("CHS.TI.BayEnv.alloutliers")
+colnames(CHS.TI.BayEnv.outliers) <- ("loci")
+CHS.TI.BayEnv.outliers <- as.character(CHS.TI.BayEnv.outliers$loci)
+```
 
 
