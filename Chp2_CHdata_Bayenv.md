@@ -2805,3 +2805,87 @@ CHS.TI.day.10cm.123 <- Reduce(intersect, list(CHS.TI.day.10cm.run2.top100.set2$s
 summary(CHS.TI.day.10cm.123)
 #10
 ```
+
+
+According to Blair et al. 2014, there is a lot of inter-run variation in BayEnv2 results. They suggest that the best approach (if the covariance matrix converges) is to combine results from several different runs.
+
+Im following the methods in Božičević 2016 (Mol Ecol) to get the most robust results:
+
+" To test the convergence of Bayenv2, we used several independent Markov chain Monte Carlo runs with a maximum chain length of 10 000 iterations. We observed convergence after about 5000 iterations (Fig. S1, Supporting information). However, these chains might converge to different solutions. To be most stringent, we used the median results from 10 independent runs (Blair et al. 2014). We then tested for correlations between each single SNP and six environmental variables: geographical latitude, height above mean sea level and four temperature measures (average daily minimum of the coldest and warmest month, and average daily minimum and maximum throughout the year) (Table 2). The results for environmental variables are given as Bayes factors (BFs). A higher BF gives higher support to the model where the environmental variable has a significant effect on allele frequency distribution over an alternative model with no effect (Coop et al. 2010). Similar as above, we finally report the median BF of ten independent runs of each SNP that has been described to improve the proportion of false positives (Blair et al. 2014; Lotterhos & Whitlock 2014). With BF values, we also used a resampling approach, analogously to the one applied on FST. We randomly sampled sets of SNPs of the same size from the genomic background and then assessed the null distribution for BF of CCRT-, RSS- and SR-associated SNPs. "
+
+Ive run 3 independend BayEnv2 association analyses. now Im combining all the output tables by the median of all the values.
+
+
+Calculate a final matrix as the median of all the matrices
+
+```
+library(data.table)
+
+##CHall
+CHall.BF.all <- rbindlist(list(BF.CHall.Run1, BF.CHall.Run2, BF.CHall.Run3))[,lapply(.SD,median), list(snp)]
+
+
+##CHN
+CHN.BF.all <- rbindlist(list(BF.CHN.Run1, BF.CHN.Run2, BF.CHN.Run3))[,lapply(.SD,median), list(snp)]
+
+##CHS
+CHS.BF.all <- rbindlist(list(BF.CHS.Run1, BF.CHS.Run2, BF.CHS.Run3))[,lapply(.SD,median), list(snp)]
+
+##CZ
+CZ.BF.all <- rbindlist(list(BF.CZ.Run1, BF.CZ.Run2, BF.CZ.Run3))[,lapply(.SD,median), list(snp)]
+
+##CHS.VS
+CHS.VS.BF.all <- rbindlist(list(BF.CHS.VS.Run1, BF.CHS.VS.Run2, BF.CHS.VS.Run3))[,lapply(.SD,median), list(snp)]
+
+####STILL NEEDS TO BE DONE
+##CHS.TI
+CHS.TI.BF.all <- rbindlist(list(BF.CHS.TI.Run1, BF.CHS.TI.Run2, BF.CHS.TI.Run3))[,lapply(.SD,median), list(snp)]
+```
+
+
+Identify the outliers associated with the different env variables. " Strength of evidence for significant associations was based on the value of the log10 Bayes factor (log10BF), with the following log10BF cut-offs: 0.5–1= substantial evidence; 1–2 = strong evidence; >2 =decisive (Kass & Raftery 1995). The linear model underlying the Bayes factor might not be correct or outliers within our data might misguide the model (bayenv2.0 manual, https://bitbucket.org/tguenther/bayenv2_public/src). To deal with this, bayenv2 also calculates the nonparametric Spearman's rank correlation coefficient, ρ. SNPs with a log10BF >0.5 as well as an absolute value of ρ > 0.3 (where ρ ranges from −1 to 1) were therefore considered as robust candidates demonstrating signatures of selection. " Christmas et al. 2016
+
+
+```
+#calculate the log10 of BF for each environmental variable
+
+BF.all$bio2.log10BF <- log10(BF.all$bio2.BF)
+BF.all$bio5.log10BF <- log10(BF.all$bio5.BF)
+BF.all$bio13.log10BF <- log10(BF.all$bio13.BF)
+BF.all$bio15.log10BF <- log10(BF.all$bio15.BF)
+BF.all$bio18.log10BF <- log10(BF.all$bio18.BF)
+
+##Sort and plot
+
+BF.all.sort <- BF.all[order(BF.all$bio2.log10BF),]
+
+pdf("CHall.BF.plot.pdf")
+par(mfrow=c(3,2))
+CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$rad.log10BF),]
+plot(CHall.BF.all.sort$rad.log10BF, main="rad")
+abline(h=0.5, col=4, lty=2)
+abline(h=1.0, col=3, lty=2)
+
+CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$shadow.days.log10BF),]
+plot(CHall.BF.all.sort$shadow.days.log10BF, main="shadow.days")
+abline(h=0.5, col=4, lty=2)
+abline(h=1.0, col=3, lty=2)
+
+CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$temp.log10BF),]
+plot(CHall.BF.all.sort$temp.log10BF, main="temp")
+abline(h=0.5, col=4, lty=2)
+abline(h=1.0, col=3, lty=2)
+
+
+CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$pcpt.log10BF),]
+plot(CHall.BF.all.sort$pcpt.log10BF, main="pcpt")
+abline(h=0.5, col=4, lty=2)
+abline(h=1.0, col=3, lty=2)
+
+CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$day.10cm.log10BF),]
+plot(CHall.BF.all.sort$day.10cm.log10BF, main="day.10cm")
+abline(h=0.5, col=4, lty=2)
+abline(h=1.0, col=3, lty=2)
+
+dev.off()
+```
