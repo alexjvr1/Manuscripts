@@ -3436,6 +3436,44 @@ CHall.BayEnv.outliers <- as.character(CHall.BayEnv.outliers$loci)
 
 ```
 
+Write XtX outliers top 100 to file
+
+```
+CHall.XtX.run1 <- read.table("CHall.Run1/XtX_out.CHall.5n.ENV", header=F)
+CHall.XtX.run2 <- read.table("CHall.Run2/XtX_out.CHall.5n.ENV", header=F)
+CHall.XtX.run3 <- read.table("CHall.Run3/XtX_out.CHall.5n.ENV", header=F)
+
+
+CHall.XtX.all <- rbindlist(list(CHall.XtX.run1, CHall.XtX.run2, CHall.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
+
+colnames(CHall.XtX.all) <- c("snp", "XtX")
+##index the loci 
+CHall.XtX.all$ID <- seq.int(nrow(CHall.XtX.all))   ##index the loci in the original output
+CHall.XtX.all.sort <- CHall.XtX.all[order(-CHall.XtX.all$XtX),]  ##order to get the top 100 loci. The minus means its descending order
+CHall.XtX.top100 <- CHall.XtX.all.sort[1:100,]  #select the first 100 loci
+CHall.XtX.top100.names <- CHall.locus.names[CHall.locus.names$ID %in% CHall.XtX.top100$ID,]  ##get their names
+summary(CHall.XtX.top100.names)
+colnames(CHall.XtX.top100.names) <- c("V1", "SNP", "V3", "V4", "ID")   #rename the columns to match the code
+CHall.XtX.top100.names <- paste("X", CHall.XtX.top100.names$SNP, sep=".")  #rename loci
+CHall.XtX.top100.names <- as.data.frame(CHall.XtX.top100.names)
+CHall.XtX.top100.names
+colnames(CHall.XtX.top100.names) <- "names"
+CHall.XtX.top100.names <- sub(":", ".", CHall.XtX.top100.names$names)  ##rename to match Fst table
+CHall.XtX.top100.names <- as.data.frame(CHall.XtX.top100.names)
+write.table(CHall.XtX.top100.names$CHall.XtX.top100.names, "CHall.XtX.100outliers", col.names=F, row.names=F, quote=F)  ##write the table
+
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+XtX.outliers <- read.table("XtX.100outliers")
+colnames(XtX.outliers) <- ("loci")
+
+
+```
+
+
 
 ```
 ####CHN
@@ -3516,6 +3554,42 @@ colnames(CHN.BayEnv.outliers) <- ("loci")
 CHN.BayEnv.outliers <- as.character(CHN.BayEnv.outliers$loci)
 ```
 
+Write top 100 XtX loci to file
+
+```
+CHN.XtX.run1 <- read.table("CHN.Run1/XtX_out.CHN.5n.ENV", header=F)
+CHN.XtX.run2 <- read.table("CHN.Run2/XtX_out.CHN.5n.ENV", header=F)
+CHN.XtX.run3 <- read.table("CHN.Run3/XtX_out.CHN.5n.ENV", header=F)
+
+
+CHN.XtX.all <- rbindlist(list(CHN.XtX.run1, CHN.XtX.run2, CHN.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
+
+colnames(CHN.XtX.all) <- c("snp", "XtX")
+##index the loci 
+CHN.XtX.all$ID <- seq.int(nrow(CHN.XtX.all))   ##index the loci in the original output
+CHN.XtX.all.sort <- CHN.XtX.all[order(-CHN.XtX.all$XtX),]  ##order to get the top 100 loci. The minus means its descending order
+CHN.XtX.top100 <- CHN.XtX.all.sort[1:100,]  #select the first 100 loci
+CHN.XtX.top100.names <- CHN.locus.names[CHN.locus.names$ID %in% CHN.XtX.top100$ID,]  ##get their names
+summary(CHN.XtX.top100.names)
+colnames(CHN.XtX.top100.names) <- c("V1", "SNP", "V3", "V4", "ID")   #rename the columns to match the code
+CHN.XtX.top100.names <- paste("X", CHN.XtX.top100.names$SNP, sep=".")  #rename loci
+CHN.XtX.top100.names <- as.data.frame(CHN.XtX.top100.names)
+CHN.XtX.top100.names
+colnames(CHN.XtX.top100.names) <- "names"
+CHN.XtX.top100.names <- sub(":", ".", CHN.XtX.top100.names$names)  ##rename to match Fst table
+CHN.XtX.top100.names <- as.data.frame(CHN.XtX.top100.names)
+write.table(CHN.XtX.top100.names$CHN.XtX.top100.names, "CHN.XtX.100outliers", col.names=F, row.names=F, quote=F)  ##write the table
+
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+XtX.outliers <- read.table("XtX.100outliers")
+colnames(XtX.outliers) <- ("loci")
+
+
+```
 
 
 ```
@@ -3597,6 +3671,44 @@ colnames(CHS.BayEnv.outliers) <- ("loci")
 CHS.BayEnv.outliers <- as.character(CHS.BayEnv.outliers$loci)
 ```
 
+Write top 100 XtX loci to file
+
+```
+CHS.XtX.run1 <- read.table("CHS.Run1/XtX_out.CHS.5n.ENV", header=F)
+CHS.XtX.run2 <- read.table("CHS.Run2/XtX_out.CHS.5n.ENV", header=F)
+CHS.XtX.run3 <- read.table("CHS.Run3/XtX_out.CHS.5n.ENV", header=F)
+
+
+CHS.XtX.all <- rbindlist(list(CHS.XtX.run1, CHS.XtX.run2, CHS.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
+
+colnames(CHS.XtX.all) <- c("snp", "XtX")
+##index the loci 
+CHS.XtX.all$ID <- seq.int(nrow(CHS.XtX.all))   ##index the loci in the original output
+CHS.XtX.all.sort <- CHS.XtX.all[order(-CHS.XtX.all$XtX),]  ##order to get the top 100 loci. The minus means its descending order
+CHS.XtX.top100 <- CHS.XtX.all.sort[1:100,]  #select the first 100 loci
+CHS.XtX.top100.names <- CHS.locus.names[CHS.locus.names$ID %in% CHS.XtX.top100$ID,]  ##get their names
+summary(CHS.XtX.top100.names)
+colnames(CHS.XtX.top100.names) <- c("V1", "SNP", "V3", "V4", "ID")   #rename the columns to match the code
+CHS.XtX.top100.names <- paste("X", CHS.XtX.top100.names$SNP, sep=".")  #rename loci
+CHS.XtX.top100.names <- as.data.frame(CHS.XtX.top100.names)
+CHS.XtX.top100.names
+colnames(CHS.XtX.top100.names) <- "names"
+CHS.XtX.top100.names <- sub(":", ".", CHS.XtX.top100.names$names)  ##rename to match Fst table
+CHS.XtX.top100.names <- as.data.frame(CHS.XtX.top100.names)
+write.table(CHS.XtX.top100.names$CHS.XtX.top100.names, "CHS.XtX.100outliers", col.names=F, row.names=F, quote=F)  ##write the table
+
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+XtX.outliers <- read.table("XtX.100outliers")
+colnames(XtX.outliers) <- ("loci")
+
+
+```
+
+
 
 ```
 #######CZ
@@ -3676,6 +3788,48 @@ colnames(CZ.BayEnv.outliers) <- ("loci")
 CZ.BayEnv.outliers <- as.character(CZ.BayEnv.outliers$loci)
 ```
 
+
+Write top 100 XtX loci to file
+
+```
+CZ.XtX.run1 <- read.table("CZ.Run1/XtX_out.CZ.5n.ENV", header=F)
+CZ.XtX.run2 <- read.table("CZ.Run2/XtX_out.CZ.5n.ENV", header=F)
+CZ.XtX.run3 <- read.table("CZ.Run3/XtX_out.CZ.5n.ENV", header=F)
+
+
+CZ.XtX.all <- rbindlist(list(CZ.XtX.run1, CZ.XtX.run2, CZ.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
+
+colnames(CZ.XtX.all) <- c("snp", "XtX")
+##index the loci 
+CZ.XtX.all$ID <- seq.int(nrow(CZ.XtX.all))   ##index the loci in the original output
+CZ.XtX.all.sort <- CZ.XtX.all[order(-CZ.XtX.all$XtX),]  ##order to get the top 100 loci. The minus means its descending order
+CZ.XtX.top100 <- CZ.XtX.all.sort[1:100,]  #select the first 100 loci
+CZ.XtX.top100.names <- CZ.locus.names[CZ.locus.names$ID %in% CZ.XtX.top100$ID,]  ##get their names
+summary(CZ.XtX.top100.names)
+colnames(CZ.XtX.top100.names) <- c("V1", "SNP", "V3", "V4", "ID")   #rename the columns to match the code
+CZ.XtX.top100.names <- paste("X", CZ.XtX.top100.names$SNP, sep=".")  #rename loci
+CZ.XtX.top100.names <- as.data.frame(CZ.XtX.top100.names)
+CZ.XtX.top100.names
+colnames(CZ.XtX.top100.names) <- "names"
+CZ.XtX.top100.names <- sub(":", ".", CZ.XtX.top100.names$names)  ##rename to match Fst table
+CZ.XtX.top100.names <- as.data.frame(CZ.XtX.top100.names)
+write.table(CZ.XtX.top100.names$CZ.XtX.top100.names, "CZ.XtX.100outliers", col.names=F, row.names=F, quote=F)  ##write the table
+
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+XtX.outliers <- read.table("XtX.100outliers")
+colnames(XtX.outliers) <- ("loci")
+
+
+```
+
+
+
+
+
 ```
 #######CHS.VS
 CHS.VS.locus.names <- read.table("/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/CHS.VS.135.8779.plink.map", header=F) #import the locus names into R
@@ -3754,6 +3908,45 @@ CHS.VS.BayEnv.outliers <- read.table("CHS.VS.BayEnv.alloutliers")
 colnames(CHS.VS.BayEnv.outliers) <- ("loci")
 CHS.VS.BayEnv.outliers <- as.character(CHS.VS.BayEnv.outliers$loci)
 ```
+
+Write top 100 XtX loci to file
+
+```
+CHS.VS.XtX.run1 <- read.table("CHS.VS.Run1/XtX_out.CHS.VS.5n.ENV", header=F)
+CHS.VS.XtX.run2 <- read.table("CHS.VS.Run2/XtX_out.CHS.VS.5n.ENV", header=F)
+CHS.VS.XtX.run3 <- read.table("CHS.VS.Run3/XtX_out.CHS.VS.5n.ENV", header=F)
+
+
+CHS.VS.XtX.all <- rbindlist(list(CHS.VS.XtX.run1, CHS.VS.XtX.run2, CHS.VS.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
+
+colnames(CHS.VS.XtX.all) <- c("snp", "XtX")
+##index the loci 
+CHS.VS.XtX.all$ID <- seq.int(nrow(CHS.VS.XtX.all))   ##index the loci in the original output
+CHS.VS.XtX.all.sort <- CHS.VS.XtX.all[order(-CHS.VS.XtX.all$XtX),]  ##order to get the top 100 loci. The minus means its descending order
+CHS.VS.XtX.top100 <- CHS.VS.XtX.all.sort[1:100,]  #select the first 100 loci
+CHS.VS.XtX.top100.names <- CHS.VS.locus.names[CHS.VS.locus.names$ID %in% CHS.VS.XtX.top100$ID,]  ##get their names
+summary(CHS.VS.XtX.top100.names)
+colnames(CHS.VS.XtX.top100.names) <- c("V1", "SNP", "V3", "V4", "ID")   #rename the columns to match the code
+CHS.VS.XtX.top100.names <- paste("X", CHS.VS.XtX.top100.names$SNP, sep=".")  #rename loci
+CHS.VS.XtX.top100.names <- as.data.frame(CHS.VS.XtX.top100.names)
+CHS.VS.XtX.top100.names
+colnames(CHS.VS.XtX.top100.names) <- "names"
+CHS.VS.XtX.top100.names <- sub(":", ".", CHS.VS.XtX.top100.names$names)  ##rename to match Fst table
+CHS.VS.XtX.top100.names <- as.data.frame(CHS.VS.XtX.top100.names)
+write.table(CHS.VS.XtX.top100.names$CHS.VS.XtX.top100.names, "CHS.VS.XtX.100outliers", col.names=F, row.names=F, quote=F)  ##write the table
+
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+XtX.outliers <- read.table("XtX.100outliers")
+colnames(XtX.outliers) <- ("loci")
+
+
+```
+
+
 
 
 ```
@@ -3835,4 +4028,39 @@ colnames(CHS.TI.BayEnv.outliers) <- ("loci")
 CHS.TI.BayEnv.outliers <- as.character(CHS.TI.BayEnv.outliers$loci)
 ```
 
+Write top 100 XtX loci to file
 
+```
+CHS.TI.XtX.run1 <- read.table("CHS.TI.Run1/XtX_out.CHS.TI.5n.ENV", header=F)
+CHS.TI.XtX.run2 <- read.table("CHS.TI.Run2/XtX_out.CHS.TI.5n.ENV", header=F)
+CHS.TI.XtX.run3 <- read.table("CHS.TI.Run3/XtX_out.CHS.TI.5n.ENV", header=F)
+
+
+CHS.TI.XtX.all <- rbindlist(list(CHS.TI.XtX.run1, CHS.TI.XtX.run2, CHS.TI.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
+
+colnames(CHS.TI.XtX.all) <- c("snp", "XtX")
+##index the loci 
+CHS.TI.XtX.all$ID <- seq.int(nrow(CHS.TI.XtX.all))   ##index the loci in the original output
+CHS.TI.XtX.all.sort <- CHS.TI.XtX.all[order(-CHS.TI.XtX.all$XtX),]  ##order to get the top 100 loci. The minus means its descending order
+CHS.TI.XtX.top100 <- CHS.TI.XtX.all.sort[1:100,]  #select the first 100 loci
+CHS.TI.XtX.top100.names <- CHS.TI.locus.names[CHS.TI.locus.names$ID %in% CHS.TI.XtX.top100$ID,]  ##get their names
+summary(CHS.TI.XtX.top100.names)
+colnames(CHS.TI.XtX.top100.names) <- c("V1", "SNP", "V3", "V4", "ID")   #rename the columns to match the code
+CHS.TI.XtX.top100.names <- paste("X", CHS.TI.XtX.top100.names$SNP, sep=".")  #rename loci
+CHS.TI.XtX.top100.names <- as.data.frame(CHS.TI.XtX.top100.names)
+CHS.TI.XtX.top100.names
+colnames(CHS.TI.XtX.top100.names) <- "names"
+CHS.TI.XtX.top100.names <- sub(":", ".", CHS.TI.XtX.top100.names$names)  ##rename to match Fst table
+CHS.TI.XtX.top100.names <- as.data.frame(CHS.TI.XtX.top100.names)
+write.table(CHS.TI.XtX.top100.names$CHS.TI.XtX.top100.names, "CHS.TI.XtX.100outliers", col.names=F, row.names=F, quote=F)  ##write the table
+
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+XtX.outliers <- read.table("XtX.100outliers")
+colnames(XtX.outliers) <- ("loci")
+
+
+```
