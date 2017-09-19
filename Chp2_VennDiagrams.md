@@ -744,5 +744,197 @@ dev.off()
 
 ### 3. Overlap between all candidate loci identified for CHall, CHN, CHS, CZ
 
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/Venn/CHP2
+
+First I need to find the non-redundant set of candidate outliers for each of the datasets
+
+##### CHall
+```
+###I still need the LFMM results for this
+```
+
+##### CHN
+```
+lfmm.outliers <- as.data.frame(lfmm.outliers)
+pcadapt.outliers <- as.data.frame(pcadapt.outliers)
+XtX.outliers <- as.data.frame(XtX.outliers)
+bayenv.outliers <- as.data.frame(bayenv.outliers)
+
+colnames(lfmm.outliers) <- "loci"
+colnames(XtX.outliers) <- "loci"
+colnames(pcadapt.outliers) <- "loci"
+colnames(bayenv.outliers) <- "loci"
+
+CHN.alloutliers <- rbind(lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
+CHN.alloutliers <- lapply(CHN.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 2976 to 2950)
+write.table(CHN.alloutliers, "CHS.alloutliers", col.names=F, row.names=F, quote=F)
+```
+
+#### CHS
+```
+
+lfmm.outliers <- as.data.frame(lfmm.outliers)
+pcadapt.outliers <- as.data.frame(pcadapt.outliers)
+XtX.outliers <- as.data.frame(XtX.outliers)
+bayenv.outliers <- as.data.frame(bayenv.outliers)
+
+colnames(lfmm.outliers) <- "loci"
+colnames(XtX.outliers) <- "loci"
+colnames(pcadapt.outliers) <- "loci"
+colnames(bayenv.outliers) <- "loci"
+
+CHS.alloutliers <- rbind(lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
+CHS.alloutliers <- lapply(CHS.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 4608 to 4376)
+write.table(CHS.alloutliers, "CHS.alloutliers", col.names=F, row.names=F, quote=F)
+```
+
+##### CZ
+
+```
+lfmm.outliers <- as.data.frame(lfmm.outliers)
+pcadapt.outliers <- as.data.frame(pcadapt.outliers)
+XtX.outliers <- as.data.frame(XtX.outliers)
+bayenv.outliers <- as.data.frame(bayenv.outliers)
+
+colnames(lfmm.outliers) <- "loci"
+colnames(XtX.outliers) <- "loci"
+colnames(pcadapt.outliers) <- "loci"
+colnames(bayenv.outliers) <- "loci"
+
+CZ.alloutliers <- rbind(lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
+CZ.alloutliers <- lapply(CZ.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 3090 to 3044)
+write.table(CZ.alloutliers, "CZ.alloutliers", col.names=F, row.names=F, quote=F)
+```
+
+
+Then I can read them into R and draw the VennDiagrams
+
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/Venn/CHP2
+
+
+```
+library(VennDiagram)
+
+CHall.outliers <- read.table("CHall/CHall.alloutliers", header=F)
+colnames(CHall.outliers) <- "loci"
+CHall.outliers <- as.character(CHall.outliers$loci)
+
+CHN.outliers <- read.table("CHN/CHN.alloutliers", header=F)
+colnames(CHN.outliers) <- "loci"
+CHN.outliers <- as.character(CHN.outliers$loci)
+
+CHS.outliers <- read.table("CHS/CHS.alloutliers", header=F)
+colnames(CHS.outliers) <- "loci"
+CHS.outliers <- as.character(CHS.outliers$loci)
+
+CZ.outliers <- read.table("CZ/CZ.alloutliers", header=F)
+colnames(CZ.outliers) <- "loci"
+CZ.outliers <- as.character(CZ.outliers$loci)
+
+
+d1 <- length(CHall.outliers)
+d2 <- length(CHN.outliers)
+d3 <- length(CHS.outliers)
+d4 <- length(CZ.outliers)
+
+d12 <- length(Reduce(intersect, list(CHall.outliers, CHN.outliers)))
+d13 <- length(Reduce(intersect, list(CHall.outliers, CHS.outliers)))
+d14 <- length(Reduce(intersect, list(CHall.outliers, CZ.outliers)))
+d23 <- length(Reduce(intersect, list(CHN.outliers, CHS.outliers)))
+d24 <- length(Reduce(intersect, list(CHN.outliers, CZ.outliers)))
+d34 <- length(Reduce(intersect, list(CHS.outliers, CZ.outliers)))
+
+d123 <- length(Reduce(intersect, list(CHall.outliers, CHN.outliers,CHS.outliers)))
+d124 <- length(Reduce(intersect, list(CHall.outliers, CHN.outliers,CZ.outliers)))
+d234 <- length(Reduce(intersect, list(CHN.outliers, CHS.outliers,CZ.outliers)))
+d134 <- length(Reduce(intersect, list(CHall.outliers, CHS.outliers,CZ.outliers)))
+
+d1234 <- length(Reduce(intersect, list(CHall.outliers, CHN.outliers, CHS.outliers, CZ.outliers)))
+
+pdf(file="Venn.CHall.CHS.CHN.CZ.alloutliers.pdf")
+draw.quad.venn(area1=d1, area2=d2, area3=d3, area4=d4, n12=d12, n13=d13, n14=d14, n23=d23, n24=d24, n34=d34, n123=d123, n124=d124, n134=d134, n234=d234, n1234=d1234, category=c("lfmm", "bayenv", "XtX", "pcadapt"), lty="blank", fill=c("yellow", "orange", "skyblue1", "blue"))
+dev.off()
+
+```
+
+
 
 ### 4. Overlap between all candidate loci identified for CHS, CHS.TI, CHS.VS
+
+First I need to find the unique loci for each dataset. CHS was already done in the previous batch
+
+###### CHS.VS
+```
+lfmm.outliers <- as.data.frame(lfmm.outliers)
+pcadapt.outliers <- as.data.frame(pcadapt.outliers)
+XtX.outliers <- as.data.frame(XtX.outliers)
+bayenv.outliers <- as.data.frame(bayenv.outliers)
+
+colnames(lfmm.outliers) <- "loci"
+colnames(XtX.outliers) <- "loci"
+colnames(pcadapt.outliers) <- "loci"
+colnames(bayenv.outliers) <- "loci"
+
+CHS.VS.alloutliers <- rbind(lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
+CHS.VS.alloutliers <- lapply(CHS.VS.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 3090 to 3044)
+write.table(CHS.VS.alloutliers, "CHS.VS.alloutliers", col.names=F, row.names=F, quote=F)
+```
+
+###### CHS.TI
+```
+lfmm.outliers <- as.data.frame(lfmm.outliers)
+pcadapt.outliers <- as.data.frame(pcadapt.outliers)
+XtX.outliers <- as.data.frame(XtX.outliers)
+bayenv.outliers <- as.data.frame(bayenv.outliers)
+
+colnames(lfmm.outliers) <- "loci"
+colnames(XtX.outliers) <- "loci"
+colnames(pcadapt.outliers) <- "loci"
+colnames(bayenv.outliers) <- "loci"
+
+CHS.TI.alloutliers <- rbind(lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
+CHS.TI.alloutliers <- lapply(CHS.TI.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 3090 to 3044)
+write.table(CHS.TI.alloutliers, "CHS.TI.alloutliers", col.names=F, row.names=F, quote=F)
+
+```
+
+And then draw the Venn diagram
+
+```
+library(VennDiagram)
+
+
+CHS.VS.outliers <- read.table("CHS.VS/CHS.VS.alloutliers", header=F)
+colnames(CHS.VS.outliers) <- "loci"
+CHS.VS.outliers <- as.character(CHS.VS.outliers$loci)
+
+CHS.outliers <- read.table("CHS/CHS.alloutliers", header=F)
+colnames(CHS.outliers) <- "loci"
+CHS.outliers <- as.character(CHS.outliers$loci)
+
+CHS.TI.outliers <- read.table("CHS.TI/CHS.TI.alloutliers", header=F)
+colnames(CHS.TI.outliers) <- "loci"
+CHS.TI.outliers <- as.character(CHS.TI.outliers$loci)
+
+
+d1 <- length(CHS.VS.outliers)
+d2 <- length(CHS.outliers)
+d3 <- length(CHS.TI.outliers)
+
+d12 <- length(Reduce(intersect, list(CHS.VS.outliers, CHS.outliers)))
+d13 <- length(Reduce(intersect, list(CHS.VS.outliers, CHS.TI.outliers)))
+d23 <- length(Reduce(intersect, list(CHS.outliers, CHS.TI.outliers)))
+
+d123 <- length(Reduce(intersect, list(CHS.VS.outliers, CHS.outliers,CHS.TI.outliers)))
+
+
+pdf("Venn.CHSandVS.TI.alloutliers.pdf")
+draw.triple.venn(area1=d1, area2=d2, area3=d3, n12=d12, n13=d13, n23=d23, n123=d123, category=c("CHS.VS", "CHS", "CHS.TI"), lty="blank", fill=c("yellow", "orange", "skyblue1"))
+dev.off()
+
+```
