@@ -496,16 +496,204 @@ dev.off()
 
 ### 2 overlap between LFMM, Bayenv2, PCadapt, XtX within each region
 
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/Venn/CHP2
 
 ##### CHall
 
 ##### CHN
 
+```
+library(VennDiagram)
+
+lfmm.outliers <- read.table("CHN.LFMM.alloutliers")
+colnames(lfmm.outliers) <- "loci"
+lfmm.outliers <- as.character(lfmm.outliers$loci)
+
+bayenv.outliers <- read.table("CHN.BayEnv.alloutliers", header=F)
+bayenv.outliers <- bayenv.outliers[-c(3),]  ##remove the X. this is just an empty row but is counted as an outlier in the Venn Diagram
+colnames(bayenv.outliers) <- "loci"
+bayenv.outliers <- as.character(bayenv.outliers$loci)
+
+XtX.outliers <- read.table("CHN.XtX.100outliers")
+colnames(XtX.outliers) <- "loci"
+XtX.outliers <- as.character(XtX.outliers$loci)
+
+pcadapt.outliers <- read.table("CHN.pcadapt.outliers")
+colnames(pcadapt.outliers) <- "loci"
+pcadapt.outliers <- as.character(pcadapt.outliers$loci)
+
+d1 <- length(lfmm.outliers)
+d2 <- length(bayenv.outliers)
+d3 <- length(XtX.outliers)
+d4 <- length(pcadapt.outliers)
+
+d12 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers)))
+d13 <- length(Reduce(intersect, list(lfmm.outliers, XtX.outliers)))
+d14 <- length(Reduce(intersect, list(lfmm.outliers, pcadapt.outliers)))
+d23 <- length(Reduce(intersect, list(bayenv.outliers, XtX.outliers)))
+d24 <- length(Reduce(intersect, list(bayenv.outliers, pcadapt.outliers)))
+d34 <- length(Reduce(intersect, list(XtX.outliers, pcadapt.outliers)))
+
+d123 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers,XtX.outliers)))
+d124 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers,pcadapt.outliers)))
+d234 <- length(Reduce(intersect, list(bayenv.outliers, XtX.outliers,pcadapt.outliers)))
+d134 <- length(Reduce(intersect, list(lfmm.outliers, XtX.outliers,pcadapt.outliers)))
+
+d1234 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers, XtX.outliers, pcadapt.outliers)))
+
+pdf(file="Venn.CHN.alloutliers.pdf")
+draw.quad.venn(area1=d1, area2=d2, area3=d3, area4=d4, n12=d12, n13=d13, n14=d14, n23=d23, n24=d24, n34=d34, n123=d123, n124=d124, n134=d134, n234=d234, n1234=d1234, category=c("lfmm", "bayenv", "XtX", "pcadapt"), lty="blank", fill=c("yellow", "orange", "skyblue1", "blue"))
+dev.off()
+```
+
 ##### CHS
+
+```
+library(VennDiagram)
+
+lfmm.outliers <- read.table("CHS.LFMM.alloutliers")
+colnames(lfmm.outliers) <- "loci"
+lfmm.outliers <- as.character(lfmm.outliers$loci)
+
+bayenv.outliers <- read.table("CHS.BayEnv.alloutliers", header=F)
+bayenv.outliers <- bayenv.outliers[-c(3),]  ##remove the X. this is just an empty row but is counted as an outlier in the Venn Diagram
+colnames(bayenv.outliers) <- "loci"
+bayenv.outliers <- as.character(bayenv.outliers$loci)
+
+XtX.outliers <- read.table("CHS.XtX.100outliers")
+colnames(XtX.outliers) <- "loci"
+XtX.outliers <- as.character(XtX.outliers$loci)
+
+pcadapt.outliers <- read.table("CHS.pcadapt.outliers")
+colnames(pcadapt.outliers) <- "loci"
+pcadapt.outliers <- as.character(pcadapt.outliers$loci)
+
+d1 <- length(lfmm.outliers)
+d2 <- length(bayenv.outliers)
+d3 <- length(XtX.outliers)
+d4 <- length(pcadapt.outliers)
+
+d12 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers)))
+d13 <- length(Reduce(intersect, list(lfmm.outliers, XtX.outliers)))
+d14 <- length(Reduce(intersect, list(lfmm.outliers, pcadapt.outliers)))
+d23 <- length(Reduce(intersect, list(bayenv.outliers, XtX.outliers)))
+d24 <- length(Reduce(intersect, list(bayenv.outliers, pcadapt.outliers)))
+d34 <- length(Reduce(intersect, list(XtX.outliers, pcadapt.outliers)))
+
+d123 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers,XtX.outliers)))
+d124 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers,pcadapt.outliers)))
+d234 <- length(Reduce(intersect, list(bayenv.outliers, XtX.outliers,pcadapt.outliers)))
+d134 <- length(Reduce(intersect, list(lfmm.outliers, XtX.outliers,pcadapt.outliers)))
+
+d1234 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers, XtX.outliers, pcadapt.outliers)))
+
+pdf(file="Venn.CHS.alloutliers.pdf")
+draw.quad.venn(area1=d1, area2=d2, area3=d3, area4=d4, n12=d12, n13=d13, n14=d14, n23=d23, n24=d24, n34=d34, n123=d123, n124=d124, n134=d134, n234=d234, n1234=d1234, category=c("lfmm", "bayenv", "XtX", "pcadapt"), lty="blank", fill=c("yellow", "orange", "skyblue1", "blue"))
+dev.off()
+
+
+
+```
+
+
+
 
 ##### CZ
 
+```
+library(VennDiagram)
+
+lfmm.outliers <- read.table("CZ.LFMM.alloutliers")
+colnames(lfmm.outliers) <- "loci"
+lfmm.outliers <- as.character(lfmm.outliers$loci)
+
+bayenv.outliers <- read.table("CZ.BayEnv.alloutliers", header=F)
+bayenv.outliers <- bayenv.outliers[-c(3),]  ##remove the X. this is just an empty row but is counted as an outlier in the Venn Diagram
+colnames(bayenv.outliers) <- "loci"
+bayenv.outliers <- as.character(bayenv.outliers$loci)
+
+XtX.outliers <- read.table("CZ.XtX.100outliers")
+colnames(XtX.outliers) <- "loci"
+XtX.outliers <- as.character(XtX.outliers$loci)
+
+pcadapt.outliers <- read.table("CZ.pcadapt.outliers")
+colnames(pcadapt.outliers) <- "loci"
+pcadapt.outliers <- as.character(pcadapt.outliers$loci)
+
+d1 <- length(lfmm.outliers)
+d2 <- length(bayenv.outliers)
+d3 <- length(XtX.outliers)
+d4 <- length(pcadapt.outliers)
+
+d12 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers)))
+d13 <- length(Reduce(intersect, list(lfmm.outliers, XtX.outliers)))
+d14 <- length(Reduce(intersect, list(lfmm.outliers, pcadapt.outliers)))
+d23 <- length(Reduce(intersect, list(bayenv.outliers, XtX.outliers)))
+d24 <- length(Reduce(intersect, list(bayenv.outliers, pcadapt.outliers)))
+d34 <- length(Reduce(intersect, list(XtX.outliers, pcadapt.outliers)))
+
+d123 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers,XtX.outliers)))
+d124 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers,pcadapt.outliers)))
+d234 <- length(Reduce(intersect, list(bayenv.outliers, XtX.outliers,pcadapt.outliers)))
+d134 <- length(Reduce(intersect, list(lfmm.outliers, XtX.outliers,pcadapt.outliers)))
+
+d1234 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers, XtX.outliers, pcadapt.outliers)))
+
+pdf(file="Venn.CZ.alloutliers.pdf")
+draw.quad.venn(area1=d1, area2=d2, area3=d3, area4=d4, n12=d12, n13=d13, n14=d14, n23=d23, n24=d24, n34=d34, n123=d123, n124=d124, n134=d134, n234=d234, n1234=d1234, category=c("lfmm", "bayenv", "XtX", "pcadapt"), lty="blank", fill=c("yellow", "orange", "skyblue1", "blue"))
+dev.off()
+
+
+
+```
+
 ##### CHS.VS
+
+```
+library(VennDiagram)
+
+lfmm.outliers <- read.table("CHS.VS.LFMM.alloutliers")
+colnames(lfmm.outliers) <- "loci"
+lfmm.outliers <- as.character(lfmm.outliers$loci)
+
+bayenv.outliers <- read.table("CHS.VS.BayEnv.alloutliers", header=F)
+bayenv.outliers <- bayenv.outliers[-c(3),]  ##remove the X. this is just an empty row but is counted as an outlier in the Venn Diagram
+colnames(bayenv.outliers) <- "loci"
+bayenv.outliers <- as.character(bayenv.outliers$loci)
+
+XtX.outliers <- read.table("CHS.VS.XtX.100outliers")
+colnames(XtX.outliers) <- "loci"
+XtX.outliers <- as.character(XtX.outliers$loci)
+
+pcadapt.outliers <- read.table("CHS.VS.pcadapt.outliers")
+colnames(pcadapt.outliers) <- "loci"
+pcadapt.outliers <- as.character(pcadapt.outliers$loci)
+
+d1 <- length(lfmm.outliers)
+d2 <- length(bayenv.outliers)
+d3 <- length(XtX.outliers)
+d4 <- length(pcadapt.outliers)
+
+d12 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers)))
+d13 <- length(Reduce(intersect, list(lfmm.outliers, XtX.outliers)))
+d14 <- length(Reduce(intersect, list(lfmm.outliers, pcadapt.outliers)))
+d23 <- length(Reduce(intersect, list(bayenv.outliers, XtX.outliers)))
+d24 <- length(Reduce(intersect, list(bayenv.outliers, pcadapt.outliers)))
+d34 <- length(Reduce(intersect, list(XtX.outliers, pcadapt.outliers)))
+
+d123 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers,XtX.outliers)))
+d124 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers,pcadapt.outliers)))
+d234 <- length(Reduce(intersect, list(bayenv.outliers, XtX.outliers,pcadapt.outliers)))
+d134 <- length(Reduce(intersect, list(lfmm.outliers, XtX.outliers,pcadapt.outliers)))
+
+d1234 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers, XtX.outliers, pcadapt.outliers)))
+
+pdf(file="Venn.CHS.VS.alloutliers.pdf")
+draw.quad.venn(area1=d1, area2=d2, area3=d3, area4=d4, n12=d12, n13=d13, n14=d14, n23=d23, n24=d24, n34=d34, n123=d123, n124=d124, n134=d134, n234=d234, n1234=d1234, category=c("lfmm", "bayenv", "XtX", "pcadapt"), lty="blank", fill=c("yellow", "orange", "skyblue1", "blue"))
+dev.off()
+
+
+```
 
 ##### CHS.TI
 
