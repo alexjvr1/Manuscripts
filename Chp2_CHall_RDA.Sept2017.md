@@ -2,6 +2,10 @@
 
 RDA: Effect of Climate & Geog on genetic variation
 
+### Part1: RDA of full dataset for each region
+
+### Part2: RDA of adaptive loci for each region
+
 
 I can use RDA to partition the effects of climate and geog on genetic variation. 
 
@@ -13,6 +17,9 @@ Paul Gugger tutorial: http://pgugger.al.umces.edu/assets/redundancy-analysis-for
 
 
 /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/RDA
+
+
+## Part 1
 
 ### Data:
 
@@ -1749,5 +1756,583 @@ CZ.RDA2.outliers.1percent.noelev <- CZ.RDAloadings.sorted.noelev[1:100, c(1:2)]
 #write both to file. 
 write.table(CZ.RDA1.outliers.1percent.noelev, "CZ.noelev.RDA1.outliers", sep=" ", col.names=T, row.names=T, quote=F)
 write.table(CZ.RDA2.outliers.1percent.noelev, "CZ.noelev.RDA2.outliers", sep=" ", col.names=T, row.names=T, quote=F)
+
+```
+
+
+## Part 2
+
+I want to know whether the same environmental variables underlie adaptation across the different geographic regions. 
+
+I will test this using RDA of the adaptive loci identified before (see Chp2_VennDiagrams.md)
+
+I'm using only the loci identified by 2 or more methods (lfmm, bayenv2, XtX, or pcadapt) for this analysis. 
+
+1. First I need to filter the vcf file to get the adaptive loci 
+
+2. Convert to input files
+
+3. Run full RDA
+
+4. Run partial RDA 
+
+This will be done for each region. ie. 6 analyses. 
+
+### 1. Adpative loci
+
+Rename the list of duplicated loci so that vcftools can recognise them
+
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/Venn/CHP2
+
+```
+CHN.duplicated.outliers <- read.table("CHN.duplicated.outliers", header=F)
+CHN.duplicated.outliers <- as.data.frame(CHN.duplicated.outliers)
+CHN.duplicated.outliers.names <- gsub("X.", "", CHN.duplicated.outliers$V1)
+CHN.duplicated.outliers.names <- gsub("\\.", ":", CHN.duplicated.outliers.names)
+write.table(CHN.duplicated.outliers.names, "CHN.duplicated.outliers.names", col.names=F, quote=F, row.names=F, sep=" ")
+
+CHS.duplicated.outliers <- read.table("CHS.duplicated.outliers", header=F)
+CHS.duplicated.outliers <- as.data.frame(CHS.duplicated.outliers)
+CHS.duplicated.outliers.names <- gsub("X.", "", CHS.duplicated.outliers$V1)
+CHS.duplicated.outliers.names <- gsub("\\.", ":", CHS.duplicated.outliers.names)
+write.table(CHS.duplicated.outliers.names, "CHS.duplicated.outliers.names", col.names=F, quote=F, row.names=F, sep=" ")
+
+CZ.duplicated.outliers <- read.table("CZ.duplicated.outliers", header=F)
+CZ.duplicated.outliers <- as.data.frame(CZ.duplicated.outliers)
+CZ.duplicated.outliers.names <- gsub("X.", "", CZ.duplicated.outliers$V1)
+CZ.duplicated.outliers.names <- gsub("\\.", ":", CZ.duplicated.outliers.names)
+write.table(CZ.duplicated.outliers.names, "CZ.duplicated.outliers.names", col.names=F, quote=F, row.names=F, sep=" ")
+
+
+CHS.TI.duplicated.outliers <- read.table("CHS.TI.duplicated.outliers", header=F)
+CHS.TI.duplicated.outliers <- as.data.frame(CHS.TI.duplicated.outliers)
+CHS.TI.duplicated.outliers.names <- gsub("X.", "", CHS.TI.duplicated.outliers$V1)
+CHS.TI.duplicated.outliers.names <- gsub("\\.", ":", CHS.TI.duplicated.outliers.names)
+write.table(CHS.TI.duplicated.outliers.names, "CHS.TI.duplicated.outliers.names", col.names=F, quote=F, row.names=F, sep=" ")
+
+
+CHS.VS.duplicated.outliers <- read.table("CHS.VS.duplicated.outliers", header=F)
+CHS.VS.duplicated.outliers <- as.data.frame(CHS.VS.duplicated.outliers)
+CHS.VS.duplicated.outliers.names <- gsub("X.", "", CHS.VS.duplicated.outliers$V1)
+CHS.VS.duplicated.outliers.names <- gsub("\\.", ":", CHS.VS.duplicated.outliers.names)
+write.table(CHS.VS.duplicated.outliers.names, "CHS.VS.duplicated.outliers.names", col.names=F, quote=F, row.names=F, sep=" ")
+```
+
+
+Filter the vcf file
+
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/RDA/AdaptiveLociOnly
+```
+#cp /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/Venn/CHP2/*outliers.names .
+
+vcftools --vcf CHN.229.9608.recode.vcf --snps CHN.duplicated.outliers.names --recode --recode-INFO-all --out CHN.229.25AdaptiveLoci
+
+vcftools --vcf CHS.283.9608.recode.vcf --snps CHS.duplicated.outliers.names --recode --recode-INFO-all --out CHS.283.228AdaptiveLoci
+
+vcftools --vcf CZ.404.9608.recode.vcf --snps CZ.duplicated.outliers.names --recode --recode-INFO-all --out CZ.404.46AdaptiveLoci
+
+vcftools --vcf CHS.VS.135.9608.recode.vcf --snps CHS.VS.duplicated.outliers.names --recode --recode-INFO-all --out CHS.VS.135.356AdaptiveLoci
+
+vcftools --vcf CHS.TI.148.9608.recode.vcf --snps CHS.TI.duplicated.outliers.names --recode --recode-INFO-all --out CHS.TI.148.285AdaptiveLoci
+
+```
+
+### 2. Input files:
+
+convert all files to plink 
+
+```
+vcftools --vcf CHN.229.25AdaptiveLoci.recode.vcf --plink --out CHN.229.25AdaptiveLoci
+vcftools --vcf CHS.283.228AdaptiveLoci.recode.vcf --plink --out CHS.283.228AdaptiveLoci
+vcftools --vcf CZ.404.46AdaptiveLoci.recode.vcf --plink --out CZ.404.46AdaptiveLoci
+vcftools --vcf CHS.TI.148.285AdaptiveLoci.recode.vcf --plink --out CHS.TI.148.285AdaptiveLoci
+vcftools --vcf CHS.VS.135.356AdaptiveLoci.recode.vcf --plink --out CHS.VS.135.356AdaptiveLoci
+```
+
+Calculate the MAF of all loci
+
+```
+#Calculate MAF for the full dataset within region using PLINK
+
+This was all done previously, so we can just copy the cluster.pop files from the input folder to here
+
+cp ~/2016RADAnalysis/3_CH.landscapeGenomics/subsets/input.files_subsets/*cluster.pop .
+```
+
+
+########Still have to do this and correct the code for CHall
+CHall
+```
+###R
+######Reformat PLINK output
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci.
+
+CH940.MAF <- read.table("CH940.pop.frq.strat", header=T)
+CH940.MAF2 <- CH940.MAF[,c(3,2,6)]
+summary(CH940.MAF2)
+       CLST                SNP              MAF         
+ abnd   :  9608   1000065:55:    82   Min.   :0.00000  
+ agra   :  9608   1000356:65:    82   1st Qu.:0.00000  
+ alpl   :  9608   1000622:42:    82   Median :0.09375  
+ apla   :  9608   1000723:85:    82   Mean   :0.19825  
+ arce   :  9608   1000806:91:    82   3rd Qu.:0.31250  
+ bach   :  9608   1000841:7 :    82   Max.   :1.00000  
+ (Other):730208   (Other)   :787364    
+
+library("ggplot2")
+library("reshape2")
+
+CH940.MAF3 <- melt(CH940.MAF2, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CH940.MAF3)
+head(CH940.MAF3)
+
+
+CH940.MAF4 <- dcast(CH940.MAF3, formula= CLST ~ SNP)
+head(CH940.MAF4)
+
+
+##Add X infront of all locusnames. 
+colnames(CH940.MAF4) <- paste("X", colnames(CH940.MAF4), sep=".")
+write.csv(CH940.MAF4, file="CH940.MAF.csv")
+```
+
+
+CHN
+```
+plink --file CHN.229.25AdaptiveLoci --freq --within CHN229.cluster.pop --out CHN229.25Adaptive.pop
+
+
+###R
+######Reformat PLINK output
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci.
+
+CHN229.MAF <- read.table("CHN229.25Adaptive.pop.frq.strat", header=T)
+CHN229.MAF2 <- CHN229.MAF[,c(3,2,6)]
+summary(CHN229.MAF2)
+     
+library("ggplot2")
+library("reshape2")
+
+CHN229.MAF3 <- melt(CHN229.MAF2, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHN229.MAF3)
+head(CHN229.MAF3)
+
+
+CHN229.MAF4 <- dcast(CHN229.MAF3, formula= CLST ~ SNP)
+head(CHN229.MAF4)
+
+
+##Add X infront of all locusnames. 
+colnames(CHN229.MAF4) <- paste("X", colnames(CHN229.MAF4), sep=".")
+write.csv(CHN229.MAF4, file="CHN229.MAF.csv")
+
+```
+
+CHS
+```
+plink --file CHS.283.228AdaptiveLoci --freq --within CHS283.cluster.pop --out CHS283.228Adaptive.pop
+
+
+###R
+######Reformat PLINK output
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci.
+
+CHS283.MAF <- read.table("CHS283.228Adaptive.pop.frq.strat", header=T)
+CHS283.MAF2 <- CHS283.MAF[,c(3,2,6)]
+summary(CHS283.MAF2)
+     
+library("ggplot2")
+library("reshape2")
+
+CHS283.MAF3 <- melt(CHS283.MAF2, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHS283.MAF3)
+head(CHS283.MAF3)
+
+
+CHS283.MAF4 <- dcast(CHS283.MAF3, formula= CLST ~ SNP)
+head(CHS283.MAF4)
+
+
+##Add X infront of all locusnames. 
+colnames(CHS283.MAF4) <- paste("X", colnames(CHS283.MAF4), sep=".")
+write.csv(CHS283.MAF4, file="CHS283.MAF.csv")
+
+```
+
+
+CHS.VS
+```
+plink --file CHS.VS.135.356AdaptiveLoci --freq --within CHS.VS.cluster.pop --out CHS.VS.135.365Adaptive.pop
+
+
+###R
+######Reformat PLINK output
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci.
+
+CHS.VS135.MAF <- read.table("CHS.VS.135.365Adaptive.pop.frq.strat", header=T)
+CHS.VS135.MAF2 <- CHS.VS135.MAF[,c(3,2,6)]
+summary(CHS.VS135.MAF2)
+     
+library("ggplot2")
+library("reshape2")
+
+CHS.VS135.MAF3 <- melt(CHS.VS135.MAF2, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHS.VS135.MAF3)
+head(CHS.VS135.MAF3)
+
+
+CHS.VS135.MAF4 <- dcast(CHS.VS135.MAF3, formula= CLST ~ SNP)
+head(CHS.VS135.MAF4)
+
+
+##Add X infront of all locusnames. 
+colnames(CHS.VS135.MAF4) <- paste("X", colnames(CHS.VS135.MAF4), sep=".")
+write.csv(CHS.VS135.MAF4, file="CHS.VS135.MAF.csv")
+
+```
+
+
+CHS.TI
+```
+plink --file CHS.TI.148.285AdaptiveLoci --freq --within CHS.TI.148.cluster.pop --out CHS.TI.148.285Adaptive.pop
+
+
+###R
+######Reformat PLINK output
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci.
+
+CHS.TI148.MAF <- read.table("CHS.TI.148.285Adaptive.pop.frq.strat", header=T)
+CHS.TI148.MAF2 <- CHS.TI148.MAF[,c(3,2,6)]
+summary(CHS.TI148.MAF2)
+     
+library("ggplot2")
+library("reshape2")
+
+CHS.TI148.MAF3 <- melt(CHS.TI148.MAF2, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHS.TI148.MAF3)
+head(CHS.TI148.MAF3)
+
+
+CHS.TI148.MAF4 <- dcast(CHS.TI148.MAF3, formula= CLST ~ SNP)
+head(CHS.TI148.MAF4)
+
+
+##Add X infront of all locusnames. 
+colnames(CHS.TI148.MAF4) <- paste("X", colnames(CHS.TI148.MAF4), sep=".")
+write.csv(CHS.TI148.MAF4, file="CHS.TI148.MAF.csv")
+
+```
+
+
+CZ  
+```
+plink --file CZ.404.46AdaptiveLoci --freq --within CZ404.cluster.pop --out CZ.404.46Adaptive.pop
+
+
+###R
+######Reformat PLINK output
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci.
+
+CZ404.MAF <- read.table("CZ.404.46Adaptive.pop.frq.strat", header=T)
+CZ404.MAF2 <- CZ404.MAF[,c(3,2,6)]
+summary(CZ404.MAF2)
+     
+library("ggplot2")
+library("reshape2")
+
+CZ404.MAF3 <- melt(CZ404.MAF2, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CZ404.MAF3)
+head(CZ404.MAF3)
+
+
+CZ404.MAF4 <- dcast(CZ404.MAF3, formula= CLST ~ SNP)
+head(CZ404.MAF4)
+
+
+##Add X infront of all locusnames. 
+colnames(CZ404.MAF4) <- paste("X", colnames(CZ404.MAF4), sep=".")
+write.csv(CZ404.MAF4, file="CZ404.MAF.csv")
+
+```
+
+
+
+
+#### 3. Geographic coordinates
+
+paste coordinates into the MAF.csv file from Env.Data.all_20161025.csv
+
+located: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2
+
+I will include elevation for geographic information for the CH data. 
+
+i.e. lat, long
+
+
+#### 4. Climate variables
+
+```
+1. solar.rad.60d (amt of solar radiation 60 days after egg laying)
+
+2. pcpt.60d (precipitation in the 60days after egg laying)
+
+3. day10cm (calender day on which only 10cm of snow remains)
+
+4. temp.laying.date
+
+5. shadow.days
+```
+
+paste the 5 variables from /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/Env.Data.all_20161025.csv
+
+Note that stba has missing data here. I could remove this population from the rest of these analyses. 
+
+
+### Run RDA
+
+#####STILL NEED TO RUN CHall: waiting for LFMM data. 
+#### 1. CHall
+
+See this tutorial for the interpretation: REDUNDANCY ANALYSIS TUTORIAL: Landscape Genetics Paul Gugger redundancy-analysis-for-landscape-genetics.pdf on mac
+
+```
+library(vegan)
+
+CHallData <- read.csv("CH940.MAF.csv", header=T)
+CHallData <- CHallData[complete.cases(CHallData),]  ##stba is removed here due to missing data
+GenData <- CHallData[,11:9618]
+Climate.Data <- CHallData[,3:10]
+names(Climate.Data)
+```
+
+
+```
+##1. Run Full RDA model to determine how much of the variation is explainable by the expanatory variables we have
+##H0: climate data does not affect genotype
+
+RDA.CH940full.noelev <- rda(GenData ~ lat + long +shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, Climate.Data) ##runs in 20s. I got an error (Error in La.svd(x, nu, nv) : error code 1 from Lapack routine 'dgesdd') when elev was after Long in the formula
+
+RDA.CH940full.noelev
+
+Call: rda(formula = GenData ~ lat + long + shadow.days + sol.rad.60d +
+pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
+
+               Inertia Proportion Rank
+Total         333.5875     1.0000     
+Constrained   121.9575     0.3656    7
+Unconstrained 211.6300     0.6344   30
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+ RDA1  RDA2  RDA3  RDA4  RDA5  RDA6  RDA7 
+67.10 16.52 13.46  7.97  6.88  5.34  4.69 
+
+Eigenvalues for unconstrained axes:
+   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8 
+26.582 19.869 12.236 11.725 10.567  9.725  9.000  8.742 
+(Showed only 8 of all 30 unconstrained eigenvalues)
+
+##calculate proportion explained (R2)
+
+RsquareAdj(RDA.CH940full)
+
+$r.squared
+[1] 0.3655938
+
+$adj.r.squared
+[1] 0.2175657
+
+
+
+anova(RDA.CH940full)
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ lat + long + shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
+         Df Variance      F Pr(>F)    
+Model     7   121.96 2.4698  0.001 ***
+Residual 30   211.63                  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+##to see which variables are most important, we can plot the results in a biplot
+
+pdf(file="RDA.CH940full.pdf")
+plot(RDA.CH940full.noelev)
+dev.off()
+```
+
+
+```
+##Partial out geog
+H0: Climate does not explain genetic data
+
+pRDA.CH940.geog.noelev <- rda(GenData~shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(lat + long), Climate.Data)
+
+#head(summary(pRDA.CH940.geog.noelev))
+
+pRDA.CH940.geog.noelev
+
+Call: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d +
+day10cm + temp.laying.date + Condition(lat + long), data =
+Climate.Data)
+
+               Inertia Proportion Rank
+Total         333.5875     1.0000     
+Conditional    75.6364     0.2267    2
+Constrained    46.3212     0.1389    5
+Unconstrained 211.6300     0.6344   30
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+  RDA1   RDA2   RDA3   RDA4   RDA5 
+19.893  8.720  7.426  5.415  4.869 
+
+Eigenvalues for unconstrained axes:
+   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8 
+26.582 19.869 12.236 11.725 10.567  9.725  9.000  8.742 
+(Showed only 8 of all 30 unconstrained eigenvalues)
+
+
+
+RsquareAdj(pRDA.CH940.geog.noelev)
+
+$r.squared
+[1] 0.1388576
+
+$adj.r.squared
+[1] 0.03501604
+
+anova(pRDA.CH940.geog.noelev)
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(lat + long), data = Climate.Data)
+         Df Variance      F Pr(>F)   
+Model     5   46.321 1.3133  0.005 **
+Residual 30  211.630                 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+H0 rejected: Climate explains a significant amount of CH940 GeneticData
+
+
+pdf(file="pRDA.CH940.geog.pdf")
+plot(pRDA.CH940.geog.noelev, main="pRDA CH940 (geog partialled out)")
+dev.off()
+```
+
+
+```
+##Partial out climate
+
+H0: Geog alone does not explain Genetic data
+
+pRDA.CH940.climate.noelev <- rda(GenData~lat+long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), Climate.Data)
+
+pRDA.CH940.climate.noelev
+
+Call: rda(formula = GenData ~ lat + long + Condition(shadow.days +
+sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data =
+Climate.Data)
+
+               Inertia Proportion Rank
+Total         333.5875     1.0000     
+Conditional    75.1625     0.2253    5
+Constrained    46.7950     0.1403    2
+Unconstrained 211.6300     0.6344   30
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+ RDA1  RDA2 
+37.78  9.01 
+
+Eigenvalues for unconstrained axes:
+   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8 
+26.582 19.869 12.236 11.725 10.567  9.725  9.000  8.742 
+(Showed only 8 of all 30 unconstrained eigenvalues)
+
+
+#head(summary(pRDA.CH940.climate.noelev))
+
+RsquareAdj(pRDA.CH940.climate.noelev)
+
+$r.squared
+[1] 0.140278
+
+$adj.r.squared
+[1] 0.1132943
+
+anova(pRDA.CH940.climate.noelev)
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ lat + long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data = Climate.Data)
+         Df Variance      F Pr(>F)    
+Model     2   46.795 3.3168  0.001 ***
+Residual 30  211.630                  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1        
+
+H0: Rejected -> Geography explains a significant amount of GenData
+
+pdf(file="pRDA.CH940.climate.pdf")
+plot(pRDA.CH940.climate.noelev, main="pRDA CH940 (climate partialled out)")
+dev.off()
+```
+
+
+Find the most important loci associated with Climate
+```
+ summary(pRDA.CH940.geog.noelev)
+
+Biplot scores for constraining variables
+
+                       RDA1    RDA2     RDA3    RDA4     RDA5 PC1
+shadow.days       3.189e-01 -0.1027  0.03954  0.7566  0.08027   0
+sol.rad.60d      -8.736e-05  0.7303 -0.32012 -0.2854 -0.51741   0
+pcpt.60d          7.321e-01  0.3476 -0.33359 -0.2673 -0.26957   0
+day10cm           5.950e-01  0.4360 -0.10138  0.1803 -0.05493   0
+temp.laying.date  3.224e-01 -0.4331 -0.68384 -0.1886  0.38036   0
+
+RDA1: pcpt.60d, sol.rad.60d
+
+RDA2: sol.rad.60d
+```
+
+Select the top 100 loci (~1%) associated with RDA1 and RDA2
+```
+#Find the loadings of of loci on each RDA
+
+sum.pRDA.CH940.geog.noelev <- summary(pRDA.CH940.geog.noelev)
+
+CH940.RDAloadings.noelev <- sum.pRDA.CH940.geog.noelev$species  ##write the loadings to data.frame
+CH940.RDAloadings.noelev <- as.data.frame(CH940.RDAloadings.noelev) #change to df
+names(CH940.RDAloadings.noelev)
+par(mfrow=c(2,2))  #check that loadings on each RDA is normally distributed
+hist(CH940.RDAloadings.noelev$RDA1)
+hist(CH940.RDAloadings.noelev$RDA2)
+hist(CH940.RDAloadings.noelev$RDA3)
+hist(CH940.RDAloadings.noelev$RDA4)
+
+##select the top 100 loci (~1%) for each RDA
+
+CH940.RDAloadings.sorted.noelev <- CH940.RDAloadings.noelev[order(-abs(CH940.RDAloadings.noelev$RDA1)),] #sort by absolute value of RDA1. be sure to add "-" in front of "abs" to order from largest to smallest
+CH940.RDA1.outliers.1percent.noelev <- CH940.RDAloadings.sorted.noelev[1:100, 1:2]  ##write to df
+
+CH940.RDAloadings.sorted.noelev <- CH940.RDAloadings.noelev[order(-abs(CH940.RDAloadings.noelev$RDA2)),]  #same for RDA2
+CH940.RDA2.outliers.1percent.noelev <- CH940.RDAloadings.sorted.noelev[1:100, c(1:2)]  
+
+#write both to file. 
+write.table(CH940.RDA1.outliers.1percent.noelev, "CH940.noelev.RDA1.outliers", sep=" ", col.names=T, row.names=T, quote=F)
+write.table(CH940.RDA2.outliers.1percent.noelev, "CH940.noelev.RDA2.outliers", sep=" ", col.names=T, row.names=T, quote=F)
 
 ```
