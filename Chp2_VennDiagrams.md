@@ -814,7 +814,68 @@ Then I can read them into R and draw the VennDiagrams
 
 /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/Venn/CHP2
 
+First without CHall
 
+```
+
+CHN.outliers <- as.character(CHN.outliers$loci)
+CZ.outliers <- as.character(CZ.outliers$loci)
+CHS.outliers <- as.character(CHS.outliers$loci)
+
+
+d1 <- length(CHN.outliers)
+d2 <- length(CHS.outliers)
+d3 <- length(CZ.outliers)
+
+d12 <- length(Reduce(intersect, list(CHN.outliers, CHS.outliers)))
+d13 <- length(Reduce(intersect, list(CHN.outliers, CZ.outliers)))
+d23 <- length(Reduce(intersect, list(CHS.outliers, CZ.outliers)))
+
+d123 <- length(Reduce(intersect, list(CHN.outliers, CHS.outliers,CZ.outliers)))
+
+
+#pdf("Venn.CHSandVS.TI.alloutliers.pdf")
+draw.triple.venn(area1=d1, area2=d2, area3=d3, n12=d12, n13=d13, n23=d23, n123=d123, category=c("CHN", "CHS", "CZ"), lty="blank", fill=c("yellow", "orange", "skyblue1"))
+#dev.off()
+
+```
+
+
+I was concerned that the large overlap might be only due to lfmm results, so I drew a venn diagram with only the LFMM outliers.
+```
+CHS.lfmm.outliers <- read.table("CHS/CHS.LFMM.alloutliers", header=F)
+colnames(CHS.lfmm.outliers) <- "loci"
+CHS.lfmm.outliers <- as.character(CHS.lfmm.outliers$loci)
+CHN.lfmm.outliers <- read.table("CHN/CHN.LFMM.alloutliers", header=F)
+colnames(CHN.lfmm.outliers) <- "loci"
+CHN.lfmm.outliers <- as.character(CHN.lfmm.outliers$loci)
+CZ.lfmm.outliers <- read.table("CZ/CZ.LFMM.alloutliers", header=F)
+colnames(CZ.lfmm.outliers) <- "loci"
+CZ.lfmm.outliers <- as.character(CZ.lfmm.outliers$loci)
+
+d1 <- length(CZ.lfmm.outliers)
+d2 <- length(CHS.lfmm.outliers)
+d3 <- length(CHN.lfmm.outliers)
+
+d12 <- length(Reduce(intersect, list(CZ.lfmm.outliers, CHS.lfmm.outliers)))
+d13 <- length(Reduce(intersect, list(CZ.lfmm.outliers, CHN.lfmm.outliers)))
+d23 <- length(Reduce(intersect, list(CHS.lfmm.outliers, CHN.lfmm.outliers)))
+
+d123 <- length(Reduce(intersect, list(CZ.lfmm.outliers, CHS.lfmm.outliers,CHN.lfmm.outliers)))
+
+
+pdf("Venn.CHN.CHS.CZ.onlylfmm.pdf")
+draw.triple.venn(area1=d1, area2=d2, area3=d3, n12=d12, n13=d13, n23=d23, n123=d123, category=c("CZ", "CHS", "CHN"), lty="blank", fill=c("yellow", "orange", "skyblue1"))
+dev.off()
+
+```
+
+So 244 of 313 identified loci are from lfmm
+
+
+
+######Still have to rerun the CHall LFMM analysis
+And with
 ```
 library(VennDiagram)
 
@@ -936,5 +997,36 @@ d123 <- length(Reduce(intersect, list(CHS.VS.outliers, CHS.outliers,CHS.TI.outli
 pdf("Venn.CHSandVS.TI.alloutliers.pdf")
 draw.triple.venn(area1=d1, area2=d2, area3=d3, n12=d12, n13=d13, n23=d23, n123=d123, category=c("CHS.VS", "CHS", "CHS.TI"), lty="blank", fill=c("yellow", "orange", "skyblue1"))
 dev.off()
+
+```
+
+
+I was worried that the overlap might be only due to the LFMM loci, so I compared this in a Venn diagram: 
+```
+CHS.lfmm.outliers <- read.table("CHS/CHS.LFMM.alloutliers", header=F)
+colnames(CHS.lfmm.outliers) <- "loci"
+CHS.lfmm.outliers <- as.character(CHS.lfmm.outliers$loci)
+CHS.VS.lfmm.outliers <- read.table("CHS.VS/CHS.VS.LFMM.alloutliers", header=F)
+colnames(CHS.VS.lfmm.outliers) <- "loci"
+CHS.VS.lfmm.outliers <- as.character(CHS.VS.lfmm.outliers$loci)
+CHS.TI.lfmm.outliers <- read.table("CHS.TI/CHS.TI.LFMM.alloutliers", header=F)
+colnames(CHS.TI.lfmm.outliers) <- "loci"
+CHS.TI.lfmm.outliers <- as.character(CHS.TI.lfmm.outliers$loci)
+
+d1 <- length(CHS.TI.lfmm.outliers)
+d2 <- length(CHS.lfmm.outliers)
+d3 <- length(CHS.VS.lfmm.outliers)
+
+d12 <- length(Reduce(intersect, list(CHS.TI.lfmm.outliers, CHS.lfmm.outliers)))
+d13 <- length(Reduce(intersect, list(CHS.TI.lfmm.outliers, CHS.VS.lfmm.outliers)))
+d23 <- length(Reduce(intersect, list(CHS.lfmm.outliers, CHS.VS.lfmm.outliers)))
+
+d123 <- length(Reduce(intersect, list(CHS.TI.lfmm.outliers, CHS.lfmm.outliers,CHS.VS.lfmm.outliers)))
+
+
+pdf("Venn.CHS.andVS.TI.onlylfmm.pdf")
+draw.triple.venn(area1=d1, area2=d2, area3=d3, n12=d12, n13=d13, n23=d23, n123=d123, category=c("CHS.TI", "CHS", "CHS.VS"), lty="blank", fill=c("yellow", "orange", "skyblue1"))
+dev.off()
+
 
 ```
