@@ -740,11 +740,23 @@ hist(m1.pcpt.60d$residuals)
 hist(m1.shadow.days$residuals)
 hist(m1.temp.laying.date$residuals)
 hist(m1.day10cm$residuals)
+
+par(mfrow=c(3,2))
+hist(m2.sol.rad.60d$residuals)
+hist(m2.pcpt.60d$residuals)
+hist(m2.shadow.days$residuals)
+hist(m2.temp.laying.date$residuals)
+hist(m2.day10cm$residuals)
 ```
 
 ![alt_txt][CHS.VS.TI.Fig1]
 
 [CHS.VS.TI.Fig1]:https://user-images.githubusercontent.com/12142475/30802217-aa282464-a1dd-11e7-9752-71c04b31a456.png
+
+
+![alt_txt][CHS.VS.TI.m2.residuals]
+
+[CHS.VS.TI.m2.residuals]:https://user-images.githubusercontent.com/12142475/30808648-e29be808-a1f6-11e7-8fa5-2822360d0a44.png
 
 
 Then we can interpret the models further like this: 
@@ -756,7 +768,17 @@ OR
 https://rpubs.com/FelipeRego/MultipleLinearRegressionInRFirstSteps
 
 
+The coefficient - estimate of the intercept is where the predictor variable is 0. I.e. for elevation this would be sol radiation at sea level. But since we've centered and scaled our data, this is actually the sol rad at the median elevation for this dataset. 
+
+```
+median(CHS.VS.TI.EnvData$elev)
+
+#1618.5m
+```
+
 #### sol.rad.60d
+
+m1
 ```
 Call:
 lm(formula = CHS.VS.TIonly.EnvData$sol.rad.60d ~ CHS.VS.TIonly.EnvData$elev.c + 
@@ -795,18 +817,75 @@ Multiple R-squared:  0.4535,	Adjusted R-squared:  0.3715
 F-statistic: 5.532 on 3 and 20 DF,  p-value: 0.006232
 ```
 
-The coefficient - estimate of the intercept is where the predictor variable is 0. I.e. for elevation this would be sol radiation at sea level. But since we've centered and scaled our data, this is actually the sol rad at the median elevation for this dataset. 
+m2
+```
+Call:
+lm(formula = CHS.VS.TIonly.EnvData$sol.rad.60d ~ CHS.VS.TIonly.EnvData$elev.c + 
+    CHS.VS.TIonly.EnvData$elev.c.squared + CHS.VS.TIonly.EnvData$Transect + 
+    CHS.VS.TIonly.EnvData$Transect:CHS.VS.TIonly.EnvData$elev.c + 
+    CHS.VS.TIonly.EnvData$Transect:CHS.VS.TIonly.EnvData$elev.c.squared)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-36268  -9377  -3370   8692  39411 
+
+Coefficients:
+                                                                          Estimate
+(Intercept)                                                                 102812
+CHS.VS.TIonly.EnvData$elev.c                                                 12252
+CHS.VS.TIonly.EnvData$elev.c.squared                                        -21752
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                         33977
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS            15576
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS   -32000
+                                                                          Std. Error
+(Intercept)                                                                    11205
+CHS.VS.TIonly.EnvData$elev.c                                                   11401
+CHS.VS.TIonly.EnvData$elev.c.squared                                           19696
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                           16016
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS              15026
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS      26512
+                                                                          t value
+(Intercept)                                                                 9.176
+CHS.VS.TIonly.EnvData$elev.c                                                1.075
+CHS.VS.TIonly.EnvData$elev.c.squared                                       -1.104
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                        2.121
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS           1.037
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS  -1.207
+                                                                          Pr(>|t|)
+(Intercept)                                                                3.3e-08***
+CHS.VS.TIonly.EnvData$elev.c                                                 0.297
+CHS.VS.TIonly.EnvData$elev.c.squared                                         0.284
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                         0.048*
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS            0.314
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS    0.243
+                                                                              
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 20690 on 18 degrees of freedom
+Multiple R-squared:  0.6535,	Adjusted R-squared:  0.5573 
+F-statistic: 6.791 on 5 and 18 DF,  p-value: 0.001014
 
 ```
-median(CHS.VS.TI.EnvData$elev)
 
-#1618.5m
+And plot both models
 ```
+par(mfrow=c(2,4))
+plot(m1.sol.rad)
+plot(m2.sol.rad.60d)
+```
+
+
+![alt_txt][CHSall.sol.rad.m1m2]
+
+[CHSall.sol.rad.m1m2]:https://user-images.githubusercontent.com/12142475/30808778-4b5a76b6-a1f7-11e7-9edd-7bd2386d4b2c.png
 
 
 
 
 #### temp.laying.date
+
+m1
 ```
 Call:
 lm(formula = CHS.VS.TIonly.EnvData$temp.laying.date ~ CHS.VS.TIonly.EnvData$elev.c + 
@@ -845,9 +924,72 @@ Multiple R-squared:  0.2126,	Adjusted R-squared:  0.09448
 F-statistic:   1.8 on 3 and 20 DF,  p-value: 0.1797
 ```
 
+m2
+```
+Call:
+lm(formula = CHS.VS.TIonly.EnvData$temp.laying.date ~ CHS.VS.TIonly.EnvData$elev.c + 
+    CHS.VS.TIonly.EnvData$elev.c.squared + CHS.VS.TIonly.EnvData$Transect + 
+    CHS.VS.TIonly.EnvData$Transect:CHS.VS.TIonly.EnvData$elev.c + 
+    CHS.VS.TIonly.EnvData$Transect:CHS.VS.TIonly.EnvData$elev.c.squared)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.7693 -0.7813 -0.2319  0.7575  2.2666 
+
+Coefficients:
+                                                                          Estimate
+(Intercept)                                                                5.28941
+CHS.VS.TIonly.EnvData$elev.c                                               0.91653
+CHS.VS.TIonly.EnvData$elev.c.squared                                       2.31167
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                      -0.46974
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS          0.04905
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS -1.30249
+                                                                          Std. Error
+(Intercept)                                                                  0.66712
+CHS.VS.TIonly.EnvData$elev.c                                                 0.67877
+CHS.VS.TIonly.EnvData$elev.c.squared                                         1.17266
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                         0.95359
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS            0.89464
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS    1.57847
+                                                                          t value
+(Intercept)                                                                 7.929
+CHS.VS.TIonly.EnvData$elev.c                                                1.350
+CHS.VS.TIonly.EnvData$elev.c.squared                                        1.971
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                       -0.493
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS           0.055
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS  -0.825
+                                                                          Pr(>|t|)
+(Intercept)                                                               2.78e-07***
+CHS.VS.TIonly.EnvData$elev.c                                                0.1937
+CHS.VS.TIonly.EnvData$elev.c.squared                                        0.0643.
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                        0.6282
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS           0.9569
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS   0.4201
+                                                                                
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.232 on 18 degrees of freedom
+Multiple R-squared:  0.3783,	Adjusted R-squared:  0.2056 
+F-statistic: 2.191 on 5 and 18 DF,  p-value: 0.1006
+```
+
+
+Model comparison
+```
+par(mfrow=c(2,4))
+plot(m1.temp.laying.date)
+plot(m2.temp.laying.date)
+```
+
+![alt_txt][CHSall.temp.layind.date.m1m2]
+
+[CHSall.temp.layind.date.m1m2]:https://user-images.githubusercontent.com/12142475/30808949-022035ca-a1f8-11e7-9c87-a3fd26866e71.png
+
 
 #### pcpt.60d
 
+m1
 ```
 Call:
 lm(formula = CHS.VS.TIonly.EnvData$pcpt.60d ~ CHS.VS.TIonly.EnvData$elev.c + 
@@ -887,8 +1029,72 @@ F-statistic: 20.84 on 3 and 20 DF,  p-value: 2.288e-06
 
 ```
 
+m2
+```
+Call:
+lm(formula = CHS.VS.TIonly.EnvData$pcpt.60d ~ CHS.VS.TIonly.EnvData$elev.c + 
+    CHS.VS.TIonly.EnvData$elev.c.squared + CHS.VS.TIonly.EnvData$Transect + 
+    CHS.VS.TIonly.EnvData$Transect:CHS.VS.TIonly.EnvData$elev.c + 
+    CHS.VS.TIonly.EnvData$Transect:CHS.VS.TIonly.EnvData$elev.c.squared)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-6.9030 -2.9233 -0.5687  3.1934  8.2335 
+
+Coefficients:
+                                                                          Estimate
+(Intercept)                                                                 41.257
+CHS.VS.TIonly.EnvData$elev.c                                                -6.472
+CHS.VS.TIonly.EnvData$elev.c.squared                                       -11.300
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                       -20.986
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS           12.707
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS   10.052
+                                                                          Std. Error
+(Intercept)                                                                    2.299
+CHS.VS.TIonly.EnvData$elev.c                                                   2.339
+CHS.VS.TIonly.EnvData$elev.c.squared                                           4.042
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                           3.287
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS              3.083
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS      5.440
+                                                                          t value
+(Intercept)                                                                17.943
+CHS.VS.TIonly.EnvData$elev.c                                               -2.766
+CHS.VS.TIonly.EnvData$elev.c.squared                                       -2.796
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                       -6.385
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS           4.121
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS   1.848
+                                                                          Pr(>|t|)
+(Intercept)                                                               6.22e-13***
+CHS.VS.TIonly.EnvData$elev.c                                              0.012719*
+CHS.VS.TIonly.EnvData$elev.c.squared                                      0.011945*
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                      5.17e-06***
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS         0.000642***
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS 0.081148.
+                                                                             
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.246 on 18 degrees of freedom
+Multiple R-squared:  0.8318,	Adjusted R-squared:  0.785 
+F-statistic:  17.8 on 5 and 18 DF,  p-value: 2.083e-06
+```
+
+
+Model comparison
+```
+par(mfrow=c(2,4))
+plot(m1.pcpt.60d)
+plot(m2.pcpt.60d)
+
+```
+
+![alt_txt][CHSall.pcpt.60d.m1m2]
+
+[CHSall.pcpt.60d.m1m2]:https://user-images.githubusercontent.com/12142475/30809015-34128a7e-a1f8-11e7-9d43-f19eebfd3ff2.png
 
 #### shadow.days
+
+m1
 ```
 Call:
 lm(formula = CHS.VS.TIonly.EnvData$shadow.days ~ CHS.VS.TIonly.EnvData$elev.c + 
@@ -927,8 +1133,74 @@ Multiple R-squared:  0.2056,	Adjusted R-squared:  0.08646
 F-statistic: 1.726 on 3 and 20 DF,  p-value: 0.1939
 ```
 
+m2
+```
+Call:
+lm(formula = CHS.VS.TIonly.EnvData$shadow.day ~ CHS.VS.TIonly.EnvData$elev.c + 
+    CHS.VS.TIonly.EnvData$elev.c.squared + CHS.VS.TIonly.EnvData$Transect + 
+    CHS.VS.TIonly.EnvData$Transect:CHS.VS.TIonly.EnvData$elev.c + 
+    CHS.VS.TIonly.EnvData$Transect:CHS.VS.TIonly.EnvData$elev.c.squared)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-7.371 -4.282 -1.119  2.680 14.539 
+
+Coefficients:
+                                                                          Estimate
+(Intercept)                                                                39.1274
+CHS.VS.TIonly.EnvData$elev.c                                                0.1949
+CHS.VS.TIonly.EnvData$elev.c.squared                                       -3.1443
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                       -9.9958
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS           0.9813
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS   7.6735
+                                                                          Std. Error
+(Intercept)                                                                   3.4712
+CHS.VS.TIonly.EnvData$elev.c                                                  3.5318
+CHS.VS.TIonly.EnvData$elev.c.squared                                          6.1016
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                          4.9617
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS             4.6550
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS     8.2131
+                                                                          t value
+(Intercept)                                                                11.272
+CHS.VS.TIonly.EnvData$elev.c                                                0.055
+CHS.VS.TIonly.EnvData$elev.c.squared                                       -0.515
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                       -2.015
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS           0.211
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS   0.934
+                                                                          Pr(>|t|)
+(Intercept)                                                               1.37e-09***
+CHS.VS.TIonly.EnvData$elev.c                                                0.9566
+CHS.VS.TIonly.EnvData$elev.c.squared                                        0.6126
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                        0.0591.
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS           0.8354
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS   0.3625
+  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 6.41 on 18 degrees of freedom
+Multiple R-squared:  0.2452,	Adjusted R-squared:  0.03555 
+F-statistic:  1.17 on 5 and 18 DF,  p-value: 0.362
+```
+
+
+Model comparison
+```
+par(mfrow=c(2,4))
+plot(m1.shadow.days)
+plot(m2.shadow.days)
+```
+
+![alt_txt][CHSall.shadow.days.m1m2]
+
+[CHSall.shadow.days.m1m2]:https://user-images.githubusercontent.com/12142475/30809073-661713f0-a1f8-11e7-9783-5804fc277811.png
+
+
+
 
 #### day10cm
+
+m1
 ```
 Call:
 lm(formula = CHS.VS.TIonly.EnvData$day10cm ~ CHS.VS.TIonly.EnvData$elev.c + 
@@ -966,6 +1238,71 @@ Residual standard error: 17.51 on 20 degrees of freedom
 Multiple R-squared:  0.9428,	Adjusted R-squared:  0.9342 
 F-statistic: 109.8 on 3 and 20 DF,  p-value: 1.359e-12
 ```
+
+m2
+```
+Call:
+lm(formula = CHS.VS.TIonly.EnvData$day10cm ~ CHS.VS.TIonly.EnvData$elev.c + 
+    CHS.VS.TIonly.EnvData$elev.c.squared + CHS.VS.TIonly.EnvData$Transect + 
+    CHS.VS.TIonly.EnvData$Transect:CHS.VS.TIonly.EnvData$elev.c + 
+    CHS.VS.TIonly.EnvData$Transect:CHS.VS.TIonly.EnvData$elev.c.squared)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-22.4727  -2.7720  -0.8752   2.7838  19.7137 
+
+Coefficients:
+                                                                          Estimate
+(Intercept)                                                                138.481
+CHS.VS.TIonly.EnvData$elev.c                                                74.161
+CHS.VS.TIonly.EnvData$elev.c.squared                                       -34.640
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                       -17.067
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS           22.375
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS   -8.855
+                                                                          Std. Error
+(Intercept)                                                                    6.038
+CHS.VS.TIonly.EnvData$elev.c                                                   6.143
+CHS.VS.TIonly.EnvData$elev.c.squared                                          10.614
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                           8.631
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS              8.097
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS     14.286
+                                                                          t value
+(Intercept)                                                                22.935
+CHS.VS.TIonly.EnvData$elev.c                                               12.072
+CHS.VS.TIonly.EnvData$elev.c.squared                                       -3.264
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                       -1.977
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS           2.763
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS  -0.620
+                                                                          Pr(>|t|)
+(Intercept)                                                               8.95e-15***
+CHS.VS.TIonly.EnvData$elev.c                                              4.58e-10***
+CHS.VS.TIonly.EnvData$elev.c.squared                                       0.00431**
+CHS.VS.TIonly.EnvData$TransectCHS.VS                                       0.06351.
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$TransectCHS.VS          0.01280*
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$TransectCHS.VS  0.54316
+
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 11.15 on 18 degrees of freedom
+Multiple R-squared:  0.9791,	Adjusted R-squared:  0.9733 
+F-statistic: 168.8 on 5 and 18 DF,  p-value: 1.81e-14
+```
+
+
+Model comparison
+```
+par(mfrow=c(2,4))
+plot(m1.day10cm)
+plot(m2.day10cm)
+
+```
+
+![alt_txt][CHSall.day10cm.m1m2]
+
+[CHSall.day10cm.m1m2]:https://user-images.githubusercontent.com/12142475/30809125-99d4c87c-a1f8-11e7-925b-2d329a00a71f.png
+
+
 
 
 
