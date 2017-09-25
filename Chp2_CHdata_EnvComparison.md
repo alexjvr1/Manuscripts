@@ -71,6 +71,24 @@ m2
 
 Then I can assess the model fit for m1 and m2
 
+```
+par(mfrow=c(2,4))
+plot(m1.CHall.sol.rad)
+plot(m2.CHall.sol.rad.60d)
+par(mfrow=c(2,4))
+plot(m1.CHall.temp.laying.date)
+plot(m2.CHall.temp.laying.date)
+par(mfrow=c(2,4))
+plot(m1.CHall.pcpt.60d)
+plot(m2.CHall.pcpt.60d)
+par(mfrow=c(2,4))
+plot(m1.CHall.shadow.days)
+plot(m2.CHall.shadow.days)
+par(mfrow=c(2,4))
+plot(m1.CHall.day10cm)
+plot(m2.CHall.day10cm)
+```
+
 sol.rad
 
 ![alt_txt][CHall.sol.rad]
