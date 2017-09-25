@@ -93,33 +93,33 @@ sol.rad
 
 ![alt_txt][CHall.sol.rad]
 
-[CHall.sol.rad]:https://user-images.githubusercontent.com/12142475/30804230-86140492-a1e4-11e7-816e-12377ea7a590.png
+[CHall.sol.rad]:https://user-images.githubusercontent.com/12142475/30805298-b6a79714-a1e8-11e7-8705-0c6aec9c1fd3.png
 
 
 
 temp.laying.date
 ![alt_txt][CHall.temp.laying.date]
 
-[CHall.temp.laying.date]:https://user-images.githubusercontent.com/12142475/30804232-8616adc8-a1e4-11e7-8ac7-e909ca4ef037.png
+[CHall.temp.laying.date]:https://user-images.githubusercontent.com/12142475/30805300-b6acbbe0-a1e8-11e7-8d1d-c4741e2e3b71.png
 
 
 pcpt.60d
 ![alt_txt][CHall.pcpt.60d]
 
-[CHall.pcpt.60d]:https://user-images.githubusercontent.com/12142475/30804233-8616a60c-a1e4-11e7-9407-3e569a1f5c02.png
+[CHall.pcpt.60d]:https://user-images.githubusercontent.com/12142475/30805301-b6af554e-a1e8-11e7-9073-420fc16307f0.png
 
 
 shadow.days
 ![alt_txt][CHall.shadow.days]
 
-[CHall.shadow.days]:https://user-images.githubusercontent.com/12142475/30804229-8612c35c-a1e4-11e7-9452-d751d13ccf0b.png
+[CHall.shadow.days]:https://user-images.githubusercontent.com/12142475/30805297-b6a74f98-a1e8-11e7-9e0b-e2f6fd1be796.png
 
 
 day10cm
 
 ![alt_txt][CHall.day10cm]
 
-[CHall.day10cm]:https://user-images.githubusercontent.com/12142475/30804234-861d4192-a1e4-11e7-86dd-09118e848365.png
+[CHall.day10cm]:https://user-images.githubusercontent.com/12142475/30805299-b6a806ea-a1e8-11e7-8fa1-25b8d6304dae.png
 
 
 And then assess the results from each model: 
