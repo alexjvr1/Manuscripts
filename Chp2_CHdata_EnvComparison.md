@@ -71,29 +71,616 @@ m2
 
 Then I can assess the model fit for m1 and m2
 
+sol.rad
+
 ![alt_txt][CHall.sol.rad]
 
 [CHall.sol.rad]:https://user-images.githubusercontent.com/12142475/30804230-86140492-a1e4-11e7-816e-12377ea7a590.png
 
 
+
+temp.laying.date
 ![alt_txt][CHall.temp.laying.date]
 
 [CHall.temp.laying.date]:https://user-images.githubusercontent.com/12142475/30804232-8616adc8-a1e4-11e7-8ac7-e909ca4ef037.png
 
 
+pcpt.60d
 ![alt_txt][CHall.pcpt.60d]
 
 [CHall.pcpt.60d]:https://user-images.githubusercontent.com/12142475/30804233-8616a60c-a1e4-11e7-9407-3e569a1f5c02.png
 
 
+shadow.days
 ![alt_txt][CHall.shadow.days]
 
 [CHall.shadow.days]:https://user-images.githubusercontent.com/12142475/30804229-8612c35c-a1e4-11e7-9452-d751d13ccf0b.png
 
 
+day10cm
+
 ![alt_txt][CHall.day10cm]
 
 [CHall.day10cm]:https://user-images.githubusercontent.com/12142475/30804234-861d4192-a1e4-11e7-86dd-09118e848365.png
+
+
+And then assess the results from each model: 
+
+##### sol.rad
+
+m1
+```
+Call:
+lm(formula = CHN.CHS.CZonly.EnvData$sol.rad.60d ~ CHN.CHS.CZonly.EnvData$elev.c + 
+    CHN.CHS.CZonly.EnvData$Transect + CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-48507 -21517  -1751  20954  50213 
+
+Coefficients:
+                                                                 Estimate
+(Intercept)                                                         93173
+CHN.CHS.CZonly.EnvData$elev.c                                       18035
+CHN.CHS.CZonly.EnvData$TransectCHS                                   5668
+CHN.CHS.CZonly.EnvData$TransectCZ                                   12073
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS     7153
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ     13790
+                                                                 Std. Error
+(Intercept)                                                            6381
+CHN.CHS.CZonly.EnvData$elev.c                                         11259
+CHN.CHS.CZonly.EnvData$TransectCHS                                     8487
+CHN.CHS.CZonly.EnvData$TransectCZ                                      7780
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS      13519
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ       12690
+                                                                 t value
+(Intercept)                                                       14.602
+CHN.CHS.CZonly.EnvData$elev.c                                      1.602
+CHN.CHS.CZonly.EnvData$TransectCHS                                 0.668
+CHN.CHS.CZonly.EnvData$TransectCZ                                  1.552
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS   0.529
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ    1.087
+                                                                 Pr(>|t|)    
+(Intercept)                                                        <2e-16 ***
+CHN.CHS.CZonly.EnvData$elev.c                                       0.113    
+CHN.CHS.CZonly.EnvData$TransectCHS                                  0.506    
+CHN.CHS.CZonly.EnvData$TransectCZ                                   0.125    
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS    0.598    
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ     0.281    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 27400 on 75 degrees of freedom
+Multiple R-squared:  0.3867,	Adjusted R-squared:  0.3458 
+F-statistic: 9.459 on 5 and 75 DF,  p-value: 5.05e-07
+```
+
+m2
+
+```
+Call:
+lm(formula = CHN.CHS.CZonly.EnvData$sol.rad.60d ~ CHN.CHS.CZonly.EnvData$elev.c + 
+    CHN.CHS.CZonly.EnvData$elev.c.squared + CHN.CHS.CZonly.EnvData$Transect + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c.squared)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-51944 -20340    214  16986  51973 
+
+Coefficients:
+                                                                         Estimate
+(Intercept)                                                                 80539
+CHN.CHS.CZonly.EnvData$elev.c                                               27205
+CHN.CHS.CZonly.EnvData$elev.c.squared                                       42102
+CHN.CHS.CZonly.EnvData$TransectCHS                                          33528
+CHN.CHS.CZonly.EnvData$TransectCZ                                           20366
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS            -6542
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ              4748
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS   -69159
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ    -34601
+                                                                         Std. Error
+(Intercept)                                                                    8906
+CHN.CHS.CZonly.EnvData$elev.c                                                 11868
+CHN.CHS.CZonly.EnvData$elev.c.squared                                         21341
+CHN.CHS.CZonly.EnvData$TransectCHS                                            13251
+CHN.CHS.CZonly.EnvData$TransectCZ                                             12144
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS              14122
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ               13157
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS      25816
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ       24565
+                                                                         t value
+(Intercept)                                                                9.044
+CHN.CHS.CZonly.EnvData$elev.c                                              2.292
+CHN.CHS.CZonly.EnvData$elev.c.squared                                      1.973
+CHN.CHS.CZonly.EnvData$TransectCHS                                         2.530
+CHN.CHS.CZonly.EnvData$TransectCZ                                          1.677
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS          -0.463
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ            0.361
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS  -2.679
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ   -1.409
+                                                                         Pr(>|t|)
+(Intercept)                                                              1.73e-13***
+CHN.CHS.CZonly.EnvData$elev.c                                             0.02481*
+CHN.CHS.CZonly.EnvData$elev.c.squared                                     0.05235.
+CHN.CHS.CZonly.EnvData$TransectCHS                                        0.01359*
+CHN.CHS.CZonly.EnvData$TransectCZ                                         0.09788.
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS          0.64456
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ           0.71926
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS  0.00915**
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ   0.16327
+                                                                            
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 26580 on 72 degrees of freedom
+Multiple R-squared:  0.4463,	Adjusted R-squared:  0.3847 
+F-statistic: 7.253 on 8 and 72 DF,  p-value: 5.162e-07
+
+```
+
+
+##### temp.laying.date
+
+m1
+```
+Call:
+lm(formula = CHN.CHS.CZonly.EnvData$temp.laying.date ~ CHN.CHS.CZonly.EnvData$elev.c + 
+    CHN.CHS.CZonly.EnvData$Transect + CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.3837 -0.9034 -0.1189  0.8848  3.5392 
+
+Coefficients:
+                                                                 Estimate
+(Intercept)                                                        5.3995
+CHN.CHS.CZonly.EnvData$elev.c                                      1.3849
+CHN.CHS.CZonly.EnvData$TransectCHS                                 0.6952
+CHN.CHS.CZonly.EnvData$TransectCZ                                 -0.7491
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS  -1.2206
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ   -1.6719
+                                                                 Std. Error
+(Intercept)                                                          0.3037
+CHN.CHS.CZonly.EnvData$elev.c                                        0.5358
+CHN.CHS.CZonly.EnvData$TransectCHS                                   0.4039
+CHN.CHS.CZonly.EnvData$TransectCZ                                    0.3702
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS     0.6434
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ      0.6039
+                                                                 t value
+(Intercept)                                                       17.780
+CHN.CHS.CZonly.EnvData$elev.c                                      2.585
+CHN.CHS.CZonly.EnvData$TransectCHS                                 1.721
+CHN.CHS.CZonly.EnvData$TransectCZ                                 -2.023
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS  -1.897
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ   -2.768
+                                                                 Pr(>|t|)    
+(Intercept)                                                       < 2e-16 ***
+CHN.CHS.CZonly.EnvData$elev.c                                     0.01169 *  
+CHN.CHS.CZonly.EnvData$TransectCHS                                0.08934 .  
+CHN.CHS.CZonly.EnvData$TransectCZ                                 0.04661 *  
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS  0.06166 .  
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ   0.00709 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.304 on 75 degrees of freedom
+Multiple R-squared:  0.2601,	Adjusted R-squared:  0.2107 
+F-statistic: 5.272 on 5 and 75 DF,  p-value: 0.0003337
+```
+
+
+m2
+```
+Call:
+lm(formula = CHN.CHS.CZonly.EnvData$temp.laying.date ~ CHN.CHS.CZonly.EnvData$elev.c + 
+    CHN.CHS.CZonly.EnvData$elev.c.squared + CHN.CHS.CZonly.EnvData$Transect + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c.squared)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.2104 -0.8604 -0.1103  0.6637  3.5441 
+
+Coefficients:
+                                                                         Estimate
+(Intercept)                                                               5.27907
+CHN.CHS.CZonly.EnvData$elev.c                                             1.47226
+CHN.CHS.CZonly.EnvData$elev.c.squared                                     0.40115
+CHN.CHS.CZonly.EnvData$TransectCHS                                       -0.09071
+CHN.CHS.CZonly.EnvData$TransectCZ                                        -0.23416
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS         -1.03869
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ          -1.77093
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS  1.20941
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ  -1.08304
+                                                                         Std. Error
+(Intercept)                                                                 0.42609
+CHN.CHS.CZonly.EnvData$elev.c                                               0.56780
+CHN.CHS.CZonly.EnvData$elev.c.squared                                       1.02106
+CHN.CHS.CZonly.EnvData$TransectCHS                                          0.63400
+CHN.CHS.CZonly.EnvData$TransectCZ                                           0.58106
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS            0.67564
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ             0.62949
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS    1.23517
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ     1.17532
+                                                                         t value
+(Intercept)                                                               12.390
+CHN.CHS.CZonly.EnvData$elev.c                                              2.593
+CHN.CHS.CZonly.EnvData$elev.c.squared                                      0.393
+CHN.CHS.CZonly.EnvData$TransectCHS                                        -0.143
+CHN.CHS.CZonly.EnvData$TransectCZ                                         -0.403
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS          -1.537
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ           -2.813
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS   0.979
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ   -0.921
+                                                                         Pr(>|t|)
+(Intercept)                                                               < 2e-16***
+CHN.CHS.CZonly.EnvData$elev.c                                             0.01152*
+CHN.CHS.CZonly.EnvData$elev.c.squared                                     0.69557
+CHN.CHS.CZonly.EnvData$TransectCHS                                        0.88663
+CHN.CHS.CZonly.EnvData$TransectCZ                                         0.68815
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS          0.12860
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ           0.00632**
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS  0.33079
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ   0.35988
+                                                                            
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.272 on 72 degrees of freedom
+Multiple R-squared:  0.3247,	Adjusted R-squared:  0.2497 
+F-statistic: 4.328 on 8 and 72 DF,  p-value: 0.00027
+```
+
+
+##### pcpt.60d
+
+m1
+```
+Call:
+lm(formula = CHN.CHS.CZonly.EnvData$pcpt.60d ~ CHN.CHS.CZonly.EnvData$elev.c + 
+    CHN.CHS.CZonly.EnvData$Transect + CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-19.3829  -3.6412  -0.6273   4.0841  17.3952 
+
+Coefficients:
+                                                                 Estimate
+(Intercept)                                                        28.366
+CHN.CHS.CZonly.EnvData$elev.c                                      12.063
+CHN.CHS.CZonly.EnvData$TransectCHS                                  1.556
+CHN.CHS.CZonly.EnvData$TransectCZ                                  -2.368
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS  -13.791
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ    -3.099
+                                                                 Std. Error
+(Intercept)                                                           1.641
+CHN.CHS.CZonly.EnvData$elev.c                                         2.895
+CHN.CHS.CZonly.EnvData$TransectCHS                                    2.182
+CHN.CHS.CZonly.EnvData$TransectCZ                                     2.000
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS      3.476
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ       3.262
+                                                                 t value
+(Intercept)                                                       17.291
+CHN.CHS.CZonly.EnvData$elev.c                                      4.167
+CHN.CHS.CZonly.EnvData$TransectCHS                                 0.713
+CHN.CHS.CZonly.EnvData$TransectCZ                                 -1.184
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS  -3.968
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ   -0.950
+                                                                 Pr(>|t|)    
+(Intercept)                                                       < 2e-16 ***
+CHN.CHS.CZonly.EnvData$elev.c                                    8.17e-05 ***
+CHN.CHS.CZonly.EnvData$TransectCHS                               0.477981    
+CHN.CHS.CZonly.EnvData$TransectCZ                                0.240178    
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS 0.000165 ***
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ  0.345174    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 7.045 on 75 degrees of freedom
+Multiple R-squared:  0.4341,	Adjusted R-squared:  0.3964 
+F-statistic: 11.51 on 5 and 75 DF,  p-value: 2.917e-08
+```
+
+m2
+```
+Call:
+lm(formula = CHN.CHS.CZonly.EnvData$pcpt.60d ~ CHN.CHS.CZonly.EnvData$elev.c + 
+    CHN.CHS.CZonly.EnvData$elev.c.squared + CHN.CHS.CZonly.EnvData$Transect + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c.squared)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-19.7214  -3.0089   0.2209   3.1759  18.1329 
+
+Coefficients:
+                                                                         Estimate
+(Intercept)                                                                28.189
+CHN.CHS.CZonly.EnvData$elev.c                                              12.191
+CHN.CHS.CZonly.EnvData$elev.c.squared                                       0.588
+CHN.CHS.CZonly.EnvData$TransectCHS                                          3.046
+CHN.CHS.CZonly.EnvData$TransectCZ                                           2.872
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS          -14.309
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ            -3.377
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS   -2.922
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ    -9.339
+                                                                         Std. Error
+(Intercept)                                                                   2.282
+CHN.CHS.CZonly.EnvData$elev.c                                                 3.041
+CHN.CHS.CZonly.EnvData$elev.c.squared                                         5.468
+CHN.CHS.CZonly.EnvData$TransectCHS                                            3.395
+CHN.CHS.CZonly.EnvData$TransectCZ                                             3.112
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS              3.618
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ               3.371
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS      6.614
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ       6.294
+                                                                         t value
+(Intercept)                                                               12.354
+CHN.CHS.CZonly.EnvData$elev.c                                              4.009
+CHN.CHS.CZonly.EnvData$elev.c.squared                                      0.108
+CHN.CHS.CZonly.EnvData$TransectCHS                                         0.897
+CHN.CHS.CZonly.EnvData$TransectCZ                                          0.923
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS          -3.955
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ           -1.002
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS  -0.442
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ   -1.484
+                                                                         Pr(>|t|)
+(Intercept)                                                               < 2e-16***
+CHN.CHS.CZonly.EnvData$elev.c                                            0.000147***
+CHN.CHS.CZonly.EnvData$elev.c.squared                                    0.914659
+CHN.CHS.CZonly.EnvData$TransectCHS                                       0.372643
+CHN.CHS.CZonly.EnvData$TransectCZ                                        0.359020
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS         0.000177***
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ          0.319808
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS 0.660002
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ  0.142204
+                                                                            
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 6.809 on 72 degrees of freedom
+Multiple R-squared:  0.4925,	Adjusted R-squared:  0.4361 
+F-statistic: 8.734 on 8 and 72 DF,  p-value: 2.954e-08
+```
+
+
+
+##### shadow.days
+
+m1
+```
+Call:
+lm(formula = CHN.CHS.CZonly.EnvData$shadow.days ~ CHN.CHS.CZonly.EnvData$elev.c + 
+    CHN.CHS.CZonly.EnvData$Transect + CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-11.581  -4.395  -3.477   0.978  25.783 
+
+Coefficients:
+                                                                 Estimate
+(Intercept)                                                        39.311
+CHN.CHS.CZonly.EnvData$elev.c                                       4.727
+CHN.CHS.CZonly.EnvData$TransectCHS                                 -4.279
+CHN.CHS.CZonly.EnvData$TransectCZ                                  -4.201
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS   -4.355
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ    -5.616
+                                                                 Std. Error
+(Intercept)                                                           1.977
+CHN.CHS.CZonly.EnvData$elev.c                                         3.488
+CHN.CHS.CZonly.EnvData$TransectCHS                                    2.630
+CHN.CHS.CZonly.EnvData$TransectCZ                                     2.410
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS      4.189
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ       3.932
+                                                                 t value
+(Intercept)                                                       19.884
+CHN.CHS.CZonly.EnvData$elev.c                                      1.355
+CHN.CHS.CZonly.EnvData$TransectCHS                                -1.627
+CHN.CHS.CZonly.EnvData$TransectCZ                                 -1.743
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS  -1.040
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ   -1.428
+                                                                 Pr(>|t|)    
+(Intercept)                                                        <2e-16 ***
+CHN.CHS.CZonly.EnvData$elev.c                                      0.1794    
+CHN.CHS.CZonly.EnvData$TransectCHS                                 0.1079    
+CHN.CHS.CZonly.EnvData$TransectCZ                                  0.0854 .  
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS   0.3018    
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ    0.1573    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 8.49 on 75 degrees of freedom
+Multiple R-squared:  0.06248,	Adjusted R-squared:  -2.21e-05 
+F-statistic: 0.9996 on 5 and 75 DF,  p-value: 0.424
+
+```
+
+m2
+```
+Call:
+lm(formula = CHN.CHS.CZonly.EnvData$shadow.day ~ CHN.CHS.CZonly.EnvData$elev.c + 
+    CHN.CHS.CZonly.EnvData$elev.c.squared + CHN.CHS.CZonly.EnvData$Transect + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c.squared)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-10.717  -4.222  -3.708   2.577  25.081 
+
+Coefficients:
+                                                                         Estimate
+(Intercept)                                                               40.0981
+CHN.CHS.CZonly.EnvData$elev.c                                              4.1559
+CHN.CHS.CZonly.EnvData$elev.c.squared                                     -2.6236
+CHN.CHS.CZonly.EnvData$TransectCHS                                        -5.1704
+CHN.CHS.CZonly.EnvData$TransectCZ                                         -2.9693
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS          -3.7528
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ           -5.1039
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS   2.8085
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ   -0.8664
+                                                                         Std. Error
+(Intercept)                                                                  2.8851
+CHN.CHS.CZonly.EnvData$elev.c                                                3.8447
+CHN.CHS.CZonly.EnvData$elev.c.squared                                        6.9138
+CHN.CHS.CZonly.EnvData$TransectCHS                                           4.2929
+CHN.CHS.CZonly.EnvData$TransectCZ                                            3.9344
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS             4.5749
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ              4.2624
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS     8.3636
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ      7.9583
+                                                                         t value
+(Intercept)                                                               13.898
+CHN.CHS.CZonly.EnvData$elev.c                                              1.081
+CHN.CHS.CZonly.EnvData$elev.c.squared                                     -0.379
+CHN.CHS.CZonly.EnvData$TransectCHS                                        -1.204
+CHN.CHS.CZonly.EnvData$TransectCZ                                         -0.755
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS          -0.820
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ           -1.197
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS   0.336
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ   -0.109
+                                                                         Pr(>|t|)
+(Intercept)                                                                <2e-16
+CHN.CHS.CZonly.EnvData$elev.c                                               0.283
+CHN.CHS.CZonly.EnvData$elev.c.squared                                       0.705
+CHN.CHS.CZonly.EnvData$TransectCHS                                          0.232
+CHN.CHS.CZonly.EnvData$TransectCZ                                           0.453
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS            0.415
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ             0.235
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS    0.738
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ     0.914
+                                                                            
+(Intercept)                                                              ***
+CHN.CHS.CZonly.EnvData$elev.c                                               
+CHN.CHS.CZonly.EnvData$elev.c.squared                                       
+CHN.CHS.CZonly.EnvData$TransectCHS                                          
+CHN.CHS.CZonly.EnvData$TransectCZ                                           
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS            
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ             
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS    
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ     
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 8.61 on 72 degrees of freedom
+Multiple R-squared:  0.07443,	Adjusted R-squared:  -0.02841 
+F-statistic: 0.7237 on 8 and 72 DF,  p-value: 0.67
+```
+
+
+
+##### day10cm
+
+m1
+```
+Call:
+lm(formula = CHN.CHS.CZonly.EnvData$day10cm ~ CHN.CHS.CZonly.EnvData$elev.c + 
+    CHN.CHS.CZonly.EnvData$Transect + CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-63.108 -17.022   0.388  10.250 102.174 
+
+Coefficients:
+                                                                 Estimate
+(Intercept)                                                       127.300
+CHN.CHS.CZonly.EnvData$elev.c                                      78.528
+CHN.CHS.CZonly.EnvData$TransectCHS                                -16.586
+CHN.CHS.CZonly.EnvData$TransectCZ                                  -4.294
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS    7.159
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ   -14.876
+                                                                 Std. Error
+(Intercept)                                                           6.641
+CHN.CHS.CZonly.EnvData$elev.c                                        11.717
+CHN.CHS.CZonly.EnvData$TransectCHS                                    8.833
+CHN.CHS.CZonly.EnvData$TransectCZ                                     8.096
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS     14.069
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ      13.206
+                                                                 t value
+(Intercept)                                                       19.170
+CHN.CHS.CZonly.EnvData$elev.c                                      6.702
+CHN.CHS.CZonly.EnvData$TransectCHS                                -1.878
+CHN.CHS.CZonly.EnvData$TransectCZ                                 -0.530
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS   0.509
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ   -1.126
+                                                                 Pr(>|t|)    
+(Intercept)                                                       < 2e-16 ***
+CHN.CHS.CZonly.EnvData$elev.c                                    3.34e-09 ***
+CHN.CHS.CZonly.EnvData$TransectCHS                                 0.0643 .  
+CHN.CHS.CZonly.EnvData$TransectCZ                                  0.5974    
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS   0.6123    
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ    0.2636    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 28.52 on 75 degrees of freedom
+Multiple R-squared:  0.7876,	Adjusted R-squared:  0.7734 
+F-statistic: 55.61 on 5 and 75 DF,  p-value: < 2.2e-16
+```
+
+
+m2
+```
+Call:
+lm(formula = CHN.CHS.CZonly.EnvData$day10cm ~ CHN.CHS.CZonly.EnvData$elev.c + 
+    CHN.CHS.CZonly.EnvData$elev.c.squared + CHN.CHS.CZonly.EnvData$Transect + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c.squared)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-55.530  -9.073  -1.184   2.247 109.012 
+
+Coefficients:
+                                                                         Estimate
+(Intercept)                                                              138.8801
+CHN.CHS.CZonly.EnvData$elev.c                                             70.1221
+CHN.CHS.CZonly.EnvData$elev.c.squared                                    -38.5906
+CHN.CHS.CZonly.EnvData$TransectCHS                                       -11.0760
+CHN.CHS.CZonly.EnvData$TransectCZ                                          0.8811
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS          10.4862
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ           -6.9653
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS   8.2206
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ    9.6332
+                                                                         Std. Error
+(Intercept)                                                                  8.9705
+CHN.CHS.CZonly.EnvData$elev.c                                               11.9540
+CHN.CHS.CZonly.EnvData$elev.c.squared                                       21.4966
+CHN.CHS.CZonly.EnvData$TransectCHS                                          13.3476
+CHN.CHS.CZonly.EnvData$TransectCZ                                           12.2331
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS            14.2245
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ             13.2528
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS    26.0043
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ     24.7442
+                                                                         t value
+(Intercept)                                                               15.482
+CHN.CHS.CZonly.EnvData$elev.c                                              5.866
+CHN.CHS.CZonly.EnvData$elev.c.squared                                     -1.795
+CHN.CHS.CZonly.EnvData$TransectCHS                                        -0.830
+CHN.CHS.CZonly.EnvData$TransectCZ                                          0.072
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS           0.737
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ           -0.526
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS   0.316
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ    0.389
+                                                                         Pr(>|t|)
+(Intercept)                                                               < 2e-16***
+CHN.CHS.CZonly.EnvData$elev.c                                            1.25e-07***
+CHN.CHS.CZonly.EnvData$elev.c.squared                                      0.0768.
+CHN.CHS.CZonly.EnvData$TransectCHS                                         0.4094
+CHN.CHS.CZonly.EnvData$TransectCZ                                          0.9428
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCHS           0.4634
+CHN.CHS.CZonly.EnvData$elev.c:CHN.CHS.CZonly.EnvData$TransectCZ            0.6008
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCHS   0.7528
+CHN.CHS.CZonly.EnvData$elev.c.squared:CHN.CHS.CZonly.EnvData$TransectCZ    0.6982
+                                                                              
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 26.77 on 72 degrees of freedom
+Multiple R-squared:  0.8203,	Adjusted R-squared:  0.8003 
+F-statistic: 41.08 on 8 and 72 DF,  p-value: < 2.2e-16
+```
+
 
 
 
