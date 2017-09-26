@@ -317,6 +317,7 @@ library(ggplot2)
 CHS.VS.RelativeImportance.Splines <- CHS.VS.gdm.Splines$y[200,]  ##the maximum value is the last row of the splines list
 CHS.VS.RelativeImportance.Splines <- as.data.frame(CHS.VS.RelativeImportance.Splines)
 CHS.VS.RelativeImportance.Splines <- apply(CHS.VS.RelativeImportance.Splines, MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##normalise
+CHS.VS.RelativeImportance.Splines <- as.data.frame(CHS.VS.RelativeImportance.Splines)
 
 CHS.VS.RelativeImportance.Splines$EnvVar <- c("Geography", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm")
 CHS.VS.RelativeImportance.Splines$Transect <- c("CHS.VS", "CHS.VS", "CHS.VS", "CHS.VS", "CHS.VS", "CHS.VS")
