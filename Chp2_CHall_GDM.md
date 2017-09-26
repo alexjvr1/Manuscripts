@@ -79,13 +79,13 @@ plot(CHN.gdm, plot.layout=c(3,3))
 
 ##For comparison between all env variables, I need to normalise the Splines (0-1) for each Env variable
 
-CHS.VS.gdm.Splines <- isplineExtract(CHS.VS.gdm) ##extract the spline data to make plotting easier
+CHN.gdm.Splines <- isplineExtract(CHN.gdm) ##extract the spline data to make plotting easier
 plot(gdm.1.splineDat$x[,"Geographic"], gdm.1.splineDat$y[,"Geographic"], lwd=3, type="l", xlab="Geographic distance", ylab="Partial ecological distance")  #example of a plot
 
-CHS.VS.gdm.Splines.scaled.y <- CHS.VS.gdm.Splines$y  ##CHS.VS.gdm.Splines is a list. I want to scale y (the Spline value), so I'm moving it to a new data frame
-CHS.VS.gdm.Splines.scaled.y <- apply(CHS.VS.gdm.Splines.scaled.y[,1:ncol(CHS.VS.gdm.Splines.scaled.y)], MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##scale
-plot(CHS.VS.gdm.Splines$x[,"pcpt.60d"], CHS.VS.gdm.Splines.scaled.y$pcpt.60d, lwd=3,type="l", xlab="Pcpt 60d", ylab="Partial ecological distance") ##and then we can plot them like this
-plot(CHS.VS.gdm.Splines$x[,"day10cm"], CHS.VS.gdm.Splines.scaled.y$day10cm, lwd=3,type="l", xlab="Day 10cm", ylab="Partial ecological distance")
+CHN.gdm.Splines.scaled.y <- CHN.gdm.Splines$y  ##CHN.gdm.Splines is a list. I want to scale y (the Spline value), so I'm moving it to a new data frame
+CHN.gdm.Splines.scaled.y <- apply(CHN.gdm.Splines.scaled.y[,1:ncol(CHN.gdm.Splines.scaled.y)], MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##scale
+plot(CHN.gdm.Splines$x[,"pcpt.60d"], CHN.gdm.Splines.scaled.y$pcpt.60d, lwd=3,type="l", xlab="Pcpt 60d", ylab="Partial ecological distance") ##and then we can plot them like this
+plot(CHN.gdm.Splines$x[,"day10cm"], CHN.gdm.Splines.scaled.y$day10cm, lwd=3,type="l", xlab="Day 10cm", ylab="Partial ecological distance")
 
 
 ###Prepare the Spline data for the comparative plot
@@ -93,13 +93,15 @@ plot(CHS.VS.gdm.Splines$x[,"day10cm"], CHS.VS.gdm.Splines.scaled.y$day10cm, lwd=
 
 library(ggplot2) 
 
-CHS.VS.RelativeImportance.Splines <- CHS.VS.gdm.Splines$y[200,]  ##the maximum value is the last row of the splines list
-CHS.VS.RelativeImportance.Splines <- as.data.frame(CHS.VS.RelativeImportance.Splines)
-CHS.VS.RelativeImportance.Splines <- apply(CHS.VS.RelativeImportance.Splines, MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##normalise
+CHN.RelativeImportance.Splines <- CHN.gdm.Splines$y[200,]  ##the maximum value is the last row of the splines list
+CHN.RelativeImportance.Splines <- as.data.frame(CHN.RelativeImportance.Splines)
+CHN.RelativeImportance.Splines <- apply(CHN.RelativeImportance.Splines, MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##normalise
+CHN.RelativeImportance.Splines <- as.data.frame(CHN.RelativeImportance.Splines)
 
-CHS.VS.RelativeImportance.Splines$EnvVar <- c("Geography", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm")
-CHS.VS.RelativeImportance.Splines$Transect <- c("CHS.VS", "CHS.VS", "CHS.VS", "CHS.VS", "CHS.VS", "CHS.VS")
-ggplot(CHS.VS.RelativeImportance.Splines, aes(x=Transect, y=EnvVar, fill=CHS.VS.RelativeImportance.Splines)) + geom_tile() + coord_equal() + scale_fill_gradient(name="R2") +theme(axis.title.x=element_blank(), axis.title.y=element_blank())  ##check that it looks right
+CHN.RelativeImportance.Splines$EnvVar <- c("Geography", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm")
+CHN.RelativeImportance.Splines$Transect <- c("CHN", "CHN", "CHN", "CHN", "CHN", "CHN")
+colnames(CHN.RelativeImportance.Splines) <- c("RelativeImportance.Splines", "EnvVar", "Transect")
+ggplot(CHN.RelativeImportance.Splines, aes(x=Transect, y=EnvVar, fill=RelativeImportance.Splines)) + geom_tile() + coord_equal() + scale_fill_gradient(name="R2") +theme(axis.title.x=element_blank(), axis.title.y=element_blank())  ##check that it looks right
 
 ```
 
@@ -144,6 +146,35 @@ CHS.gdmData <- formatsitepair(CHS.fst, bioFormat=3, dist="bray", siteColumn="sit
 CHS.gdm <- gdm(CHS.gdmData, geo=T)
 
 plot(CHS.gdm, plot.layout=c(3,3))
+
+
+###Plot of Splines across each EnvVar
+
+##For comparison between all env variables, I need to normalise the Splines (0-1) for each Env variable
+
+CHS.gdm.Splines <- isplineExtract(CHS.gdm) ##extract the spline data to make plotting easier
+plot(gdm.1.splineDat$x[,"Geographic"], gdm.1.splineDat$y[,"Geographic"], lwd=3, type="l", xlab="Geographic distance", ylab="Partial ecological distance")  #example of a plot
+
+CHS.gdm.Splines.scaled.y <- CHS.gdm.Splines$y  ##CHS.gdm.Splines is a list. I want to scale y (the Spline value), so I'm moving it to a new data frame
+CHS.gdm.Splines.scaled.y <- apply(CHS.gdm.Splines.scaled.y[,1:ncol(CHS.gdm.Splines.scaled.y)], MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##scale
+plot(CHS.gdm.Splines$x[,"pcpt.60d"], CHS.gdm.Splines.scaled.y$pcpt.60d, lwd=3,type="l", xlab="Pcpt 60d", ylab="Partial ecological distance") ##and then we can plot them like this
+plot(CHS.gdm.Splines$x[,"day10cm"], CHS.gdm.Splines.scaled.y$day10cm, lwd=3,type="l", xlab="Day 10cm", ylab="Partial ecological distance")
+
+
+###Prepare the Spline data for the comparative plot
+###I need the relative importance of each env variable. I'm calculating this by comparing the maximum Spline value for each variable, and normalising across all 5 EnvVariables. The height of each spline gives the importance - i.e. change in height at a particular EnvVariable value = bigger change in Fst than before. 
+
+library(ggplot2) 
+
+CHS.RelativeImportance.Splines <- CHS.gdm.Splines$y[200,]  ##the maximum value is the last row of the splines list
+CHS.RelativeImportance.Splines <- as.data.frame(CHS.RelativeImportance.Splines)
+CHS.RelativeImportance.Splines <- apply(CHS.RelativeImportance.Splines, MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##normalise
+CHS.RelativeImportance.Splines <- as.data.frame(CHS.RelativeImportance.Splines)
+
+CHS.RelativeImportance.Splines$EnvVar <- c("Geography", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm")
+CHS.RelativeImportance.Splines$Transect <- c("CHS", "CHS", "CHS", "CHS", "CHS", "CHS")
+colnames(CHS.RelativeImportance.Splines) <- c("RelativeImportance.Splines", "EnvVar", "Transect")
+ggplot(CHS.RelativeImportance.Splines, aes(x=Transect, y=EnvVar, fill=RelativeImportance.Splines)) + geom_tile() + coord_equal() + scale_fill_gradient(name="R2") +theme(axis.title.x=element_blank(), axis.title.y=element_blank())  ##check that it looks right
 
 
 ```
@@ -191,6 +222,35 @@ CHS.TI.gdm <- gdm(CHS.TI.gdmData, geo=T)
 plot(CHS.TI.gdm, plot.layout=c(3,3))
 
 
+###Plot of Splines across each EnvVar
+
+##For comparison between all env variables, I need to normalise the Splines (0-1) for each Env variable
+
+CHS.TI.gdm.Splines <- isplineExtract(CHS.TI.gdm) ##extract the spline data to make plotting easier
+plot(gdm.1.splineDat$x[,"Geographic"], gdm.1.splineDat$y[,"Geographic"], lwd=3, type="l", xlab="Geographic distance", ylab="Partial ecological distance")  #example of a plot
+
+CHS.TI.gdm.Splines.scaled.y <- CHS.TI.gdm.Splines$y  ##CHS.TI.gdm.Splines is a list. I want to scale y (the Spline value), so I'm moving it to a new data frame
+CHS.TI.gdm.Splines.scaled.y <- apply(CHS.TI.gdm.Splines.scaled.y[,1:ncol(CHS.TI.gdm.Splines.scaled.y)], MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##scale
+plot(CHS.TI.gdm.Splines$x[,"pcpt.60d"], CHS.TI.gdm.Splines.scaled.y$pcpt.60d, lwd=3,type="l", xlab="Pcpt 60d", ylab="Partial ecological distance") ##and then we can plot them like this
+plot(CHS.TI.gdm.Splines$x[,"day10cm"], CHS.TI.gdm.Splines.scaled.y$day10cm, lwd=3,type="l", xlab="Day 10cm", ylab="Partial ecological distance")
+
+
+###Prepare the Spline data for the comparative plot
+###I need the relative importance of each env variable. I'm calculating this by comparing the maximum Spline value for each variable, and normalising across all 5 EnvVariables. The height of each spline gives the importance - i.e. change in height at a particular EnvVariable value = bigger change in Fst than before. 
+
+library(ggplot2) 
+
+CHS.TI.RelativeImportance.Splines <- CHS.TI.gdm.Splines$y[200,]  ##the maximum value is the last row of the splines list
+CHS.TI.RelativeImportance.Splines <- as.data.frame(CHS.TI.RelativeImportance.Splines)
+CHS.TI.RelativeImportance.Splines <- apply(CHS.TI.RelativeImportance.Splines, MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##normalise
+CHS.TI.RelativeImportance.Splines <- as.data.frame(CHS.TI.RelativeImportance.Splines)
+
+CHS.TI.RelativeImportance.Splines$EnvVar <- c("Geography", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm")
+CHS.TI.RelativeImportance.Splines$Transect <- c("CHS.TI", "CHS.TI", "CHS.TI", "CHS.TI", "CHS.TI", "CHS.TI")
+colnames(CHS.TI.RelativeImportance.Splines) <- c("RelativeImportance.Splines", "EnvVar", "Transect")
+ggplot(CHS.TI.RelativeImportance.Splines, aes(x=Transect, y=EnvVar, fill=RelativeImportance.Splines)) + geom_tile() + coord_equal() + scale_fill_gradient(name="R2") +theme(axis.title.x=element_blank(), axis.title.y=element_blank())  ##check that it looks right
+
+
 ```
 
 
@@ -231,11 +291,38 @@ names(CHS.VS.fst)[1] <- "site"  ##make sure site column is named the same in bot
 CHS.VS.gdmData <- formatsitepair(CHS.VS.fst, bioFormat=3, dist="bray", siteColumn="site", XColumn="lat", YColumn="long", predData=CHS.VS.EnvData.importantVariables
 ) ##create the pairwise GDM input format
 
+
 ###Run GDM
 CHS.VS.gdm <- gdm(CHS.VS.gdmData, geo=T)
 
 plot(CHS.VS.gdm, plot.layout=c(3,3))
 
+###Plot of Splines across each EnvVar
+
+##For comparison between all env variables, I need to normalise the Splines (0-1) for each Env variable
+
+CHS.VS.gdm.Splines <- isplineExtract(CHS.VS.gdm) ##extract the spline data to make plotting easier
+plot(gdm.1.splineDat$x[,"Geographic"], gdm.1.splineDat$y[,"Geographic"], lwd=3, type="l", xlab="Geographic distance", ylab="Partial ecological distance")  #example of a plot
+
+CHS.VS.gdm.Splines.scaled.y <- CHS.VS.gdm.Splines$y  ##CHS.VS.gdm.Splines is a list. I want to scale y (the Spline value), so I'm moving it to a new data frame
+CHS.VS.gdm.Splines.scaled.y <- apply(CHS.VS.gdm.Splines.scaled.y[,1:ncol(CHS.VS.gdm.Splines.scaled.y)], MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##scale
+plot(CHS.VS.gdm.Splines$x[,"pcpt.60d"], CHS.VS.gdm.Splines.scaled.y$pcpt.60d, lwd=3,type="l", xlab="Pcpt 60d", ylab="Partial ecological distance") ##and then we can plot them like this
+plot(CHS.VS.gdm.Splines$x[,"day10cm"], CHS.VS.gdm.Splines.scaled.y$day10cm, lwd=3,type="l", xlab="Day 10cm", ylab="Partial ecological distance")
+
+
+###Prepare the Spline data for the comparative plot
+###I need the relative importance of each env variable. I'm calculating this by comparing the maximum Spline value for each variable, and normalising across all 5 EnvVariables. The height of each spline gives the importance - i.e. change in height at a particular EnvVariable value = bigger change in Fst than before. 
+
+library(ggplot2) 
+
+CHS.VS.RelativeImportance.Splines <- CHS.VS.gdm.Splines$y[200,]  ##the maximum value is the last row of the splines list
+CHS.VS.RelativeImportance.Splines <- as.data.frame(CHS.VS.RelativeImportance.Splines)
+CHS.VS.RelativeImportance.Splines <- apply(CHS.VS.RelativeImportance.Splines, MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##normalise
+
+CHS.VS.RelativeImportance.Splines$EnvVar <- c("Geography", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm")
+CHS.VS.RelativeImportance.Splines$Transect <- c("CHS.VS", "CHS.VS", "CHS.VS", "CHS.VS", "CHS.VS", "CHS.VS")
+colnames(CHS.VS.RelativeImportance.Splines) <- c("RelativeImportance.Splines", "EnvVar", "Transect")
+ggplot(CHS.VS.RelativeImportance.Splines, aes(x=Transect, y=EnvVar, fill=RelativeImportance.Splines)) + geom_tile() + coord_equal() + scale_fill_gradient(name="R2") +theme(axis.title.x=element_blank(), axis.title.y=element_blank())  ##check that it looks right
 
 ```
 
@@ -282,9 +369,52 @@ CZ.gdm <- gdm(CZ.gdmData, geo=T)
 plot(CZ.gdm, plot.layout=c(3,3))
 
 
+###Plot of Splines across each EnvVar
+
+##For comparison between all env variables, I need to normalise the Splines (0-1) for each Env variable
+
+CZ.gdm.Splines <- isplineExtract(CZ.gdm) ##extract the spline data to make plotting easier
+plot(gdm.1.splineDat$x[,"Geographic"], gdm.1.splineDat$y[,"Geographic"], lwd=3, type="l", xlab="Geographic distance", ylab="Partial ecological distance")  #example of a plot
+
+CZ.gdm.Splines.scaled.y <- CZ.gdm.Splines$y  ##CZ.gdm.Splines is a list. I want to scale y (the Spline value), so I'm moving it to a new data frame
+CZ.gdm.Splines.scaled.y <- apply(CZ.gdm.Splines.scaled.y[,1:ncol(CZ.gdm.Splines.scaled.y)], MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##scale
+plot(CZ.gdm.Splines$x[,"pcpt.60d"], CZ.gdm.Splines.scaled.y$pcpt.60d, lwd=3,type="l", xlab="Pcpt 60d", ylab="Partial ecological distance") ##and then we can plot them like this
+plot(CZ.gdm.Splines$x[,"day10cm"], CZ.gdm.Splines.scaled.y$day10cm, lwd=3,type="l", xlab="Day 10cm", ylab="Partial ecological distance")
+
+
+###Prepare the Spline data for the comparative plot
+###I need the relative importance of each env variable. I'm calculating this by comparing the maximum Spline value for each variable, and normalising across all 5 EnvVariables. The height of each spline gives the importance - i.e. change in height at a particular EnvVariable value = bigger change in Fst than before. 
+
+library(ggplot2) 
+
+CZ.RelativeImportance.Splines <- CZ.gdm.Splines$y[200,]  ##the maximum value is the last row of the splines list
+CZ.RelativeImportance.Splines <- as.data.frame(CZ.RelativeImportance.Splines)
+CZ.RelativeImportance.Splines <- apply(CZ.RelativeImportance.Splines, MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##normalise
+CZ.RelativeImportance.Splines <- as.data.frame(CZ.RelativeImportance.Splines)
+
+CZ.RelativeImportance.Splines$EnvVar <- c("Geography", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm")
+CZ.RelativeImportance.Splines$Transect <- c("CZ", "CZ", "CZ", "CZ", "CZ", "CZ")
+colnames(CZ.RelativeImportance.Splines) <- c("RelativeImportance.Splines", "EnvVar", "Transect")
+ggplot(CZ.RelativeImportance.Splines, aes(x=Transect, y=EnvVar, fill=RelativeImportance.Splines)) + geom_tile() + coord_equal() + scale_fill_gradient(name="R2") +theme(axis.title.x=element_blank(), axis.title.y=element_blank())  ##check that it looks right
+
+
 ```
 
 
+## Figures
+
+### Fig1: Relative Importance of variables in different regions
+
+
+```
+###Combine all the prepared data.frames together and plot
+
+
+CHall.RelativeImportance.Splines <- rbind(CHN.RelativeImportance.Splines, CHS.RelativeImportance.Splines, CHS.VS.RelativeImportance.Splines, CHS.TI.RelativeImportance.Splines, CZ.RelativeImportance.Splines)
+
+ggplot(CHall.RelativeImportance.Splines, aes(x=Transect, y=EnvVar, fill=RelativeImportance.Splines)) + geom_tile() + coord_equal() + scale_fill_gradient(name="Relative Importance") +theme(axis.title.x=element_blank(), axis.title.y=element_blank())  ##check that it looks right
+
+```
 
 
 
