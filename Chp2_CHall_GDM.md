@@ -288,8 +288,7 @@ names(CHS.VS.fst)[1] <- "site"  ##make sure site column is named the same in bot
 ###Create pairwise gdm input format
 
 
-CHS.VS.gdmData <- formatsitepair(CHS.VS.fst, bioFormat=3, dist="bray", siteColumn="site", XColumn="lat", YColumn="long", predData=CHS.VS.EnvData.importantVariables
-) ##create the pairwise GDM input format
+CHS.VS.gdmData <- formatsitepair(CHS.VS.fst, bioFormat=3, dist="bray", siteColumn="site", XColumn="lat", YColumn="long", predData=CHS.VS.EnvData.importantVariables) ##create the pairwise GDM input format
 
 
 ###Run GDM
@@ -302,7 +301,7 @@ plot(CHS.VS.gdm, plot.layout=c(3,3))
 ##For comparison between all env variables, I need to normalise the Splines (0-1) for each Env variable
 
 CHS.VS.gdm.Splines <- isplineExtract(CHS.VS.gdm) ##extract the spline data to make plotting easier
-plot(gdm.1.splineDat$x[,"Geographic"], gdm.1.splineDat$y[,"Geographic"], lwd=3, type="l", xlab="Geographic distance", ylab="Partial ecological distance")  #example of a plot
+plot(CHS.VS.gdm.Splines$x[,"Geographic"], CHS.VS.gdm.Splines$y[,"Geographic"], lwd=3, type="l", xlab="Geographic distance", ylab="Partial ecological distance")  #example of a plot
 
 CHS.VS.gdm.Splines.scaled.y <- CHS.VS.gdm.Splines$y  ##CHS.VS.gdm.Splines is a list. I want to scale y (the Spline value), so I'm moving it to a new data frame
 CHS.VS.gdm.Splines.scaled.y <- apply(CHS.VS.gdm.Splines.scaled.y[,1:ncol(CHS.VS.gdm.Splines.scaled.y)], MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##scale
@@ -417,4 +416,144 @@ ggplot(CHall.RelativeImportance.Splines, aes(x=Transect, y=EnvVar, fill=Relative
 ```
 
 
+### Fig2: Plots of Splines for each EnvVariables
+
+#### 2.1. CHN + CHS + CZ
+
+```
+leg.txt = c("CHN", "CHS", "CZ") ##define the text to be used in the legend
+
+### Geography
+
+pdf("CHN.CHS.CZ.Geog.pdf")
+plot(CHN.gdm.Splines$x[,"Geographic"], CHN.gdm.Splines$y[,"Geographic"], lty=1, lwd=1.5, type="l", xlab="Geographic distance", ylab="Partial ecological distance", ylim=c(0,ymax))
+par(new=T)
+plot(CHS.gdm.Splines$x[,"Geographic"], CHS.gdm.Splines$y[,"Geographic"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.gdm.Splines$x[,"Geographic"], CZ.gdm.Splines$y[,"Geographic"], lty=2, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=3, bty = "n")
+dev.off()
+
+
+### Sol.Rad
+
+pdf("CHN.CHS.CZ.sol.rad.60d.pdf")
+plot(CHN.gdm.Splines$x[,"sol.rad.60d"], CHN.gdm.Splines$y[,"sol.rad.60d"], lty=1, lwd=1.5, type="l", xlab="sol.rad.60d", ylab="Partial ecological distance", ylim=c(0,ymax))
+par(new=T)
+plot(CHS.gdm.Splines$x[,"sol.rad.60d"], CHS.gdm.Splines$y[,"sol.rad.60d"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.gdm.Splines$x[,"sol.rad.60d"], CZ.gdm.Splines$y[,"sol.rad.60d"], lty=2, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+dev.off()
+
+
+### temp.laying.date
+
+pdf("CHN.CHS.CZ.temp.laying.date.pdf")
+plot(CHN.gdm.Splines$x[,"temp.laying.date"], CHN.gdm.Splines$y[,"temp.laying.date"], lty=1, lwd=1.5, type="l", xlab="temp.laying.date", ylab="Partial ecological distance", ylim=c(0,ymax))
+par(new=T)
+plot(CHS.gdm.Splines$x[,"temp.laying.date"], CHS.gdm.Splines$y[,"temp.laying.date"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.gdm.Splines$x[,"temp.laying.date"], CZ.gdm.Splines$y[,"temp.laying.date"], lty=2, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+dev.off()
+
+### pcpt.60d
+
+pdf("CHN.CHS.CZ.pcpt.60d.pdf")
+plot(CHN.gdm.Splines$x[,"pcpt.60d"], CHN.gdm.Splines$y[,"pcpt.60d"], lty=1, lwd=1.5, type="l", xlab="pcpt.60d", ylab="Partial ecological distance", ylim=c(0,ymax))
+par(new=T)
+plot(CHS.gdm.Splines$x[,"pcpt.60d"], CHS.gdm.Splines$y[,"pcpt.60d"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.gdm.Splines$x[,"pcpt.60d"], CZ.gdm.Splines$y[,"pcpt.60d"], lty=2, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+dev.off()
+
+### shadow.days
+
+pdf("CHN.CHS.CZ.shadow.days.pdf")
+plot(CHN.gdm.Splines$x[,"shadow.days"], CHN.gdm.Splines$y[,"shadow.days"], lty=1, lwd=1.5, type="l", xlab="shadow.days", ylab="Partial ecological distance", ylim=c(0,ymax))
+par(new=T)
+plot(CHS.gdm.Splines$x[,"shadow.days"], CHS.gdm.Splines$y[,"shadow.days"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.gdm.Splines$x[,"shadow.days"], CZ.gdm.Splines$y[,"shadow.days"], lty=2, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+dev.off()
+
+### day10cm
+
+pdf("CHN.CHS.CZ.day10cm.pdf")
+plot(CHN.gdm.Splines$x[,"day10cm"], CHN.gdm.Splines$y[,"day10cm"], lty=1, lwd=1.5, type="l", xlab="day10cm", ylab="Partial ecological distance", ylim=c(0,ymax))
+par(new=T)
+plot(CHS.gdm.Splines$x[,"day10cm"], CHS.gdm.Splines$y[,"day10cm"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.gdm.Splines$x[,"day10cm"], CZ.gdm.Splines$y[,"day10cm"], lty=2, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+dev.off()
+
+```
+
+2.2. CHS.VS + CHS.TI
+
+```
+
+leg.txt = c("CHS.VS", "CHS.TI") ##define the text to be used in the legend
+
+### Geography
+
+pdf("CHS.VS.TI.Geog.pdf")
+plot(CHS.VS.gdm.Splines$x[,"Geographic"], CHS.VS.gdm.Splines$y[,"Geographic"], lty=1, lwd=1.5, type="l", xlab="Geographic distance", ylab="Partial ecological distance", ylim=c(0,ymax))
+par(new=T)
+plot(CHS.TI.gdm.Splines$x[,"Geographic"], CHS.TI.gdm.Splines$y[,"Geographic"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n")
+dev.off()
+
+
+### Sol.Rad
+
+pdf("CHS.VS.TI.sol.rad.60d.pdf")
+plot(CHS.VS.gdm.Splines$x[,"sol.rad.60d"], CHS.VS.gdm.Splines$y[,"sol.rad.60d"], lty=1, lwd=1.5, type="l", xlab="sol.rad.60d", ylab="Partial ecological distance", ylim=c(0,ymax))
+par(new=T)
+plot(CHS.TI.gdm.Splines$x[,"sol.rad.60d"], CHS.TI.gdm.Splines$y[,"sol.rad.60d"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+dev.off()
+
+
+### temp.laying.date
+
+pdf("CHS.VS.TI.temp.laying.date.pdf")
+plot(CHS.VS.gdm.Splines$x[,"temp.laying.date"], CHS.VS.gdm.Splines$y[,"temp.laying.date"], lty=1, lwd=1.5, type="l", xlab="temp.laying.date", ylab="Partial ecological distance", ylim=c(0,ymax))
+par(new=T)
+plot(CHS.TI.gdm.Splines$x[,"temp.laying.date"], CHS.TI.gdm.Splines$y[,"temp.laying.date"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+dev.off()
+
+### pcpt.60d
+
+pdf("CHS.VS.TI.pcpt.60d.pdf")
+plot(CHS.VS.gdm.Splines$x[,"pcpt.60d"], CHS.VS.gdm.Splines$y[,"pcpt.60d"], lty=1, lwd=1.5, type="l", xlab="pcpt.60d", ylab="Partial ecological distance", ylim=c(0,ymax))
+par(new=T)
+plot(CHS.TI.gdm.Splines$x[,"pcpt.60d"], CHS.TI.gdm.Splines$y[,"pcpt.60d"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+dev.off()
+
+### shadow.days
+
+pdf("CHS.VS.TI.shadow.days.pdf")
+plot(CHS.VS.gdm.Splines$x[,"shadow.days"], CHS.VS.gdm.Splines$y[,"shadow.days"], lty=1, lwd=1.5, type="l", xlab="shadow.days", ylab="Partial ecological distance", ylim=c(0,ymax))
+par(new=T)
+plot(CHS.TI.gdm.Splines$x[,"shadow.days"], CHS.TI.gdm.Splines$y[,"shadow.days"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+dev.off()
+
+### day10cm
+
+pdf("CHS.VS.TI.day10cm.pdf")
+plot(CHS.VS.gdm.Splines$x[,"day10cm"], CHS.VS.gdm.Splines$y[,"day10cm"], lty=1, lwd=1.5, type="l", xlab="day10cm", ylab="Partial ecological distance", ylim=c(0,ymax))
+par(new=T)
+plot(CHS.TI.gdm.Splines$x[,"day10cm"], CHS.TI.gdm.Splines$y[,"day10cm"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+dev.off()
+
+```
 
