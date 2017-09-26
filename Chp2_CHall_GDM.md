@@ -1220,17 +1220,100 @@ dev.off()
 
 Saved as /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GDM/CHS.VS.TI.AllEnvVariables.Splines.pdf
 
+I have to plot Adaptive loci and Ref results for both CHS.VS and CHS.TI
+
+First I have to save the RefLoci exported splines, and read this into R. Easiest way to do this is to save the gdm input file, and rerun gdm in R. 
+
+In R in /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GDM/RefLoci:
+```
+write.table(CHN.RefLoci.gdmData, "CHN.RefLoci.gdmData")
+write.table(CHS.RefLoci.gdmData, "CHS.RefLoci.gdmData")
+write.table(CHS.VS.RefLoci.gdmData, "CHS.VS.RefLoci.gdmData")
+write.table(CHS.TI.RefLoci.gdmData, "CHS.TI.RefLoci.gdmData")
+write.table(CZ.RefLoci.gdmData, "CZ.RefLoci.gdmData")
 ```
 
-leg.txt = c("CHS.VS", "CHS.TI") ##define the text to be used in the legend
+In R in /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GDM/
+```
+
+CHN.RefLoci.gdmData <- read.table("RefLoci/CHN.RefLoci.gdmData")
+CHS.RefLoci.gdmData <- read.table("RefLoci/CHS.RefLoci.gdmData")
+CHS.VS.RefLoci.gdmData <- read.table("RefLoci/CHS.VS.RefLoci.gdmData")
+CHS.TI.RefLoci.gdmData <- read.table("RefLoci/CHS.TI.RefLoci.gdmData")
+CZ.RefLoci.gdmData <- read.table("RefLoci/CZ.RefLoci.gdmData")
+
+library(gdm)
+
+##CHN
+CHN.RefLoci.gdm <- gdm(CHN.RefLoci.gdmData, geo=T)
+CHN.RefLoci.gdm.Splines <- isplineExtract(CHN.RefLoci.gdm) ##extract the spline data to make plotting easier
+plot(CHN.RefLoci.gdm.Splines$x[,"Geographic"], CHN.RefLoci.gdm.Splines$y[,"Geographic"], lwd=3, type="l", xlab="Geographic distance", ylab="Partial ecological distance")  #example of a plot
+
+CHN.RefLoci.gdm.Splines.scaled.y <- CHN.RefLoci.gdm.Splines$y  ##CHN.RefLoci.gdm.Splines is a list. I want to scale y (the Spline value), so I'm moving it to a new data frame
+CHN.RefLoci.gdm.Splines.scaled.y <- apply(CHN.RefLoci.gdm.Splines.scaled.y[,1:ncol(CHN.RefLoci.gdm.Splines.scaled.y)], MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##scale
+CHN.RefLoci.gdm.Splines.scaled.y <- as.data.frame(CHN.RefLoci.gdm.Splines.scaled.y)
+
+
+##CHS
+CHS.RefLoci.gdm <- gdm(CHS.RefLoci.gdmData, geo=T)
+CHS.RefLoci.gdm.Splines <- isplineExtract(CHS.RefLoci.gdm) ##extract the spline data to make plotting easier
+plot(CHS.RefLoci.gdm.Splines$x[,"Geographic"], CHS.RefLoci.gdm.Splines$y[,"Geographic"], lwd=3, type="l", xlab="Geographic distance", ylab="Partial ecological distance")  #example of a plot
+
+CHS.RefLoci.gdm.Splines.scaled.y <- CHS.RefLoci.gdm.Splines$y  ##CHS.RefLoci.gdm.Splines is a list. I want to scale y (the Spline value), so I'm moving it to a new data frame
+CHS.RefLoci.gdm.Splines.scaled.y <- apply(CHS.RefLoci.gdm.Splines.scaled.y[,1:ncol(CHS.RefLoci.gdm.Splines.scaled.y)], MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##scale
+CHS.RefLoci.gdm.Splines.scaled.y <- as.data.frame(CHS.RefLoci.gdm.Splines.scaled.y)
+
+
+##CHS.VS
+CHS.VS.RefLoci.gdm <- gdm(CHS.VS.RefLoci.gdmData, geo=T)
+CHS.VS.RefLoci.gdm.Splines <- isplineExtract(CHS.VS.RefLoci.gdm) ##extract the spline data to make plotting easier
+plot(CHS.VS.RefLoci.gdm.Splines$x[,"Geographic"], CHS.VS.RefLoci.gdm.Splines$y[,"Geographic"], lwd=3, type="l", xlab="Geographic distance", ylab="Partial ecological distance")  #example of a plot
+
+CHS.VS.RefLoci.gdm.Splines.scaled.y <- CHS.VS.RefLoci.gdm.Splines$y  ##CHS.VS.RefLoci.gdm.Splines is a list. I want to scale y (the Spline value), so I'm moving it to a new data frame
+CHS.VS.RefLoci.gdm.Splines.scaled.y <- apply(CHS.VS.RefLoci.gdm.Splines.scaled.y[,1:ncol(CHS.VS.RefLoci.gdm.Splines.scaled.y)], MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##scale
+CHS.VS.RefLoci.gdm.Splines.scaled.y <- as.data.frame(CHS.VS.RefLoci.gdm.Splines.scaled.y)
+
+
+##CHS.TI
+CHS.TI.RefLoci.gdm <- gdm(CHS.TI.RefLoci.gdmData, geo=T)
+CHS.TI.RefLoci.gdm.Splines <- isplineExtract(CHS.TI.RefLoci.gdm) ##extract the spline data to make plotting easier
+plot(CHS.TI.RefLoci.gdm.Splines$x[,"Geographic"], CHS.TI.RefLoci.gdm.Splines$y[,"Geographic"], lwd=3, type="l", xlab="Geographic distance", ylab="Partial ecological distance")  #example of a plot
+
+CHS.TI.RefLoci.gdm.Splines.scaled.y <- CHS.TI.RefLoci.gdm.Splines$y  ##CHS.TI.RefLoci.gdm.Splines is a list. I want to scale y (the Spline value), so I'm moving it to a new data frame
+CHS.TI.RefLoci.gdm.Splines.scaled.y <- apply(CHS.TI.RefLoci.gdm.Splines.scaled.y[,1:ncol(CHS.TI.RefLoci.gdm.Splines.scaled.y)], MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##scale
+CHS.TI.RefLoci.gdm.Splines.scaled.y <- as.data.frame(CHS.TI.RefLoci.gdm.Splines.scaled.y)
+
+
+
+##CZ
+CZ.RefLoci.gdm <- gdm(CZ.RefLoci.gdmData, geo=T)
+CZ.RefLoci.gdm.Splines <- isplineExtract(CZ.RefLoci.gdm) ##extract the spline data to make plotting easier
+plot(CZ.RefLoci.gdm.Splines$x[,"Geographic"], CZ.RefLoci.gdm.Splines$y[,"Geographic"], lwd=3, type="l", xlab="Geographic distance", ylab="Partial ecological distance")  #example of a plot
+
+CZ.RefLoci.gdm.Splines.scaled.y <- CZ.RefLoci.gdm.Splines$y  ##CZ.RefLoci.gdm.Splines is a list. I want to scale y (the Spline value), so I'm moving it to a new data frame
+CZ.RefLoci.gdm.Splines.scaled.y <- apply(CZ.RefLoci.gdm.Splines.scaled.y[,1:ncol(CZ.RefLoci.gdm.Splines.scaled.y)], MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##scale
+CZ.RefLoci.gdm.Splines.scaled.y <- as.data.frame(CZ.RefLoci.gdm.Splines.scaled.y)
+
+```
+
+
+
+
+```
+
+leg.txt = c("CHS.VS", "CHS.VS.Ref", "CHS.TI", "CHS.TI.Ref") ##define the text to be used in the legend
 
 ### Geography
 
 pdf("CHS.VS.TI.Geog.pdf")
-plot(CHS.VS.gdm.Splines$x[,"Geographic"], CHS.VS.gdm.Splines$y[,"Geographic"], lty=1, lwd=1.5, type="l", xlab="Geographic distance", ylab="Partial ecological distance", ylim=c(0,ymax))
+plot(CHS.VS.gdm.Splines$x[,"Geographic"], CHS.VS.gdm.Splines$y[,"Geographic"], lty=1, lwd=1.5, col="purple", type="l", xlab="Geographic distance", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
-plot(CHS.TI.gdm.Splines$x[,"Geographic"], CHS.TI.gdm.Splines$y[,"Geographic"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
-legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n")
+plot(CHS.VS.RefLoci.gdm.Splines$x[,"Geographic"], CHS.VS.RefLoci.gdm.Splines$y[,"Geographic"], lty=3, col="purple", lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CHS.TI.gdm.Splines$x[,"Geographic"], CHS.TI.gdm.Splines$y[,"Geographic"], lty=1, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CHS.TI.RefLoci.gdm.Splines$x[,"Geographic"], CHS.TI.RefLoci.gdm.Splines$y[,"Geographic"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+legend("topleft", leg.txt, col=c("purple", "purple", "violet", "violet"), lty=c(1,3), lwd=3, bty = "n")
 dev.off()
 
 
@@ -1239,7 +1322,11 @@ dev.off()
 pdf("CHS.VS.TI.sol.rad.60d.pdf")
 plot(CHS.VS.gdm.Splines$x[,"sol.rad.60d"], CHS.VS.gdm.Splines$y[,"sol.rad.60d"], lty=1, lwd=1.5, type="l", xlab="sol.rad.60d", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
+plot(CHS.VS.RefLoci.gdm.Splines$x[,"sol.rad.60d"], CHS.VS.RefLoci.gdm.Splines$y[,"sol.rad.60d"], lty=3, col="purple", lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
 plot(CHS.TI.gdm.Splines$x[,"sol.rad.60d"], CHS.TI.gdm.Splines$y[,"sol.rad.60d"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CHS.TI.RefLoci.gdm.Splines$x[,"sol.rad.60d"], CHS.TI.RefLoci.gdm.Splines$y[,"sol.rad.60d"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 #legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
 dev.off()
 
@@ -1249,7 +1336,11 @@ dev.off()
 pdf("CHS.VS.TI.temp.laying.date.pdf")
 plot(CHS.VS.gdm.Splines$x[,"temp.laying.date"], CHS.VS.gdm.Splines$y[,"temp.laying.date"], lty=1, lwd=1.5, type="l", xlab="temp.laying.date", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
+plot(CHS.VS.RefLoci.gdm.Splines$x[,"temp.laying.date"], CHS.VS.RefLoci.gdm.Splines$y[,"temp.laying.date"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
 plot(CHS.TI.gdm.Splines$x[,"temp.laying.date"], CHS.TI.gdm.Splines$y[,"temp.laying.date"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CHS.TI.RefLoci.gdm.Splines$x[,"temp.laying.date], CHS.TI.RefLoci.gdm.Splines$y[,"temp.laying.date"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 #legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
 dev.off()
 
@@ -1258,27 +1349,36 @@ dev.off()
 pdf("CHS.VS.TI.pcpt.60d.pdf")
 plot(CHS.VS.gdm.Splines$x[,"pcpt.60d"], CHS.VS.gdm.Splines$y[,"pcpt.60d"], lty=1, lwd=1.5, type="l", xlab="pcpt.60d", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
+plot(CHS.VS.RefLoci.gdm.Splines$x[,"pcpt.60d"], CHS.VS.RefLoci.gdm.Splines$y[,"pcpt.60d"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
 plot(CHS.TI.gdm.Splines$x[,"pcpt.60d"], CHS.TI.gdm.Splines$y[,"pcpt.60d"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
-dev.off()
+par(new=T)
+plot(CHS.TI.RefLoci.gdm.Splines$x[,"pcpt.60d], CHS.TI.RefLoci.gdm.Splines$y[,"pcpt.60d"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first boxdev.off()
 
 ### shadow.days
 
 pdf("CHS.VS.TI.shadow.days.pdf")
 plot(CHS.VS.gdm.Splines$x[,"shadow.days"], CHS.VS.gdm.Splines$y[,"shadow.days"], lty=1, lwd=1.5, type="l", xlab="shadow.days", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
+plot(CHS.VS.RefLoci.gdm.Splines$x[,"shadow.days"], CHS.VS.RefLoci.gdm.Splines$y[,"shadow.days"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
 plot(CHS.TI.gdm.Splines$x[,"shadow.days"], CHS.TI.gdm.Splines$y[,"shadow.days"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
-dev.off()
+par(new=T)
+plot(CHS.TI.RefLoci.gdm.Splines$x[,"shadow.days], CHS.TI.RefLoci.gdm.Splines$y[,"shadow.days"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first boxdev.off()
 
 ### day10cm
 
 pdf("CHS.VS.TI.day10cm.pdf")
 plot(CHS.VS.gdm.Splines$x[,"day10cm"], CHS.VS.gdm.Splines$y[,"day10cm"], lty=1, lwd=1.5, type="l", xlab="day10cm", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
+plot(CHS.VS.RefLoci.gdm.Splines$x[,"day10cm"], CHS.VS.RefLoci.gdm.Splines$y[,"day10cm"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
 plot(CHS.TI.gdm.Splines$x[,"day10cm"], CHS.TI.gdm.Splines$y[,"day10cm"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
-dev.off()
+par(new=T)
+plot(CHS.TI.RefLoci.gdm.Splines$x[,"day10cm], CHS.TI.RefLoci.gdm.Splines$y[,"day10cm"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first boxdev.off()
 
 ```
 
