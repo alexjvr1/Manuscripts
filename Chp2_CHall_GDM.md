@@ -75,6 +75,32 @@ CHN.gdm <- gdm(CHN.gdmData, geo=T)
 
 plot(CHN.gdm, plot.layout=c(3,3))
 
+###Plot of Splines across each EnvVar
+
+##For comparison between all env variables, I need to normalise the Splines (0-1) for each Env variable
+
+CHS.VS.gdm.Splines <- isplineExtract(CHS.VS.gdm) ##extract the spline data to make plotting easier
+plot(gdm.1.splineDat$x[,"Geographic"], gdm.1.splineDat$y[,"Geographic"], lwd=3, type="l", xlab="Geographic distance", ylab="Partial ecological distance")  #example of a plot
+
+CHS.VS.gdm.Splines.scaled.y <- CHS.VS.gdm.Splines$y  ##CHS.VS.gdm.Splines is a list. I want to scale y (the Spline value), so I'm moving it to a new data frame
+CHS.VS.gdm.Splines.scaled.y <- apply(CHS.VS.gdm.Splines.scaled.y[,1:ncol(CHS.VS.gdm.Splines.scaled.y)], MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##scale
+plot(CHS.VS.gdm.Splines$x[,"pcpt.60d"], CHS.VS.gdm.Splines.scaled.y$pcpt.60d, lwd=3,type="l", xlab="Pcpt 60d", ylab="Partial ecological distance") ##and then we can plot them like this
+plot(CHS.VS.gdm.Splines$x[,"day10cm"], CHS.VS.gdm.Splines.scaled.y$day10cm, lwd=3,type="l", xlab="Day 10cm", ylab="Partial ecological distance")
+
+
+###Prepare the Spline data for the comparative plot
+###I need the relative importance of each env variable. I'm calculating this by comparing the maximum Spline value for each variable, and normalising across all 5 EnvVariables. The height of each spline gives the importance - i.e. change in height at a particular EnvVariable value = bigger change in Fst than before. 
+
+library(ggplot2) 
+
+CHS.VS.RelativeImportance.Splines <- CHS.VS.gdm.Splines$y[200,]  ##the maximum value is the last row of the splines list
+CHS.VS.RelativeImportance.Splines <- as.data.frame(CHS.VS.RelativeImportance.Splines)
+CHS.VS.RelativeImportance.Splines <- apply(CHS.VS.RelativeImportance.Splines, MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##normalise
+
+CHS.VS.RelativeImportance.Splines$EnvVar <- c("Geography", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm")
+CHS.VS.RelativeImportance.Splines$Transect <- c("CHS.VS", "CHS.VS", "CHS.VS", "CHS.VS", "CHS.VS", "CHS.VS")
+ggplot(CHS.VS.RelativeImportance.Splines, aes(x=Transect, y=EnvVar, fill=CHS.VS.RelativeImportance.Splines)) + geom_tile() + coord_equal() + scale_fill_gradient(name="R2") +theme(axis.title.x=element_blank(), axis.title.y=element_blank())  ##check that it looks right
+
 ```
 
 
