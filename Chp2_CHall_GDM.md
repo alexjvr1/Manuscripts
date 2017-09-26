@@ -412,7 +412,9 @@ ggplot(CZ.RelativeImportance.Splines, aes(x=Transect, y=EnvVar, fill=RelativeImp
 
 CHall.RelativeImportance.Splines <- rbind(CHN.RelativeImportance.Splines, CHS.RelativeImportance.Splines, CHS.VS.RelativeImportance.Splines, CHS.TI.RelativeImportance.Splines, CZ.RelativeImportance.Splines)
 
+pdf("CHall.RelativeImporanceAcrossTransects.pdf")
 ggplot(CHall.RelativeImportance.Splines, aes(x=Transect, y=EnvVar, fill=RelativeImportance.Splines)) + geom_tile() + coord_equal() + scale_fill_gradient(name="Relative Importance") +theme(axis.title.x=element_blank(), axis.title.y=element_blank())  ##check that it looks right
+dev.off()
 
 ```
 
