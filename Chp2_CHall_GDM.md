@@ -1144,74 +1144,110 @@ Open them in Adobe Illustrator and combine.
 Saved as /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GDM/CHN.CHS.CZ.AllEnvVariables.Splines.pdf
 
 ```
-leg.txt = c("CHN", "CHS", "CZ") ##define the text to be used in the legend
+leg.txt = c("CHN", "CHN.Ref", "CHS", "CHS.Ref", "CZ", "CZ.Ref") ##define the text to be used in the legend
 
 ### Geography
 
 pdf("CHN.CHS.CZ.Geog.pdf")
-plot(CHN.gdm.Splines$x[,"Geographic"], CHN.gdm.Splines$y[,"Geographic"], lty=1, lwd=1.5, type="l", xlab="Geographic distance", ylab="Partial ecological distance", ylim=c(0,ymax))
+plot(CHN.gdm.Splines$x[,"Geographic"], CHN.gdm.Splines$y[,"Geographic"], col="forestgreen", lty=1, lwd=1.5, type="l", xlab="Geographic distance", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
-plot(CHS.gdm.Splines$x[,"Geographic"], CHS.gdm.Splines$y[,"Geographic"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+plot(CHN.RefLoci.gdm.Splines$x[,"Geographic"], CHN.RefLoci.gdm.Splines$y[,"Geographic"], col="forestgreen", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
-plot(CZ.gdm.Splines$x[,"Geographic"], CZ.gdm.Splines$y[,"Geographic"], lty=2, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
-legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=3, bty = "n")
+plot(CHS.gdm.Splines$x[,"Geographic"], CHS.gdm.Splines$y[,"Geographic"], col="purple", lty=1, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CHS.RefLoci.gdm.Splines$x[,"Geographic"], CHS.RefLoci.gdm.Splines$y[,"Geographic"], col="purple", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.gdm.Splines$x[,"Geographic"], CZ.gdm.Splines$y[,"Geographic"], col="goldenrod1", lty=1, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.RefLoci.gdm.Splines$x[,"Geographic"], CZ.RefLoci.gdm.Splines$y[,"Geographic"], col="goldenrod1", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+legend("topleft", leg.txt, col=c("forestgreen", "forestgreen", "purple", "purple", "goldenrod1", "goldenrod1"), lty=c(1,3,1,3,1,3), lwd=3, bty = "n")
 dev.off()
 
 
 ### Sol.Rad
 
 pdf("CHN.CHS.CZ.sol.rad.60d.pdf")
-plot(CHN.gdm.Splines$x[,"sol.rad.60d"], CHN.gdm.Splines$y[,"sol.rad.60d"], lty=1, lwd=1.5, type="l", xlab="sol.rad.60d", ylab="Partial ecological distance", ylim=c(0,ymax))
+plot(CHN.gdm.Splines$x[,"sol.rad.60d"], CHN.gdm.Splines$y[,"sol.rad.60d"], col="forestgreen", lty=1, lwd=1.5, type="l", xlab="sol.rad.60d distance", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
-plot(CHS.gdm.Splines$x[,"sol.rad.60d"], CHS.gdm.Splines$y[,"sol.rad.60d"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+plot(CHN.RefLoci.gdm.Splines$x[,"sol.rad.60d"], CHN.RefLoci.gdm.Splines$y[,"sol.rad.60d"], col="forestgreen", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
-plot(CZ.gdm.Splines$x[,"sol.rad.60d"], CZ.gdm.Splines$y[,"sol.rad.60d"], lty=2, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+plot(CHS.gdm.Splines$x[,"sol.rad.60d"], CHS.gdm.Splines$y[,"sol.rad.60d"], col="purple", lty=1, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CHS.RefLoci.gdm.Splines$x[,"sol.rad.60d"], CHS.RefLoci.gdm.Splines$y[,"sol.rad.60d"], col="purple", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.gdm.Splines$x[,"sol.rad.60d"], CZ.gdm.Splines$y[,"sol.rad.60d"], col="goldenrod1", lty=1, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.RefLoci.gdm.Splines$x[,"sol.rad.60d"], CZ.RefLoci.gdm.Splines$y[,"sol.rad.60d"], col="goldenrod1", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col=c("forestgreen", "forestgreen", "purple", "purple", "goldenrod1", "goldenrod1"), lty=c(1,3,1,3,1,3), lwd=3, bty = "n")
 dev.off()
 
 
 ### temp.laying.date
 
 pdf("CHN.CHS.CZ.temp.laying.date.pdf")
-plot(CHN.gdm.Splines$x[,"temp.laying.date"], CHN.gdm.Splines$y[,"temp.laying.date"], lty=1, lwd=1.5, type="l", xlab="temp.laying.date", ylab="Partial ecological distance", ylim=c(0,ymax))
+plot(CHN.gdm.Splines$x[,"temp.laying.date"], CHN.gdm.Splines$y[,"temp.laying.date"], col="forestgreen", lty=1, lwd=1.5, type="l", xlab="temp.laying.date distance", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
-plot(CHS.gdm.Splines$x[,"temp.laying.date"], CHS.gdm.Splines$y[,"temp.laying.date"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+plot(CHN.RefLoci.gdm.Splines$x[,"temp.laying.date"], CHN.RefLoci.gdm.Splines$y[,"temp.laying.date"], col="forestgreen", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
-plot(CZ.gdm.Splines$x[,"temp.laying.date"], CZ.gdm.Splines$y[,"temp.laying.date"], lty=2, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+plot(CHS.gdm.Splines$x[,"temp.laying.date"], CHS.gdm.Splines$y[,"temp.laying.date"], col="purple", lty=1, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CHS.RefLoci.gdm.Splines$x[,"temp.laying.date"], CHS.RefLoci.gdm.Splines$y[,"temp.laying.date"], col="purple", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.gdm.Splines$x[,"temp.laying.date"], CZ.gdm.Splines$y[,"temp.laying.date"], col="goldenrod1", lty=1, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.RefLoci.gdm.Splines$x[,"temp.laying.date"], CZ.RefLoci.gdm.Splines$y[,"temp.laying.date"], col="goldenrod1", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col=c("forestgreen", "forestgreen", "purple", "purple", "goldenrod1", "goldenrod1"), lty=c(1,3,1,3,1,3), lwd=3, bty = "n")
 dev.off()
 
 ### pcpt.60d
 
 pdf("CHN.CHS.CZ.pcpt.60d.pdf")
-plot(CHN.gdm.Splines$x[,"pcpt.60d"], CHN.gdm.Splines$y[,"pcpt.60d"], lty=1, lwd=1.5, type="l", xlab="pcpt.60d", ylab="Partial ecological distance", ylim=c(0,ymax))
+plot(CHN.gdm.Splines$x[,"pcpt.60d"], CHN.gdm.Splines$y[,"pcpt.60d"], col="forestgreen", lty=1, lwd=1.5, type="l", xlab="pcpt.60d distance", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
-plot(CHS.gdm.Splines$x[,"pcpt.60d"], CHS.gdm.Splines$y[,"pcpt.60d"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+plot(CHN.RefLoci.gdm.Splines$x[,"pcpt.60d"], CHN.RefLoci.gdm.Splines$y[,"pcpt.60d"], col="forestgreen", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
-plot(CZ.gdm.Splines$x[,"pcpt.60d"], CZ.gdm.Splines$y[,"pcpt.60d"], lty=2, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+plot(CHS.gdm.Splines$x[,"pcpt.60d"], CHS.gdm.Splines$y[,"pcpt.60d"], col="purple", lty=1, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CHS.RefLoci.gdm.Splines$x[,"pcpt.60d"], CHS.RefLoci.gdm.Splines$y[,"pcpt.60d"], col="purple", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.gdm.Splines$x[,"pcpt.60d"], CZ.gdm.Splines$y[,"pcpt.60d"], col="goldenrod1", lty=1, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.RefLoci.gdm.Splines$x[,"pcpt.60d"], CZ.RefLoci.gdm.Splines$y[,"pcpt.60d"], col="goldenrod1", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col=c("forestgreen", "forestgreen", "purple", "purple", "goldenrod1", "goldenrod1"), lty=c(1,3,1,3,1,3), lwd=3, bty = "n")
 dev.off()
 
 ### shadow.days
 
 pdf("CHN.CHS.CZ.shadow.days.pdf")
-plot(CHN.gdm.Splines$x[,"shadow.days"], CHN.gdm.Splines$y[,"shadow.days"], lty=1, lwd=1.5, type="l", xlab="shadow.days", ylab="Partial ecological distance", ylim=c(0,ymax))
+plot(CHN.gdm.Splines$x[,"shadow.days"], CHN.gdm.Splines$y[,"shadow.days"], col="forestgreen", lty=1, lwd=1.5, type="l", xlab="shadow.days distance", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
-plot(CHS.gdm.Splines$x[,"shadow.days"], CHS.gdm.Splines$y[,"shadow.days"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+plot(CHN.RefLoci.gdm.Splines$x[,"shadow.days"], CHN.RefLoci.gdm.Splines$y[,"shadow.days"], col="forestgreen", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
-plot(CZ.gdm.Splines$x[,"shadow.days"], CZ.gdm.Splines$y[,"shadow.days"], lty=2, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+plot(CHS.gdm.Splines$x[,"shadow.days"], CHS.gdm.Splines$y[,"shadow.days"], col="purple", lty=1, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CHS.RefLoci.gdm.Splines$x[,"shadow.days"], CHS.RefLoci.gdm.Splines$y[,"shadow.days"], col="purple", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.gdm.Splines$x[,"shadow.days"], CZ.gdm.Splines$y[,"shadow.days"], col="goldenrod1", lty=1, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.RefLoci.gdm.Splines$x[,"shadow.days"], CZ.RefLoci.gdm.Splines$y[,"shadow.days"], col="goldenrod1", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col=c("forestgreen", "forestgreen", "purple", "purple", "goldenrod1", "goldenrod1"), lty=c(1,3,1,3,1,3), lwd=3, bty = "n")
 dev.off()
 
 ### day10cm
 
 pdf("CHN.CHS.CZ.day10cm.pdf")
-plot(CHN.gdm.Splines$x[,"day10cm"], CHN.gdm.Splines$y[,"day10cm"], lty=1, lwd=1.5, type="l", xlab="day10cm", ylab="Partial ecological distance", ylim=c(0,ymax))
+plot(CHN.gdm.Splines$x[,"day10cm"], CHN.gdm.Splines$y[,"day10cm"], col="forestgreen", lty=1, lwd=1.5, type="l", xlab="day10cm distance", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
-plot(CHS.gdm.Splines$x[,"day10cm"], CHS.gdm.Splines$y[,"day10cm"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+plot(CHN.RefLoci.gdm.Splines$x[,"day10cm"], CHN.RefLoci.gdm.Splines$y[,"day10cm"], col="forestgreen", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
-plot(CZ.gdm.Splines$x[,"day10cm"], CZ.gdm.Splines$y[,"day10cm"], lty=2, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+plot(CHS.gdm.Splines$x[,"day10cm"], CHS.gdm.Splines$y[,"day10cm"], col="purple", lty=1, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CHS.RefLoci.gdm.Splines$x[,"day10cm"], CHS.RefLoci.gdm.Splines$y[,"day10cm"], col="purple", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.gdm.Splines$x[,"day10cm"], CZ.gdm.Splines$y[,"day10cm"], col="goldenrod1", lty=1, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+par(new=T)
+plot(CZ.RefLoci.gdm.Splines$x[,"day10cm"], CZ.RefLoci.gdm.Splines$y[,"day10cm"], col="goldenrod1", lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col=c("forestgreen", "forestgreen", "purple", "purple", "goldenrod1", "goldenrod1"), lty=c(1,3,1,3,1,3), lwd=3, bty = "n")
 dev.off()
 
 ```
@@ -1320,66 +1356,70 @@ dev.off()
 ### Sol.Rad
 
 pdf("CHS.VS.TI.sol.rad.60d.pdf")
-plot(CHS.VS.gdm.Splines$x[,"sol.rad.60d"], CHS.VS.gdm.Splines$y[,"sol.rad.60d"], lty=1, lwd=1.5, type="l", xlab="sol.rad.60d", ylab="Partial ecological distance", ylim=c(0,ymax))
+plot(CHS.VS.gdm.Splines$x[,"sol.rad.60d"], CHS.VS.gdm.Splines$y[,"sol.rad.60d"], lty=1, lwd=1.5, col="purple", type="l", xlab="sol.rad.60d distance", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
 plot(CHS.VS.RefLoci.gdm.Splines$x[,"sol.rad.60d"], CHS.VS.RefLoci.gdm.Splines$y[,"sol.rad.60d"], lty=3, col="purple", lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
-plot(CHS.TI.gdm.Splines$x[,"sol.rad.60d"], CHS.TI.gdm.Splines$y[,"sol.rad.60d"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+plot(CHS.TI.gdm.Splines$x[,"sol.rad.60d"], CHS.TI.gdm.Splines$y[,"sol.rad.60d"], lty=1, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
 plot(CHS.TI.RefLoci.gdm.Splines$x[,"sol.rad.60d"], CHS.TI.RefLoci.gdm.Splines$y[,"sol.rad.60d"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+#legend("topleft", leg.txt, col=c("purple", "purple", "violet", "violet"), lty=c(1,3), lwd=3, bty = "n")
+
 dev.off()
 
 
 ### temp.laying.date
 
 pdf("CHS.VS.TI.temp.laying.date.pdf")
-plot(CHS.VS.gdm.Splines$x[,"temp.laying.date"], CHS.VS.gdm.Splines$y[,"temp.laying.date"], lty=1, lwd=1.5, type="l", xlab="temp.laying.date", ylab="Partial ecological distance", ylim=c(0,ymax))
+plot(CHS.VS.gdm.Splines$x[,"temp.laying.date"], CHS.VS.gdm.Splines$y[,"temp.laying.date"], lty=1, lwd=1.5, col="purple", type="l", xlab="temp.laying.date distance", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
-plot(CHS.VS.RefLoci.gdm.Splines$x[,"temp.laying.date"], CHS.VS.RefLoci.gdm.Splines$y[,"temp.laying.date"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+plot(CHS.VS.RefLoci.gdm.Splines$x[,"temp.laying.date"], CHS.VS.RefLoci.gdm.Splines$y[,"temp.laying.date"], lty=3, col="purple", lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
-plot(CHS.TI.gdm.Splines$x[,"temp.laying.date"], CHS.TI.gdm.Splines$y[,"temp.laying.date"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+plot(CHS.TI.gdm.Splines$x[,"temp.laying.date"], CHS.TI.gdm.Splines$y[,"temp.laying.date"], lty=1, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
-plot(CHS.TI.RefLoci.gdm.Splines$x[,"temp.laying.date], CHS.TI.RefLoci.gdm.Splines$y[,"temp.laying.date"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first box
+plot(CHS.TI.RefLoci.gdm.Splines$x[,"temp.laying.date"], CHS.TI.RefLoci.gdm.Splines$y[,"temp.laying.date"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col=c("purple", "purple", "violet", "violet"), lty=c(1,3), lwd=3, bty = "n")
+
 dev.off()
 
 ### pcpt.60d
 
 pdf("CHS.VS.TI.pcpt.60d.pdf")
-plot(CHS.VS.gdm.Splines$x[,"pcpt.60d"], CHS.VS.gdm.Splines$y[,"pcpt.60d"], lty=1, lwd=1.5, type="l", xlab="pcpt.60d", ylab="Partial ecological distance", ylim=c(0,ymax))
+plot(CHS.VS.gdm.Splines$x[,"pcpt.60d"], CHS.VS.gdm.Splines$y[,"pcpt.60d"], lty=1, lwd=1.5, col="purple", type="l", xlab="pcpt.60d distance", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
-plot(CHS.VS.RefLoci.gdm.Splines$x[,"pcpt.60d"], CHS.VS.RefLoci.gdm.Splines$y[,"pcpt.60d"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+plot(CHS.VS.RefLoci.gdm.Splines$x[,"pcpt.60d"], CHS.VS.RefLoci.gdm.Splines$y[,"pcpt.60d"], lty=3, col="purple", lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
-plot(CHS.TI.gdm.Splines$x[,"pcpt.60d"], CHS.TI.gdm.Splines$y[,"pcpt.60d"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+plot(CHS.TI.gdm.Splines$x[,"pcpt.60d"], CHS.TI.gdm.Splines$y[,"pcpt.60d"], lty=1, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
-plot(CHS.TI.RefLoci.gdm.Splines$x[,"pcpt.60d], CHS.TI.RefLoci.gdm.Splines$y[,"pcpt.60d"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first boxdev.off()
+plot(CHS.TI.RefLoci.gdm.Splines$x[,"pcpt.60d"], CHS.TI.RefLoci.gdm.Splines$y[,"pcpt.60d"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col=c("purple", "purple", "violet", "violet"), lty=c(1,3), lwd=3, bty = "n")
+dev.off()
 
 ### shadow.days
 
 pdf("CHS.VS.TI.shadow.days.pdf")
-plot(CHS.VS.gdm.Splines$x[,"shadow.days"], CHS.VS.gdm.Splines$y[,"shadow.days"], lty=1, lwd=1.5, type="l", xlab="shadow.days", ylab="Partial ecological distance", ylim=c(0,ymax))
+plot(CHS.VS.gdm.Splines$x[,"shadow.days"], CHS.VS.gdm.Splines$y[,"shadow.days"], lty=1, lwd=1.5, col="purple", type="l", xlab="shadow.days distance", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
-plot(CHS.VS.RefLoci.gdm.Splines$x[,"shadow.days"], CHS.VS.RefLoci.gdm.Splines$y[,"shadow.days"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+plot(CHS.VS.RefLoci.gdm.Splines$x[,"shadow.days"], CHS.VS.RefLoci.gdm.Splines$y[,"shadow.days"], lty=3, col="purple", lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
-plot(CHS.TI.gdm.Splines$x[,"shadow.days"], CHS.TI.gdm.Splines$y[,"shadow.days"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+plot(CHS.TI.gdm.Splines$x[,"shadow.days"], CHS.TI.gdm.Splines$y[,"shadow.days"], lty=1, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
-plot(CHS.TI.RefLoci.gdm.Splines$x[,"shadow.days], CHS.TI.RefLoci.gdm.Splines$y[,"shadow.days"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first boxdev.off()
+plot(CHS.TI.RefLoci.gdm.Splines$x[,"shadow.days"], CHS.TI.RefLoci.gdm.Splines$y[,"shadow.days"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col=c("purple", "purple", "violet", "violet"), lty=c(1,3), lwd=3, bty = "n")
+dev.off()
 
 ### day10cm
 
 pdf("CHS.VS.TI.day10cm.pdf")
-plot(CHS.VS.gdm.Splines$x[,"day10cm"], CHS.VS.gdm.Splines$y[,"day10cm"], lty=1, lwd=1.5, type="l", xlab="day10cm", ylab="Partial ecological distance", ylim=c(0,ymax))
+plot(CHS.VS.gdm.Splines$x[,"day10cm"], CHS.VS.gdm.Splines$y[,"day10cm"], lty=1, lwd=1.5, col="purple", type="l", xlab="day10cm distance", ylab="Partial ecological distance", ylim=c(0,ymax))
 par(new=T)
-plot(CHS.VS.RefLoci.gdm.Splines$x[,"day10cm"], CHS.VS.RefLoci.gdm.Splines$y[,"day10cm"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+plot(CHS.VS.RefLoci.gdm.Splines$x[,"day10cm"], CHS.VS.RefLoci.gdm.Splines$y[,"day10cm"], lty=3, col="purple", lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
-plot(CHS.TI.gdm.Splines$x[,"day10cm"], CHS.TI.gdm.Splines$y[,"day10cm"], lty=3, lwd=1.5, type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+plot(CHS.TI.gdm.Splines$x[,"day10cm"], CHS.TI.gdm.Splines$y[,"day10cm"], lty=1, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
 par(new=T)
-plot(CHS.TI.RefLoci.gdm.Splines$x[,"day10cm], CHS.TI.RefLoci.gdm.Splines$y[,"day10cm"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3), lwd=3, bty = "n") ##the legend is only necessary in the first boxdev.off()
-
+plot(CHS.TI.RefLoci.gdm.Splines$x[,"day10cm"], CHS.TI.RefLoci.gdm.Splines$y[,"day10cm"], lty=3, lwd=1.5, col="violet", type="l", xlab="", ylab="", ylim=c(0,ymax), xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col=c("purple", "purple", "violet", "violet"), lty=c(1,3), lwd=3, bty = "n")
+dev.off()
 ```
 
 
