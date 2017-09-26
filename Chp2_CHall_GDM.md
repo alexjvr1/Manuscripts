@@ -420,6 +420,12 @@ ggplot(CHall.RelativeImportance.Splines, aes(x=Transect, y=EnvVar, fill=Relative
 
 #### 2.1. CHN + CHS + CZ
 
+Draw all the plots. 
+
+Open them in Adobe Illustrator and combine. 
+
+Saved as /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GDM/CHN.CHS.CZ.AllEnvVariables.Splines.pdf
+
 ```
 leg.txt = c("CHN", "CHS", "CZ") ##define the text to be used in the legend
 
@@ -494,6 +500,8 @@ dev.off()
 ```
 
 2.2. CHS.VS + CHS.TI
+
+Saved as /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GDM/CHS.VS.TI.AllEnvVariables.Splines.pdf
 
 ```
 
