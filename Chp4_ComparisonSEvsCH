@@ -1,0 +1,30 @@
+#CHP4
+
+Adaptation across latitude may be driven by temperature during the growth season, or by the season length. Both of these have been
+suggested previously, and in my SE MS I find that adaptation to temperature might be important. 
+
+Here I investigate which of the two variables are the most important, and determine whether adaptation across elevation is also driven
+by season length or temperature during the growth season. 
+
+Strategy: 
+
+1. Identify candidate adaptive loci. 
+  a)I'm using EAA (LFMM and BayENV) to identify loci associated with season length or temperature during
+the breeding season. 
+  b)I'm identifying outlier loci using Bayescan, PCAdapt, and XtX from Bayenv2
+  
+2. Test whether these are important across the gradient compared with neutral loci: 
+  a) Gradient forest analysis
+  b) GDM
+  
+3) Identify regions with high genomic turnover -> predict the effects of future climate change. 
+
+
+
+
+## Part1: Identify Candidate adaptive loci
+
+### a) Env. Assoc. Analyses (EAA)
+
+I'm using mean temperature 60 days after laying and season length as the two main variables here. 
+
