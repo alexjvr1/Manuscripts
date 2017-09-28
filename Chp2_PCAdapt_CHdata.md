@@ -144,7 +144,7 @@ Number of SNPs with minor allele frequency lower than 0.05 ignored: 0
 plot(x.CHN, option="screeplot")  ##PC for pop structure = on the steep curve
 ```
 
-Based on this I choose K=4
+Based on this I choose K=5
 
 Plot the PCA using population information
 
