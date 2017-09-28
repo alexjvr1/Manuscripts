@@ -26,17 +26,17 @@ Paul Gugger tutorial: http://pgugger.al.umces.edu/assets/redundancy-analysis-for
 I'm using the full CH dataset. I have to run the analysis seperately for all the different partitions of the data to investigate adaptation
 at different geographic scales. 
 
-#### 1. CHall.n940.loci9608
+#### 1. CHall.n932.loci9078
 
-#### 2. CHN.n229.loci9608
+#### 2. CHN.n229.loci5960
 
-#### 3. CHS.n283.loci9608
+#### 3. CHS.n275.loci7099
 
-#### 4. CHS.VS.n135.loci9608
+#### 4. CHS.VS.n135.loci6593
 
-#### 5. CHS.TI.n148.loci9608
+#### 5. CHS.TI.n140.loci6298
 
-#### 6. CZ.n404.loci9608
+#### 6. CZ.n404.loci8115
 
 
 ### Input files:
