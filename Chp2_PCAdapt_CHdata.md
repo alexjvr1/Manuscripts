@@ -56,7 +56,9 @@ Number of SNPs with minor allele frequency lower than 0.05 ignored: 0
 plot(x.CHall, option="screeplot")  ##PC for pop structure = on the steep curve
 ```
 
-Based on this I choose K=5
+Based on this I choose K=3. The random eigenvalues fall in the straight line, while the ones explaining structure are above this. 
+
+See vignette: https://cran.r-project.org/web/packages/pcadapt/vignettes/pcadapt.html on choosing K. 
 
 Plot the PCA using population information
 
@@ -74,8 +76,8 @@ plot(x.CHall, option="scores", pop=poplist)
 I chose K=5 following the scree plot from PCAdapt and DAPC results
 
 ```
-x.CHall.maf0.05 <- pcadapt(CHall, K=5, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
-x.CHall.maf0.1 <- pcadapt(CHall, K=5, min.maf=0.1) #calculate for maf 0.1
+x.CHall.maf0.05 <- pcadapt(CHall, K=3, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
+x.CHall.maf0.1 <- pcadapt(CHall, K=3, min.maf=0.1) #calculate for maf 0.1
 
 pdf(file="pcadapt.pvalues.CHall.pdf")
 par(mfrow=c(2,1))
@@ -144,7 +146,7 @@ Number of SNPs with minor allele frequency lower than 0.05 ignored: 0
 plot(x.CHN, option="screeplot")  ##PC for pop structure = on the steep curve
 ```
 
-Based on this I choose K=5
+Based on this I choose K=4
 
 Plot the PCA using population information
 
@@ -162,8 +164,8 @@ plot(x.CHN, option="scores", pop=poplist)
 I chose K=4 following the scree plot from PCAdapt and DAPC results
 
 ```
-x.CHN.maf0.05 <- pcadapt(CHN, K=5, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
-x.CHN.maf0.1 <- pcadapt(CHN, K=5, min.maf=0.1) #calculate for maf 0.1
+x.CHN.maf0.05 <- pcadapt(CHN, K=4, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
+x.CHN.maf0.1 <- pcadapt(CHN, K=4, min.maf=0.1) #calculate for maf 0.1
 Reading file CHN.229.5265.plink.pcadapt...
 Number of SNPs: 5265
 Number of individuals: 229
@@ -322,7 +324,7 @@ Number of SNPs with minor allele frequency lower than 0.05 ignored: 0
 plot(x.CHS.VS, option="screeplot")  ##PC for pop structure = on the steep curve
 ```
 
-Based on this I choose K=4
+Based on this I choose K=7
 
 Plot the PCA using population information
 
@@ -340,8 +342,8 @@ plot(x.CHS.VS, option="scores", pop=poplist)
 I chose K=4 following the scree plot from PCAdapt and DAPC results
 
 ```
-x.CHS.VS.maf0.05 <- pcadapt(CHS.VS, K=4, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
-x.CHS.VS.maf0.1 <- pcadapt(CHS.VS, K=4, min.maf=0.1) #calculate for maf 0.1
+x.CHS.VS.maf0.05 <- pcadapt(CHS.VS, K=7, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
+x.CHS.VS.maf0.1 <- pcadapt(CHS.VS, K=7, min.maf=0.1) #calculate for maf 0.1
 Reading file CHS.VS.135.5835.plink.pcadapt...
 Number of SNPs: 5835
 Number of individuals: 135
@@ -415,7 +417,7 @@ Number of SNPs with minor allele frequency lower than 0.05 ignored: 0
 plot(x.CHS.TI, option="screeplot")  ##PC for pop structure = on the steep curve
 ```
 
-Based on this I choose K=6
+Based on this I choose K=5
 
 Plot the PCA using population information
 
@@ -430,11 +432,11 @@ plot(x.CHS.TI, option="scores", pop=poplist)
 
 ### 2.Determine outliers
 
-I chose K=3 following the scree plot from PCAdapt and DAPC results
+I chose K=5 following the scree plot from PCAdapt and DAPC results
 
 ```
-x.CHS.TI.maf0.05 <- pcadapt(CHS.TI, K=6, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
-x.CHS.TI.maf0.1 <- pcadapt(CHS.TI, K=6, min.maf=0.1) #calculate for maf 0.1
+x.CHS.TI.maf0.05 <- pcadapt(CHS.TI, K=5, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
+x.CHS.TI.maf0.1 <- pcadapt(CHS.TI, K=5, min.maf=0.1) #calculate for maf 0.1
 Reading file CHS.TI.140.5692.plink.pcadapt...
 Number of SNPs: 5692
 Number of individuals: 140
