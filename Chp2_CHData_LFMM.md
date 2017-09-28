@@ -133,7 +133,7 @@ CZ: K9
 [CZ.K9]:https://cloud.githubusercontent.com/assets/12142475/19264784/800d6fde-8fa2-11e6-8517-bcb3832d2619.png
 
 
-CHall K19 or 20  - but what about overfitting???
+CHall K19 or 20
 ![alt_txt][CHall.K19]
 [CHall.K19]:https://cloud.githubusercontent.com/assets/12142475/19264778/7b663f9c-8fa2-11e6-8998-6faa85e504be.png
 
