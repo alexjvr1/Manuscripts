@@ -2,17 +2,17 @@
 
 I want to identify all outlier loci for each of the datasets using PCAdapt
 
-1. CHall.932.9608
+1. CHall.932.7744.recode.vcf
 
-2. CHN.229.9608
+2. CHN.229.5265.recode.vcf
 
-3. CHS.283.9608
+3. CHS.275.6339.recode.vcf
 
-4. CHS.VS.135.9608
+4. CHS.VS.135.5835.recode.vcf
 
-5. CHS.TI.148.9608
+5. CHS.TI.140.5692.recode.vcf
 
-6. CZ.404.9608
+6. CZ.404.7288.recode.vcf
 
 
 input files .ped from plink
@@ -20,7 +20,7 @@ input files .ped from plink
 copy from input.files: 
 
 ```
-cp /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/input.files_subsets/*ped /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/PCadapt/
+cp /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/RDA/Sept2017/AnalysisFullDataset/*ped /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/PCadapt/Oct2017/
 
 ```
 
@@ -32,14 +32,14 @@ cp /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/input.files_sub
 ```
 library(pcadapt)
 
-CHall <- read.pcadapt("CH.940.9760.plink.ped", type="ped")
+CHall <- read.pcadapt("CHall.932.7744.plink.ped", type="ped")
 Summary:
 
-        - input file      CH.940.9760.plink.ped
-        - output file     CH.940.9760.plink.pcadapt
+        - input file      CHall.932.7744.plink.ped
+        - output file     CHall.932.7744.plink.pcadapt
 
-	- number of individuals detected:	940
-	- number of loci detected:		9696
+	- number of individuals detected:	932
+	- number of loci detected:		7744
 
 File has been sucessfully converted.
 
@@ -47,11 +47,11 @@ File has been sucessfully converted.
 
 x.CHall <- pcadapt(CHall, K=20)
 
-Reading file CH.940.9760.plink.pcadapt...
-Number of SNPs: 9696
-Number of individuals: 940
-Number of SNPs with minor allele frequency lower than 0.05 ignored: 530
-2661689 out of 9114240 missing data ignored.
+Reading file CHall.932.7744.plink.pcadapt...
+Number of SNPs: 7744
+Number of individuals: 932
+Number of SNPs with minor allele frequency lower than 0.05 ignored: 0
+2148762 out of 7217408 missing data ignored.
 
 plot(x.CHall, option="screeplot")  ##PC for pop structure = on the steep curve
 ```
@@ -61,7 +61,7 @@ Based on this I choose K=5
 Plot the PCA using population information
 
 ```
-pop.CHall <- read.table("CH940.cluster.pop", header=F)
+pop.CHall <- read.table("CH932.cluster.pop", header=F)
 pop.CHall
 poplist <- as.character(pop.CHall[,3])
 poplist
@@ -91,20 +91,20 @@ I used x.maf0.05 since the p-distribution was flat
 ```
 library(qvalue)
 alpha <- 0.05  ##FDR
-qval <- qvalue(x.CHall$pvalues)$qvalues
+qval <- qvalue(x.CHall.maf0.05$pvalues)$qvalues
 outliers.CHall <- which(qval<alpha)
 outliers.CHall
-snp_pc <- get.pc(x.CHall.maf0.1,outliers) ##see PCs associated with the outliers
+CHall.snp_pc <- get.pc(x.CHall.maf0.05,outliers.CHall) ##see PCs associated with the outliers
 ```
 
 
 ### 3.Rename loci
 
 ```
-locus.names.CHall <- read.table("CHall.940.9608.plink.map", header=F)
+locus.names.CHall <- read.table("CHall.932.7744.plink.map", header=F)
 locus.names.CHall
 locus.names.CHall$ID <- seq.int(nrow(locus.names.CHall)) #add an index of the SNP numbers
-CHall.outliers.pcadapt <- as.character(outliers.CHN)
+CHall.outliers.pcadapt <- as.character(outliers.CHall)
 CHall.outliers.pcadapt.names <- locus.names.CHall[locus.names.CHall$ID %in% CHall.outliers.pcadapt,]
 CHall.outliers.pcadapt.names <- paste("X", CHall.outliers.pcadapt.names$V2, sep=".")
 
@@ -123,11 +123,11 @@ library(pcadapt)
 CHN <- read.pcadapt("CHN.229.9608.plink.ped", type="ped")
 Summary:
 
-        - input file      CHN.229.9608.plink.ped
-        - output file     CHN.229.9608.plink.pcadapt
+        - input file      CHN.229.5265.plink.ped
+        - output file     CHN.229.5265.plink.pcadapt
 
 	- number of individuals detected:	229
-	- number of loci detected:		9608
+	- number of loci detected:		5265
 
 File has been sucessfully converted.
 
@@ -135,11 +135,11 @@ File has been sucessfully converted.
 
 x.CHN <- pcadapt(CHN, K=20)
 
-Reading file CHN.229.9608.plink.pcadapt...
-Number of SNPs: 9608
+Reading file CHN.229.5265.plink.pcadapt...
+Number of SNPs: 5265
 Number of individuals: 229
-Number of SNPs with minor allele frequency lower than 0.05 ignored: 3648
-439399 out of 2200232 missing data ignored.
+Number of SNPs with minor allele frequency lower than 0.05 ignored: 0
+365454 out of 1205685 missing data ignored.
 
 plot(x.CHN, option="screeplot")  ##PC for pop structure = on the steep curve
 ```
@@ -162,8 +162,13 @@ plot(x.CHN, option="scores", pop=poplist)
 I chose K=4 following the scree plot from PCAdapt and DAPC results
 
 ```
-x.CHN.maf0.05 <- pcadapt(x.CHN, K=5, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
-x..CHN.maf0.1 <- pcadapt(x.CHN, K=5, min.maf=0.1) #calculate for maf 0.1
+x.CHN.maf0.05 <- pcadapt(CHN, K=5, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
+x.CHN.maf0.1 <- pcadapt(CHN, K=5, min.maf=0.1) #calculate for maf 0.1
+Reading file CHN.229.5265.plink.pcadapt...
+Number of SNPs: 5265
+Number of individuals: 229
+Number of SNPs with minor allele frequency lower than 0.1 ignored: 712
+333699 out of 1205685 missing data ignored.
 
 pdf(file="pcadapt.pvalues.CHN.pdf")
 par(mfrow=c(2,1))
@@ -179,17 +184,17 @@ I used x.maf0.05 since the p-distribution was flat
 ```
 library(qvalue)
 alpha <- 0.05  ##FDR
-qval <- qvalue(x.CHN$pvalues)$qvalues
+qval <- qvalue(x.CHN.maf0.05$pvalues)$qvalues
 outliers.CHN <- which(qval<alpha)
 outliers.CHN
-snp_pc <- get.pc(x.CHN.maf0.1,outliers) ##see PCs associated with the outliers
+CHN.snp_pc <- get.pc(x.CHN.maf0.05, outliers.CHN) ##see PCs associated with the outliers
 ```
 
 
 ### 3.Rename loci
 
 ```
-locus.names.CHN <- read.table("CHN.229.9608.plink.map", header=F)
+locus.names.CHN <- read.table("CHN.229.5265.plink.map", header=F)
 locus.names.CHN
 locus.names.CHN$ID <- seq.int(nrow(locus.names.CHN)) #add an index of the SNP numbers
 CHN.outliers.pcadapt <- as.character(outliers.CHN)
@@ -207,14 +212,14 @@ write.table(CHN.outliers.pcadapt.names, "CHN.pcadapt.outliers", col.names=F, row
 ```
 library(pcadapt)
 
-CHS <- read.pcadapt("CHS.283.9608.plink.ped", type="ped")
+CHS <- read.pcadapt("CHS.275.6339.plink.ped", type="ped")
 Summary:
 
-        - input file      CHS.283.9608.plink.ped
-        - output file     CHS.283.9608.plink.pcadapt
+        - input file      CHS.275.6339.plink.ped
+        - output file     CHS.275.6339.plink.pcadapt
 
-	- number of individuals detected:	283
-	- number of loci detected:		9608
+	- number of individuals detected:	275
+	- number of loci detected:		6339
 
 File has been sucessfully converted.
 
@@ -222,11 +227,11 @@ File has been sucessfully converted.
 
 x.CHS <- pcadapt(CHS, K=20)
 
-Reading file CHS.283.9608.plink.pcadapt...
-Number of SNPs: 9608
-Number of individuals: 283
-Number of SNPs with minor allele frequency lower than 0.05 ignored: 2509
-640938 out of 2719064 missing data ignored.
+Reading file CHS.275.6339.plink.pcadapt...
+Number of SNPs: 6339
+Number of individuals: 275
+Number of SNPs with minor allele frequency lower than 0.05 ignored: 0
+529915 out of 1743225 missing data ignored.
 
 plot(x.CHS, option="screeplot")  ##PC for pop structure = on the steep curve
 ```
@@ -236,7 +241,7 @@ Based on this I choose K=3
 Plot the PCA using population information
 
 ```
-pop.CHS <- read.table("CHS283.cluster.pop", header=F)
+pop.CHS <- read.table("CHS275.cluster.pop", header=F)
 pop.CHS
 poplist <- as.character(pop.CHS[,3])
 poplist
@@ -250,7 +255,7 @@ I chose K=3 following the scree plot from PCAdapt and DAPC results
 
 ```
 x.CHS.maf0.05 <- pcadapt(CHS, K=3, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
-x.CHS.maf0.1 <- pcadapt(x.CHS, K=3, min.maf=0.1) #calculate for maf 0.1
+x.CHS.maf0.1 <- pcadapt(CHS, K=3, min.maf=0.1) #calculate for maf 0.1
 
 pdf(file="pcadapt.pvalues.CHS.pdf")
 par(mfrow=c(2,1))
@@ -266,17 +271,17 @@ I used x.maf0.05 since the p-distribution was flat
 ```
 library(qvalue)
 alpha <- 0.05  ##FDR
-qval <- qvalue(x.CHS$pvalues)$qvalues
+qval <- qvalue(x.CHS.maf0.05$pvalues)$qvalues
 outliers.CHS <- which(qval<alpha)
 outliers.CHS
-snp_pc <- get.pc(x.CHS.maf0.05,outliers.CHS) ##see PCs associated with the outliers
+CHS.snp_pc <- get.pc(x.CHS.maf0.05,outliers.CHS) ##see PCs associated with the outliers
 ```
 
 
 ### 3.Rename loci
 
 ```
-locus.names.CHS <- read.table("CHS.283.9608.plink.map", header=F)
+locus.names.CHS <- read.table("CHS.275.6339.plink.map", header=F)
 locus.names.CHS
 locus.names.CHS$ID <- seq.int(nrow(locus.names.CHS)) #add an index of the SNP numbers
 CHS.outliers.pcadapt <- as.character(outliers.CHS)
@@ -294,30 +299,30 @@ write.table(CHS.outliers.pcadapt.names, "CHS.pcadapt.outliers", col.names=F, row
 ```
 library(pcadapt)
 
-CHS.VS <- read.pcadapt("CHS.VS.135.plink.ped", type="ped")
+CHS.VS <- read.pcadapt("CHS.VS.135.5835.plink.ped", type="ped")
 Summary:
 
-        - input file      CHS.VS.135.plink.ped
-        - output file     CHS.VS.135.plink.pcadapt
+        - input file      CHS.VS.135.5835.plink.ped
+        - output file     CHS.VS.135.5835.plink.pcadapt
 
 	- number of individuals detected:	135
-	- number of loci detected:		9608
+	- number of loci detected:		5835
 
 File has been sucessfully converted.
 
 ##Check the nr of PCs
 
 x.CHS.VS <- pcadapt(CHS.VS, K=20)
-Reading file CHS.VS.135.plink.pcadapt...
-Number of SNPs: 9608
+Reading file CHS.VS.135.5835.plink.pcadapt...
+Number of SNPs: 5835
 Number of individuals: 135
-Number of SNPs with minor allele frequency lower than 0.05 ignored: 3015
-288950 out of 1297080 missing data ignored.
+Number of SNPs with minor allele frequency lower than 0.05 ignored: 0
+243032 out of 787725 missing data ignored.
 
 plot(x.CHS.VS, option="screeplot")  ##PC for pop structure = on the steep curve
 ```
 
-Based on this I choose K=3
+Based on this I choose K=4
 
 Plot the PCA using population information
 
@@ -332,11 +337,17 @@ plot(x.CHS.VS, option="scores", pop=poplist)
 
 ### 2.Determine outliers
 
-I chose K=3 following the scree plot from PCAdapt and DAPC results
+I chose K=4 following the scree plot from PCAdapt and DAPC results
 
 ```
-x.CHS.VS.maf0.05 <- pcadapt(CHS.VS, K=3, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
-x.CHS.VS.maf0.1 <- pcadapt(CHS.VS, K=3, min.maf=0.1) #calculate for maf 0.1
+x.CHS.VS.maf0.05 <- pcadapt(CHS.VS, K=4, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
+x.CHS.VS.maf0.1 <- pcadapt(CHS.VS, K=4, min.maf=0.1) #calculate for maf 0.1
+Reading file CHS.VS.135.5835.plink.pcadapt...
+Number of SNPs: 5835
+Number of individuals: 135
+Number of SNPs with minor allele frequency lower than 0.1 ignored: 631
+227436 out of 787725 missing data ignored.
+
 
 pdf(file="pcadapt.pvalues.CHS.VS.pdf")
 par(mfrow=c(2,1))
@@ -352,17 +363,17 @@ I used x.maf0.05 since the p-distribution was flat
 ```
 library(qvalue)
 alpha <- 0.05  ##FDR
-qval <- qvalue(x.CHS.VS$pvalues)$qvalues
+qval <- qvalue(x.CHS.VS.maf0.05$pvalues)$qvalues
 outliers.CHS.VS <- which(qval<alpha)
 outliers.CHS.VS
-snp_pc <- get.pc(x.CHS.VS.maf0.05,outliers.CHS.VS) ##see PCs associated with the outliers
+CHS.VS.snp_pc <- get.pc(x.CHS.VS.maf0.05,outliers.CHS.VS) ##see PCs associated with the outliers
 ```
 
 
 ### 3.Rename loci
 
 ```
-locus.names.CHS.VS <- read.table("CHS.VS.283.9608.plink.map", header=F)
+locus.names.CHS.VS <- read.table("CHS.VS.135.5835.plink.map", header=F)
 locus.names.CHS.VS
 locus.names.CHS.VS$ID <- seq.int(nrow(locus.names.CHS.VS)) #add an index of the SNP numbers
 CHS.VS.outliers.pcadapt <- as.character(outliers.CHS.VS)
@@ -380,14 +391,14 @@ write.table(CHS.VS.outliers.pcadapt.names, "CHS.VS.pcadapt.outliers", col.names=
 ```
 library(pcadapt)
 
-CHS.TI <- read.pcadapt("CHS.TI.148.plink.ped", type="ped")
+CHS.TI <- read.pcadapt("CHS.TI.140.5692.plink.ped", type="ped")
 Summary:
 
-        - input file      CHS.TI.148.plink.ped
-        - output file     CHS.TI.148.plink.pcadapt
+        - input file      CHS.TI.140.5692.plink.ped
+        - output file     CHS.TI.140.5692.plink.pcadapt
 
-	- number of individuals detected:	148
-	- number of loci detected:		9608
+	- number of individuals detected:	140
+	- number of loci detected:		5692
 
 File has been sucessfully converted.
 
@@ -395,16 +406,16 @@ File has been sucessfully converted.
 
 x.CHS.TI <- pcadapt(CHS.TI, K=20)
 
-Reading file CHS.TI.148.plink.pcadapt...
-Number of SNPs: 9608
-Number of individuals: 148
-Number of SNPs with minor allele frequency lower than 0.05 ignored: 3310
-295646 out of 1421984 missing data ignored.
+Reading file CHS.TI.140.5692.plink.pcadapt...
+Number of SNPs: 5692
+Number of individuals: 140
+Number of SNPs with minor allele frequency lower than 0.05 ignored: 0
+233871 out of 796880 missing data ignored.
 
 plot(x.CHS.TI, option="screeplot")  ##PC for pop structure = on the steep curve
 ```
 
-Based on this I choose K=3
+Based on this I choose K=6
 
 Plot the PCA using population information
 
@@ -422,8 +433,13 @@ plot(x.CHS.TI, option="scores", pop=poplist)
 I chose K=3 following the scree plot from PCAdapt and DAPC results
 
 ```
-x.CHS.TI.maf0.05 <- pcadapt(CHS.TI, K=3, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
-x.CHS.TI.maf0.1 <- pcadapt(CHS.TI, K=3, min.maf=0.1) #calculate for maf 0.1
+x.CHS.TI.maf0.05 <- pcadapt(CHS.TI, K=6, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
+x.CHS.TI.maf0.1 <- pcadapt(CHS.TI, K=6, min.maf=0.1) #calculate for maf 0.1
+Reading file CHS.TI.140.5692.plink.pcadapt...
+Number of SNPs: 5692
+Number of individuals: 140
+Number of SNPs with minor allele frequency lower than 0.1 ignored: 671
+214993 out of 796880 missing data ignored.
 
 pdf(file="pcadapt.pvalues.CHS.TI.pdf")
 par(mfrow=c(2,1))
@@ -439,17 +455,17 @@ I used x.maf0.05 since the p-distribution was flat
 ```
 library(qvalue)
 alpha <- 0.05  ##FDR
-qval <- qvalue(x.CHS.TI$pvalues)$qvalues
+qval <- qvalue(x.CHS.TI.maf0.05$pvalues)$qvalues
 outliers.CHS.TI <- which(qval<alpha)
 outliers.CHS.TI
-snp_pc <- get.pc(x.CHS.TI.maf0.05,outliers.CHS.TI) ##see PCs associated with the outliers
+CHS.TI.snp_pc <- get.pc(x.CHS.TI.maf0.05,outliers.CHS.TI) ##see PCs associated with the outliers
 ```
 
 
 ### 3.Rename loci
 
 ```
-locus.names.CHS.TI <- read.table("CHS.TI.148.plink.map", header=F)
+locus.names.CHS.TI <- read.table("CHS.TI.140.5692.plink.map", header=F)
 locus.names.CHS.TI
 locus.names.CHS.TI$ID <- seq.int(nrow(locus.names.CHS.TI)) #add an index of the SNP numbers
 CHS.TI.outliers.pcadapt <- as.character(outliers.CHS.TI)
@@ -466,14 +482,14 @@ write.table(CHS.TI.outliers.pcadapt.names, "CHS.TI.pcadapt.outliers", col.names=
 ```
 library(pcadapt)
 
-CZ <- read.pcadapt("CZ.404.9608.plink.ped", type="ped")
+CZ <- read.pcadapt("CZ.404.7288.plink.ped", type="ped")
 Summary:
 
-        - input file      CZ.404.9608.plink.ped
-        - output file     CZ.404.9608.plink.pcadapt
+        - input file      CZ.404.7288.plink.ped
+        - output file     CZ.404.7288.plink.pcadapt
 
 	- number of individuals detected:	404
-	- number of loci detected:		9608
+	- number of loci detected:		7288
 
 File has been sucessfully converted.
 
@@ -481,11 +497,11 @@ File has been sucessfully converted.
 
 x.CZ <- pcadapt(CZ, K=20)
 
-Reading file CZ.404.9608.plink.pcadapt...
-Number of SNPs: 9608
+Reading file CZ.404.7288.plink.pcadapt...
+Number of SNPs: 7288
 Number of individuals: 404
-Number of SNPs with minor allele frequency lower than 0.05 ignored: 1493
-988533 out of 3881632 missing data ignored.
+Number of SNPs with minor allele frequency lower than 0.05 ignored: 0
+869474 out of 2944352 missing data ignored.
 
 plot(x.CZ, option="screeplot")  ##PC for pop structure = on the steep curve
 ```
@@ -510,6 +526,11 @@ I chose K=3 following the scree plot from PCAdapt and DAPC results
 ```
 x.CZ.maf0.05 <- pcadapt(CZ, K=3, min.maf=0.05)   ##calculate z-statistics and transformed values for chi-squared distribution
 x.CZ.maf0.1 <- pcadapt(CZ, K=3, min.maf=0.1) #calculate for maf 0.1
+Reading file CZ.404.7288.plink.pcadapt...
+Number of SNPs: 7288
+Number of individuals: 404
+Number of SNPs with minor allele frequency lower than 0.1 ignored: 1013
+774179 out of 2944352 missing data ignored.
 
 pdf(file="pcadapt.pvalues.CZ.pdf")
 par(mfrow=c(2,1))
@@ -525,17 +546,17 @@ I used x.maf0.05 since the p-distribution was flat
 ```
 library(qvalue)
 alpha <- 0.05  ##FDR
-qval <- qvalue(x.CZ$pvalues)$qvalues
+qval <- qvalue(x.CZ.maf0.05$pvalues)$qvalues
 outliers.CZ <- which(qval<alpha)
 outliers.CZ
-snp_pc <- get.pc(x.CZ.maf0.05,outliers.CZ) ##see PCs associated with the outliers
+CZ.snp_pc <- get.pc(x.CZ.maf0.05,outliers.CZ) ##see PCs associated with the outliers
 ```
 
 
 ### 3.Rename loci
 
 ```
-locus.names.CZ <- read.table("CZ.plink.map", header=F)
+locus.names.CZ <- read.table("CZ.404.7288.plink.map", header=F)
 locus.names.CZ
 locus.names.CZ$ID <- seq.int(nrow(locus.names.CZ)) #add an index of the SNP numbers
 CZ.outliers.pcadapt <- as.character(outliers.CZ)
