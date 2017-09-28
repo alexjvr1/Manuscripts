@@ -327,7 +327,7 @@ Eigenvalues for constrained axes:
 
 Eigenvalues for unconstrained axes:
   PC1   PC2   PC3   PC4   PC5   PC6   PC7   PC8 
-53.74 14.48  9.28  6.87  6.52  6.28  5.71  5.26 
+53.74 14.48  9.28  6.87  6.52   6.28  5.71  5.26 
 (Showed only 8 of all 73 unconstrained eigenvalues)
 
 ##calculate proportion explained (R2)
@@ -432,42 +432,42 @@ dev.off()
 
 H0: Geog alone does not explain Genetic data
 
-pRDA.CH940.climate.noelev <- rda(GenData~lat+long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), Climate.Data)
+pRDA.CH932.climate <- rda(GenData~lat+long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), Climate.Data)
 
-pRDA.CH940.climate.noelev
+pRDA.CH932.climate
 
 Call: rda(formula = GenData ~ lat + long + Condition(shadow.days +
 sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data =
 Climate.Data)
 
-               Inertia Proportion Rank
-Total         333.5875     1.0000     
-Conditional    75.1625     0.2253    5
-Constrained    46.7950     0.1403    2
-Unconstrained 211.6300     0.6344   30
+                Inertia Proportion Rank
+Total         430.99291    1.00000     
+Conditional    38.46745    0.08925    5
+Constrained   133.89305    0.31066    2
+Unconstrained 258.63241    0.60009   73
 Inertia is variance 
 
 Eigenvalues for constrained axes:
- RDA1  RDA2 
-37.78  9.01 
+  RDA1   RDA2 
+109.09  24.80 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8 
-26.582 19.869 12.236 11.725 10.567  9.725  9.000  8.742 
-(Showed only 8 of all 30 unconstrained eigenvalues)
+  PC1   PC2   PC3   PC4   PC5   PC6   PC7   PC8 
+53.74 14.48  9.28  6.87  6.52  6.28  5.71  5.26 
+(Showed only 8 of all 73 unconstrained eigenvalues)
 
 
-#head(summary(pRDA.CH940.climate.noelev))
+#head(summary(pRDA.CH932.climate))
 
-RsquareAdj(pRDA.CH940.climate.noelev)
+RsquareAdj(pRDA.CH932.climate)
 
 $r.squared
-[1] 0.140278
+[1] 0.3106618
 
 $adj.r.squared
-[1] 0.1132943
+[1] 0.3138359
 
-anova(pRDA.CH940.climate.noelev)
+anova(pRDA.CH932.climate)
 
 Permutation test for rda under reduced model
 Permutation: free
@@ -475,64 +475,36 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ lat + long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data = Climate.Data)
          Df Variance      F Pr(>F)    
-Model     2   46.795 3.3168  0.001 ***
-Residual 30  211.630                  
+Model     2   133.89 18.896  0.001 ***
+Residual 73   258.63                  
 ---
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1        
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1       
 
 H0: Rejected -> Geography explains a significant amount of GenData
 
-pdf(file="pRDA.CH940.climate.pdf")
-plot(pRDA.CH940.climate.noelev, main="pRDA CH940 (climate partialled out)")
+pdf(file="pRDA.CH932.climate.pdf")
+plot(pRDA.CH932.climate, main="pRDA CH932 (climate partialled out)")
 dev.off()
 ```
 
 
 Find the most important loci associated with Climate
 ```
- summary(pRDA.CH940.geog.noelev)
+ summary(pRDA.CH932.geog)
 
 Biplot scores for constraining variables
 
-                       RDA1    RDA2     RDA3    RDA4     RDA5 PC1
-shadow.days       3.189e-01 -0.1027  0.03954  0.7566  0.08027   0
-sol.rad.60d      -8.736e-05  0.7303 -0.32012 -0.2854 -0.51741   0
-pcpt.60d          7.321e-01  0.3476 -0.33359 -0.2673 -0.26957   0
-day10cm           5.950e-01  0.4360 -0.10138  0.1803 -0.05493   0
-temp.laying.date  3.224e-01 -0.4331 -0.68384 -0.1886  0.38036   0
+                    RDA1    RDA2    RDA3    RDA4    RDA5 PC1
+shadow.days       0.3453 -0.1496 -0.3566  0.1332 -0.8445   0
+sol.rad.60d      -0.2580  0.3047 -0.3726 -0.8022  0.2101   0
+pcpt.60d          0.4786 -0.2806 -0.6136 -0.3718  0.2047   0
+day10cm           0.3646  0.6714 -0.5720 -0.1345 -0.1135   0
+temp.laying.date -0.1816 -0.3905 -0.7047  0.4556  0.1166   0
 
-RDA1: pcpt.60d, sol.rad.60d
 
-RDA2: sol.rad.60d
-```
+RDA1: pcpt.60d, day10cm, shadow.days
 
-Select the top 100 loci (~1%) associated with RDA1 and RDA2
-```
-#Find the loadings of of loci on each RDA
-
-sum.pRDA.CH940.geog.noelev <- summary(pRDA.CH940.geog.noelev)
-
-CH940.RDAloadings.noelev <- sum.pRDA.CH940.geog.noelev$species  ##write the loadings to data.frame
-CH940.RDAloadings.noelev <- as.data.frame(CH940.RDAloadings.noelev) #change to df
-names(CH940.RDAloadings.noelev)
-par(mfrow=c(2,2))  #check that loadings on each RDA is normally distributed
-hist(CH940.RDAloadings.noelev$RDA1)
-hist(CH940.RDAloadings.noelev$RDA2)
-hist(CH940.RDAloadings.noelev$RDA3)
-hist(CH940.RDAloadings.noelev$RDA4)
-
-##select the top 100 loci (~1%) for each RDA
-
-CH940.RDAloadings.sorted.noelev <- CH940.RDAloadings.noelev[order(-abs(CH940.RDAloadings.noelev$RDA1)),] #sort by absolute value of RDA1. be sure to add "-" in front of "abs" to order from largest to smallest
-CH940.RDA1.outliers.1percent.noelev <- CH940.RDAloadings.sorted.noelev[1:100, 1:2]  ##write to df
-
-CH940.RDAloadings.sorted.noelev <- CH940.RDAloadings.noelev[order(-abs(CH940.RDAloadings.noelev$RDA2)),]  #same for RDA2
-CH940.RDA2.outliers.1percent.noelev <- CH940.RDAloadings.sorted.noelev[1:100, c(1:2)]  
-
-#write both to file. 
-write.table(CH940.RDA1.outliers.1percent.noelev, "CH940.noelev.RDA1.outliers", sep=" ", col.names=T, row.names=T, quote=F)
-write.table(CH940.RDA2.outliers.1percent.noelev, "CH940.noelev.RDA2.outliers", sep=" ", col.names=T, row.names=T, quote=F)
-
+RDA2: day10cm, temp.laying.date
 ```
 
 
@@ -545,8 +517,8 @@ See this tutorial for the interpretation: REDUNDANCY ANALYSIS TUTORIAL: Landscap
 library(vegan)
 
 CHNData <- read.csv("CHN229.MAF.csv", header=T)
-GenData <- CHNData[,11:9618]
-Climate.Data <- CHNData[,3:10]
+GenData <- CHNData[,10:ncol(CHNData)]
+Climate.Data <- CHNData[,3:9]
 
 names(Climate.Data)
 ```
@@ -556,39 +528,39 @@ names(Climate.Data)
 ##1. Run Full RDA model to determine how much of the variation is explainable by the expanatory variables we have
 ##H0: climate data does not affect genotype
 
-RDA.CHNfull.noelev <- rda(GenData ~ lat + long +shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, Climate.Data) 
+RDA.CHNfull <- rda(GenData ~ lat + long +shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, Climate.Data) 
 
-RDA.CHNfull.noelev
+RDA.CHNfull
 
 Call: rda(formula = GenData ~ lat + long + shadow.days + sol.rad.60d +
 pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
 
                Inertia Proportion Rank
-Total         218.3893     1.0000     
-Constrained   104.8478     0.4801    7
-Unconstrained 113.5415     0.5199   11
+Total         191.7262     1.0000     
+Constrained    92.3663     0.4818    7
+Unconstrained  99.3599     0.5182   11
 Inertia is variance 
 
 Eigenvalues for constrained axes:
   RDA1   RDA2   RDA3   RDA4   RDA5   RDA6   RDA7 
-27.471 23.112 14.411 12.965 10.979  8.698  7.212 
+24.398 20.721 12.255 11.222  9.851  7.447  6.472 
 
 Eigenvalues for unconstrained axes:
    PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8    PC9   PC10   PC11 
-21.112 13.473 13.220 11.204  9.805  9.420  8.675  7.677  6.944  6.368  5.643 
+18.548 11.959 11.511  9.700  8.719  8.298  7.476  6.876  6.011  5.465  4.797  
 
 
-RsquareAdj(RDA.CHNfull.noelev)
+RsquareAdj(RDA.CHNfull)
 
 $r.squared
-[1] 0.4800959
+[1] 0.4817615
 
 $adj.r.squared
-[1] 0.1492478
+[1] 0.1519733
 
 
 
-anova(RDA.CHNfull.noelev)
+anova(RDA.CHNfull)
 
 Permutation test for rda under reduced model
 Permutation: free
@@ -596,15 +568,16 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ lat + long + shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
          Df Variance      F Pr(>F)    
-Model     7   104.85 1.4511  0.001 ***
-Residual 11   113.54                  
+Model     7   92.366 1.4608  0.001 ***
+Residual 11   99.360                  
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
 
 ##to see which variables are most important, we can plot the results in a biplot
 
 pdf(file="RDA.CHNfull.pdf")
-plot(RDA.CHNfull.noelev)
+plot(RDA.CHNfull, main="RDA CHNfull")
 dev.off()
 ```
 
@@ -613,59 +586,60 @@ dev.off()
 ##Partial out geog
 H0: Climate does not explain genetic data
 
-pRDA.CHNgeog.noelev <- rda(GenData~shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date+ Condition(lat + long), Climate.Data)
+pRDA.CHNgeog <- rda(GenData~shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date+ Condition(lat + long), Climate.Data)
 
-
-RsquareAdj(pRDA.CHNgeog.noelev)
-
-$r.squared
-[1] 0.2751348
-
-$adj.r.squared
-[1] 0.0436666
-
-
-anova(pRDA.CHNgeog.noelev)
-
-Permutation test for rda under reduced model
-Permutation: free
-Number of permutations: 999
-
-Model: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(lat + long), data = Climate.Data)
-         Df Variance      F Pr(>F)  
-Model     5   60.086 1.1642  0.077 .
-Residual 11  113.541                
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1  
-
-
-H0 not rejected: Climate does not explain a significant amount of CHN GeneticData
-
-pRDA.CHNgeog.noelev
+pRDA.CHNgeog
 
 Call: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d +
 day10cm + temp.laying.date + Condition(lat + long), data =
 Climate.Data)
 
                Inertia Proportion Rank
-Total         218.3893     1.0000     
-Conditional    44.7613     0.2050    2
-Constrained    60.0865     0.2751    5
-Unconstrained 113.5415     0.5199   11
+Total         191.7262     1.0000     
+Conditional    39.8884     0.2080    2
+Constrained    52.4779     0.2737    5
+Unconstrained  99.3599     0.5182   11
 Inertia is variance 
 
 Eigenvalues for constrained axes:
   RDA1   RDA2   RDA3   RDA4   RDA5 
-16.393 13.400 12.578 10.030  7.685 
+14.300 11.402 11.117  8.817  6.842 
 
 Eigenvalues for unconstrained axes:
    PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8    PC9   PC10   PC11 
-21.112 13.473 13.220 11.204  9.805  9.420  8.675  7.677  6.944  6.368  5.643 
+18.548 11.959 11.511  9.700  8.719  8.298  7.476  6.876  6.011  5.465  4.797
+
+RsquareAdj(pRDA.CHNgeog)
+
+$r.squared
+[1] 0.2737126
+
+$adj.r.squared
+[1] 0.0429183
+
+
+anova(pRDA.CHNgeog)
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(lat + long), data = Climate.Data)
+         Df Variance     F Pr(>F)  
+Model     5   52.478 1.162  0.099 .
+Residual 11   99.360               
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+H0 not rejected: Climate does not explain a significant amount of CHN GeneticData
+
+
 
 
 
 pdf(file="pRDA.CHNgeog.pdf")
-plot(pRDA.CHNgeog.noelev, main="pRDA CHN(geog partialled out)")
+plot(pRDA.CHNgeog, main="pRDA CHN(geog partialled out)")
 dev.off()
 ```
 
@@ -675,40 +649,40 @@ dev.off()
 
 H0: Geog alone does not explain Genetic data
 
-pRDA.CHNclimate.noelev <- rda(GenData~lat+long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), Climate.Data)
+pRDA.CHNclimate <- rda(GenData~lat+long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), Climate.Data)
 
-pRDA.CHNclimate.noelev
+pRDA.CHNclimate
 
 Call: rda(formula = GenData ~ lat + long + Condition(shadow.days +
 sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data =
 Climate.Data)
 
                Inertia Proportion Rank
-Total         218.3893     1.0000     
-Conditional    77.4433     0.3546    5
-Constrained    27.4045     0.1255    2
-Unconstrained 113.5415     0.5199   11
+Total         191.7262     1.0000     
+Conditional    68.2651     0.3561    5
+Constrained    24.1012     0.1257    2
+Unconstrained  99.3599     0.5182   11
 Inertia is variance 
 
 Eigenvalues for constrained axes:
   RDA1   RDA2 
-17.053 10.351 
+14.941  9.160 
 
 Eigenvalues for unconstrained axes:
    PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8    PC9   PC10   PC11 
-21.112 13.473 13.220 11.204  9.805  9.420  8.675  7.677  6.944  6.368  5.643 
+18.548 11.959 11.511  9.700  8.719  8.298  7.476  6.876  6.011  5.465  4.797  
 
 
 
-RsquareAdj(pRDA.CHNclimate.noelev)
+RsquareAdj(pRDA.CHNclimate)
 
 $r.squared
-[1] 0.1254847
+[1] 0.1257064
 
 $adj.r.squared
-[1] 0.0428631
+[1] 0.04358942
 
-anova(pRDA.CHNclimate.noelev)
+anova(pRDA.CHNclimate)
 
 Permutation test for rda under reduced model
 Permutation: free
@@ -716,8 +690,8 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ lat + long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data = Climate.Data)
          Df Variance      F Pr(>F)  
-Model     2   27.405 1.3275  0.076 .
-Residual 11  113.541                
+Model     2   24.101 1.3341  0.076 .
+Residual 11   99.360                
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
           
@@ -725,7 +699,7 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 H0: not rejected -> Geography alone does not explain GenData
 
 pdf(file="pRDA.CHNclimate.pdf")
-plot(pRDA.CHNclimate.noelev, main="pRDA (climate partialled out)")
+plot(pRDA.CHNclimate, main="pRDA (climate partialled out)")
 dev.off()
 ```
 
@@ -735,50 +709,24 @@ Find the most important loci associated with Climate
 
 
 ```
-summary(pRDA.CHNgeog.noelev)
+summary(pRDA.CHNgeog)
 
 Biplot scores for constraining variables
 
                     RDA1     RDA2     RDA3      RDA4      RDA5 PC1
-shadow.days      -0.6486 -0.41034 0.151712  0.275719 -0.002203   0
-sol.rad.60d      -0.1709  0.51585 0.641601 -0.062784 -0.300858   0
-pcpt.60d         -0.4192  0.46447 0.294863 -0.009642 -0.405071   0
-day10cm          -0.4323 -0.04717 0.288758 -0.284975 -0.260702   0
-temp.laying.date -0.7060  0.31165 0.002971 -0.373020  0.436136   0
+shadow.days      -0.6372  0.33047  0.33471  0.246755 -0.008364   0
+sol.rad.60d      -0.2536 -0.76583  0.25466 -0.046557  0.289053   0
+pcpt.60d         -0.4723 -0.51210 -0.01391  0.002262  0.396309   0
+day10cm          -0.4603 -0.09573  0.23986 -0.301758  0.228056   0
+temp.laying.date -0.7094 -0.22601 -0.22636 -0.319271 -0.466171   0
 
-RDA1: shadow.days, temp.laying.date
 
-RDA2: shadow.days, sol.rad.60d
+RDA1: temp.laying.date, shadow.days
+
+RDA2: sol.rad.60d, pcpt.60d
 ```
 
-Select the top 100 loci (~1%) associated with RDA1 and RDA2
-```
-#Find the loadings of of loci on each RDA
 
-sum.pRDA.CHNgeog.elev <- summary(pRDA.CHNgeog.noelev)
-
-CHN.RDAloadings.noelev <- sum.pRDA.CHNgeog.noelev$species  ##write the loadings to data.frame
-CHN.RDAloadings.noelev <- as.data.frame(CHN.RDAloadings.noelev) #change to df
-names(CHN.RDAloadings.noelev)
-par(mfrow=c(2,2))  #check that loadings on each RDA is normally distributed
-hist(CHN.RDAloadings.noelev$RDA1)
-hist(CHN.RDAloadings.noelev$RDA2)
-hist(CHN.RDAloadings.noelev$RDA3)
-hist(CHN.RDAloadings.noelev$RDA4)
-
-##select the top 100 loci (~1%) for each RDA
-
-CHN.RDAloadings.sorted.noelev <- CHN.RDAloadings.noelev[order(-abs(CHN.RDAloadings.noelev$RDA1)),] #sort by absolute value of RDA1. be sure to add "-" in front of "abs" to order from largest to smallest
-CHN.RDA1.outliers.1percent.noelev <- CHN.RDAloadings.sorted.noelev[1:100, 1:2]  ##write to df
-
-CHN.RDAloadings.sorted.noelev <- CHN.RDAloadings.noelev[order(-abs(CHN.RDAloadings.noelev$RDA2)),]  #same for RDA2
-CHN.RDA2.outliers.1percent.noelev <- CHN.RDAloadings.sorted.noelev[1:100, c(1:2)]  
-
-#write both to file. 
-write.table(CHN.RDA1.outliers.1percent.noelev, "CHN.noelev.RDA1.outliers", sep=" ", col.names=T, row.names=T, quote=F)
-write.table(CHN.RDA2.outliers.1percent.noelev, "CHN.noelev.RDA2.outliers", sep=" ", col.names=T, row.names=T, quote=F)
-
-```
 
 
 #### 3. CHS
@@ -788,10 +736,10 @@ See this tutorial for the interpretation: REDUNDANCY ANALYSIS TUTORIAL: Landscap
 ```
 library(vegan)
 
-CHSData <- read.csv("CHS283.MAF.csv", header=T)
+CHSData <- read.csv("CHS275.MAF.csv", header=T)
 CHSData <- CHSData[complete.cases(CHSData),]  ##stba is removed here due to missing data
-GenData <- CHSData[,11:9618]
-Climate.Data <- CHSData[,3:10]
+GenData <- CHSData[,10:ncol(CHSData)]
+Climate.Data <- CHSData[,3:9]
 
 names(Climate.Data)
 ```
@@ -801,80 +749,78 @@ names(Climate.Data)
 ##1. Run Full RDA model to determine how much of the variation is explainable by the expanatory variables we have
 ##H0: climate data does not affect genotype
 
-RDA.CHSfull.noelev <- rda(GenData ~ lat + long +shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, Climate.Data) 
+RDA.CHSfull <- rda(GenData ~ lat + long +shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, Climate.Data) 
 
-RDA.CHSfull.noelev
+RDA.CHSfull
+
 Call: rda(formula = GenData ~ lat + long + shadow.days + sol.rad.60d +
 pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
 
                Inertia Proportion Rank
-Total         345.1880     1.0000     
-Constrained   157.5261     0.4563    7
-Unconstrained 187.6619     0.5437   16
+Total         316.3975     1.0000     
+Constrained   146.7810     0.4639    7
+Unconstrained 169.6165     0.5361   16
 Inertia is variance 
 
 Eigenvalues for constrained axes:
  RDA1  RDA2  RDA3  RDA4  RDA5  RDA6  RDA7 
-70.21 19.86 17.75 15.34 13.59 10.80  9.98 
+67.07 18.33 16.49 13.72 12.46  9.73  8.98 
 
 Eigenvalues for unconstrained axes:
    PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8    PC9   PC10   PC11 
-26.236 23.414 19.410 16.216 12.249 11.444 10.847 10.146  9.667  8.944  8.349 
+23.457 21.232 17.695 14.813 10.934 10.191  9.838  9.364  8.827  7.752  7.579 
   PC12   PC13   PC14   PC15   PC16 
- 7.614  6.633  6.187  5.277  5.029 
+ 6.942  6.050  5.689  4.708  4.545 
 
 
-RsquareAdj(RDA.CHSfull.noelev)
+RsquareAdj(RDA.CHSfull)
 
 $r.squared
-[1] 0.4563487
+[1] 0.4639132
 
 $adj.r.squared
-[1] 0.2185012
+[1] 0.2293752
 
 
 
-anova(RDA.CHSfull.noelev)
+anova(RDA.CHSfull)
 
 Permutation test for rda under reduced model
 Permutation: free
 Number of permutations: 999
 
 Model: rda(formula = GenData ~ lat + long + shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
-         Df Variance      F Pr(>F)    
-Model     7   157.53 1.9187  0.001 ***
-Residual 16   187.66                  
+         Df Variance     F Pr(>F)    
+Model     7   146.78 1.978  0.001 ***
+Residual 16   169.62                 
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 ##to see which variables are most important, we can plot the results in a biplot
 
 pdf(file="RDA.CHSfull.pdf")
-plot(RDA.CHSfull.noelev)
+plot(RDA.CHSfull, main="RDA CHSfull")
 dev.off()
 ```
 
-![alt_txt][CHS.Fig1]
-
-[CHS.Fig1]:https://cloud.githubusercontent.com/assets/12142475/23801930/0bf1bc5a-05b2-11e7-8954-fd562989513f.png
 
 
 ```
 ##Partial out geog
 H0: Climate does not explain genetic data
 
-pRDA.CHSgeog.noelev <- rda(GenData~shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date+ Condition(lat + long), Climate.Data)
+pRDA.CHSgeog <- rda(GenData~shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date+ Condition(lat + long), Climate.Data)
 
-RsquareAdj(pRDA.CHSgeog.noelev)
+RsquareAdj(pRDA.CHSgeog)
 
 $r.squared
-[1] 0.2001038
+[1] 0.1986423
 
 $adj.r.squared
-[1] 0.03309021
+[1] 0.0340785
 
 
-anova(pRDA.CHSgeog.noelev)
+anova(pRDA.CHSgeog)
 
 Permutation test for rda under reduced model
 Permutation: free
@@ -882,41 +828,42 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(lat + long), data = Climate.Data)
          Df Variance      F Pr(>F)  
-Model     5   69.073 1.1778  0.038 *
-Residual 16  187.662                
+Model     5    62.85 1.1857  0.046 *
+Residual 16   169.62                
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 
 H0 rejected: Climate explains a significant amount of CHS GeneticData
 
-pRDA.CHSgeog.noelev
+pRDA.CHSgeog
+
 Call: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d +
 day10cm + temp.laying.date + Condition(lat + long), data =
 Climate.Data)
 
                Inertia Proportion Rank
-Total         345.1880     1.0000     
-Conditional    88.4526     0.2562    2
-Constrained    69.0734     0.2001    5
-Unconstrained 187.6619     0.5437   16
+Total         316.3975     1.0000     
+Conditional    83.9311     0.2653    2
+Constrained    62.8499     0.1986    5
+Unconstrained 169.6165     0.5361   16
 Inertia is variance 
 
 Eigenvalues for constrained axes:
   RDA1   RDA2   RDA3   RDA4   RDA5 
-17.766 15.449 14.844 11.016  9.999 
+16.495 13.851 13.555  9.934  9.015 
 
 Eigenvalues for unconstrained axes:
    PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8    PC9   PC10   PC11 
-26.236 23.414 19.410 16.216 12.249 11.444 10.847 10.146  9.667  8.944  8.349 
+23.457 21.232 17.695 14.813 10.934 10.191  9.838  9.364  8.827  7.752  7.579 
   PC12   PC13   PC14   PC15   PC16 
- 7.614  6.633  6.187  5.277  5.029 
+ 6.942  6.050  5.689  4.708  4.545
 
 
 
 
 pdf(file="pRDA.CHSgeog.pdf")
-plot(pRDA.CHSgeog.noelev, main="pRDA CHS(geog partialled out)")
+plot(pRDA.CHSgeog, main="pRDA CHS(geog partialled out)")
 dev.off()
 ```
 
@@ -927,49 +874,49 @@ dev.off()
 
 H0: Geog alone does not explain Genetic data
 
-pRDA.CHSclimate.noelev <- rda(GenData~lat+long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), Climate.Data)
+pRDA.CHSclimate <- rda(GenData~lat+long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), Climate.Data)
 
-pRDA.CHSclimate.noelev
+pRDA.CHSclimate
 
 Call: rda(formula = GenData ~ lat + long + Condition(shadow.days +
 sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data =
 Climate.Data)
 
                Inertia Proportion Rank
-Total         345.1880     1.0000     
-Conditional   117.0711     0.3392    5
-Constrained    40.4550     0.1172    2
-Unconstrained 187.6619     0.5437   16
+Total         316.3975     1.0000     
+Conditional   109.4408     0.3459    5
+Constrained    37.3402     0.1180    2
+Unconstrained 169.6165     0.5361   16
 Inertia is variance 
 
 Eigenvalues for constrained axes:
   RDA1   RDA2 
-23.725 16.730 
+21.927 15.413 
 
 Eigenvalues for unconstrained axes:
    PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8    PC9   PC10   PC11 
-26.236 23.414 19.410 16.216 12.249 11.444 10.847 10.146  9.667  8.944  8.349 
+23.457 21.232 17.695 14.813 10.934 10.191  9.838  9.364  8.827  7.752  7.579 
   PC12   PC13   PC14   PC15   PC16 
- 7.614  6.633  6.187  5.277  5.029 
+ 6.942  6.050  5.689  4.708  4.545 
 
-RsquareAdj(pRDA.CHSclimate.noelev)
+RsquareAdj(pRDA.CHSclimate)
 
 $r.squared
-[1] 0.1171971
+[1] 0.1180168
 
 $adj.r.squared
-[1] 0.06291862
+[1] 0.06517423
 
-anova(pRDA.CHSclimate.noelev)
+anova(pRDA.CHSclimate)
 
 Permutation test for rda under reduced model
 Permutation: free
 Number of permutations: 999
 
 Model: rda(formula = GenData ~ lat + long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data = Climate.Data)
-         Df Variance      F Pr(>F)   
-Model     2   40.455 1.7246  0.002 **
-Residual 16  187.662                 
+         Df Variance      F Pr(>F)    
+Model     2    37.34 1.7612  0.001 ***
+Residual 16   169.62                  
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
           
@@ -977,64 +924,34 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 H0: rejected -> Geography explains a significant portion of GenData
 
 pdf(file="pRDA.CHSclimate.pdf")
-plot(pRDA.CHSclimate.noelev, main="pRDA (climate partialled out)")
+plot(pRDA.CHSclimate, main="pRDA (climate partialled out)")
 dev.off()
 ```
 
 
-![alt_txt][pRDA.CHSclimate]
-
-[pRDA.CHSclimate]:https://cloud.githubusercontent.com/assets/12142475/23802225/f27c7a7a-05b2-11e7-86b8-6c12e8b3f767.png
 
 
 Find the most important loci associated with Climate
 
 
 ```
-head(summary(pRDA.CHSgeog.noelev))
+head(summary(pRDA.CHSgeog))
 
 Biplot scores for constraining variables
 
-                     RDA1    RDA2     RDA3     RDA4     RDA5 PC1
-shadow.days      -0.52558 -0.3297  0.60984 -0.22506 -0.04276   0
-sol.rad.60d      -0.08959  0.6056 -0.45177 -0.36674 -0.36762   0
-pcpt.60d         -0.34804  0.3543  0.05319  0.22785  0.05012   0
-day10cm          -0.17525  0.6628  0.16698 -0.46269  0.07053   0
-temp.laying.date -0.67169 -0.0683 -0.09052 -0.04383  0.68811   0
+                     RDA1     RDA2     RDA3    RDA4      RDA5 PC1
+shadow.days      -0.57138 -0.36197  0.55148  0.2124 -0.051183   0
+sol.rad.60d      -0.02309  0.64415 -0.36900  0.3378 -0.427501   0
+pcpt.60d         -0.32004  0.37876  0.08764 -0.2157  0.061851   0
+day10cm          -0.12807  0.64213  0.24394  0.4782  0.006326   0
+temp.laying.date -0.67551  0.01769 -0.12396  0.1134  0.674231   0
 
-RDA1: shadow.days, temp.laying.date
+RDA1: temp.laying.date, shadow.days
 
-RDA2: sol.rad.60d
+RDA2: sol.rad.60d, day10cm
 ```
 
-Select the top 100 loci (~1%) associated with RDA1 and RDA2
-```
-#Find the loadings of of loci on each RDA
 
-sum.pRDA.CHSgeog.noelev <- summary(pRDA.CHSgeog.noelev)
-
-CHS.RDAloadings.noelev <- sum.pRDA.CHSgeog.noelev$species  ##write the loadings to data.frame
-CHS.RDAloadings.noelev <- as.data.frame(CHS.RDAloadings.noelev) #change to df
-names(CHS.RDAloadings.noelev)
-par(mfrow=c(2,2))  #check that loadings on each RDA is normally distributed
-hist(CHS.RDAloadings.noelev$RDA1)
-hist(CHS.RDAloadings.noelev$RDA2)
-hist(CHS.RDAloadings.noelev$RDA3)
-hist(CHS.RDAloadings.noelev$RDA4)
-
-##select the top 100 loci (~1%) for each RDA
-
-CHS.RDAloadings.sorted.noelev <- CHS.RDAloadings.noelev[order(-abs(CHS.RDAloadings.noelev$RDA1)),] #sort by absolute value of RDA1. be sure to add "-" in front of "abs" to order from largest to smallest
-CHS.RDA1.outliers.1percent.noelev <- CHS.RDAloadings.sorted.noelev[1:100, 1:2]  ##write to df
-
-CHS.RDAloadings.sorted.noelev <- CHS.RDAloadings.noelev[order(-abs(CHS.RDAloadings.noelev$RDA2)),]  #same for RDA2
-CHS.RDA2.outliers.1percent.noelev <- CHS.RDAloadings.sorted.noelev[1:100, c(1:2)]  
-
-#write both to file. 
-write.table(CHS.RDA1.outliers.1percent.noelev, "CHS.noelev.RDA1.outliers", sep=" ", col.names=T, row.names=T, quote=F)
-write.table(CHS.RDA2.outliers.1percent.noelev, "CHS.noelev.RDA2.outliers", sep=" ", col.names=T, row.names=T, quote=F)
-
-```
 
 
 
@@ -1045,8 +962,8 @@ library(vegan)
 
 CHS.VS.Data <- read.csv("CHS.VS135.MAF.csv", header=T)
 CHS.VS.Data <- CHS.VS.Data[complete.cases(CHS.VS.Data),]  ##stba is removed here due to missing data
-GenData <- CHS.VS.Data[,11:9618]
-Climate.Data <- CHS.VS.Data[,3:10]
+GenData <- CHS.VS.Data[,10:ncol(CHS.VS.Data)]
+Climate.Data <- CHS.VS.Data[,3:9]
 names(Climate.Data)
 ```
 
@@ -1055,47 +972,47 @@ names(Climate.Data)
 ##1. Run Full RDA model to determine how much of the variation is explainable by the expanatory variables we have
 ##H0: climate data does not affect genotype
 
-RDA.CHS.VSfull.noelev <- rda(GenData ~ lat + long +shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, Climate.Data) ##runs in 20s 
-RDA.CHS.VSfull.noelev
+RDA.CHS.VSfull <- rda(GenData ~ lat + long +shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, Climate.Data) ##runs in 20s 
+RDA.CHS.VSfull
 
 Call: rda(formula = GenData ~ lat + long + shadow.days + sol.rad.60d +
 pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
 
                Inertia Proportion Rank
-Total         252.5933     1.0000     
-Constrained   216.1574     0.8558    7
-Unconstrained  36.4359     0.1442    2
+Total         228.9971     1.0000     
+Constrained   196.2912     0.8572    7
+Unconstrained  32.7059     0.1428    2
 Inertia is variance 
 
 Eigenvalues for constrained axes:
  RDA1  RDA2  RDA3  RDA4  RDA5  RDA6  RDA7 
-59.66 37.72 30.56 28.42 22.23 19.96 17.62 
+56.77 33.82 27.43 25.30 19.07 18.10 15.81 
 
 Eigenvalues for unconstrained axes:
    PC1    PC2 
-20.389 16.047 
+18.203 14.503 
 
 
 
 
-RsquareAdj(RDA.CHS.VSfull.noelev)
+RsquareAdj(RDA.CHS.VSfull)
 $r.squared
-[1] 0.8557528
+[1] 0.8571775
 
 $adj.r.squared
-[1] 0.3508874
+[1] 0.3572988
 
 
-anova(RDA.CHS.VSfull.noelev)
+anova(RDA.CHS.VSfull)
 
 Permutation test for rda under reduced model
 Permutation: free
 Number of permutations: 999
 
 Model: rda(formula = GenData ~ lat + long + shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
-         Df Variance     F Pr(>F)   
-Model     7  216.157 1.695  0.003 **
-Residual  2   36.436                
+         Df Variance      F Pr(>F)    
+Model     7  196.291 1.7148  0.001 ***
+Residual  2   32.706                  
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -1103,7 +1020,7 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 ##to see which variables are most important, we can plot the results in a biplot
 
 pdf(file="RDA.CHS.VSfull.noelev.pdf")
-plot(RDA.CHS.VSfull.noelev)
+plot(RDA.CHS.VSfull)
 dev.off()
 ```
 
@@ -1113,38 +1030,38 @@ dev.off()
 ##Partial out geog
 H0: Climate does not explain genetic data
 
-pRDA.CHS.VS.geog.noelev <- rda(GenData~shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(lat + long), Climate.Data)
+pRDA.CHS.VS.geog <- rda(GenData~shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(lat + long), Climate.Data)
 
-pRDA.CHS.VS.geog.noelev
+pRDA.CHS.VS.geog
 
 Call: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d +
 day10cm + temp.laying.date + Condition(lat + long), data =
 Climate.Data)
 
                Inertia Proportion Rank
-Total         252.5933     1.0000     
-Conditional    73.3697     0.2905    2
-Constrained   142.7877     0.5653    5
-Unconstrained  36.4359     0.1442    2
+Total         228.9971     1.0000     
+Conditional    65.7180     0.2870    2
+Constrained   130.5732     0.5702    5
+Unconstrained  32.7059     0.1428    2
 Inertia is variance 
 
 Eigenvalues for constrained axes:
  RDA1  RDA2  RDA3  RDA4  RDA5 
-50.79 29.32 23.72 20.94 18.02 
+47.97 26.50 20.58 19.04 16.49 
 
 Eigenvalues for unconstrained axes:
    PC1    PC2 
-20.389 16.047 
+18.203 14.503 
 
-RsquareAdj(pRDA.CHS.VS.geog.noelev)
+RsquareAdj(pRDA.CHS.VS.geog)
 $r.squared
-[1] 0.565287
+[1] 0.5701957
 
 $adj.r.squared
-[1] 0.2631457
+[1] 0.2740365
 
 
-anova(pRDA.CHS.VS.geog.noelev)
+anova(pRDA.CHS.VS.geog)
 
 Permutation test for rda under reduced model
 Permutation: free
@@ -1152,8 +1069,8 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(lat + long), data = Climate.Data)
          Df Variance      F Pr(>F)  
-Model     5  142.788 1.5676  0.076 .
-Residual  2   36.436                
+Model     5  130.573 1.5969  0.087 .
+Residual  2   32.706                
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -1161,8 +1078,8 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 H0 not rejected: Climate alone does not explain CHS.VS GeneticData
 
 
-pdf(file="pRDA.CHS.VS.geog.noelev.pdf")
-plot(pRDA.CHS.VS.geog.noelev, main="pRDA CHS.VS (geog partialled out)")
+pdf(file="pRDA.CHS.VS.geog.pdf")
+plot(pRDA.CHS.VS.geog, main="pRDA CHS.VS (geog partialled out)")
 dev.off()
 ```
 
@@ -1174,41 +1091,41 @@ dev.off()
 
 H0: Geog alone does not explain Genetic data
 
-pRDA.CHS.VS.climate.noelev <- rda(GenData~lat+long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), Climate.Data)
+pRDA.CHS.VS.climate <- rda(GenData~lat+long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), Climate.Data)
 
-pRDA.CHS.VS.climate.noelev
+pRDA.CHS.VS.climate
 
 Call: rda(formula = GenData ~ lat + long + Condition(shadow.days +
 sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data =
 Climate.Data)
 
                Inertia Proportion Rank
-Total         252.5933     1.0000     
-Conditional   149.6384     0.5924    5
-Constrained    66.5190     0.2633    2
-Unconstrained  36.4359     0.1442    2
+Total         228.9971     1.0000     
+Conditional   135.0835     0.5899    5
+Constrained    61.2076     0.2673    2
+Unconstrained  32.7059     0.1428    2
 Inertia is variance 
 
 Eigenvalues for constrained axes:
  RDA1  RDA2 
-45.85 20.67 
+42.77 18.44 
 
 Eigenvalues for unconstrained axes:
    PC1    PC2 
-20.389 16.047
+18.203 14.503 
 
 
 #head(summary(pRDA.CHS.VS.climate))
 
-RsquareAdj(pRDA.CHS.VS.climate.noelev)
+RsquareAdj(pRDA.CHS.VS.climate)
 
 $r.squared
-[1] 0.2633442
+[1] 0.2672856
 
 $adj.r.squared
-[1] 0.2679682
+[1] 0.2800421
 
-anova(pRDA.CHS.VS.climate.noelev)
+anova(pRDA.CHS.VS.climate)
 
 Permutation test for rda under reduced model
 Permutation: free
@@ -1216,13 +1133,13 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ lat + long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data = Climate.Data)
          Df Variance      F Pr(>F)
-Model     2   66.519 1.8256  0.173
-Residual  2   36.436              
+Model     2   61.208 1.8715  0.151
+Residual  2   32.706   
 
 H0: Not Rejected -> Geography alone doesn't explain GenData
 
-pdf(file="pRDA.CHS.VS.climate.noelev.pdf")
-plot(pRDA.CHS.VS.climate.noelev, main="pRDA CHS.VS (climate partialled out)")
+pdf(file="pRDA.CHS.VS.climate.pdf")
+plot(pRDA.CHS.VS.climate, main="pRDA CHS.VS (climate partialled out)")
 dev.off()
 ```
 
@@ -1231,50 +1148,23 @@ dev.off()
 
 Find the most important loci associated with Climate
 ```
- head(summary(pRDA.CHS.VS.geog.noelev))
+ head(summary(pRDA.CHS.VS.geog))
 
 Biplot scores for constraining variables
 
                    RDA1    RDA2     RDA3    RDA4     RDA5 PC1
-shadow.days      0.2818 -0.2034  0.17278 0.17170 -0.10070   0
-sol.rad.60d      0.2795  0.2831 -0.05314 0.11498  0.50381   0
-pcpt.60d         0.5049  0.8066  0.18660 0.22142 -0.02531   0
-day10cm          0.5698  0.5592 -0.09371 0.43904  0.10819   0
-temp.laying.date 0.4639  0.5463 -0.03048 0.02092 -0.68020   0
+shadow.days      0.2814 -0.1945  0.18520 0.16543 -0.10742   0
+sol.rad.60d      0.2770  0.2697 -0.02120 0.09208  0.51938   0
+pcpt.60d         0.5170  0.8100  0.13979 0.21681 -0.01227   0
+day10cm          0.5726  0.5415 -0.09465 0.44351  0.15408   0
+temp.laying.date 0.4772  0.5430 -0.13052 0.06771 -0.65840   0
 
-RDA1: day10cm, pcpt.60d
+RDA1: day10cm, pcpt.60d, temp.laying.date
 
-RDA2: day10cm, pcpt.60d, temp.laying.date
+RDA2: pcpt.60d, temp.laying.date, day10cm
 ```
 
-Select the top 100 loci (~1%) associated with RDA1 and RDA2
-```
-#Find the loadings of of loci on each RDA
 
-sum.pRDA.CHS.VS.geog.noelev <- summary(pRDA.CHS.VS.geog.noelev)
-
-CHS.VS.RDAloadings.noelev <- sum.pRDA.CHS.VS.geog.noelev$species  ##write the loadings to data.frame
-CHS.VS.RDAloadings.noelev <- as.data.frame(CHS.VS.RDAloadings.noelev) #change to df
-names(CHS.VS.RDAloadings.noelev)
-par(mfrow=c(2,2))  #check that loadings on each RDA is normally distributed
-hist(CHS.VS.RDAloadings.noelev$RDA1)
-hist(CHS.VS.RDAloadings.noelev$RDA2)
-hist(CHS.VS.RDAloadings.noelev$RDA3)
-hist(CHS.VS.RDAloadings.noelev$RDA4)
-
-##select the top 100 loci (~1%) for each RDA
-
-CHS.VS.RDAloadings.sorted.noelev <- CHS.VS.RDAloadings.noelev[order(-abs(CHS.VS.RDAloadings.noelev$RDA1)),] #sort by absolute value of RDA1. be sure to add "-" in front of "abs" to order from largest to smallest
-CHS.VS.RDA1.outliers.1percent.noelev <- CHS.VS.RDAloadings.sorted.noelev[1:100, 1:2]  ##write to df
-
-CHS.VS.RDAloadings.sorted.noelev <- CHS.VS.RDAloadings.noelev[order(-abs(CHS.VS.RDAloadings.noelev$RDA2)),]  #same for RDA2
-CHS.VS.RDA2.outliers.1percent.noelev <- CHS.VS.RDAloadings.sorted.noelev[1:100, c(1:2)]  
-
-#write both to file. 
-write.table(CHS.VS.RDA1.outliers.1percent.noelev, "CHS.noelev.VS.RDA1.outliers", sep=" ", col.names=T, row.names=T, quote=F)
-write.table(CHS.VS.RDA2.outliers.1percent.noelev, "CHS.noelev.VS.RDA2.outliers", sep=" ", col.names=T, row.names=T, quote=F)
-
-```
 
 
 #### 5. CHS.TI
@@ -1282,10 +1172,10 @@ write.table(CHS.VS.RDA2.outliers.1percent.noelev, "CHS.noelev.VS.RDA2.outliers",
 ```
 library(vegan)
 
-CHS.TI.Data <- read.csv("CHS.TI148.MAF.csv", header=T)
+CHS.TI.Data <- read.csv("CHS.TI140.MAF.csv", header=T)
 CHS.TI.Data <- CHS.TI.Data[complete.cases(CHS.TI.Data),]  ##stba is removed here due to missing data
-GenData <- CHS.TI.Data[,11:9618]
-Climate.Data <- CHS.TI.Data[,3:10]
+GenData <- CHS.TI.Data[,10:ncol(CHS.TI.Data)]
+Climate.Data <- CHS.TI.Data[,3:9]
 
 names(Climate.Data)
 ```
@@ -1295,35 +1185,35 @@ names(Climate.Data)
 ##1. Run Full RDA model to determine how much of the variation is explainable by the expanatory variables we have
 ##H0: climate data does not affect genotype
 
-RDA.CHS.TIfull.noelev <- rda(GenData ~ lat + long +shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, Climate.Data) ##runs in 20s 
-RDA.CHS.TIfull.noelev
+RDA.CHS.TIfull <- rda(GenData ~ lat + long +shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, Climate.Data) ##runs in 20s 
+RDA.CHS.TIfull
 
 Call: rda(formula = GenData ~ lat + long + shadow.days + sol.rad.60d +
 pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
 
                Inertia Proportion Rank
-Total         303.4368     1.0000     
-Constrained   187.6470     0.6184    7
-Unconstrained 115.7899     0.3816    6
+Total         266.1176     1.0000     
+Constrained   164.1611     0.6169    7
+Unconstrained 101.9564     0.3831    6
 Inertia is variance 
 
 Eigenvalues for constrained axes:
  RDA1  RDA2  RDA3  RDA4  RDA5  RDA6  RDA7 
-45.98 40.71 30.82 27.58 15.63 14.07 12.86 
+39.28 35.46 26.50 24.45 14.05 13.03 11.39 
 
 Eigenvalues for unconstrained axes:
-  PC1   PC2   PC3   PC4   PC5   PC6 
-33.07 25.14 18.53 17.92 11.66  9.48 
+   PC1    PC2    PC3    PC4    PC5    PC6 
+27.919 21.777 17.034 15.974 10.499  8.754 
 
 
-RsquareAdj(RDA.CHS.TIfull.noelev)
+RsquareAdj(RDA.CHS.TIfull)
 $r.squared
-[1] 0.6184054
+[1] 0.6168745
 
 $adj.r.squared
-[1] 0.1732117
+[1] 0.1698948
 
-anova(RDA.CHS.TIfull.noelev)
+anova(RDA.CHS.TIfull)
 
 Permutation test for rda under reduced model
 Permutation: free
@@ -1331,15 +1221,15 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ lat + long + shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
          Df Variance      F Pr(>F)   
-Model     7   187.65 1.3891  0.003 **
-Residual  6   115.79                 
+Model     7   164.16 1.3801  0.005 **
+Residual  6   101.96                 
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 ##to see which variables are most important, we can plot the results in a biplot
 
-pdf(file="RDA.CHS.TIfull.noelev.pdf")
-plot(RDA.CHS.TIfull.noelev)
+pdf(file="RDA.CHS.TIfull.pdf")
+plot(RDA.CHS.TIfull)
 dev.off()
 ```
 
@@ -1348,57 +1238,57 @@ dev.off()
 ##Partial out geog
 H0: Climate does not explain genetic data
 
-pRDA.CHS.TI.geog.noelev <- rda(GenData~shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(lat + long), Climate.Data)
+pRDA.CHS.TI.geog <- rda(GenData~shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(lat + long), Climate.Data)
 
-pRDA.CHS.TI.geog.noelev
+pRDA.CHS.TI.geog
 
 Call: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d +
 day10cm + temp.laying.date + Condition(lat + long), data =
 Climate.Data)
 
                Inertia Proportion Rank
-Total         303.4368     1.0000     
-Conditional    72.1685     0.2378    2
-Constrained   115.4785     0.3806    5
-Unconstrained 115.7899     0.3816    6
+Total         266.1176     1.0000     
+Conditional    64.9251     0.2440    2
+Constrained    99.2361     0.3729    5
+Unconstrained 101.9564     0.3831    6
 Inertia is variance 
 
 Eigenvalues for constrained axes:
  RDA1  RDA2  RDA3  RDA4  RDA5 
-40.03 30.90 16.81 14.62 13.12 
+33.31 25.74 15.03 13.50 11.66 
 
 Eigenvalues for unconstrained axes:
-  PC1   PC2   PC3   PC4   PC5   PC6 
-33.07 25.14 18.53 17.92 11.66  9.48 
+   PC1    PC2    PC3    PC4    PC5    PC6 
+27.919 21.777 17.034 15.974 10.499  8.754 
 
 
-RsquareAdj(pRDA.CHS.TI.geog.noelev)
+RsquareAdj(pRDA.CHS.TI.geog)
 $r.squared
-[1] 0.3805684
+[1] 0.3729032
 
 $adj.r.squared
-[1] 0.07394976
+[1] 0.06338319
 
 
 
-anova(pRDA.CHS.TI.geog.noelev)
+anova(pRDA.CHS.TI.geog)
 
 Permutation test for rda under reduced model
 Permutation: free
 Number of permutations: 999
 
 Model: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(lat + long), data = Climate.Data)
-         Df Variance      F Pr(>F)
-Model     5   115.48 1.1968  0.189
-Residual  6   115.79              
+         Df Variance     F Pr(>F)
+Model     5   99.236 1.168  0.181
+Residual  6  101.956               
 
 
 H0 not rejected: Climate alone does not explain CHS.TI GeneticData
 
 
 
-pdf(file="pRDA.CHS.TI.geog.noelev.pdf")
-plot(pRDA.CHS.TI.geog.noelev, main="pRDA CHS.TI (geog partialled out)")
+pdf(file="pRDA.CHS.TI.geog.pdf")
+plot(pRDA.CHS.TI.geog, main="pRDA CHS.TI (geog partialled out)")
 dev.off()
 ```
 
@@ -1409,39 +1299,39 @@ dev.off()
 
 H0: Geog alone does not explain Genetic data
 
-pRDA.CHS.TI.climate.noelev <- rda(GenData~lat+long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), Climate.Data)
+pRDA.CHS.TI.climate <- rda(GenData~lat+long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), Climate.Data)
 
-pRDA.CHS.TI.climate.noelev
+pRDA.CHS.TI.climate
 
-Call: rda(formula = GenData ~ lat + long + Condition(shadow.days +
+CCall: rda(formula = GenData ~ lat + long + Condition(shadow.days +
 sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data =
 Climate.Data)
 
                Inertia Proportion Rank
-Total         303.4368     1.0000     
-Conditional   124.9119     0.4117    5
-Constrained    62.7350     0.2067    2
-Unconstrained 115.7899     0.3816    6
+Total         266.1176     1.0000     
+Conditional   110.6767     0.4159    5
+Constrained    53.4844     0.2010    2
+Unconstrained 101.9564     0.3831    6
 Inertia is variance 
 
 Eigenvalues for constrained axes:
- RDA1  RDA2 
-35.70 27.03 
+  RDA1   RDA2 
+29.004 24.480 
 
 Eigenvalues for unconstrained axes:
-  PC1   PC2   PC3   PC4   PC5   PC6 
-33.07 25.14 18.53 17.92 11.66  9.48 
+   PC1    PC2    PC3    PC4    PC5    PC6 
+27.919 21.777 17.034 15.974 10.499  8.754 
 
-RsquareAdj(pRDA.CHS.TI.climate.noelev)
+RsquareAdj(pRDA.CHS.TI.climate)
 $r.squared
-[1] 0.2067483
+[1] 0.2009804
 
 $adj.r.squared
-[1] 0.1292689
+[1] 0.1190668
 
 #head(summary(pRDA.CHS.TI.climate))
 
-anova(pRDA.CHS.TI.climate.noelev)
+anova(pRDA.CHS.TI.climate)
 
 Permutation test for rda under reduced model
 Permutation: free
@@ -1449,15 +1339,15 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ lat + long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data = Climate.Data)
          Df Variance      F Pr(>F)  
-Model     2   62.735 1.6254  0.049 *
-Residual  6  115.790                
+Model     2   53.484 1.5737  0.048 *
+Residual  6  101.956                
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
 
 H0: Rejected -> Geography explains a sig proportion of GenData
 
-pdf(file="pRDA.CHS.TI.climate.noelev.pdf")
-plot(pRDA.CHS.TI.climate.noelev, main="pRDA CHS.TI (climate partialled out)")
+pdf(file="pRDA.CHS.TI.climate.pdf")
+plot(pRDA.CHS.TI.climate, main="pRDA CHS.TI (climate partialled out)")
 dev.off()
 ```
 
@@ -1467,51 +1357,24 @@ dev.off()
 
 Find the most important loci associated with Climate
 ```
- head(summary(pRDA.CHS.TI.geog.noelev))
+ head(summary(pRDA.CHS.TI.geog))
 
 Biplot scores for constraining variables
 
-                    RDA1     RDA2    RDA3    RDA4     RDA5 PC1
-shadow.days      0.43153 -0.60200 -0.1351 -0.3388  0.47339   0
-sol.rad.60d      0.01517  0.86277 -0.4238 -0.2111 -0.08190   0
-pcpt.60d         0.40842  0.04162 -0.6537  0.2248 -0.03140   0
-day10cm          0.27926  0.46930 -0.2147 -0.3778  0.07448   0
-temp.laying.date 0.02548 -0.58652 -0.3001 -0.5038 -0.35643   0
+                    RDA1    RDA2   RDA3    RDA4     RDA5 PC1
+shadow.days       0.6023  0.4185 0.1044  0.3742 -0.46578   0
+sol.rad.60d      -0.2516 -0.8185 0.4245  0.2192  0.11839   0
+pcpt.60d          0.3800 -0.1492 0.6673 -0.1839  0.04035   0
+day10cm           0.1219 -0.5413 0.1967  0.3797 -0.04461   0
+temp.laying.date  0.2237  0.5442 0.2352  0.5215  0.37699   0
 
 
-RDA1: shadow.days, pcpt.60d
+RDA1: shadow.days
 
-RDA2: sol.rad.60d, shadow.days, temp.laying.date
+RDA2: sol.rad.60d, day10cm, temp.laying.date
 ```
 
-Select the top 100 loci (~1%) associated with RDA1 and RDA2
-```
-#Find the loadings of of loci on each RDA
 
-sum.pRDA.CHS.TI.geog.noelev <- summary(pRDA.CHS.TI.geog.noelev)
-
-CHS.TI.RDAloadings.noelev <- sum.pRDA.CHS.TI.geog.noelev$species  ##write the loadings to data.frame
-CHS.TI.RDAloadings.noelev <- as.data.frame(CHS.TI.RDAloadings.noelev) #change to df
-names(CHS.TI.RDAloadings.noelev)
-par(mfrow=c(2,2))  #check that loadings on each RDA is normally distributed
-hist(CHS.TI.RDAloadings.noelev$RDA1)
-hist(CHS.TI.RDAloadings.noelev$RDA2)
-hist(CHS.TI.RDAloadings.noelev$RDA3)
-hist(CHS.TI.RDAloadings.noelev$RDA4)
-
-##select the top 100 loci (~1%) for each RDA
-
-CHS.TI.RDAloadings.sorted.noelev <- CHS.TI.RDAloadings.noelev[order(-abs(CHS.TI.RDAloadings.noelev$RDA1)),] #sort by absolute value of RDA1. be sure to add "-" in front of "abs" to order from largest to smallest
-CHS.TI.RDA1.outliers.1percent.noelev <- CHS.TI.RDAloadings.sorted.noelev[1:100, 1:2]  ##write to df
-
-CHS.TI.RDAloadings.sorted.noelev <- CHS.TI.RDAloadings.noelev[order(-abs(CHS.TI.RDAloadings.noelev$RDA2)),]  #same for RDA2
-CHS.TI.RDA2.outliers.1percent.noelev <- CHS.TI.RDAloadings.sorted.noelev[1:100, c(1:2)]  
-
-#write both to file. 
-write.table(CHS.TI.RDA1.outliers.1percent.noelev, "CHS.noelev.TI.RDA1.outliers", sep=" ", col.names=T, row.names=T, quote=F)
-write.table(CHS.TI.RDA2.outliers.1percent.noelev, "CHS.noelev.TI.RDA2.outliers", sep=" ", col.names=T, row.names=T, quote=F)
-
-```
 
 #### 6. CZ
 
@@ -1519,9 +1382,9 @@ write.table(CHS.TI.RDA2.outliers.1percent.noelev, "CHS.noelev.TI.RDA2.outliers",
 library(vegan)
 
 CZData <- read.csv("CZ404.MAF.csv", header=T)
-CZData <- CZData[complete.cases(CHallData),]  ##stba is removed here due to missing data
-GenData <- CZData[,11:9618]
-Climate.Data <- CZData[,3:10]
+CZData <- CZData[complete.cases(CZData),]  ##stba is removed here due to missing data
+GenData <- CZData[,10:ncol(CZData)]
+Climate.Data <- CZData[,3:9]
 names(Climate.Data)
 ```
 
@@ -1530,42 +1393,41 @@ names(Climate.Data)
 ##1. Run Full RDA model to determine how much of the variation is explainable by the expanatory variables we have
 ##H0: climate data does not affect genotype
 
-RDA.CZfull.noelev <- rda(GenData ~ lat + long +shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, Climate.Data) ##runs in 20s. 
+RDA.CZfull <- rda(GenData ~ lat + long +shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, Climate.Data) ##runs in 20s. 
 
 RDA.CZfull
 
-Call: rda(formula = GenData ~ elev + lat + long + shadow.days +
-sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data =
-Climate.Data)
+Call: rda(formula = GenData ~ lat + long + shadow.days + sol.rad.60d +
+pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
 
                Inertia Proportion Rank
-Total         333.5875     1.0000     
-Constrained   131.7473     0.3949    8
-Unconstrained 201.8402     0.6051   29
+Total         310.3385     1.0000     
+Constrained   114.6941     0.3696    7
+Unconstrained 195.6444     0.6304   30
 Inertia is variance 
 
 Eigenvalues for constrained axes:
- RDA1  RDA2  RDA3  RDA4  RDA5  RDA6  RDA7  RDA8 
-69.93 16.77 13.70  8.03  7.53  6.23  4.88  4.69 
+ RDA1  RDA2  RDA3  RDA4  RDA5  RDA6  RDA7 
+64.16 15.48 12.01  7.43  6.44  4.91  4.26 
 
 Eigenvalues for unconstrained axes:
    PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8 
-26.022 17.900 11.864 11.718 10.560  9.379  8.851  7.973 
-(Showed only 8 of all 29 unconstrained eigenvalues)
+24.782 18.471 11.336 10.941  9.803  9.155  8.394  7.905 
+(Showed only 8 of all 30 unconstrained eigenvalues)
 
 ##calculate proportion explained (R2)
 
-RsquareAdj(RDA.CZfull.noelev)
+RsquareAdj(RDA.CZfull)
 
 $r.squared
-[1] 0.3655938
+[1] 0.3695774
 
 $adj.r.squared
-[1] 0.2175657
+[1] 0.2224788
 
 
 
-anova(RDA.CZfull.noelev)
+anova(RDA.CZfull)
 
 Permutation test for rda under reduced model
 Permutation: free
@@ -1573,15 +1435,15 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ lat + long + shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
          Df Variance      F Pr(>F)    
-Model     7   121.96 2.4698  0.001 ***
-Residual 30   211.63                  
+Model     7   114.69 2.5124  0.001 ***
+Residual 30   195.64                  
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 ##to see which variables are most important, we can plot the results in a biplot
 
-pdf(file="RDA.CZfull.elev.noelev.pdf")
-plot(RDA.CZfull.noelev)
+pdf(file="RDA.CZfull.pdf")
+plot(RDA.CZfull, main="CZ RDAfull")
 dev.off()
 ```
 
@@ -1591,51 +1453,51 @@ dev.off()
 ##Partial out geog
 H0: Climate does not explain genetic data
 
-pRDA.CZ.geog.noelev <- rda(GenData~shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(lat + long), Climate.Data)
+pRDA.CZ.geog <- rda(GenData~shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(lat + long), Climate.Data)
 
 #head(summary(pRDA.CZ.geog.noelev))
 
-pRDA.CZ.geog.noelev
+pRDA.CZ.geog
 
 Call: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d +
 day10cm + temp.laying.date + Condition(lat + long), data =
 Climate.Data)
 
                Inertia Proportion Rank
-Total         333.5875     1.0000     
-Conditional    75.6364     0.2267    2
-Constrained    46.3212     0.1389    5
-Unconstrained 211.6300     0.6344   30
+Total         310.3385     1.0000     
+Conditional    71.5225     0.2305    2
+Constrained    43.1716     0.1391    5
+Unconstrained 195.6444     0.6304   30
 Inertia is variance 
 
 Eigenvalues for constrained axes:
   RDA1   RDA2   RDA3   RDA4   RDA5 
-19.893  8.720  7.426  5.415  4.869 
+18.747  8.108  6.875  4.996  4.445 
 
 Eigenvalues for unconstrained axes:
    PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8 
-26.582 19.869 12.236 11.725 10.567  9.725  9.000  8.742 
+24.782 18.471 11.336 10.941  9.803  9.155  8.394  7.905 
 (Showed only 8 of all 30 unconstrained eigenvalues)
 
 
-RsquareAdj(pRDA.CZ.geog.noelev)
+RsquareAdj(pRDA.CZ.geog)
 
 $r.squared
-[1] 0.1388576
+[1] 0.1391112
 
 $adj.r.squared
-[1] 0.03501604
+[1] 0.03598595
 
-anova(pRDA.CZ.geog.noelev)
+anova(pRDA.CZ.geog)
 
 Permutation test for rda under reduced model
 Permutation: free
 Number of permutations: 999
 
 Model: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(lat + long), data = Climate.Data)
-         Df Variance      F Pr(>F)   
-Model     5   46.321 1.3133  0.005 **
-Residual 30  211.630                 
+         Df Variance     F Pr(>F)   
+Model     5   43.172 1.324  0.004 **
+Residual 30  195.644                
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -1643,8 +1505,8 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 H0 rejected: Climate explains a significant amount of CZ GeneticData
 
 
-pdf(file="pRDA.CZ.geog.elev.noelev.pdf")
-plot(pRDA.CZ.geog.noelev, main="pRDA CZ (geog partialled out)")
+pdf(file="pRDA.CZ.geog.pdf")
+plot(pRDA.CZ.geog, main="pRDA CZ (geog partialled out)")
 dev.off()
 ```
 
@@ -1655,41 +1517,41 @@ dev.off()
 
 H0: Geog alone does not explain Genetic data
 
-pRDA.CZ.climate.noelev <- rda(GenData~lat+long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), Climate.Data)
+pRDA.CZ.climate <- rda(GenData~lat+long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), Climate.Data)
 
-pRDA.CZ.climate.noelev
+pRDA.CZ.climate
 Call: rda(formula = GenData ~ lat + long + Condition(shadow.days +
 sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data =
 Climate.Data)
 
                Inertia Proportion Rank
-Total         333.5875     1.0000     
-Conditional    75.1625     0.2253    5
-Constrained    46.7950     0.1403    2
-Unconstrained 211.6300     0.6344   30
+Total         310.3385     1.0000     
+Conditional    70.3460     0.2267    5
+Constrained    44.3481     0.1429    2
+Unconstrained 195.6444     0.6304   30
 Inertia is variance 
 
 Eigenvalues for constrained axes:
  RDA1  RDA2 
-37.78  9.01 
+36.13  8.22 
 
 Eigenvalues for unconstrained axes:
    PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8 
-26.582 19.869 12.236 11.725 10.567  9.725  9.000  8.742 
+24.782 18.471 11.336 10.941  9.803  9.155  8.394  7.905 
 (Showed only 8 of all 30 unconstrained eigenvalues)
 
 
 #head(summary(pRDA.CH940.climate))
 
-RsquareAdj(pRDA.CZ.climate.noelev)
+RsquareAdj(pRDA.CZ.climate)
 
 $r.squared
-[1] 0.140278
+[1] 0.1429024
 
 $adj.r.squared
-[1] 0.1132943
+[1] 0.1166358
 
-anova(pRDA.CZ.climate.noelev)
+anova(pRDA.CZ.climate)
 
 Permutation test for rda under reduced model
 Permutation: free
@@ -1697,15 +1559,15 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ lat + long + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data = Climate.Data)
          Df Variance      F Pr(>F)    
-Model     2   46.795 3.3168  0.001 ***
-Residual 30  211.630                  
+Model     2   44.348 3.4002  0.001 ***
+Residual 30  195.644                  
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 H0: Rejected -> Geography explains a significant amount of GenData
 
-pdf(file="pRDA.CZ.climate.noelev.pdf")
-plot(pRDA.CZ.climate.noelev, main="pRDA CZ (climate partialled out)")
+pdf(file="pRDA.CZ.climate.pdf")
+plot(pRDA.CZ.climate, main="pRDA CZ (climate partialled out)")
 dev.off()
 ```
 
@@ -1714,50 +1576,23 @@ dev.off()
 
 Find the most important loci associated with Climate
 ```
-(head(summary(pRDA.CZ.geog.noelev)))
+(head(summary(pRDA.CZ.geog)))
 
 Biplot scores for constraining variables
 
-                       RDA1    RDA2     RDA3    RDA4     RDA5 PC1
-shadow.days       3.189e-01 -0.1027  0.03954  0.7566  0.08027   0
-sol.rad.60d      -8.736e-05  0.7303 -0.32012 -0.2854 -0.51741   0
-pcpt.60d          7.321e-01  0.3476 -0.33359 -0.2673 -0.26957   0
-day10cm           5.950e-01  0.4360 -0.10138  0.1803 -0.05493   0
-temp.laying.date  3.224e-01 -0.4331 -0.68384 -0.1886  0.38036   0
+                    RDA1    RDA2     RDA3    RDA4     RDA5 PC1
+shadow.days      0.31508 -0.1141  0.04581  0.7586  0.05346   0
+sol.rad.60d      0.01513  0.7493 -0.30059 -0.2955 -0.49557   0
+pcpt.60d         0.73838  0.3458 -0.33076 -0.2685 -0.25699   0
+day10cm          0.60361  0.4257 -0.09102  0.1824 -0.05277   0
+temp.laying.date 0.30882 -0.4304 -0.70349 -0.1659  0.36929   0
 
-RDA1: sol.rad.60d, pcpt.60d
+RDA1: pcpt.60d, day10cm
 
 RDA2: sol.rad.60d
 ```
 
-Select the top 100 loci (~1%) associated with RDA1 and RDA2
-```
-#Find the loadings of of loci on each RDA
 
-sum.pRDA.CZ.geog.noelev <- summary(pRDA.CZ.geog.noelev)
-
-CZ.RDAloadings.noelev <- sum.pRDA.CZ.geog.noelev$species  ##write the loadings to data.frame
-CZ.RDAloadings.noelev <- as.data.frame(CZ.RDAloadings.noelev) #change to df
-names(CZ.RDAloadings.noelev)
-par(mfrow=c(2,2))  #check that loadings on each RDA is normally distributed
-hist(CZ.RDAloadings.noelev$RDA1)
-hist(CZ.RDAloadings.noelev$RDA2)
-hist(CZ.RDAloadings.noelev$RDA3)
-hist(CZ.RDAloadings.noelev$RDA4)
-
-##select the top 100 loci (~1%) for each RDA
-
-CZ.RDAloadings.sorted.noelev <- CZ.RDAloadings.noelev[order(-abs(CZ.RDAloadings.noelev$RDA1)),] #sort by absolute value of RDA1. be sure to add "-" in front of "abs" to order from largest to smallest
-CZ.RDA1.outliers.1percent.noelev <- CZ.RDAloadings.sorted.noelev[1:100, 1:2]  ##write to df
-
-CZ.RDAloadings.sorted.noelev <- CZ.RDAloadings.noelev[order(-abs(CZ.RDAloadings.noelev$RDA2)),]  #same for RDA2
-CZ.RDA2.outliers.1percent.noelev <- CZ.RDAloadings.sorted.noelev[1:100, c(1:2)]  
-
-#write both to file. 
-write.table(CZ.RDA1.outliers.1percent.noelev, "CZ.noelev.RDA1.outliers", sep=" ", col.names=T, row.names=T, quote=F)
-write.table(CZ.RDA2.outliers.1percent.noelev, "CZ.noelev.RDA2.outliers", sep=" ", col.names=T, row.names=T, quote=F)
-
-```
 
 
 ## Part 2
