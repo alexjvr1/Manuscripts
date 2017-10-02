@@ -1,4 +1,4 @@
-#CHP4
+# CHP4
 
 Adaptation across latitude may be driven by temperature during the growth season, or by the season length. Both of these have been
 suggested previously, and in my SE MS I find that adaptation to temperature might be important. 
@@ -26,5 +26,48 @@ the breeding season.
 
 ### a) Env. Assoc. Analyses (EAA)
 
-I'm using mean temperature 60 days after laying and season length as the two main variables here. 
+I'm using mean temperature 60 days after laying as temp during development time, and number of days above 6deg C as season length. 
+
+I'm using the same input files for Switzerland as in the Pop Genomics chapter (CHP2)
+
+For SE, I have to filter for MAC as I did for the Swiss populations. 
+
+```
+
+
+```
+
+## EAA
+
+### 1. BayEnv2
+
+### 2. LFMM
+
+
+## Fst outlier analyses
+
+### 1. Bayescan
+
+CH: Results as in CHP2
+
+### 2. PCAdapt
+
+CH: results as in CHP2. 
+
+## RDA
+
+Here I want to see how much of the variation is explained by the candidate loci
+
+## GDM & GF
+
+The aim here is to
+
+1. determine whether temp or season length are the most important in all transects
+
+2. identify any thresholds and compare between transects
+
+3. predict affect of future climates on adaptation: are there more vulnerable regions? 
+
+
+
 
