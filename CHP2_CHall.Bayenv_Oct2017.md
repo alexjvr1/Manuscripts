@@ -609,9 +609,9 @@ cor.test(diss75k, diss100k)
 
 #Pearson's correlation. Results
 
-0.817711  
-0.9464372  
-0.9704053  
+0.9502191
+0.9756468 
+0.973487 
 
 
 #Run2
@@ -620,9 +620,9 @@ cor.test(diss500.2, diss100k.2)
 cor.test(diss50k.2, diss100k.2)
 cor.test(diss75k.2, diss100k.2)
 
-0.7877207 
-0.9695955 
-0.9758337
+0.9604361 
+0.9717431  
+0.9751588 
 
 
 #Between runs
@@ -630,7 +630,7 @@ cor.test(diss100k, diss100k.2)
 
 #Pearson's correlation result: 
 
-0.9661045 
+0.9719096 
 
 ##plot
 par(mfrow=c(1,2))
