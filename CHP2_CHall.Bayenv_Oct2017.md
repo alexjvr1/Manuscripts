@@ -651,6 +651,18 @@ image(matrix2.10)
 #linux
 #copy matrices 500, 50k, 75k, and 100k from matrix1 and matrix2
 
+grep "ITER = 500$" -A24 CHS275.matrix1.out > CHS.500
+grep "ITER = 500$" -A24 CHS275.matrix2.out > CHS.500.2
+
+grep "ITER = 50000" -A24 CHS275.matrix1.out > CHS.50k
+grep "ITER = 50000" -A24 CHS275.matrix2.out > CHS.50k.2
+
+grep "ITER = 75000" -A24 CHS275.matrix1.out > CHS.75k
+grep "ITER = 75000" -A24 CHS275.matrix2.out > CHS.75k.2
+
+grep "ITER = 100000" -A24 CHS275.matrix1.out > CHS.100k
+grep "ITER = 100000" -A24 CHS275.matrix2.out > CHS.100k.2
+
 #read into R
 
 matrix1.500 <- read.table("CHS.500")
@@ -737,9 +749,9 @@ cor.test(diss75k, diss100k)
 
 #Pearson's correlation. Results
 
-0.940169 
-0.9899528 
-0.991355 
+0.9864868 
+0.9898705 
+0.9873884 
 
 
 #Run2
@@ -748,9 +760,9 @@ cor.test(diss500.2, diss100k.2)
 cor.test(diss50k.2, diss100k.2)
 cor.test(diss75k.2, diss100k.2)
 
-0.950828  
-0.9875196  
-0.9884865 
+0.9685603   
+0.974213 
+0.9713942 
 
 
 #Between runs
@@ -758,12 +770,12 @@ cor.test(diss100k, diss100k.2)
 
 #Pearson's correlation result: 
 
-0.9874994 
+0.9807365 
 
 ##plot
 par(mfrow=c(1,2))
-image(matrix1.10)
-image(matrix2.10)
+image(matrix1.100k)
+image(matrix1.100k.2)
 
 ```
 ![alt_txt][CHS.tree]
