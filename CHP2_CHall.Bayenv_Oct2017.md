@@ -86,6 +86,11 @@ perloc.stats.CHall <- stats.hier.CHall$perloc
 hist(perloc.stats.CHall$Fst, xlim=c(-0.2, 1.0), breaks=120)
 ```
 
+![alt_txt][CHall.fst]
+
+[CHall.fst]:https://user-images.githubusercontent.com/12142475/31076206-06b79f82-a771-11e7-8552-4494773fb726.png
+
+
 
 1. Fst<0.6
 ```
@@ -142,6 +147,10 @@ perloc.stats.CHN <- stats.hier.CHN$perloc  #per locus fst is found here
 hist(perloc.stats.CHN$Fst, xlim=c(-0.2, 1.0), breaks=120)  ##decide on cut-off based on the histogram
 ```
 
+![alt_txt][CHN.fst]
+
+[CHN.fst]:https://user-images.githubusercontent.com/12142475/31076203-06a7b9aa-a771-11e7-9e9b-8940c4d496cf.png
+
 
 1. Fst<0.4
 ```
@@ -193,6 +202,9 @@ perloc.stats.CHS <- stats.hier.CHS$perloc
 hist(perloc.stats.CHS$Fst, xlim=c(-0.2, 1.0), breaks=120)
 ```
 
+![alt_txt][CHS.Fst]
+
+[CHS.Fst]:https://user-images.githubusercontent.com/12142475/31076205-06a87796-a771-11e7-9d53-f2055cc09d1a.png
 
 
 1. Fst<0.5
@@ -245,6 +257,10 @@ perloc.stats.CHS.TI <- stats.hier.CHS.TI$perloc
 hist(perloc.stats.CHS.TI$Fst, xlim=c(-0.2, 1.0), breaks=120)
 ```
 
+![alt_txt][CHS.TI.Fst]
+
+[CHS.TI.Fst]:https://user-images.githubusercontent.com/12142475/31076204-06a83060-a771-11e7-956a-bcbe974d0229.png
+
 1. Fst<0.5
 ```
 CHS.TI.FstNeutral <- subset(perloc.stats.CHS.TI, Fst<0.5)
@@ -286,6 +302,9 @@ perloc.stats.CHS.VS <- stats.hier.CHS.VS$perloc
 
 hist(perloc.stats.CHS.VS$Fst, xlim=c(-0.2, 1.0), breaks=120)
 ```
+![alt_txt][CHS.VS.Fst]
+
+[CHS.VS.Fst]:https://user-images.githubusercontent.com/12142475/31076202-06a778a0-a771-11e7-8377-45137d1435a5.png
 
 1. Fst<0.5
 ```
@@ -331,6 +350,10 @@ perloc.stats.CZ <- stats.hier.CZ$perloc
 
 hist(perloc.stats.CZ$Fst, xlim=c(-0.2, 1.0), breaks=120)
 ```
+
+![alt_txt][CZ.fst]
+
+[CZ.fst]:https://user-images.githubusercontent.com/12142475/31076201-06a174c8-a771-11e7-8421-61f1e22e6c0b.png
 
 
 1. Fst<0.4
@@ -526,7 +549,7 @@ image(matrix2.10)
 
 ![alt_txt][CHall.tree]
 
-[CHall.tree]:https://cloud.githubusercontent.com/assets/12142475/23836525/0d7a437a-077a-11e7-8d01-e4582d5a05a9.png
+[CHall.tree]:https://user-images.githubusercontent.com/12142475/31076193-068815a0-a771-11e7-9254-bc6fe6441271.png
 
 ###### CHN
 
@@ -652,7 +675,7 @@ image(matrix2.10)
 ```
 ![alt_txt][CHN.tree]
 
-[CHN.tree]:https://cloud.githubusercontent.com/assets/12142475/23836421/20e1f586-0778-11e7-9577-7e48b87b5ccb.png
+[CHN.tree]:https://user-images.githubusercontent.com/12142475/31076200-069f7362-a771-11e7-9637-a11a058be2fa.png
 
 
 
@@ -792,7 +815,7 @@ image(matrix1.100k.2)
 ```
 ![alt_txt][CHS.tree]
 
-[CHS.tree]:https://cloud.githubusercontent.com/assets/12142475/23836579/d39e3d5e-077a-11e7-84be-862d29565441.png
+[CHS.tree]:https://user-images.githubusercontent.com/12142475/31076197-068c9832-a771-11e7-8688-7745edf6c56f.png
 
 
 
@@ -933,7 +956,7 @@ image(matrix2.10)
 
 ![alt_txt][CHS.VS.tree]
 
-[CHS.VS.tree]:https://cloud.githubusercontent.com/assets/12142475/23826814/525b433e-06a5-11e7-84ed-948b4f9f15da.png
+[CHS.VS.tree]:https://user-images.githubusercontent.com/12142475/31076198-068d0a10-a771-11e7-9e7f-5ae57c0459aa.png
 
 
 
@@ -1071,6 +1094,11 @@ image(matrix1.10)
 image(matrix2.10)
 
 ```
+
+![alt_txt][CHS.TI.tree]
+
+[CHS.TI.tree]:https://user-images.githubusercontent.com/12142475/31076194-068a2bce-a771-11e7-96af-f6f526bd26a2.png
+
 
 ######CZ
 
