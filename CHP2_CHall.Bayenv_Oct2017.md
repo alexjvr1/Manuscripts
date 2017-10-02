@@ -89,35 +89,35 @@ hist(perloc.stats.CHall$Fst, xlim=c(-0.2, 1.0), breaks=120)
 
 1. Fst<0.6
 ```
-CHall.FstNeutral <- subset(stats.hier.CHall940.perlocus, Fst<0.6)
+CHall.FstNeutral <- subset(perloc.stats.CHall, Fst<0.6)
 summary(CHall.FstNeutral)
-CHall940.FstNeutral.names <- row.names(CHall.FstNeutral)  ##get the locus names
-CHall940.FstNeutral.names <- gsub("X", "", CHall940.FstNeutral.names)
-CHall940.FstNeutral.names <- gsub("\\.", ":", CHall940.FstNeutral.names)
-CHall940.FstNeutral.names 
-CHall940.FstNeutral.names <- as.data.frame(CHall940.FstNeutral.names )
-CHall940.1000loci.names <- CHall940.FstNeutral.names[sample(nrow(CHall940.FstNeutral.names), 1000), ]
-write.table(CHall940.1000loci.names, "CHall.1000loci.names", col.names=F, quote=F, row.names=F, sep=" ")
+CHall932.FstNeutral.names <- row.names(CHall.FstNeutral)  ##get the locus names
+CHall932.FstNeutral.names <- gsub("X", "", CHall932.FstNeutral.names)
+CHall932.FstNeutral.names <- gsub("\\.", ":", CHall932.FstNeutral.names)
+CHall932.FstNeutral.names 
+CHall932.FstNeutral.names <- as.data.frame(CHall932.FstNeutral.names )
+CHall932.1000loci.names <- CHall932.FstNeutral.names[sample(nrow(CHall932.FstNeutral.names), 1000), ]
+write.table(CHall932.1000loci.names, "CHall.1000loci.names", col.names=F, quote=F, row.names=F, sep=" ")
 ```
 
 2. Subset vcf file
 ```
-vcftools --vcf CHall.940.9608.newnames.vcf --snps CHall.1000loci.names  --recode --recode-INFO-all --out CHall940.1000.Neutral
+vcftools --vcf CHall.932.7744.recode.vcf --snps CHall.1000loci.names --recode --recode-INFO-all --out CHall932.1000.Neutral
 ```
 
 3. Convert to bayenv2 using pgdspider
 
-vcf input: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/SumStats/CHall940.1000.Neutral.recode.vcf
+vcf input: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/SumStats/CHall932.1000.Neutral.recode.vcf
 
-bayenv output: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHall/CHall940.1000Neutral.bayenv.txt
+bayenv output: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2_inputfiles/MACFiltered_Oct2017/CHall/CHall932.1000Neutral.bayenv.txt
 
 spidfile: /Users/alexjvr/2016RADAnalysis/spidfiles/vcf2bayenv1000.spid
 
-pop def file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/input.files_subsets/CHall.spidpopfile
+pop def file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2_inputfiles/MACFiltered_Oct2017/CHall/CHall.pops
 
-bayenv sample file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHall/CHall940.1000.pgdspider.popfile
+bayenv sample file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2_inputfiles/MACFiltered_Oct2017/CHall/CHall932.1000.pgdspider.popfile
 
-bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHall/CHall940.1000
+bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2_inputfiles/MACFiltered_Oct2017/CHall/CHall932.1000.loci
 
 
 
@@ -145,7 +145,7 @@ hist(perloc.stats.CHN$Fst, xlim=c(-0.2, 1.0), breaks=120)  ##decide on cut-off b
 
 1. Fst<0.4
 ```
-CHN.FstNeutral <- subset(stats.hier.CHN229.perlocus, Fst<0.4)
+CHN.FstNeutral <- subset(perloc.stats.CHN, Fst<0.4)
 summary(CHN.FstNeutral)
 CHN229.FstNeutral.names <- row.names(CHN.FstNeutral)  ##get the locus names
 CHN229.FstNeutral.names <- gsub("X", "", CHN229.FstNeutral.names)
@@ -158,22 +158,19 @@ write.table(CHN229.1000loci.names, "CHN229.1000loci.names", col.names=F, quote=F
 
 2. Subset vcf file
 ```
-vcftools --vcf CHN.229.9608.recode.vcf --snps CHN229.1000loci.names --recode --recode-INFO-all --out CHN229.1000.Neutral
+vcftools --vcf CHN.229.5265.recode.vcf --snps CHN229.1000loci.names --recode --recode-INFO-all --out CHN229.1000.Neutral
 ```
 
 3. Convert to bayenv2 using pgdspider
 
-vcf input: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/SumStats/CHN229.1000.Neutral.recode.vcf
+vcf input: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2_inputfiles/MACFiltered_Oct2017/CHN/CHN229.1000.Neutral.recode.vcf
 
-bayenv output: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHN/CHN229.1000Neutral.bayenv.txt
+bayenv output: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2_inputfiles/MACFiltered_Oct2017/CHN/CHN229.1000Neutral.bayenv.txt
 
 spidfile: /Users/alexjvr/2016RADAnalysis/spidfiles/vcf2bayenv1000.spid
 
-pop def file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/input.files_subsets/
+pop def file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2_inputfiles/MACFiltered_Oct2017/CHN/CHN.pops
 
-bayenv sample file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHN/CHN229.1000.pgdspider.popfile
-
-bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHN/CHN229.1000
 
 
 #### CHS
@@ -200,35 +197,31 @@ hist(perloc.stats.CHS$Fst, xlim=c(-0.2, 1.0), breaks=120)
 
 1. Fst<0.5
 ```
-CHS.FstNeutral <- subset(stats.hier.CHS283.perlocus, Fst<0.5)
+CHS.FstNeutral <- subset(perloc.stats.CHS, Fst<0.5)
 summary(CHS.FstNeutral)
-CHS283.FstNeutral.names <- row.names(CHS.FstNeutral)  ##get the locus names
-CHS283.FstNeutral.names <- gsub("X", "", CHS283.FstNeutral.names)
-CHS283.FstNeutral.names <- gsub("\\.", ":", CHS283.FstNeutral.names)
-CHS283.FstNeutral.names 
-CHS283.FstNeutral.names <- as.data.frame(CHS283.FstNeutral.names )
-CHS283.1000loci.names <- CHS283.FstNeutral.names[sample(nrow(CHS283.FstNeutral.names), 1000), ]
-write.table(CHS283.1000loci.names, "CHS283.1000loci.names", col.names=F, quote=F, row.names=F, sep=" ")
+CHS275.FstNeutral.names <- row.names(CHS.FstNeutral)  ##get the locus names
+CHS275.FstNeutral.names <- gsub("X", "", CHS275.FstNeutral.names)
+CHS275.FstNeutral.names <- gsub("\\.", ":", CHS275.FstNeutral.names)
+CHS275.FstNeutral.names 
+CHS275.FstNeutral.names <- as.data.frame(CHS275.FstNeutral.names )
+CHS275.1000loci.names <- CHS275.FstNeutral.names[sample(nrow(CHS275.FstNeutral.names), 1000), ]
+write.table(CHS275.1000loci.names, "CHS275.1000loci.names", col.names=F, quote=F, row.names=F, sep=" ")
 ```
 
 2. Subset vcf file
 ```
-vcftools --vcf CHS.283.9608.recode.vcf --snps CHS283.1000loci.names --recode --recode-INFO-all --out CHS283.1000.Neutral
+vcftools --vcf CHS.275.6339.recode.vcf --snps CHS275.1000loci.names --recode --recode-INFO-all --out CHS275.1000.Neutral
 ```
 
 3. Convert to bayenv2 using pgdspider
 
-vcf input: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/SumStats/CHS283.1000.Neutral.recode.vcf
+vcf input: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2_inputfiles/MACFiltered_Oct2017/CHS/CHS275.1000.Neutral.recode.vcf
 
-bayenv output: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHS/CHS283.1000Neutral.bayenv.txt
+bayenv output: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2_inputfiles/MACFiltered_Oct2017/CHS/CHS275.1000Neutral.bayenv.txt
 
 spidfile: /Users/alexjvr/2016RADAnalysis/spidfiles/vcf2bayenv1000.spid
 
-pop def file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/input.files_subsets/
-
-bayenv sample file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHS/CHS283.1000.pgdspider.popfile
-
-bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHS/CHS283.1000
+pop def file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2_inputfiles/MACFiltered_Oct2017/CHS/CHS.pops
 
 
 #### CHS.TI
@@ -254,15 +247,15 @@ hist(perloc.stats.CHS.TI$Fst, xlim=c(-0.2, 1.0), breaks=120)
 
 1. Fst<0.5
 ```
-CHS.TI.FstNeutral <- subset(stats.hier.CHS.TI148.perlocus, Fst<0.5)
+CHS.TI.FstNeutral <- subset(perloc.stats.CHS.TI, Fst<0.5)
 summary(CHS.FstNeutral)
-CHS.TI148.FstNeutral.names <- row.names(CHS.TI.FstNeutral)  ##get the locus names
-CHS.TI148.FstNeutral.names <- gsub("X", "", CHS.TI148.FstNeutral.names)
-CHS.TI148.FstNeutral.names <- gsub("\\.", ":", CHS.TI148.FstNeutral.names)
-CHS.TI148.FstNeutral.names 
-CHS.TI148.FstNeutral.names <- as.data.frame(CHS.TI148.FstNeutral.names )
-CHS.TI148.1000loci.names <- CHS.TI148.FstNeutral.names[sample(nrow(CHS.TI148.FstNeutral.names), 1000), ]
-write.table(CHS.TI148.1000loci.names, "CHS.TI148.1000loci.names", col.names=F, quote=F, row.names=F, sep=" ")
+CHS.TI140.FstNeutral.names <- row.names(CHS.TI.FstNeutral)  ##get the locus names
+CHS.TI140.FstNeutral.names <- gsub("X", "", CHS.TI140.FstNeutral.names)
+CHS.TI140.FstNeutral.names <- gsub("\\.", ":", CHS.TI140.FstNeutral.names)
+CHS.TI140.FstNeutral.names 
+CHS.TI140.FstNeutral.names <- as.data.frame(CHS.TI140.FstNeutral.names )
+CHS.TI140.1000loci.names <- CHS.TI140.FstNeutral.names[sample(nrow(CHS.TI140.FstNeutral.names), 1000), ]
+write.table(CHS.TI140.1000loci.names, "CHS.TI140.1000loci.names", col.names=F, quote=F, row.names=F, sep=" ")
 ```
 
 2. Subset vcf file
@@ -272,18 +265,7 @@ vcftools --vcf CHS.TI.148.9608.recode.vcf --snps CHS.TI148.1000loci.names --reco
 
 3. Convert to bayenv2 using pgdspider
 
-vcf input: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/SumStats/CHS.TI148.1000.Neutral.recode.vcf
-
-bayenv output: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHS.TI/CHS.TI148.1000Neutral.bayenv.txt
-
-spidfile: /Users/alexjvr/2016RADAnalysis/spidfiles/vcf2bayenv1000.spid
-
-pop def file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/input.files_subsets/
-
-bayenv sample file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHS.TI/CHS.TI148.1000.pgdspider.popfile
-
-bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHS.TI/CHS.TI148.1000
-
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2_inputfiles/MACFiltered_Oct2017/CHS.TI
 
 #### CHS.VS
 
@@ -307,9 +289,9 @@ hist(perloc.stats.CHS.VS$Fst, xlim=c(-0.2, 1.0), breaks=120)
 
 1. Fst<0.5
 ```
-CHS.VS.FstNeutral <- subset(stats.hier.CHS.VS135.perlocus, Fst<0.5)
+CHS.VS.FstNeutral <- subset(perloc.stats.CHS.VS, Fst<0.5)
 summary(CHS.VS.FstNeutral)
-CHS.VS135.FstNeutral.names <- row.names(CHS.TI.FstNeutral)  ##get the locus names
+CHS.VS135.FstNeutral.names <- row.names(CHS.VS.FstNeutral)  ##get the locus names
 CHS.VS135.FstNeutral.names <- gsub("X", "", CHS.VS135.FstNeutral.names)
 CHS.VS135.FstNeutral.names <- gsub("\\.", ":", CHS.VS135.FstNeutral.names)
 CHS.VS135.FstNeutral.names 
@@ -320,22 +302,13 @@ write.table(CHS.VS135.1000loci.names, "CHS.VS135.1000loci.names", col.names=F, q
 
 2. Subset vcf file
 ```
-vcftools --vcf CHS.VS.135.9608.recode.vcf --snps CHS.VS135.1000loci.names --recode --recode-INFO-all --out CHS.VS135.1000.Neutral
+vcftools --vcf CHS.VS.135.5835.recode.vcf --snps CHS.VS135.1000loci.names --recode --recode-INFO-all --out CHS.VS135.1000.Neutral
 ```
 
 3. Convert to bayenv2 using pgdspider
 
-vcf input: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/SumStats/CHS.VS135.1000.Neutral.recode.vcf
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2_inputfiles/MACFiltered_Oct2017/CHS.VS
 
-bayenv output: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHS.VS/CHS.VS135.1000Neutral.bayenv.txt
-
-spidfile: /Users/alexjvr/2016RADAnalysis/spidfiles/vcf2bayenv1000.spid
-
-pop def file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/input.files_subsets/
-
-bayenv sample file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHS.VS/CHS.VS135.1000.pgdspider.popfile
-
-bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CHS.VS/CHS.VS135.1000
 
 
 
@@ -362,13 +335,13 @@ hist(perloc.stats.CZ$Fst, xlim=c(-0.2, 1.0), breaks=120)
 
 1. Fst<0.4
 ```
-CZ404.FstNeutral <- subset(stats.hier.CZ404.perlocus, Fst<0.4)
+CZ404.FstNeutral <- subset(perloc.stats.CZ, Fst<0.4)
 summary(CZ404.FstNeutral)
 CZ404.FstNeutral.names <- row.names(CZ404.FstNeutral)  ##get the locus names
 CZ404.FstNeutral.names <- gsub("X", "", CZ404.FstNeutral.names)
 CZ404.FstNeutral.names <- gsub("\\.", ":", CZ404.FstNeutral.names)
 CZ404.FstNeutral.names 
-CZ404.FstNeutral.names <- as.data.frame(CHS.VS135.FstNeutral.names )
+CZ404.FstNeutral.names <- as.data.frame(CZ404.FstNeutral.names )
 CZ404.1000loci.names <- CZ404.FstNeutral.names[sample(nrow(CZ404.FstNeutral.names), 1000), ]
 write.table(CZ404.1000loci.names, "CZ404.1000loci.names", col.names=F, quote=F, row.names=F, sep=" ")
 ```
@@ -380,46 +353,37 @@ vcftools --vcf CZ.404.9608.recode.vcf --snps CZ404.1000loci.names --recode --rec
 
 3. Convert to bayenv2 using pgdspider
 
-vcf input: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/SumStats/CZ404.1000.Neutral.recode.vcf
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2_inputfiles/MACFiltered_Oct2017/CZ
 
-bayenv output: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CZ/CZ404.1000Neutral.bayenv.txt
-
-spidfile: /Users/alexjvr/2016RADAnalysis/spidfiles/vcf2bayenv1000.spid
-
-pop def file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/input.files_subsets/
-
-bayenv sample file: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CZ/CZ404.1000.pgdspider.popfile
-
-bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2/CZ/CZ404.1000
 
 ####4. Calculate covariance matrix
 
-Copy all input files to the bayenv2 directory: 
+Copy all input files to the bayenv2 directory on the fgcz server: 
 
-/Users/alexjvr/Applications/bayenv2/compiled_on_a_mac
+/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/MACfilter/MatrixEstimation
 
-Calculate 2 matrices for each dataset. This takes a long time to run. 
+Calculate 2 matrices for each dataset. This takes a long time to run. Started at 10:50 on Monday 2 Oct2017
 ```
 #check how far the run has progressed: 
 cat CHS.VS.matrix1.out |grep "ITER"
 
-./bayenv2 -i CHall940.1000Neutral.bayenv.txt -p 82 -k 100000 -r 19866 > CHall.matrix1.out
-./bayenv2 -i CHall940.1000Neutral.bayenv.txt -p 82 -k 100000 -r 74626 > CHall.matrix2.out
+./bayenv2 -i CHall932.1000Neutral.bayenv.txt -p 81 -k 100000 -r $RANDOM > CHall.matrix1.out
+./bayenv2 -i CHall932.1000Neutral.bayenv.txt -p 81 -k 100000 -r $RANDOM > CHall.matrix2.out
 
-./bayenv2 -i CHN.229.1000Neutral.bayenv.txt -p 19 -k 100000 -r 46843 > CHN229.matrix1.out
-./bayenv2 -i CHN.229.1000Neutral.bayenv.txt -p 19 -k 100000 -r 87292 > CHN229.matrix2.out
+./bayenv2 -i CHN.229.1000Neutral.bayenv.txt -p 19 -k 100000 -r $RANDOM > CHN229.matrix1.out
+./bayenv2 -i CHN.229.1000Neutral.bayenv.txt -p 19 -k 100000 -r $RANDOM > CHN229.matrix2.out
 
-./bayenv2 -i CZ404.1000Neutral.bayenv.txt -p 38 -k 100000 -r 54839 > CZ404.matrix1.out
-./bayenv2 -i CZ404.1000Neutral.bayenv.txt -p 38 -k 100000 -r 27362 > CZ404.matrix2.out
+./bayenv2 -i CZ404.1000Neutral.bayenv.txt -p 38 -k 100000 -r $RANDOM > CZ404.matrix1.out
+./bayenv2 -i CZ404.1000Neutral.bayenv.txt -p 38 -k 100000 -r $RANDOM > CZ404.matrix2.out
 
-./bayenv2 -i CHS.283.1000Neutral.bayenv.txt -p 25 -k 100000 -r 76290 > CHS283.matrix1.out
-./bayenv2 -i CHS.283.1000Neutral.bayenv.txt -p 25 -k 100000 -r 65829 > CHS283.matrix2.out
+./bayenv2 -i CHS275.1000Neutral.bayenv.txt -p 24 -k 100000 -r $RANDOM > CHS275.matrix1.out
+./bayenv2 -i CHS275.1000Neutral.bayenv.txt -p 24 -k 100000 -r $RANDOM > CHS275.matrix2.out
 
-#./bayenv2 -i CHS.283.1000Neutral.bayenv.txt -p 25 -k 100000 -r 76290 > CHS283.matrix1.out
-#./bayenv2 -i CHS.283.1000Neutral.bayenv.txt -p 25 -k 100000 -r 65829 > CHS283.matrix2.out
+./bayenv2 -i CHS.TI140.1000Neutral.bayenv.txt -p 14 -k 100000 -r $RANDOM > CHS.TI140.matrix1.out
+./bayenv2 -i CHS.TI140.1000Neutral.bayenv.txt -p 14 -k 100000 -r $RANDOM > CHS.TI140.matrix2.out
 
-./bayenv2 -i CHS.VS135.1000Neutral.bayenv.txt -p 10 -k 100000 -r 93863 > CHS.VS.matrix1.out
-./bayenv2 -i CHS.VS135.1000Neutral.bayenv.txt -p 10 -k 100000 -r 74952 > CHS.VS.matrix2.out
+./bayenv2 -i CHS.VS135.1000Neutral.bayenv.txt -p 10 -k 100000 -r $RANDOM > CHS.VS.matrix1.out
+./bayenv2 -i CHS.VS135.1000Neutral.bayenv.txt -p 10 -k 100000 -r $RANDOM > CHS.VS.matrix2.out
 ```
 
 
