@@ -558,6 +558,18 @@ image(matrix2.10)
 #linux
 #copy matrices 500, 50k, 75k, and 100k from matrix1 and matrix2
 
+grep "ITER = 500$" -A19 CHN229.matrix1.out > CHN.500
+grep "ITER = 500$" -A19 CHN229.matrix2.out > CHN.500.2
+
+grep "ITER = 50000" -A19 CHN229.matrix1.out > CHN.50k
+grep "ITER = 50000" -A19 CHN229.matrix2.out > CHN.50k.2
+
+grep "ITER = 75000" -A19 CHN229.matrix1.out > CHN.75k
+grep "ITER = 75000" -A19 CHN229.matrix2.out > CHN.75k.2
+
+grep "ITER = 100000" -A19 CHN229.matrix1.out > CHN.100k
+grep "ITER = 100000" -A19 CHN229.matrix2.out > CHN.100k.2
+
 #read into R
 
 matrix1.500 <- read.table("CHN.500")
