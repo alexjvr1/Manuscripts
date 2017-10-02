@@ -32,16 +32,32 @@ I'm using the same input files for Switzerland as in the Pop Genomics chapter (C
 
 For SE, I have to filter for MAC as I did for the Swiss populations. 
 
+/Users/alexjvr/2016RADAnalysis/6_CHP4.SEvsCH
 ```
-
-
+vcftools --vcf SE132.FINAL.recode.vcf --mac 13 --recode --recode-INFO-all --out SE132.2027
 ```
+This removes only 54 loci from the previous dataset. 
+
 
 ## EAA
 
 ### 1. BayEnv2
 
+
+Input files for CH have been generated in CHP2. 
+
+Env input is taken from the data that Josh calculated. 
+
+All runs on the GDC server: 
+
+```
+
+```
+
+
 ### 2. LFMM
+
+
 
 
 ## Fst outlier analyses
