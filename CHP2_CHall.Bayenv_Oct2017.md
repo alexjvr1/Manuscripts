@@ -1119,6 +1119,18 @@ image(matrix2.10)
 #linux
 #copy matrices 500, 50k, 75k, and 100k from matrix1 and matrix2
 
+grep "ITER = 500$" -A38 CZ404.matrix1.out > CZ.500
+grep "ITER = 500$" -A38 CZ404.matrix2.out > CZ.500.2
+
+grep "ITER = 50000" -A38 CZ404.matrix1.out > CZ.50k
+grep "ITER = 50000" -A38 CZ404.matrix2.out > CZ.50k.2
+
+grep "ITER = 75000" -A38 CZ404.matrix1.out > CZ.75k
+grep "ITER = 75000" -A38 CZ404.matrix2.out > CZ.75k.2
+
+grep "ITER = 100000" -A38 CZ404.matrix1.out > CZ.100k
+grep "ITER = 100000" -A38 CZ404.matrix2.out > CZ.100k.2
+
 #read into R
 
 matrix1.500 <- read.table("CZ.500")
@@ -1205,9 +1217,9 @@ cor.test(diss75k, diss100k)
 
 #Pearson's correlation. Results
 
-0.9633814  
-0.9742568 
-0.9611082 
+0.9776662  
+0.9909852 
+0.994246 
 
 
 #Run2
@@ -1216,9 +1228,9 @@ cor.test(diss500.2, diss100k.2)
 cor.test(diss50k.2, diss100k.2)
 cor.test(diss75k.2, diss100k.2)
 
-0.942456 
-0.9802239  
-0.9747231 
+0.980188 
+0.9953818 
+0.9963392 
 
 
 #Between runs
@@ -1226,7 +1238,7 @@ cor.test(diss100k, diss100k.2)
 
 #Pearson's correlation result: 
 
-0.9793455
+0.9993402 
 
 ##plot
 par(mfrow=c(1,2))
@@ -1237,7 +1249,7 @@ image(matrix2.10)
 
 ![alt_txt][CZ.tree]
 
-[CZ.tree]:https://cloud.githubusercontent.com/assets/12142475/23836376/5f027792-0777-11e7-96ed-b82309e1c4c3.png
+[CZ.tree]:https://user-images.githubusercontent.com/12142475/31079100-6fd3326e-a77c-11e7-8b4b-a705a32ef2fa.png
 
 
 # BayEnv2 Run
