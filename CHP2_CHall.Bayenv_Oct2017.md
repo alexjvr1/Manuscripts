@@ -66,6 +66,25 @@ estimation of the neutral covariance matrix, I will remove loci in the upper Fst
 
 #### CHall
 
+First calculate the per locus Fst for CHall. Draw the distribution and decide on a cut-off for the Fst to exclude any outliers from the dataset. 
+```
+library(adegenet)
+library(hierfstat)
+CHall <- read.structure("CHall.932.7744.str")
+CHall.popnames <- read.table("CHall.popnames", header=F)
+CHall.pops <- gsub("_\\d+", "", CHall.popnames$V1)
+CHall.pops
+CHall.pops <- as.data.frame(CHall.pops)
+CHall.popnames$V2 <- CHall.pops$CHall.pops
+colnames(CHall.popnames) <- c("indiv", "site")
+CHall@pop <- CHall.popnames$site
+CHall@pop
+hier.CHall <- genind2hierfstat(CHall)
+stats.hier.CHall <- basic.stats(hier.CHall)
+perloc.stats.CHall <- stats.hier.CHall$perloc
+
+hist(perloc.stats.CHall$Fst, xlim=c(-0.2, 1.0), breaks=120)
+```
 
 
 1. Fst<0.6
@@ -104,6 +123,26 @@ bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets
 
 #### CHN
 
+```
+library(adegenet)
+library(hierfstat)
+CHN <- read.structure("CHN.229.5265.str")
+
+CHN.popnames <- read.table("CHN.229.popnames") ##popnames from bcftools query -l *vcf 
+CHN.pops <- gsub("_\\d+", "", CHN.popnames$V1) ##get popnames on their own
+CHN.pops <- as.data.frame(CHN.pops)
+CHN.popnames$V2 <- CHN.pops$CHN.pops
+colnames(CHN.popnames) <- c("indiv", "site")
+
+CHN@pop <- CHN.popnames$site  ##popnames to genind object
+hier.CHN <- genind2hierfstat(CHN)  #change to hierfstat
+stats.hier.CHN <- basic.stats(hier.CHN) #calculate basic stats
+perloc.stats.CHN <- stats.hier.CHN$perloc  #per locus fst is found here
+
+hist(perloc.stats.CHN$Fst, xlim=c(-0.2, 1.0), breaks=120)  ##decide on cut-off based on the histogram
+```
+
+
 1. Fst<0.4
 ```
 CHN.FstNeutral <- subset(stats.hier.CHN229.perlocus, Fst<0.4)
@@ -138,6 +177,26 @@ bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets
 
 
 #### CHS
+
+```
+library(adegenet)
+library(hierfstat)
+CHS <- read.structure("CHS.275.6339.str")
+CHS.popnames <- read.table("CHS.popnames", header=F)
+CHS.pops <- gsub("_\\d+", "", CHS.popnames$V1)
+CHS.pops <- as.data.frame(CHS.pops)
+CHS.popnames$V2 <- CHS.pops$CHS.pops
+colnames(CHS.popnames) <- c("indiv", "site")
+head(CHS.popnames)
+CHS@pop <- CHS.popnames$site
+CHS@pop
+hier.CHS <- genind2hierfstat(CHS)
+stats.hier.CHS <- basic.stats(hier.CHS)
+perloc.stats.CHS <- stats.hier.CHS$perloc
+hist(perloc.stats.CHS$Fst, xlim=c(-0.2, 1.0), breaks=120)
+```
+
+
 
 1. Fst<0.5
 ```
@@ -174,6 +233,25 @@ bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets
 
 #### CHS.TI
 
+```
+library(hierfstat)
+library(adegenet)
+CHS.TI <- read.structure("CHS.TI.140.5692.str")
+CHS.TI.popnames <- read.table("CHS.TI.popnames", header=F)
+CHS.TI.pops <- gsub("_\\d+", "", CHS.TI.popnames$V1)
+CHS.TI.pops <- as.data.frame(CHS.TI.pops)
+CHS.TI.popnames$V2 <- CHS.TI.pops$CHS.TI.pops
+colnames(CHS.TI.popnames) <- c("indiv", "site")
+head(CHS.TI.popnames)
+CHS.TI@pop <- CHS.TI.popnames$site
+CHS.TI@pop
+hier.CHS.TI <- genind2hierfstat(CHS.TI)
+stats.hier.CHS.TI <- basic.stats(hier.CHS.TI)
+perloc.stats.CHS.TI <- stats.hier.CHS.TI$perloc
+
+hist(perloc.stats.CHS.TI$Fst, xlim=c(-0.2, 1.0), breaks=120)
+```
+
 1. Fst<0.5
 ```
 CHS.TI.FstNeutral <- subset(stats.hier.CHS.TI148.perlocus, Fst<0.5)
@@ -208,6 +286,24 @@ bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets
 
 
 #### CHS.VS
+
+```
+library(adegenet)
+library(hierfstat)
+CHS.VS <- read.structure("CHS.VS.135.5835.str")
+CHS.VS.popnames <- read.table("CHS.VS.popnames", header=F)
+CHS.VS.pops <- gsub("_\\d+", "", CHS.VS.popnames$V1)
+CHS.VS.pops <- as.data.frame(CHS.VS.pops)
+CHS.VS.popnames$V2 <- CHS.VS.pops$CHS.VS.pops
+colnames(CHS.VS.popnames) <- c("indiv","site")
+head(CHS.VS.popnames)
+CHS.VS@pop <- CHS.VS.popnames$site
+hier.CHS.VS <- genind2hierfstat(CHS.VS)
+stats.hier.CHS.VS <- basic.stats(hier.CHS.VS)
+perloc.stats.CHS.VS <- stats.hier.CHS.VS$perloc
+
+hist(perloc.stats.CHS.VS$Fst, xlim=c(-0.2, 1.0), breaks=120)
+```
 
 1. Fst<0.5
 ```
@@ -244,6 +340,25 @@ bayenv loci names: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets
 
 
 #### CZ
+
+```
+library(adegenet)
+library(hierfstat)
+CZ <- read.structure("CZ.404.7288.str")
+CZ.popnames <- read.table("CZ.popnames", header=F)
+CZ.pops <- gsub("_\\d+", "", CZ.popnames$V1)
+CZ.pops <- as.data.frame(CZ.pops)
+CZ.popnames$V2 <- CZ.pops$CZ.pops
+colnames(CZ.popnames) <- c("indiv", "site")
+CZ@pop <- CZ.popnames$site
+CZ@pop
+hier.CZ <- genind2hierfstat(CZ)
+stats.hier.CZ <- basic.stats(hier.CZ)
+perloc.stats.CZ <- stats.hier.CZ$perloc
+
+hist(perloc.stats.CZ$Fst, xlim=c(-0.2, 1.0), breaks=120)
+```
+
 
 1. Fst<0.4
 ```
