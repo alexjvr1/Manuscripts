@@ -173,7 +173,7 @@ I'm using the following as guidance:
 https://evomics.org/learning/population-and-speciation-genomics/bayescan-exercise/
 
 
-
+### CHN
 ```
 source("plot_R.r")
 library(coda)
@@ -219,3 +219,199 @@ CHN.outlier.names <- as.data.frame(CHN.outlier.names)
 write.table(CHN.outlier.names, "CHN.bayescan.outliers.FDR0.05", quote=F, row.names=F, col.names=F)
 ```
 
+### CHS
+```
+source("plot_R.r")
+library(coda)
+
+chain <- read.table("CHS.out.sel", header=T)
+chain <- mcmc(chain, thin=10)
+
+plot(chain)  ##check for convergence
+summary(chain)
+autocorr.diag(chain) ## check correlation between the chains. Make sure the chains didn't get stuck
+effectiveSize(chain) ##check that this is close to the sample size (here 5000). If there is correlation (chain got stuck) the sample size will be much smaller than the input
+geweke.diag(chain, frac1=0.1, frac2=0.5)  ##The diagnostic reports the z-scores for each parameter. For example, with α = 0.05, the critical values of z are – 1.96 and +1.96. We reject H0 (equality of means => convergence) if z < -1.96 or z > +1.96.
+
+heidel.diag(chain, eps=0.1, pvalue=0.05) ##another test whether the chains have reached stationarity. 
+
+```
+
+
+Find the outliers and rename them
+```
+CHS.results <- read.table("CHS.out_fst.txt")
+
+pdf("CHS.bayescan.results.pdf")
+par(mfrow=c(1,2))
+plot_bayescan(CHS.results, FDR=0.05, add_text=F)
+plot_bayescan(CHS.results, FDR=0.01, add_text=F)
+dev.off()
+
+
+CHS.results$rownumber <- 1:nrow(CHS.results)  ##add an index of the rownumbers, as these correspond to the loci in the input file. 
+
+CHS.outliers <- plot_bayescan(CHS.results, FDR=0.01) # this is an R script distributed with bayescan for plotting and identifying outliers. In this case I find 721 when FDR=0.05 and 528 at FDR=0.01
+CHS.outliers.df <- CHS.outliers$outliers
+CHS.outliers.df <- as.data.frame(CHS.outliers.df)
+colnames(CHS.outliers.df) <- "rownames"  ##the column headers need to be the same for dplyr to work
+
+locus.names <- read.table("CHS.275.6339.plink.map") ##read in the locus names found in the map file generated vcf --plink
+locus.names$rownames <- 1:nrow(locus.names) ##index in the same way as the bayescan output
+
+library(dplyr)
+##join by rownames
+CHS.outlier.names <- semi_join(locus.names, CHS.outliers.df)
+CHS.outlier.names <- gsub(":", ".", CHS.outlier.names$V2 )
+
+CHS.outlier.names <- as.data.frame(CHS.outlier.names)
+write.table(CHS.outlier.names, "CHS.bayescan.outliers.FDR0.01", quote=F, row.names=F, col.names=F)
+```
+
+### CHS.TI
+```
+source("plot_R.r")
+library(coda)
+
+chain <- read.table("CHS.TI.out.sel", header=T)
+chain <- mcmc(chain, thin=10)
+
+plot(chain)  ##check for convergence
+summary(chain)
+autocorr.diag(chain) ## check correlation between the chains. Make sure the chains didn't get stuck
+effectiveSize(chain) ##check that this is close to the sample size (here 5000). If there is correlation (chain got stuck) the sample size will be much smaller than the input
+geweke.diag(chain, frac1=0.1, frac2=0.5)  ##The diagnostic reports the z-scores for each parameter. For example, with α = 0.05, the critical values of z are – 1.96 and +1.96. We reject H0 (equality of means => convergence) if z < -1.96 or z > +1.96.
+
+heidel.diag(chain, eps=0.1, pvalue=0.05) ##another test whether the chains have reached stationarity. 
+
+##population9 failed. 
+```
+
+
+Find the outliers and rename them
+```
+CHS.TI.results <- read.table("CHS.TI.out_fst.txt")
+
+pdf("CHS.TI.bayescan.results.pdf")
+par(mfrow=c(1,2))
+plot_bayescan(CHS.TI.results, FDR=0.05, add_text=F)
+plot_bayescan(CHS.TI.results, FDR=0.01, add_text=F)
+dev.off()
+
+
+CHS.TI.results$rownumber <- 1:nrow(CHS.TI.results)  ##add an index of the rownumbers, as these correspond to the loci in the input file. 
+
+CHS.TI.outliers <- plot_bayescan(CHS.TI.results, FDR=0.01) # this is an R script distributed with bayescan for plotting and identifying outliers. In this case I find 193 when FDR=0.05 and 137 at FDR=0.01
+CHS.TI.outliers.df <- CHS.TI.outliers$outliers
+CHS.TI.outliers.df <- as.data.frame(CHS.TI.outliers.df)
+colnames(CHS.TI.outliers.df) <- "rownames"  ##the column headers need to be the same for dplyr to work
+
+locus.names <- read.table("CHS.TI.140.5692.plink.map") ##read in the locus names found in the map file generated vcf --plink
+locus.names$rownames <- 1:nrow(locus.names) ##index in the same way as the bayescan output
+
+library(dplyr)
+##join by rownames
+CHS.TI.outlier.names <- semi_join(locus.names, CHS.TI.outliers.df)
+CHS.TI.outlier.names <- gsub(":", ".", CHS.TI.outlier.names$V2 )
+
+CHS.TI.outlier.names <- as.data.frame(CHS.TI.outlier.names)
+write.table(CHS.TI.outlier.names, "CHS.TI.bayescan.outliers.FDR0.01", quote=F, row.names=F, col.names=F)
+```
+
+### CHS.VS
+```
+source("plot_R.r")
+library(coda)
+
+chain <- read.table("CHS.VS.out.sel", header=T)
+chain <- mcmc(chain, thin=10)
+
+plot(chain)  ##check for convergence
+summary(chain)
+autocorr.diag(chain) ## check correlation between the chains. Make sure the chains didn't get stuck
+effectiveSize(chain) ##check that this is close to the sample size (here 5000). If there is correlation (chain got stuck) the sample size will be much smaller than the input
+geweke.diag(chain, frac1=0.1, frac2=0.5)  ##The diagnostic reports the z-scores for each parameter. For example, with α = 0.05, the critical values of z are – 1.96 and +1.96. We reject H0 (equality of means => convergence) if z < -1.96 or z > +1.96.
+
+heidel.diag(chain, eps=0.1, pvalue=0.05) ##another test whether the chains have reached stationarity. 
+
+```
+
+
+Find the outliers and rename them
+```
+CHS.VS.results <- read.table("CHS.VS.out_fst.txt")
+
+pdf("CHS.VS.bayescan.results.pdf")
+par(mfrow=c(1,2))
+plot_bayescan(CHS.VS.results, FDR=0.05, add_text=F)
+plot_bayescan(CHS.VS.results, FDR=0.01, add_text=F)
+dev.off()
+
+
+CHS.VS.results$rownumber <- 1:nrow(CHS.VS.results)  ##add an index of the rownumbers, as these correspond to the loci in the input file. 
+
+CHS.VS.outliers <- plot_bayescan(CHS.VS.results, FDR=0.01) # this is an R script distributed with bayescan for plotting and identifying outliers. In this case I find 122 when FDR=0.05 and 76 at FDR=0.01
+CHS.VS.outliers.df <- CHS.VS.outliers$outliers
+CHS.VS.outliers.df <- as.data.frame(CHS.VS.outliers.df)
+colnames(CHS.VS.outliers.df) <- "rownames"  ##the column headers need to be the same for dplyr to work
+
+locus.names <- read.table("CHS.VS.135.5835.plink.map") ##read in the locus names found in the map file generated vcf --plink
+locus.names$rownames <- 1:nrow(locus.names) ##index in the same way as the bayescan output
+
+library(dplyr)
+##join by rownames
+CHS.VS.outlier.names <- semi_join(locus.names, CHS.VS.outliers.df)
+CHS.VS.outlier.names <- gsub(":", ".", CHS.VS.outlier.names$V2 )
+
+CHS.VS.outlier.names <- as.data.frame(CHS.VS.outlier.names)
+write.table(CHS.VS.outlier.names, "CHS.VS.bayescan.outliers.FDR0.01", quote=F, row.names=F, col.names=F)
+```
+
+### CZ
+```
+source("plot_R.r")
+library(coda)
+
+chain <- read.table("CZ.out.sel", header=T)
+chain <- mcmc(chain, thin=10)
+
+plot(chain)  ##check for convergence
+summary(chain)
+autocorr.diag(chain) ## check correlation between the chains. Make sure the chains didn't get stuck
+effectiveSize(chain) ##check that this is close to the sample size (here 5000). If there is correlation (chain got stuck) the sample size will be much smaller than the input
+geweke.diag(chain, frac1=0.1, frac2=0.5)  ##The diagnostic reports the z-scores for each parameter. For example, with α = 0.05, the critical values of z are – 1.96 and +1.96. We reject H0 (equality of means => convergence) if z < -1.96 or z > +1.96.
+
+heidel.diag(chain, eps=0.1, pvalue=0.05) ##another test whether the chains have reached stationarity. 
+
+```
+
+
+Find the outliers and rename them
+```
+CZ.results <- read.table("CZ.out_fst.txt")
+
+pdf("CZ.bayescan.results.pdf")
+par(mfrow=c(1,2))
+plot_bayescan(CZ.results, FDR=0.05, add_text=F)
+plot_bayescan(CZ.results, FDR=0.01, add_text=F)
+dev.off()
+
+
+CZ.results$rownumber <- 1:nrow(CZ.results)  ##add an index of the rownumbers, as these correspond to the loci in the input file. 
+
+CZ.outliers <- plot_bayescan(CZ.results, FDR=0.01) # this is an R script distributed with bayescan for plotting and identifying outliers. In this case I find 122 when FDR=0.05 and 76 at FDR=0.01
+CZ.outliers.df <- CZ.outliers$outliers
+CZ.outliers.df <- as.data.frame(CZ.outliers.df)
+colnames(CZ.outliers.df) <- "rownames"  ##the column headers need to be the same for dplyr to work
+
+locus.names <- read.table("CZ.404.7288.plink.map") ##read in the locus names found in the map file generated vcf --plink
+locus.names$rownames <- 1:nrow(locus.names) ##index in the same way as the bayescan output
+
+library(dplyr)
+##join by rownames
+CZ.outlier.names <- semi_join(locus.names, CZ.outliers.df)
+CZ.outlier.names <- gsub(":", ".", CZ.outlier.names$V2 )
+
+CZ.outlier.names <- as.data.frame(CZ.outlier.names)
+write.table(CZ.outlier.names, "CZ.bayescan.outliers.FDR0.01", quote=F, row.names=F, col.names=F)
+```
