@@ -189,6 +189,9 @@ geweke.diag(chain, frac1=0.1, frac2=0.5)  ##The diagnostic reports the z-scores 
 
 heidel.diag(chain, eps=0.1, pvalue=0.05) ##another test whether the chains have reached stationarity. 
 
+###Fst14 failed this test. 
+
+
 pdf("CHN.bayescan.results")
 par(mfrow=c(1,2))
 plot_bayescan(CHN.results, FDR=0.05, add_text=F)
