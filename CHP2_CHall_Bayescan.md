@@ -152,7 +152,15 @@ All the runs were completed on the UCLA server. Shorter runs took around 8 hours
 
 I copied all the output to here: 
 
-/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/Bayescan/bayescan.Oct2017
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/Bayescan/bayescan.Oct2017/CHP2.bayescan
+
+```
+bayescan input.bayescan.txt -o input.out -n 5000 -thin 10 -nbp 20 -pilot 5000 -burn 50000 -pr_odds 20
+
+```
+
+pr_odds here is 20, i.e. 5%, which is the cut-off I used in all the other methods. 
+
 
 ## Interpretation
 
@@ -162,4 +170,49 @@ I copied all the output to here:
 
 I'm using the following as guidance: 
 
+https://evomics.org/learning/population-and-speciation-genomics/bayescan-exercise/
+
+
+
+```
+source("plot_R.r")
+library(coda)
+
+chain <- read.table("CHN.out.sel", header=T)
+chain <- mcmc(chain, thin=10)
+
+plot(chain)  ##check for convergence
+summary(chain)
+autocorr.diag(chain) ## check correlation between the chains. Make sure the chains didn't get stuck
+effectiveSize(chain) ##check that this is close to the sample size (here 5000). If there is correlation (chain got stuck) the sample size will be much smaller than the input
+geweke.diag(chain, frac1=0.1, frac2=0.5)  ##The diagnostic reports the z-scores for each parameter. For example, with α = 0.05, the critical values of z are – 1.96 and +1.96. We reject H0 (equality of means => convergence) if z < -1.96 or z > +1.96.
+
+heidel.diag(chain, eps=0.1, pvalue=0.05) ##another test whether the chains have reached stationarity. 
+
+plot_bayescan("CHN.out_fst.txt", FDR=0.05)
+plot_bayescan("CHN.out_fst.txt", FDR=0.01)
+```
+
+
+Find the outliers and rename them
+```
+CHN.results <- read.table("CHN.out_fst.txt")
+CHN.results$rownumber <- 1:nrow(CHN.results)  ##add an index of the rownumbers, as these correspond to the loci in the input file. 
+
+CHN.outliers <- plot_bayescan(CHN.results, FDR=0.05) # this is an R script distributed with bayescan for plotting and identifying outliers. In this case I find 318 when FDR=0.05 and 217 at FDR=0.01
+CHN.outliers.df <- CHN.outliers$outliers
+CHN.outliers.df <- as.data.frame(CHN.outliers.df)
+colnames(CHN.outliers.df) <- "rownames"  ##the column headers need to be the same for dplyr to work
+
+locus.names <- read.table("CHN.229.5265.plink.map") ##read in the locus names found in the map file generated vcf --plink
+locus.names$rownames <- 1:nrow(locus.names) ##index in the same way as the bayescan output
+
+library(dplyr)
+##join by rownames
+CHN.outlier.names <- semi_join(locus.names, CHN.outliers.df)
+CHN.outlier.names <- gsub(":", ".", CHN.outlier.names$V2 )
+
+CHN.outlier.names <- as.data.frame(CHN.outlier.names)
+write.table(CHN.outlier.names, "CHN.bayenv.outliers.FDR0.05", quote=F, row.names=F, col.names=F)
+```
 
