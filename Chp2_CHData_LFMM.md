@@ -235,10 +235,10 @@ lambda=median(zs.d3.median^2)/0.4549364
 lambda
    # [1] 1.613051
 
-lambda=median(zs.d3.median^2)/0.65
+lambda=median(zs.d3.median^2)/0.73
 lambda
-   # [1] 1.128978
-adj.p.values.d3 =pchisq(zs.d3.median^2/0.65, df=1, lower=F)
+   # [1] 1.005254
+adj.p.values.d3 =pchisq(zs.d3.median^2/0.73, df=1, lower=F)
 q = 0.05
 L = length(adj.p.values.d3)
 w = which(sort(adj.p.values.d3) < q * (1:L) / L)
@@ -252,10 +252,10 @@ zs.d4.median =apply(zs.d4, MARGIN=1, median)
 lambda=median(zs.d4.median^2)/0.4549364
 lambda
  #   [1] 1.851754
-lambda=median(zs.d4.median^2)/0.75
+lambda=median(zs.d4.median^2)/0.8
 lambda
- #   [1]  1.12324
-adj.p.values.d4 =pchisq(zs.d4.median^2/0.75, df=1, lower=F)
+ #   [1] 1.053038
+adj.p.values.d4 =pchisq(zs.d4.median^2/0.8, df=1, lower=F)
 
 q = 0.05
 L = length(adj.p.values.d4)
@@ -269,10 +269,10 @@ zs.d5.median =apply(zs.d5, MARGIN=1, median)
 lambda=median(zs.d5.median^2)/0.4549364
 lambda
    # [1] 1.508529
-lambda=median(zs.d5.median^2)/0.85
+lambda=median(zs.d5.median^2)/0.70
 lambda
-   # [1] 0.8073937
-adj.p.values.d5 =pchisq(zs.d5.median^2/0.85, df=1, lower=F)
+   # [1] 0.9804067
+adj.p.values.d5 =pchisq(zs.d5.median^2/0.7, df=1, lower=F)
 
 q = 0.05
 L = length(adj.p.values.d5)
@@ -294,7 +294,7 @@ dev.off()
 
 ![alt_txt][CHN.hist]
 
-[CHN.hist]:https://user-images.githubusercontent.com/12142475/31120103-31db9dac-a82b-11e7-8ebb-aa6d29d0d625.png
+[CHN.hist]:https://user-images.githubusercontent.com/12142475/31121188-1e4eff0a-a82f-11e7-8060-e2ae5ec595dc.png
 
 
 
@@ -398,7 +398,7 @@ dev.off()
 
 ![alt_txt][CHN.Venn]
 
-[CHN.Venn]:https://cloud.githubusercontent.com/assets/12142475/23813445/3b901f38-05df-11e7-8bcd-235099f82013.png
+[CHN.Venn]:https://user-images.githubusercontent.com/12142475/31121243-52d11a88-a82f-11e7-81b8-6cce216ca8e9.png
 
 
 Prepare the data to incorporate with the Fst outlier graph
@@ -420,6 +420,8 @@ d12345.names <- rbind(d1.names, d2.names, d3.names, d4.names, d5.names)  ##Join 
 d12345.names <- lapply(d12345.names, unique)  #select only the unique rows. 
 
 d12345.names <- sub(":", ".", d12345.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
+
+d12345.names <- as.data.frame(d12345.names)
 
 write.table(d12345.names$d12345.names, "CHN.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
 
@@ -445,7 +447,7 @@ These datasets all have less individuals than the full dataset. I have to find o
 
 Open R and import project. This CHN project contains K3-5. 5 runs for each K. d1-5. I show only results from K=4 here: 
 ```
-CHS.lfmm=import.lfmm("CHS.275.9315.n5.recode.lfmm")
+CHS.lfmm=import.lfmmProject("CHS.275.6339.recode_CHS.275_lfmmProject.zip")
 
 project <- CHS.lfmm
 
@@ -455,11 +457,11 @@ zs.d1.median =apply(zs.d1, MARGIN=1, median)
 
 lambda=median(zs.d1.median^2)/0.4549364
 lambda
-   # [1] 1.636302
+   # [1]  1.697623
     
 lambda=median(zs.d1.median^2)/0.75
 lambda
-  #  [1] 0.9925513
+  #  [1]  1.029747
 
 adj.p.values.d1 =pchisq(zs.d1.median^2/0.75, df=1, lower=F)
 q = 0.05
@@ -473,10 +475,10 @@ zs.d2 <- z.scores(project, K=10, d=2)
 zs.d2.median =apply(zs.d2, MARGIN=1, median)
 lambda=median(zs.d2.median^2)/0.4549364
 lambda
- #   [1] 1.476016
+ #   [1] 1.537919
 lambda=median(zs.d2.median^2)/0.65
 lambda
-   # [1] 1.033067
+   # [1] 1.076393
 adj.p.values.d2 =pchisq(zs.d2.median^2/0.65, df=1, lower=F)
 
 q = 0.05
@@ -491,11 +493,11 @@ zs.d3 <- z.scores(project, K=10, d=3)
 zs.d3.median =apply(zs.d3, MARGIN=1, median)
 lambda=median(zs.d3.median^2)/0.4549364
 lambda
-   # [1] 1.614991
+   # [1] 1.770662
 
 lambda=median(zs.d3.median^2)/0.75
 lambda
-   # [1] 0.9796242
+   # [1] 1.074051
 adj.p.values.d3 =pchisq(zs.d3.median^2/0.75, df=1, lower=F)
 q = 0.05
 L = length(adj.p.values.d3)
@@ -509,10 +511,10 @@ zs.d4 <- z.scores(project, K=10, d=4)
 zs.d4.median =apply(zs.d4, MARGIN=1, median)
 lambda=median(zs.d4.median^2)/0.4549364
 lambda
- #   [1] 1.649681
+ #   [1] 1.670943
 lambda=median(zs.d4.median^2)/0.75
 lambda
- #   [1] 1.000667
+ #   [1] 1.013564
 adj.p.values.d4 =pchisq(zs.d4.median^2/0.75, df=1, lower=F)
 
 q = 0.05
@@ -526,10 +528,10 @@ zs.d5 <- z.scores(project, K=10, d=5)
 zs.d5.median =apply(zs.d5, MARGIN=1, median)
 lambda=median(zs.d5.median^2)/0.4549364
 lambda
-   # [1] 1.712181
+   # [1] 1.755527
 lambda=median(zs.d5.median^2)/0.8
 lambda
-   # [1] 0.9736667
+   # [1] 0.9983165
 adj.p.values.d5 =pchisq(zs.d5.median^2/0.8, df=1, lower=F)
 
 q = 0.05
@@ -552,7 +554,7 @@ dev.off()
 
 ![alt_txt][CHS.hist]
 
-[CHS.hist]:https://cloud.githubusercontent.com/assets/12142475/23814596/658c4456-05e4-11e7-9f03-97fcdef0012c.png
+[CHS.hist]:https://user-images.githubusercontent.com/12142475/31120625-00cf6f7a-a82d-11e7-8fce-6b238faf414d.png
 
 
 
@@ -561,7 +563,7 @@ Select all the candidates from the full list of SNPs
 ```
 #read the SNP names into R
 
-locus.names <- read.table("CHS.275.9315.plink.map", header=F)
+locus.names <- read.table("CHS.275.6339.plink.map", header=F)
 colnames(locus.names) <- c("V1", "SNP", "V3", "V4")
 locus.names$ID <- seq.int(nrow(locus.names)) #add an index of the SNP numbers, since the LFMM output is a numbered list corresponding to the original genotype input order
 candidates.d1.k5 <- as.character(candidates.d1.k5)  ##change the list of candidates from LFMM output to a list of characters
@@ -656,7 +658,7 @@ dev.off()
 
 ![alt_txt][CHS.Venn]
 
-[CHS.Venn]:https://cloud.githubusercontent.com/assets/12142475/23814852/797d9432-05e5-11e7-99c7-7065ddcd6934.png
+[CHS.Venn]:https://user-images.githubusercontent.com/12142475/31120683-408a8dfc-a82d-11e7-8de8-7a78297aceac.png
 
 
 Prepare the data to incorporate with the Fst outlier graph
@@ -678,7 +680,7 @@ d12345.names <- rbind(d1.names, d2.names, d3.names, d4.names, d5.names)  ##Join 
 d12345.names <- lapply(d12345.names, unique)  #select only the unique rows. 
 
 d12345.names <- sub(":", ".", d12345.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
-
+d12345.names <- as.data.frame(d12345.names)
 write.table(d12345.names$d12345.names, "CHS.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
 
 ##linux.
@@ -701,9 +703,8 @@ These datasets all have less individuals than the full dataset. I have to find o
 
 Open R and import project.  
 ```
-CHS.lfmm=import.lfmm("CHS.275.9315.n5.recode.lfmm")
+project=import.lfmm("CHS.275.9315.n5.recode.lfmm")
 
-project <- CHS.VS
 
 zs.d1 <- z.scores(project, K=4, d=1)
 zs.d1.median =apply(zs.d1, MARGIN=1, median)
@@ -711,11 +712,11 @@ zs.d1.median =apply(zs.d1, MARGIN=1, median)
 
 lambda=median(zs.d1.median^2)/0.4549364
 lambda
-   # [1] 1.482981
+   # [1] 1.559495
     
 lambda=median(zs.d1.median^2)/0.65
 lambda
-  #  [1] 1.037941
+  #  [1] 1.091494
 
 adj.p.values.d1 =pchisq(zs.d1.median^2/0.65, df=1, lower=F)
 q = 0.05
@@ -729,11 +730,11 @@ zs.d2 <- z.scores(project, K=4, d=2)
 zs.d2.median =apply(zs.d2, MARGIN=1, median)
 lambda=median(zs.d2.median^2)/0.4549364
 lambda
- #   [1] 1.484678
-lambda=median(zs.d2.median^2)/0.65
+ #   [1] 1.946384
+lambda=median(zs.d2.median^2)/0.9
 lambda
-   # [1]  1.039129
-adj.p.values.d2 =pchisq(zs.d2.median^2/0.65, df=1, lower=F)
+   # [1]  0.9838678
+adj.p.values.d2 =pchisq(zs.d2.median^2/0.9, df=1, lower=F)
 
 q = 0.05
 L = length(adj.p.values.d2)
@@ -747,12 +748,12 @@ zs.d3 <- z.scores(project, K=4, d=3)
 zs.d3.median =apply(zs.d3, MARGIN=1, median)
 lambda=median(zs.d3.median^2)/0.4549364
 lambda
-   # [1] 1.780045
+   # [1] 1.533234
 
-lambda=median(zs.d3.median^2)/0.8
+lambda=median(zs.d3.median^2)/0.65
 lambda
-   # [1] 1.012259
-adj.p.values.d3 =pchisq(zs.d3.median^2/0.8, df=1, lower=F)
+   # [1] 1.073114
+adj.p.values.d3 =pchisq(zs.d3.median^2/0.65, df=1, lower=F)
 q = 0.05
 L = length(adj.p.values.d3)
 w = which(sort(adj.p.values.d3) < q * (1:L) / L)
@@ -765,10 +766,10 @@ zs.d4 <- z.scores(project, K=4, d=4)
 zs.d4.median =apply(zs.d4, MARGIN=1, median)
 lambda=median(zs.d4.median^2)/0.4549364
 lambda
- #   [1] 1.478175
+ #   [1] 1.429176
 lambda=median(zs.d4.median^2)/0.65
 lambda
- #   [1] 1.034578
+ #   [1] 1.000283
 adj.p.values.d4 =pchisq(zs.d4.median^2/0.65, df=1, lower=F)
 
 q = 0.05
@@ -782,11 +783,11 @@ zs.d5 <- z.scores(project, K=4, d=5)
 zs.d5.median =apply(zs.d5, MARGIN=1, median)
 lambda=median(zs.d5.median^2)/0.4549364
 lambda
-   # [1] 1.379101
-lambda=median(zs.d5.median^2)/0.63
+   # [1] 1.596478
+lambda=median(zs.d5.median^2)/0.65
 lambda
-   # [1] 0.9958784
-adj.p.values.d5 =pchisq(zs.d5.median^2/0.63, df=1, lower=F)
+   # [1] 1.117378
+adj.p.values.d5 =pchisq(zs.d5.median^2/0.65, df=1, lower=F)
 
 q = 0.05
 L = length(adj.p.values.d5)
@@ -808,7 +809,7 @@ dev.off()
 
 ![alt_txt][CHS.VS.hist]
 
-[CHS.VS.hist]:https://cloud.githubusercontent.com/assets/12142475/23815160/1997090c-05e7-11e7-8dc2-192d19014de5.png
+[CHS.VS.hist]:https://user-images.githubusercontent.com/12142475/31120940-33b1cf9a-a82e-11e7-9aca-a77203ab8fbf.png
 
 
 
@@ -817,7 +818,7 @@ Select all the candidates from the full list of SNPs
 ```
 #read the SNP names into R
 
-locus.names <- read.table("CHS.VS.plink.map", header=F)
+locus.names <- read.table("CHS.VS.135.5835.plink.map", header=F)
 colnames(locus.names) <- c("V1", "SNP", "V3", "V4")
 locus.names$ID <- seq.int(nrow(locus.names)) #add an index of the SNP numbers, since the LFMM output is a numbered list corresponding to the original genotype input order
 candidates.d1.k5 <- as.character(candidates.d1.k5)  ##change the list of candidates from LFMM output to a list of characters
@@ -912,7 +913,7 @@ dev.off()
 
 ![alt_txt][CHS.VS.Venn]
 
-[CHS.VS.Venn]:https://cloud.githubusercontent.com/assets/12142475/23815254/a9a2939a-05e7-11e7-8f4d-95d03f22a6de.png
+[CHS.VS.Venn]:https://user-images.githubusercontent.com/12142475/31120999-69f379dc-a82e-11e7-855f-97d8d828f30e.png
 
 
 Prepare the data to incorporate with the Fst outlier graph
@@ -934,7 +935,7 @@ d12345.names <- rbind(d1.names, d2.names, d3.names, d4.names, d5.names)  ##Join 
 d12345.names <- lapply(d12345.names, unique)  #select only the unique rows. 
 
 d12345.names <- sub(":", ".", d12345.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
-
+d12345.names <- as.data.frame(d12345.names)
 write.table(d12345.names$d12345.names, "CHS.VS.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
 
 ##linux.
@@ -954,11 +955,11 @@ snmf K = 6
 
 These datasets all have less individuals than the full dataset. I have to find out why. 
 
-/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/LFMM/CHS.TI
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/LFMM/Oct2017/CHS.TI
 
 Open R and import project.  
 ```
-project=import.lfmmProject("Run2_140/CHS.140.8483.recode_CHS_lfmmProject.zip")
+project=import.lfmmProject("CHS.TI.140.5692.recode_CHS.TI_lfmmProject.zip")
 
 
 zs.d1 <- z.scores(project, K=6, d=1)
@@ -967,11 +968,11 @@ zs.d1.median =apply(zs.d1, MARGIN=1, median)
 
 lambda=median(zs.d1.median^2)/0.4549364
 lambda
-   # [1] 1.330629
+   # [1] 1.396319
     
 lambda=median(zs.d1.median^2)/0.6
 lambda
-  #  [1] 1.00892
+  #  [1] 1.058727
 
 adj.p.values.d1 =pchisq(zs.d1.median^2/0.6, df=1, lower=F)
 q = 0.05
@@ -985,10 +986,10 @@ zs.d2 <- z.scores(project, K=6, d=2)
 zs.d2.median =apply(zs.d2, MARGIN=1, median)
 lambda=median(zs.d2.median^2)/0.4549364
 lambda
- #   [1] 1.269703
+ #   [1] 1.302821
 lambda=median(zs.d2.median^2)/0.60
 lambda
-   # [1]  0.9627237
+   # [1]  0.9878343
 adj.p.values.d2 =pchisq(zs.d2.median^2/0.6, df=1, lower=F)
 
 q = 0.05
@@ -1003,11 +1004,11 @@ zs.d3 <- z.scores(project, K=6, d=3)
 zs.d3.median =apply(zs.d3, MARGIN=1, median)
 lambda=median(zs.d3.median^2)/0.4549364
 lambda
-   # [1] 1.143103
+   # [1] 1.184177
 
 lambda=median(zs.d3.median^2)/0.52
 lambda
-   # [1] 1.000076
+   # [1] 1.03601
 adj.p.values.d3 =pchisq(zs.d3.median^2/0.52, df=1, lower=F)
 q = 0.05
 L = length(adj.p.values.d3)
@@ -1021,10 +1022,10 @@ zs.d4 <- z.scores(project, K=6, d=4)
 zs.d4.median =apply(zs.d4, MARGIN=1, median)
 lambda=median(zs.d4.median^2)/0.4549364
 lambda
- #   [1] 1.783528
+ #   [1] 1.871516
 lambda=median(zs.d4.median^2)/0.82
 lambda
- #   [1] 0.9895024
+ #   [1] 1.038318
 adj.p.values.d4 =pchisq(zs.d4.median^2/0.82, df=1, lower=F)
 
 q = 0.05
@@ -1038,10 +1039,10 @@ zs.d5 <- z.scores(project, K=6, d=5)
 zs.d5.median =apply(zs.d5, MARGIN=1, median)
 lambda=median(zs.d5.median^2)/0.4549364
 lambda
-   # [1] 1.371161
+   # [1] 1.43036
 lambda=median(zs.d5.median^2)/0.63
 lambda
-   # [1] 0.9901447
+   # [1] 1.032894
 adj.p.values.d5 =pchisq(zs.d5.median^2/0.63, df=1, lower=F)
 
 q = 0.05
@@ -1064,7 +1065,7 @@ dev.off()
 
 ![alt_txt][CHS.TI.hist]
 
-[CHS.TI.hist]:https://cloud.githubusercontent.com/assets/12142475/23815917/34ad2138-05ea-11e7-82c6-10f980fe1a38.png
+[CHS.TI.hist]:https://user-images.githubusercontent.com/12142475/31121410-00c997a0-a830-11e7-846f-75b8cc943689.png
 
 
 
@@ -1073,7 +1074,7 @@ Select all the candidates from the full list of SNPs
 ```
 #read the SNP names into R
 
-locus.names <- read.table("Run2_140/CHS.TI.plink.map", header=F)
+locus.names <- read.table("CHS.TI.140.5692.plink.map", header=F)
 colnames(locus.names) <- c("V1", "SNP", "V3", "V4")
 locus.names$ID <- seq.int(nrow(locus.names)) #add an index of the SNP numbers, since the LFMM output is a numbered list corresponding to the original genotype input order
 candidates.d1.k5 <- as.character(candidates.d1.k5)  ##change the list of candidates from LFMM output to a list of characters
@@ -1168,7 +1169,7 @@ dev.off()
 
 ![alt_txt][CHS.TI.Venn]
 
-[CHS.TI.Venn]:https://cloud.githubusercontent.com/assets/12142475/23816013/c0d2f1c4-05ea-11e7-88ea-ad27439ba45f.png
+[CHS.TI.Venn]:https://user-images.githubusercontent.com/12142475/31121490-47e83ea2-a830-11e7-8269-b799ae35fbcf.png
 
 
 Prepare the data to incorporate with the Fst outlier graph
@@ -1190,6 +1191,8 @@ d12345.names <- rbind(d1.names, d2.names, d3.names, d4.names, d5.names)  ##Join 
 d12345.names <- lapply(d12345.names, unique)  #select only the unique rows. 
 
 d12345.names <- sub(":", ".", d12345.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
+
+d12345.names <- as.data.frame(d12345.names)
 
 write.table(d12345.names$d12345.names, "CHS.TI.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
 
@@ -1213,7 +1216,7 @@ These datasets all have less individuals than the full dataset. I have to find o
 
 Open R and import project.  
 ```
-project=import.lfmmProject("Run2_CZ.n5/CZ.404.9528.recode_CZ_lfmmProject.zip")
+project=import.lfmmProject("CZ.404.7288.recode_CZ_lfmmProject.zip")
 
 
 zs.d1 <- z.scores(project, K=9, d=1)
@@ -1222,11 +1225,11 @@ zs.d1.median =apply(zs.d1, MARGIN=1, median)
 
 lambda=median(zs.d1.median^2)/0.4549364
 lambda
-   # [1] 0.8968511
+   # [1] 0.9234408
     
 lambda=median(zs.d1.median^2)/0.4
 lambda
-  #  [1] 1.020025
+  #  [1] 1.050267
 
 adj.p.values.d1 =pchisq(zs.d1.median^2/0.4, df=1, lower=F)
 q = 0.05
@@ -1240,10 +1243,10 @@ zs.d2 <- z.scores(project, K=9, d=2)
 zs.d2.median =apply(zs.d2, MARGIN=1, median)
 lambda=median(zs.d2.median^2)/0.4549364
 lambda
- #   [1] 1.362489
+ #   [1] 1.386879
 lambda=median(zs.d2.median^2)/0.60
 lambda
-   # [1]  1.033077
+   # [1]  1.05157
 adj.p.values.d2 =pchisq(zs.d2.median^2/0.6, df=1, lower=F)
 
 q = 0.05
@@ -1258,11 +1261,11 @@ zs.d3 <- z.scores(project, K=9, d=3)
 zs.d3.median =apply(zs.d3, MARGIN=1, median)
 lambda=median(zs.d3.median^2)/0.4549364
 lambda
-   # [1] 1.369596
+   # [1] 1.453828
 
 lambda=median(zs.d3.median^2)/0.62
 lambda
-   # [1] 1.004966
+   # [1] 1.066773
 adj.p.values.d3 =pchisq(zs.d3.median^2/0.62, df=1, lower=F)
 q = 0.05
 L = length(adj.p.values.d3)
@@ -1276,10 +1279,10 @@ zs.d4 <- z.scores(project, K=9, d=4)
 zs.d4.median =apply(zs.d4, MARGIN=1, median)
 lambda=median(zs.d4.median^2)/0.4549364
 lambda
- #   [1] 1.397608
+ #   [1] 1.45827
 lambda=median(zs.d4.median^2)/0.64
 lambda
- #   [1] 0.9934732
+ #   [1] 1.036594
 adj.p.values.d4 =pchisq(zs.d4.median^2/0.64, df=1, lower=F)
 
 q = 0.05
@@ -1293,10 +1296,10 @@ zs.d5 <- z.scores(project, K=9, d=5)
 zs.d5.median =apply(zs.d5, MARGIN=1, median)
 lambda=median(zs.d5.median^2)/0.4549364
 lambda
-   # [1] 1.276883
+   # [1] 1.306648
 lambda=median(zs.d5.median^2)/0.58
 lambda
-   # [1] 1.001552
+   # [1] 1.0249
 adj.p.values.d5 =pchisq(zs.d5.median^2/0.58, df=1, lower=F)
 
 q = 0.05
@@ -1319,7 +1322,7 @@ dev.off()
 
 ![alt_txt][CZ.hist]
 
-[CZ.hist]:https://cloud.githubusercontent.com/assets/12142475/23816379/c7afae0e-05ec-11e7-9ed4-c01e0793d8f8.png
+[CZ.hist]:https://user-images.githubusercontent.com/12142475/31121666-170a4a90-a831-11e7-9bd9-660ec8b1bbfd.png
 
 
 
@@ -1328,7 +1331,7 @@ Select all the candidates from the full list of SNPs
 ```
 #read the SNP names into R
 
-locus.names <- read.table("Run2_CZ.n5/CZ.plink.map", header=F)
+locus.names <- read.table("CZ.404.7288.plink.map", header=F)
 colnames(locus.names) <- c("V1", "SNP", "V3", "V4")
 locus.names$ID <- seq.int(nrow(locus.names)) #add an index of the SNP numbers, since the LFMM output is a numbered list corresponding to the original genotype input order
 candidates.d1.k5 <- as.character(candidates.d1.k5)  ##change the list of candidates from LFMM output to a list of characters
@@ -1423,7 +1426,7 @@ dev.off()
 
 ![alt_txt][CZ.Venn]
 
-[CZ.Venn]:https://cloud.githubusercontent.com/assets/12142475/23816562/bb491226-05ed-11e7-8a5d-39ba2fcc19f7.png
+[CZ.Venn]:https://user-images.githubusercontent.com/12142475/31121744-612b5f2e-a831-11e7-9af5-bd66a3c3c470.png
 
 
 Prepare the data to incorporate with the Fst outlier graph
@@ -1445,6 +1448,8 @@ d12345.names <- rbind(d1.names, d2.names, d3.names, d4.names, d5.names)  ##Join 
 d12345.names <- lapply(d12345.names, unique)  #select only the unique rows. 
 
 d12345.names <- sub(":", ".", d12345.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
+
+d12345.names <- as.data.frame(d12345.names)
 
 write.table(d12345.names$d12345.names, "CZ.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
 
