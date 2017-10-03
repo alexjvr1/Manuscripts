@@ -146,4 +146,20 @@ rm CZ.popnames
 ```
 
 
+## Run Bayescan
+
+All the runs were completed on the UCLA server. Shorter runs took around 8 hours. Longest run was around 16 hours. 
+
+I copied all the output to here: 
+
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/Bayescan/bayescan.Oct2017
+
+## Interpretation
+
+1. Check that the runs have converged
+
+2. Identify outliers. 
+
+I'm using the following as guidance: 
+
 
