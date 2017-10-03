@@ -189,8 +189,11 @@ geweke.diag(chain, frac1=0.1, frac2=0.5)  ##The diagnostic reports the z-scores 
 
 heidel.diag(chain, eps=0.1, pvalue=0.05) ##another test whether the chains have reached stationarity. 
 
-plot_bayescan("CHN.out_fst.txt", FDR=0.05)
-plot_bayescan("CHN.out_fst.txt", FDR=0.01)
+pdf("CHN.bayescan.results")
+par(mfrow=c(1,2))
+plot_bayescan(CHN.results, FDR=0.05, add_text=F)
+plot_bayescan(CHN.results, FDR=0.01, add_text=F)
+dev.off()
 ```
 
 
@@ -199,7 +202,7 @@ Find the outliers and rename them
 CHN.results <- read.table("CHN.out_fst.txt")
 CHN.results$rownumber <- 1:nrow(CHN.results)  ##add an index of the rownumbers, as these correspond to the loci in the input file. 
 
-CHN.outliers <- plot_bayescan(CHN.results, FDR=0.05) # this is an R script distributed with bayescan for plotting and identifying outliers. In this case I find 318 when FDR=0.05 and 217 at FDR=0.01
+CHN.outliers <- plot_bayescan(CHN.results, FDR=0.01) # this is an R script distributed with bayescan for plotting and identifying outliers. In this case I find 318 when FDR=0.05 and 217 at FDR=0.01
 CHN.outliers.df <- CHN.outliers$outliers
 CHN.outliers.df <- as.data.frame(CHN.outliers.df)
 colnames(CHN.outliers.df) <- "rownames"  ##the column headers need to be the same for dplyr to work
@@ -213,6 +216,6 @@ CHN.outlier.names <- semi_join(locus.names, CHN.outliers.df)
 CHN.outlier.names <- gsub(":", ".", CHN.outlier.names$V2 )
 
 CHN.outlier.names <- as.data.frame(CHN.outlier.names)
-write.table(CHN.outlier.names, "CHN.bayenv.outliers.FDR0.05", quote=F, row.names=F, col.names=F)
+write.table(CHN.outlier.names, "CHN.bayescan.outliers.FDR0.05", quote=F, row.names=F, col.names=F)
 ```
 
