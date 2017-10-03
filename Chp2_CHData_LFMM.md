@@ -197,11 +197,11 @@ zs.d1.median =apply(zs.d1, MARGIN=1, median)
 
 lambda=median(zs.d1.median^2)/0.4549364
 lambda
-   # [1] 1.330662
+   # [1] 1.448757
     
 lambda=median(zs.d1.median^2)/0.6
 lambda
-  #  [1] 1.008944
+  #  [1] 1.098487
 
 adj.p.values.d1 =pchisq(zs.d1.median^2/0.6, df=1, lower=F)
 q = 0.05
@@ -215,10 +215,10 @@ zs.d2 <- z.scores(project, K=4, d=2)
 zs.d2.median =apply(zs.d2, MARGIN=1, median)
 lambda=median(zs.d2.median^2)/0.4549364
 lambda
- #   [1]  0.9677428
+ #   [1]  1.077905
 lambda=median(zs.d2.median^2)/0.85
 lambda
-   # [1] 0.5179546
+   # [1] 0.5769154
 adj.p.values.d2 =pchisq(zs.d2.median^2/0.4549364, df=1, lower=F)
 
 q = 0.05
@@ -233,11 +233,11 @@ zs.d3 <- z.scores(project, K=4, d=3)
 zs.d3.median =apply(zs.d3, MARGIN=1, median)
 lambda=median(zs.d3.median^2)/0.4549364
 lambda
-   # [1] 1.47406
+   # [1] 1.613051
 
 lambda=median(zs.d3.median^2)/0.65
 lambda
-   # [1] 1.031698
+   # [1] 1.128978
 adj.p.values.d3 =pchisq(zs.d3.median^2/0.65, df=1, lower=F)
 q = 0.05
 L = length(adj.p.values.d3)
@@ -251,10 +251,10 @@ zs.d4 <- z.scores(project, K=4, d=4)
 zs.d4.median =apply(zs.d4, MARGIN=1, median)
 lambda=median(zs.d4.median^2)/0.4549364
 lambda
- #   [1] 1.569119
+ #   [1] 1.851754
 lambda=median(zs.d4.median^2)/0.75
 lambda
- #   [1] 1.059071
+ #   [1]  1.12324
 adj.p.values.d4 =pchisq(zs.d4.median^2/0.75, df=1, lower=F)
 
 q = 0.05
@@ -268,10 +268,10 @@ zs.d5 <- z.scores(project, K=4, d=5)
 zs.d5.median =apply(zs.d5, MARGIN=1, median)
 lambda=median(zs.d5.median^2)/0.4549364
 lambda
-   # [1] 2.888479
+   # [1] 1.508529
 lambda=median(zs.d5.median^2)/0.85
 lambda
-   # [1] 1.034839
+   # [1] 0.8073937
 adj.p.values.d5 =pchisq(zs.d5.median^2/0.85, df=1, lower=F)
 
 q = 0.05
@@ -294,7 +294,7 @@ dev.off()
 
 ![alt_txt][CHN.hist]
 
-[CHN.hist]:https://cloud.githubusercontent.com/assets/12142475/23813391/fa8b7f82-05de-11e7-8bd4-67543795a244.png
+[CHN.hist]:https://user-images.githubusercontent.com/12142475/31120103-31db9dac-a82b-11e7-8ebb-aa6d29d0d625.png
 
 
 
@@ -303,7 +303,7 @@ Select all the candidates from the full list of SNPs
 ```
 #read the SNP names into R
 
-locus.names <- read.table("CHN/CHN.229.8951.plink.map", header=F)
+locus.names <- read.table("CHN.229.5265.plink.map", header=F)
 colnames(locus.names) <- c("V1", "SNP", "V3", "V4")
 locus.names$ID <- seq.int(nrow(locus.names)) #add an index of the SNP numbers, since the LFMM output is a numbered list corresponding to the original genotype input order
 candidates.d1.k5 <- as.character(candidates.d1.k5)  ##change the list of candidates from LFMM output to a list of characters
