@@ -3221,9 +3221,12 @@ CHS.TI.day.10cm.bayenv.candidates <- CHS.TI.BF.all[which(CHS.TI.BF.all$day.10cm.
 
 ###Determine the names of all the loci. 
 
+THIS FIRST PART (FILTERING) is not applicable to the --MAC filtered dataset. Just convert to plink. 
+
 My input was obtained using pgdspider 2.1.0.3 (vcf -> bayenv2)
 
 However, this removes all monomorphic loci from the input file. Thus, to match this back to the vcf file, I need to remove all monomorphic loci from this file. 
+
 
 ```
 vcftools --vcf CHall.932.9608.recode.vcf --maf 0.0001 --recode --recode-INFO-all --out CHall.932.
@@ -3247,145 +3250,22 @@ Once this is done, the names can be read into R and indexed.
 ```
 #linux
 
-vcftools --vcf CHall.932.9608.recode.vcf --plink --out CHall.932.9608.plink
+vcftools --vcf CHN.229.5265.recode.vcf --plink --out CHN.229.5265.plink
 
-vcftools --vcf CHN.229.8951.recode.vcf --plink --out CHN.229.8951.plink
+#vcftools --vcf CHS.275.9295.recode.vcf --plink --out CHS.275.9295.plink
 
-vcftools --vcf CHS.275.9295.recode.vcf --plink --out CHS.275.9295.plink
+#vcftools --vcf CZ.404.9528.recode.vcf --plink --out CZ.404.9528.plink
 
-vcftools --vcf CZ.404.9528.recode.vcf --plink --out CZ.404.9528.plink
+vcftools --vcf CHS.VS.135.5835.recode.vcf --plink --out CHS.VS.135.5835.plink
 
-vcftools --vcf CHS.VS.135.8779.recode.vcf --plink --out CHS.VS.135.8779.plink
-
-vcftools --vcf CHS.TI.140.8343.recode.vcf --plink --out CHS.TI.140.8343.plink
-
-```
-
-
-
-```
-##R
-
-###CHall
-CHall.locus.names <- read.table("/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/CHall.932.9608.plink.map", header=F) #import the locus names into R
-CHall.locus.names$ID <- seq.int(nrow(CHall.locus.names)) ##index the CHall.locus.names file so that all the loci are numbered in order of appearance
-
-CHall.BF.all$ID <- seq.int(nrow(CHall.BF.all))  ##do the same with the CHall.BF.all file. Make sure this is the original output from BayEnv, and not a sorted file. 
-
-##find the candidate loci using the indexed .CHall.BF.all file
-
-##Find all the candidate loci
-CHall.rad.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$rad.log10BF>0.5 & (abs(CHall.BF.all$rad.rho))>0.3),]
-CHall.shadow.days.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$shadow.days.log10BF>0.5 & (abs(CHall.BF.all$shadow.days.rho))>0.3),]
-CHall.temp.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$temp.log10BF>0.5 & (abs(CHall.BF.all$temp.rho))>0.3),]
-CHall.pcpt.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$pcpt.log10BF>0.5 & (abs(CHall.BF.all$pcpt.rho))>0.3),]
-CHall.day.10cm.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$day.10cm.log10BF>0.5 & (abs(CHall.BF.all$day.10cm.rho))>0.3),]
-
-CHall.rad.bayenv.candidates$ID <- as.character(CHall.rad.bayenv.candidates$ID)
-CHall.rad.bayenv.candidates.names <- CHall.locus.names[CHall.locus.names$ID %in% CHall.rad.bayenv.candidates$ID,]  #Find the actual locus names
-colnames(CHall.rad.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
-CHall.rad.bayenv.candidates.names <- paste("X", CHall.rad.bayenv.candidates.names$SNP, sep=".")
-
-CHall.shadow.days.bayenv.candidates$ID <- as.character(CHall.shadow.days.bayenv.candidates$ID)
-CHall.shadow.days.bayenv.candidates.names <- CHall.locus.names[CHall.locus.names$ID %in% CHall.shadow.days.bayenv.candidates$ID,]  #Find the actual locus names
-colnames(CHall.shadow.days.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
-CHall.shadow.days.bayenv.candidates.names <- paste("X", CHall.shadow.days.bayenv.candidates.names$SNP, sep=".")
-
-CHall.temp.bayenv.candidates$ID <- as.character(CHall.temp.bayenv.candidates$ID)
-CHall.temp.bayenv.candidates.names <- CHall.locus.names[CHall.locus.names$ID %in% CHall.temp.bayenv.candidates$ID,]  #Find the actual locus names
-colnames(CHall.temp.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
-CHall.temp.bayenv.candidates.names <- paste("X", CHall.temp.bayenv.candidates.names$SNP, sep=".")
-
-CHall.pcpt.bayenv.candidates$ID <- as.character(CHall.pcpt.bayenv.candidates$ID)
-CHall.pcpt.bayenv.candidates.names <- CHall.locus.names[CHall.locus.names$ID %in% CHall.pcpt.bayenv.candidates$ID,]  #Find the actual locus names
-colnames(CHall.pcpt.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
-CHall.pcpt.bayenv.candidates.names <- paste("X", CHall.pcpt.bayenv.candidates.names$SNP, sep=".")
-
-CHall.day.10cm.bayenv.candidates$ID <- as.character(CHall.day.10cm.bayenv.candidates$ID)
-CHall.day.10cm.bayenv.candidates.names <- CHall.locus.names[CHall.locus.names$ID %in% CHall.day.10cm.bayenv.candidates$ID,]  #Find the actual locus names
-colnames(CHall.day.10cm.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
-CHall.day.10cm.bayenv.candidates.names <- paste("X", CHall.day.10cm.bayenv.candidates.names$SNP, sep=".")
-
-```
-find names and write to file
-
-```
-CHall.rad.names <- as.data.frame(CHall.rad.bayenv.candidates.names)
-colnames(CHall.rad.names) <- "names"
-
-CHall.shadow.days.names <- as.data.frame(CHall.shadow.days.bayenv.candidates.names)
-colnames(CHall.shadow.days.names) <- "names"
-
-CHall.temp.names <- as.data.frame(CHall.temp.bayenv.candidates.names)
-colnames(CHall.temp.names) <- "names"
-
-CHall.pcpt.names <- as.data.frame(CHall.pcpt.bayenv.candidates.names)
-colnames(CHall.pcpt.names) <- "names"
-
-CHall.day.10cm.names <- as.data.frame(CHall.day.10cm.bayenv.candidates.names)
-colnames(CHall.day.10cm.names) <- "names"
-
-
-CHall.alloutliers.names <- rbind(CHall.rad.names, CHall.shadow.days.names, CHall.temp.names, CHall.pcpt.names, CHall.day.10cm.names)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
-
-CHall.alloutliers.names <- lapply(CHall.alloutliers.names, unique)  #select only the unique rows. 
-
-CHall.alloutliers.names <- sub(":", ".", CHall.alloutliers.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
-
-CHall.alloutliers.names <- as.data.frame(CHall.alloutliers.names)
-write.table(CHall.alloutliers.names$CHall.alloutliers.names, "CHall.BayEnv.alloutliers", col.names=F, row.names=F, quote=F)
-
-##linux.
-##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
-
-#Read into R
-CHall.BayEnv.outliers <- read.table("CHall.BayEnv.alloutliers")
-colnames(CHall.BayEnv.outliers) <- ("loci")
-CHall.BayEnv.outliers <- as.character(CHall.BayEnv.outliers$loci)
-
-```
-
-Write XtX outliers top 100 to file
-
-```
-CHall.XtX.run1 <- read.table("CHall.Run1/XtX_out.CHall.5n.ENV", header=F)
-CHall.XtX.run2 <- read.table("CHall.Run2/XtX_out.CHall.5n.ENV", header=F)
-CHall.XtX.run3 <- read.table("CHall.Run3/XtX_out.CHall.5n.ENV", header=F)
-
-
-CHall.XtX.all <- rbindlist(list(CHall.XtX.run1, CHall.XtX.run2, CHall.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
-
-colnames(CHall.XtX.all) <- c("snp", "XtX")
-##index the loci 
-CHall.XtX.all$ID <- seq.int(nrow(CHall.XtX.all))   ##index the loci in the original output
-CHall.XtX.all.sort <- CHall.XtX.all[order(-CHall.XtX.all$XtX),]  ##order to get the top 100 loci. The minus means its descending order
-CHall.XtX.top100 <- CHall.XtX.all.sort[1:100,]  #select the first 100 loci
-CHall.XtX.top100.names <- CHall.locus.names[CHall.locus.names$ID %in% CHall.XtX.top100$ID,]  ##get their names
-summary(CHall.XtX.top100.names)
-colnames(CHall.XtX.top100.names) <- c("V1", "SNP", "V3", "V4", "ID")   #rename the columns to match the code
-CHall.XtX.top100.names <- paste("X", CHall.XtX.top100.names$SNP, sep=".")  #rename loci
-CHall.XtX.top100.names <- as.data.frame(CHall.XtX.top100.names)
-CHall.XtX.top100.names
-colnames(CHall.XtX.top100.names) <- "names"
-CHall.XtX.top100.names <- sub(":", ".", CHall.XtX.top100.names$names)  ##rename to match Fst table
-CHall.XtX.top100.names <- as.data.frame(CHall.XtX.top100.names)
-write.table(CHall.XtX.top100.names$CHall.XtX.top100.names, "CHall.XtX.100outliers", col.names=F, row.names=F, quote=F)  ##write the table
-
-
-##linux.
-##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
-
-#Read into R
-XtX.outliers <- read.table("XtX.100outliers")
-colnames(XtX.outliers) <- ("loci")
-
+vcftools --vcf CHS.TI.140.5692.recode.vcf --plink --out CHS.TI.140.5692.plink
 
 ```
 
 
 ###### CHN
 ```
-CHN.locus.names <- read.table("/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/CHN.229.8951.plink.map", header=F) #import the locus names into R
+CHN.locus.names <- read.table("CHN.229.5265.plink.map", header=F) #import the locus names into R
 CHN.locus.names$ID <- seq.int(nrow(CHN.locus.names)) ##index the CHN.locus.names file so that all the loci are numbered in order of appearance
 
 CHN.BF.all$ID <- seq.int(nrow(CHN.BF.all))  ##do the same with the CHN.BF.all file. Make sure this is the original output from BayEnv, and not a sorted file. 
@@ -3738,7 +3618,7 @@ colnames(XtX.outliers) <- ("loci")
 
 ####### CHS.VS
 ```
-CHS.VS.locus.names <- read.table("/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/CHS.VS.135.8779.plink.map", header=F) #import the locus names into R
+CHS.VS.locus.names <- read.table("CHS.VS.135.5835.plink.map", header=F) #import the locus names into R
 CHS.VS.locus.names$ID <- seq.int(nrow(CHS.VS.locus.names)) ##index the CHS.VS.locus.names file so that all the loci are numbered in order of appearance
 
 CHS.VS.BF.all$ID <- seq.int(nrow(CHS.VS.BF.all))  ##do the same with the CHS.VS.BF.all file. Make sure this is the original output from BayEnv, and not a sorted file. 
@@ -3856,7 +3736,7 @@ colnames(XtX.outliers) <- ("loci")
 
 ####### CHS.TI
 ```
-CHS.TI.locus.names <- read.table("/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/CHS.TI.140.8343.plink.map", header=F) #import the locus names into R
+CHS.TI.locus.names <- read.table("CHS.TI.140.5692.plink.map", header=F) #import the locus names into R
 CHS.TI.locus.names$ID <- seq.int(nrow(CHS.TI.locus.names)) ##index the CHS.TI.locus.names file so that all the loci are numbered in order of appearance
 
 CHS.TI.BF.all$ID <- seq.int(nrow(CHS.TI.BF.all))  ##do the same with the CHS.TI.BF.all file. Make sure this is the original output from BayEnv, and not a sorted file. 
@@ -3936,9 +3816,9 @@ CHS.TI.BayEnv.outliers <- as.character(CHS.TI.BayEnv.outliers$loci)
 Write top 100 XtX loci to file
 
 ```
-CHS.TI.XtX.run1 <- read.table("CHS.TI.Run1/XtX_out.standardised.5env.env", header=F)
-CHS.TI.XtX.run2 <- read.table("CHS.TI.Run2/XtX_out.standardised.5env.env", header=F)
-CHS.TI.XtX.run3 <- read.table("CHS.TI.Run3/XtX_out.standardised.5env.env", header=F)
+CHS.TI.XtX.run1 <- read.table("CHS.TI.Run1/XtX_out.CHS.TI.n5.p14.ENVIRONFILE", header=F)
+CHS.TI.XtX.run2 <- read.table("CHS.TI.Run2/XtX_out.CHS.TI.n5.p14.ENVIRONFILE", header=F)
+CHS.TI.XtX.run3 <- read.table("CHS.TI.Run3/XtX_out.CHS.TI.n5.p14.ENVIRONFILE", header=F)
 
 
 CHS.TI.XtX.all <- rbindlist(list(CHS.TI.XtX.run1, CHS.TI.XtX.run2, CHS.TI.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
