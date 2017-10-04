@@ -2742,9 +2742,6 @@ Calculate a final matrix as the median of all the matrices
 ```
 library(data.table)
 
-##CHall
-CHall.BF.all <- rbindlist(list(BF.CHall.Run1, BF.CHall.Run2, BF.CHall.Run3))[,lapply(.SD,median), list(snp)]
-
 
 ##CHN
 CHN.BF.all <- rbindlist(list(BF.CHN.Run1, BF.CHN.Run2, BF.CHN.Run3))[,lapply(.SD,median), list(snp)]
@@ -2764,95 +2761,6 @@ CHS.TI.BF.all <- rbindlist(list(BF.CHS.TI.Run1, BF.CHS.TI.Run2, BF.CHS.TI.Run3))
 
 
 Identify the outliers associated with the different env variables. " Strength of evidence for significant associations was based on the value of the log10 Bayes factor (log10BF), with the following log10BF cut-offs: 0.5–1= substantial evidence; 1–2 = strong evidence; >2 =decisive (Kass & Raftery 1995). The linear model underlying the Bayes factor might not be correct or outliers within our data might misguide the model (bayenv2.0 manual, https://bitbucket.org/tguenther/bayenv2_public/src). To deal with this, bayenv2 also calculates the nonparametric Spearman's rank correlation coefficient, ρ. SNPs with a log10BF >0.5 as well as an absolute value of ρ > 0.3 (where ρ ranges from −1 to 1) were therefore considered as robust candidates demonstrating signatures of selection. " Christmas et al. 2016
-
-
-###CHall
-```
-#calculate the log10 of BF for each environmental variable
-
-CHall.BF.all$rad.log10BF <- log10(CHall.BF.all$rad.BF)
-CHall.BF.all$shadow.days.log10BF <- log10(CHall.BF.all$shadow.days.BF)
-CHall.BF.all$temp.log10BF <- log10(CHall.BF.all$temp.BF)
-CHall.BF.all$pcpt.log10BF <- log10(CHall.BF.all$pcpt.BF)
-CHall.BF.all$day.10cm.log10BF <- log10(CHall.BF.all$day.10cm.BF)
-
-##Sort and plot
-
-CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$rad.log10BF),]
-
-pdf("CHall.BF.plot.pdf")
-par(mfrow=c(3,2))
-CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$rad.log10BF),]
-plot(CHall.BF.all.sort$rad.log10BF, main="rad")
-abline(h=0.5, col=4, lty=2)
-abline(h=1.0, col=3, lty=2)
-
-CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$shadow.days.log10BF),]
-plot(CHall.BF.all.sort$shadow.days.log10BF, main="shadow.days")
-abline(h=0.5, col=4, lty=2)
-abline(h=1.0, col=3, lty=2)
-
-CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$temp.log10BF),]
-plot(CHall.BF.all.sort$temp.log10BF, main="temp")
-abline(h=0.5, col=4, lty=2)
-abline(h=1.0, col=3, lty=2)
-
-
-CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$pcpt.log10BF),]
-plot(CHall.BF.all.sort$pcpt.log10BF, main="pcpt")
-abline(h=0.5, col=4, lty=2)
-abline(h=1.0, col=3, lty=2)
-
-CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$day.10cm.log10BF),]
-plot(CHall.BF.all.sort$day.10cm.log10BF, main="day.10cm")
-abline(h=0.5, col=4, lty=2)
-abline(h=1.0, col=3, lty=2)
-
-dev.off()
-```
-
-##plot BF vs absolute p value
-```
-pdf("CHall.BFvsp.pdf")
-par(mfrow=c(3,2))
-CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$rad.log10BF),]
-plot(CHall.BF.all.sort$rad.log10BF~(abs(CHall.BF.all.sort$rad.rho)), main="rad")
-abline(h=0.5, col=4, lty=2)
-abline(h=1.0, col=3, lty=2)
-abline(v=0.3, col=3, lty=2)
-CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$shadow.days.log10BF),]
-plot(CHall.BF.all.sort$shadow.days.log10BF~(abs(CHall.BF.all.sort$shadow.days.rho)), main="shadow.days")
-abline(h=0.5, col=4, lty=2)
-abline(h=1.0, col=3, lty=2)
-abline(v=0.3, col=3, lty=2)
-CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$temp.log10BF),]
-plot(CHall.BF.all.sort$temp.log10BF~(abs(CHall.BF.all.sort$temp.rho)), main="temp")
-abline(h=0.5, col=4, lty=2)
-abline(h=1.0, col=3, lty=2)
-abline(v=0.3, col=3, lty=2)
-CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$pcpt.log10BF),]
-plot(CHall.BF.all.sort$pcpt.log10BF~(abs(CHall.BF.all.sort$pcpt.rho)), main="pcpt")
-abline(h=0.5, col=4, lty=2)
-abline(h=1.0, col=3, lty=2)
-abline(v=0.3, col=3, lty=2)
-CHall.BF.all.sort <- CHall.BF.all[order(CHall.BF.all$day.10cm.log10BF),]
-plot(CHall.BF.all.sort$day.10cm.log10BF~(abs(CHall.BF.all.sort$day.10cm.rho)), main="day.10cm")
-abline(h=0.5, col=4, lty=2)
-abline(h=1.0, col=3, lty=2)
-abline(v=0.3, col=3, lty=2)
-dev.off()
-```
-
-Identify the candidates for each env variable
-```
-CHall.rad.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$rad.log10BF>0.5 & (abs(CHall.BF.all$rad.rho))>0.3),]
-CHall.shadow.days.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$shadow.days.log10BF>0.5 & (abs(CHall.BF.all$shadow.days.rho))>0.3),]
-CHall.temp.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$temp.log10BF>0.5 & (abs(CHall.BF.all$temp.rho))>0.3),]
-CHall.pcpt.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$pcpt.log10BF>0.5 & (abs(CHall.BF.all$pcpt.rho))>0.3),]
-CHall.day.10cm.bayenv.candidates <- CHall.BF.all[which(CHall.BF.all$day.10cm.log10BF>0.5 & (abs(CHall.BF.all$day.10cm.rho))>0.3),]
-```
-
-
 
 
 
