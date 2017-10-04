@@ -1186,38 +1186,9 @@ First I need to find only the loci that occur more than once in each dataset.
 
 ##### CHN
 ```
-CHN.bayenv.outliers <- read.table("CHN/CHN.bayenv.alloutliers", header=F)
-colnames(CHN.bayenv.outliers) <- "loci"
-CHN.bayenv.outliers <- as.character(CHN.bayenv.outliers$loci)
-CHN.bayenv.outliers <- CHN.bayenv.outliers[-c(3)]
-CHN.bayenv.outliers <- as.data.frame(CHN.bayenv.outliers)
-colnames(CHN.bayenv.outliers) <- "loci"
+CHN.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
 
-
-CHN.lfmm.outliers <- read.table("CHN/CHN.LFMM.alloutliers", header=F)
-colnames(CHN.lfmm.outliers) <- "loci"
-CHN.lfmm.outliers <- as.character(CHN.lfmm.outliers$loci)
-CHN.lfmm.outliers <- as.data.frame(CHN.lfmm.outliers)
-colnames(CHN.lfmm.outliers)  <- "loci"
-
-
-CHN.pcadapt.outliers <- read.table("CHN/CHN.pcadapt.outliers", header=F)
-colnames(CHN.pcadapt.outliers) <- "loci"
-CHN.pcadapt.outliers <- as.character(CHN.pcadapt.outliers$loci)
-CHN.pcadapt.outliers <- as.data.frame(CHN.pcadapt.outliers)
-colnames(CHN.pcadapt.outliers)  <- "loci"
-
-
-CHN.XtX.outliers <- read.table("CHN/CHN.XtX.100outliers", header=F)
-colnames(CHN.XtX.outliers) <- "loci"
-CHN.XtX.outliers <- as.character(CHN.XtX.outliers$loci)
-CHN.XtX.outliers <- as.data.frame(CHN.XtX.outliers)
-colnames(CHN.XtX.outliers)  <- "loci"
-
-
-CHN.alloutliers <- rbind(CHN.lfmm.outliers, CHN.bayenv.outliers, CHN.pcadapt.outliers, CHN.XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
-
-CHN.duplicated.outliers <- CHN.alloutliers[duplicated(CHN.alloutliers),]  ##select only loci occurring more than once (here 26)
+CHN.duplicated.outliers <- CHN.alloutliers[duplicated(CHN.alloutliers),]  ##select only loci occurring more than once (here 308)
 
 write.table(CHN.duplicated.outliers, "CHN.duplicated.outliers", col.names=F, row.names=F, quote=F)
 ```
@@ -1399,74 +1370,20 @@ First I need to find the loci that occur more than once. CHS was already done in
 
 ###### CHS.VS
 ```
-CHS.VS.bayenv.outliers <- read.table("CHS.VS/CHS.VS.bayenv.alloutliers", header=F)
-colnames(CHS.VS.bayenv.outliers) <- "loci"
-CHS.VS.bayenv.outliers <- as.character(CHS.VS.bayenv.outliers$loci)
-CHS.VS.bayenv.outliers <- as.data.frame(CHS.VS.bayenv.outliers)
-colnames(CHS.VS.bayenv.outliers) <- "loci"
 
+CHS.VS.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
 
-CHS.VS.lfmm.outliers <- read.table("CHS.VS/CHS.VS.LFMM.alloutliers", header=F)
-colnames(CHS.VS.lfmm.outliers) <- "loci"
-CHS.VS.lfmm.outliers <- as.character(CHS.VS.lfmm.outliers$loci)
-CHS.VS.lfmm.outliers <- as.data.frame(CHS.VS.lfmm.outliers)
-colnames(CHS.VS.lfmm.outliers)  <- "loci"
-
-
-CHS.VS.pcadapt.outliers <- read.table("CHS.VS/CHS.VS.pcadapt.outliers", header=F)
-colnames(CHS.VS.pcadapt.outliers) <- "loci"
-CHS.VS.pcadapt.outliers <- as.character(CHS.VS.pcadapt.outliers$loci)
-CHS.VS.pcadapt.outliers <- as.data.frame(CHS.VS.pcadapt.outliers)
-colnames(CHS.VS.pcadapt.outliers)  <- "loci"
-
-
-CHS.VS.XtX.outliers <- read.table("CHS.VS/CHS.VS.XtX.100outliers", header=F)
-colnames(CHS.VS.XtX.outliers) <- "loci"
-CHS.VS.XtX.outliers <- as.character(CHS.VS.XtX.outliers$loci)
-CHS.VS.XtX.outliers <- as.data.frame(CHS.VS.XtX.outliers)
-colnames(CHS.VS.XtX.outliers)  <- "loci"
-
-
-CHS.VS.alloutliers <- rbind(CHS.VS.lfmm.outliers, CHS.VS.bayenv.outliers, CHS.VS.pcadapt.outliers, CHS.VS.XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
-
-CHS.VS.duplicated.outliers <- CHS.VS.alloutliers[duplicated(CHS.VS.alloutliers),]  ##select only loci occurring more than once (here 26)
+CHS.VS.duplicated.outliers <- CHS.VS.alloutliers[duplicated(CHS.VS.alloutliers),]  ##select only loci occurring more than once (here 482)
 
 write.table(CHS.VS.duplicated.outliers, "CHS.VS.duplicated.outliers", col.names=F, row.names=F, quote=F)
 ```
 
 ###### CHS.TI
 ```
-CHS.TI.bayenv.outliers <- read.table("CHS.TI/CHS.TI.bayenv.alloutliers", header=F)
-colnames(CHS.TI.bayenv.outliers) <- "loci"
-CHS.TI.bayenv.outliers <- as.character(CHS.TI.bayenv.outliers$loci)
-CHS.TI.bayenv.outliers <- as.data.frame(CHS.TI.bayenv.outliers)
-colnames(CHS.TI.bayenv.outliers) <- "loci"
 
+CHS.TI.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
 
-CHS.TI.lfmm.outliers <- read.table("CHS.TI/CHS.TI.LFMM.alloutliers", header=F)
-colnames(CHS.TI.lfmm.outliers) <- "loci"
-CHS.TI.lfmm.outliers <- as.character(CHS.TI.lfmm.outliers$loci)
-CHS.TI.lfmm.outliers <- as.data.frame(CHS.TI.lfmm.outliers)
-colnames(CHS.TI.lfmm.outliers)  <- "loci"
-
-
-CHS.TI.pcadapt.outliers <- read.table("CHS.TI/CHS.TI.pcadapt.outliers", header=F)
-colnames(CHS.TI.pcadapt.outliers) <- "loci"
-CHS.TI.pcadapt.outliers <- as.character(CHS.TI.pcadapt.outliers$loci)
-CHS.TI.pcadapt.outliers <- as.data.frame(CHS.TI.pcadapt.outliers)
-colnames(CHS.TI.pcadapt.outliers)  <- "loci"
-
-
-CHS.TI.XtX.outliers <- read.table("CHS.TI/CHS.TI.XtX.100outliers", header=F)
-colnames(CHS.TI.XtX.outliers) <- "loci"
-CHS.TI.XtX.outliers <- as.character(CHS.TI.XtX.outliers$loci)
-CHS.TI.XtX.outliers <- as.data.frame(CHS.TI.XtX.outliers)
-colnames(CHS.TI.XtX.outliers)  <- "loci"
-
-
-CHS.TI.alloutliers <- rbind(CHS.TI.lfmm.outliers, CHS.TI.bayenv.outliers, CHS.TI.pcadapt.outliers, CHS.TI.XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
-
-CHS.TI.duplicated.outliers <- CHS.TI.alloutliers[duplicated(CHS.TI.alloutliers),]  ##select only loci occurring more than once (here 26)
+CHS.TI.duplicated.outliers <- CHS.TI.alloutliers[duplicated(CHS.TI.alloutliers),]  ##select only loci occurring more than once (here 332)
 
 write.table(CHS.TI.duplicated.outliers, "CHS.TI.duplicated.outliers", col.names=F, row.names=F, quote=F)
 ```
