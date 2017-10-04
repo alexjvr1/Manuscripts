@@ -2219,7 +2219,7 @@ CHS.VS.rad.23 <- Reduce(intersect, list(CHS.VS.rad.run2.top100.set1$snp, CHS.VS.
 CHS.VS.rad.123 <- Reduce(intersect, list(CHS.VS.rad.run2.top100.set1$snp, CHS.VS.rad.run3.top100.set1$snp, CHS.VS.rad.run1.top100.set1$snp))
 
 summary(CHS.VS.rad.123)
-#77
+#72
 ```
 
 ##overlap in 6-10% of outlier loci for CHS.VS.rad
@@ -2234,7 +2234,7 @@ CHS.VS.rad.23 <- Reduce(intersect, list(CHS.VS.rad.run2.top100.set2$snp, CHS.VS.
 CHS.VS.rad.123 <- Reduce(intersect, list(CHS.VS.rad.run2.top100.set2$snp, CHS.VS.rad.run3.top100.set2$snp, CHS.VS.rad.run1.top100.set2$snp))
 
 summary(CHS.VS.rad.123)
-#38
+#21
 ```
 
 ##overlap in 11-15% of outlier loci for CHS.VS.rad
@@ -2249,7 +2249,7 @@ CHS.VS.rad.23 <- Reduce(intersect, list(CHS.VS.rad.run2.top100.set2$snp, CHS.VS.
 CHS.VS.rad.123 <- Reduce(intersect, list(CHS.VS.rad.run2.top100.set2$snp, CHS.VS.rad.run3.top100.set2$snp, CHS.VS.rad.run1.top100.set2$snp))
 
 summary(CHS.VS.rad.123)
-#21
+#12
 ```
 
 2. shadow.days
@@ -2272,7 +2272,7 @@ CHS.VS.shadow.days.23 <- Reduce(intersect, list(CHS.VS.shadow.days.run2.top100.s
 CHS.VS.shadow.days.123 <- Reduce(intersect, list(CHS.VS.shadow.days.run2.top100.set1$snp, CHS.VS.shadow.days.run3.top100.set1$snp, CHS.VS.shadow.days.run1.top100.set1$snp))
 
 summary(CHS.VS.shadow.days.123)
-#78
+#79
 ```
 
 ##overlap in 6-10% of outlier loci for CHS.VS.shadow.days
@@ -2287,7 +2287,7 @@ CHS.VS.shadow.days.23 <- Reduce(intersect, list(CHS.VS.shadow.days.run2.top100.s
 CHS.VS.shadow.days.123 <- Reduce(intersect, list(CHS.VS.shadow.days.run2.top100.set2$snp, CHS.VS.shadow.days.run3.top100.set2$snp, CHS.VS.shadow.days.run1.top100.set2$snp))
 
 summary(CHS.VS.shadow.days.123)
-#44
+#35
 ```
 
 ##overlap in 11-15% of outlier loci for CHS.VS.shadow.days
@@ -2302,7 +2302,7 @@ CHS.VS.shadow.days.23 <- Reduce(intersect, list(CHS.VS.shadow.days.run2.top100.s
 CHS.VS.shadow.days.123 <- Reduce(intersect, list(CHS.VS.shadow.days.run2.top100.set2$snp, CHS.VS.shadow.days.run3.top100.set2$snp, CHS.VS.shadow.days.run1.top100.set2$snp))
 
 summary(CHS.VS.shadow.days.123)
-#27
+#18
 ```
 
 3. temp
@@ -2325,7 +2325,7 @@ CHS.VS.temp.23 <- Reduce(intersect, list(CHS.VS.temp.run2.top100.set1$snp, CHS.V
 CHS.VS.temp.123 <- Reduce(intersect, list(CHS.VS.temp.run2.top100.set1$snp, CHS.VS.temp.run3.top100.set1$snp, CHS.VS.temp.run1.top100.set1$snp))
 
 summary(CHS.VS.temp.123)
-#87
+#75
 ```
 
 ##overlap in 6-10% of outlier loci for CHS.VS.temp
@@ -2339,7 +2339,7 @@ CHS.VS.temp.13 <- Reduce(intersect, list(CHS.VS.temp.run3.top100.set2$snp, CHS.V
 CHS.VS.temp.23 <- Reduce(intersect, list(CHS.VS.temp.run2.top100.set2$snp, CHS.VS.temp.run3.top100.set2$snp))
 CHS.VS.temp.123 <- Reduce(intersect, list(CHS.VS.temp.run2.top100.set2$snp, CHS.VS.temp.run3.top100.set2$snp, CHS.VS.temp.run1.top100.set2$snp))
 summary(CHS.VS.temp.123)
-#51
+#36
 ```
 
 ##overlap in 11-15% of outlier loci for CHS.VS.temp
@@ -2354,7 +2354,7 @@ CHS.VS.temp.23 <- Reduce(intersect, list(CHS.VS.temp.run2.top100.set2$snp, CHS.V
 CHS.VS.temp.123 <- Reduce(intersect, list(CHS.VS.temp.run2.top100.set2$snp, CHS.VS.temp.run3.top100.set2$snp, CHS.VS.temp.run1.top100.set2$snp))
 
 summary(CHS.VS.temp.123)
-#17
+#19
 ```
 
 4. pcpt
@@ -2377,7 +2377,7 @@ CHS.VS.pcpt.23 <- Reduce(intersect, list(CHS.VS.pcpt.run2.top100.set1$snp, CHS.V
 CHS.VS.pcpt.123 <- Reduce(intersect, list(CHS.VS.pcpt.run2.top100.set1$snp, CHS.VS.pcpt.run3.top100.set1$snp, CHS.VS.pcpt.run1.top100.set1$snp))
 
 summary(CHS.VS.pcpt.123)
-#75
+#78
 ```
 
 ##overlap in 6-10% of outlier loci for CHS.VS.pcpt
@@ -2392,7 +2392,7 @@ CHS.VS.pcpt.23 <- Reduce(intersect, list(CHS.VS.pcpt.run2.top100.set2$snp, CHS.V
 CHS.VS.pcpt.123 <- Reduce(intersect, list(CHS.VS.pcpt.run2.top100.set2$snp, CHS.VS.pcpt.run3.top100.set2$snp, CHS.VS.pcpt.run1.top100.set2$snp))
 
 summary(CHS.VS.pcpt.123)
-#29
+#40
 ```
 
 ##overlap in 11-15% of outlier loci for CHS.VS.pcpt
@@ -2407,7 +2407,7 @@ CHS.VS.pcpt.23 <- Reduce(intersect, list(CHS.VS.pcpt.run2.top100.set2$snp, CHS.V
 CHS.VS.pcpt.123 <- Reduce(intersect, list(CHS.VS.pcpt.run2.top100.set2$snp, CHS.VS.pcpt.run3.top100.set2$snp, CHS.VS.pcpt.run1.top100.set2$snp))
 
 summary(CHS.VS.pcpt.123)
-#21
+#24
 ```
 
 5. day.10cm
@@ -2429,7 +2429,7 @@ CHS.VS.day.10cm.23 <- Reduce(intersect, list(CHS.VS.day.10cm.run2.top100.set1$sn
 CHS.VS.day.10cm.123 <- Reduce(intersect, list(CHS.VS.day.10cm.run2.top100.set1$snp, CHS.VS.day.10cm.run3.top100.set1$snp, CHS.VS.day.10cm.run1.top100.set1$snp))
 
 summary(CHS.VS.day.10cm.123)
-#71
+#70
 ```
 
 ##overlap in 6-10% of outlier loci for CHS.VS.day.10cm
@@ -2443,7 +2443,7 @@ CHS.VS.day.10cm.13 <- Reduce(intersect, list(CHS.VS.day.10cm.run3.top100.set2$sn
 CHS.VS.day.10cm.23 <- Reduce(intersect, list(CHS.VS.day.10cm.run2.top100.set2$snp, CHS.VS.day.10cm.run3.top100.set2$snp))
 CHS.VS.day.10cm.123 <- Reduce(intersect, list(CHS.VS.day.10cm.run2.top100.set2$snp, CHS.VS.day.10cm.run3.top100.set2$snp, CHS.VS.day.10cm.run1.top100.set2$snp))
 summary(CHS.VS.day.10cm.123)
-#32
+#20
 ```
 
 ##overlap in 11-15% of outlier loci for CHS.VS.day.10cm
@@ -2458,7 +2458,7 @@ CHS.VS.day.10cm.23 <- Reduce(intersect, list(CHS.VS.day.10cm.run2.top100.set2$sn
 CHS.VS.day.10cm.123 <- Reduce(intersect, list(CHS.VS.day.10cm.run2.top100.set2$snp, CHS.VS.day.10cm.run3.top100.set2$snp, CHS.VS.day.10cm.run1.top100.set2$snp))
 
 summary(CHS.VS.day.10cm.123)
-#18
+#15
 ```
 
 ####CHS.TI
