@@ -7,7 +7,7 @@ This model allows ranking of the most important env. variables.
 I'll use only the candidate adaptive loci. 
 
 
-/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GDM
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GDM/Oct.2017
 
 
 The vignette and pdf can both be found here: 
@@ -259,19 +259,57 @@ ggplot(CHS.TI.RelativeImportance.Splines, aes(x=Transect, y=EnvVar, fill=Relativ
 
 #### CHS.VS
 
+First I need to change the list of duplicated adaptive loci so that vcftools can recognise it: 
 ```
-CHS.VS.135.356 <- read.structure("CHS.VS.AdaptiveLoci.str")
-CHS.VS135.pop <- read.table("CHS.VS135.pop", header=T)
-CHS.pop.factor <- as.factor(CHS.VS135.pop$pop)
-CHS.VS.135.356@pop <- CHS.pop.factor
-CHS.VS.135.356@pop
+##R
+CHS.VS.loci <- read.table("CHS.VS.duplicated.outliers", header=F)
+CHS.VS.loci.new <- gsub("\\.", ":", CHS.VS.loci$V1)
+CHS.TI.140.5692.recode.vcf
+head(CHS.VS.loci.new)
+write.table(CHS.VS.loci.new, "CHS.VS.AdaptiveLoci.names", quote=F, row.names=F, col.names=F)
 
-CHS.VS135.356.fst <- pairwise.fst(CHS.VS.135.356, pop=NULL, res.type=c("dist", "matrix"))  ##this creates the lower half of a pairwise distance matrix
-m.CHS.VS135 <- as.matrix(CHS.VS135.356.fst)  ##make this a full matrix
+```
+
+Then retrieve the adaptive loci from the vcf file
+```
+vcftools --vcf CHS.VS.135.5835.recode.vcf --snps CHS.VS.AdaptiveLoci.names --recode --recode-INFO-all --out CHS.VS.adaptiveloci
+
+VCFtools - v0.1.14
+(C) Adam Auton and Anthony Marcketta 2009
+
+Parameters as interpreted:
+	--vcf CHS.VS.135.5835.recode.vcf
+	--recode-INFO-all
+	--out CHS.VS.adaptiveloci
+	--recode
+	--snps CHS.VS.AdaptiveLoci.names
+
+After filtering, kept 135 out of 135 Individuals
+Outputting VCF file...
+After filtering, kept 358 out of a possible 5835 Sites
+Run Time = 0.00 seconds
+
+```
+
+Use pgdspider to convert this to structure format
+
+
+```
+library(adegenet)
+library(hierfstat)
+
+CHS.VS.135.358 <- read.structure("CHS.VS.AdaptiveLoci.str")
+CHS.VS135.pop <- read.table("VS.popnames", header=F)
+CHS.pop.factor <- as.factor(CHS.VS135.pop$V2)
+CHS.VS.135.358@pop <- CHS.pop.factor
+CHS.VS.135.358@pop
+
+CHS.VS135.358.fst <- pairwise.fst(CHS.VS.135.358, pop=NULL, res.type=c("dist", "matrix"))  ##this creates the lower half of a pairwise distance matrix
+m.CHS.VS135 <- as.matrix(CHS.VS135.358.fst)  ##make this a full matrix
 m.CHS.VS135.scaled <- apply(m.CHS.VS135[,1:ncol(m.CHS.VS135)], MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##scale the data 
 CHS.pop.names <- unique(CHS.pop.factor)
 rownames(m.CHS.VS135.scaled) <- CHS.pop.names  #select only the unique pop names
-write.table(m.CHS.VS135.scaled, "CHS.VS135.356.Fst.table", row.names=T, col.names=F, quote=F)
+write.table(m.CHS.VS135.scaled, "CHS.VS135.358.Fst.table", row.names=T, col.names=F, quote=F)
 
 
 #####Read in the EnvironData
@@ -280,13 +318,16 @@ CHS.VS.EnvData.importantVariables <- CHS.VS.EnvData[,c("site", "long", "lat", "s
 ##subset the data to use only the important variables
 
 
-CHS.VS.fst <- read.table("CHS.VS135.356.Fst.table")
+CHS.VS.fst <- read.table("CHS.VS135.358.Fst.table")
 names(CHS.VS.fst)[1] <- "site"  ##make sure site column is named the same in both the Env and fst files
 
 
 ##### GDM
 ###Create pairwise gdm input format
-
+library(gdm)
+library(hierfstat)
+library(adegenet)
+library(reshape)
 
 CHS.VS.gdmData <- formatsitepair(CHS.VS.fst, bioFormat=3, dist="bray", siteColumn="site", XColumn="lat", YColumn="long", predData=CHS.VS.EnvData.importantVariables) ##create the pairwise GDM input format
 
@@ -305,8 +346,10 @@ plot(CHS.VS.gdm.Splines$x[,"Geographic"], CHS.VS.gdm.Splines$y[,"Geographic"], l
 
 CHS.VS.gdm.Splines.scaled.y <- CHS.VS.gdm.Splines$y  ##CHS.VS.gdm.Splines is a list. I want to scale y (the Spline value), so I'm moving it to a new data frame
 CHS.VS.gdm.Splines.scaled.y <- apply(CHS.VS.gdm.Splines.scaled.y[,1:ncol(CHS.VS.gdm.Splines.scaled.y)], MARGIN=2, FUN=function(X) (X-min(X))/diff(range(X))) ##scale
-plot(CHS.VS.gdm.Splines$x[,"pcpt.60d"], CHS.VS.gdm.Splines.scaled.y$pcpt.60d, lwd=3,type="l", xlab="Pcpt 60d", ylab="Partial ecological distance") ##and then we can plot them like this
-plot(CHS.VS.gdm.Splines$x[,"day10cm"], CHS.VS.gdm.Splines.scaled.y$day10cm, lwd=3,type="l", xlab="Day 10cm", ylab="Partial ecological distance")
+CHS.VS.gdm.Splines.scaled.x <- CHS.VS.gdm.Splines$x  ##CHS.VS.gdm.Splines is a list. I want to scale y (the Spline value), so I'm moving it to a new data frame
+
+plot(CHS.VS.gdm.Splines.scaled.x[,"pcpt.60d"], CHS.VS.gdm.Splines.scaled.y[,"pcpt.60d"], lwd=3,type="l", xlab="Pcpt 60d", ylab="Partial ecological distance") ##and then we can plot them like this
+plot(CHS.VS.gdm.Splines$x[,"day10cm"], CHS.VS.gdm.Splines.scaled.y[,"day10cm"], lwd=3,type="l", xlab="Day 10cm", ylab="Partial ecological distance")
 
 
 ###Prepare the Spline data for the comparative plot
@@ -322,8 +365,10 @@ CHS.VS.RelativeImportance.Splines <- as.data.frame(CHS.VS.RelativeImportance.Spl
 CHS.VS.RelativeImportance.Splines$EnvVar <- c("Geography", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm")
 CHS.VS.RelativeImportance.Splines$Transect <- c("CHS.VS", "CHS.VS", "CHS.VS", "CHS.VS", "CHS.VS", "CHS.VS")
 colnames(CHS.VS.RelativeImportance.Splines) <- c("RelativeImportance.Splines", "EnvVar", "Transect")
-ggplot(CHS.VS.RelativeImportance.Splines, aes(x=Transect, y=EnvVar, fill=RelativeImportance.Splines)) + geom_tile() + coord_equal() + scale_fill_gradient(name="R2") +theme(axis.title.x=element_blank(), axis.title.y=element_blank())  ##check that it looks right
 
+pdf("CHS.VS.RelativeImportance.AdaptiveLoci.pdf")
+ggplot(CHS.VS.RelativeImportance.Splines, aes(x=Transect, y=EnvVar, fill=RelativeImportance.Splines)) + geom_tile() + coord_equal() + scale_fill_gradient(name="R2") +theme(axis.title.x=element_blank(), axis.title.y=element_blank())  ##check that it looks right
+dev.off()
 ```
 
 
