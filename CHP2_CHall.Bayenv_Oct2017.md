@@ -2180,7 +2180,7 @@ CZ.day.10cm.13 <- Reduce(intersect, list(CZ.day.10cm.run3.top100.set2$snp, CZ.da
 CZ.day.10cm.23 <- Reduce(intersect, list(CZ.day.10cm.run2.top100.set2$snp, CZ.day.10cm.run3.top100.set2$snp))
 CZ.day.10cm.123 <- Reduce(intersect, list(CZ.day.10cm.run2.top100.set2$snp, CZ.day.10cm.run3.top100.set2$snp, CZ.day.10cm.run1.top100.set2$snp))
 summary(CZ.day.10cm.123)
-#31
+#16
 ```
 
 ##overlap in 11-15% of outlier loci for CZ.day.10cm
@@ -2195,7 +2195,7 @@ CZ.day.10cm.23 <- Reduce(intersect, list(CZ.day.10cm.run2.top100.set2$snp, CZ.da
 CZ.day.10cm.123 <- Reduce(intersect, list(CZ.day.10cm.run2.top100.set2$snp, CZ.day.10cm.run3.top100.set2$snp, CZ.day.10cm.run1.top100.set2$snp))
 
 summary(CZ.day.10cm.123)
-#24
+#8
 ```
 
 ####CHS.VS
@@ -3034,13 +3034,6 @@ CZ.day.10cm.bayenv.candidates <- CZ.BF.all[which(CZ.BF.all$day.10cm.log10BF>0.5 
 ```
 
 
-
-
-
-
-
-
-
 ####CHS.VS
 ```
 #calculate the log10 of BF for each environmental variable
@@ -3241,7 +3234,10 @@ vcftools --vcf CHS.VS.135.9608.recode.vcf --maf 0.000001 --recode --recode-INFO-
 
 vcftools --vcf CHS.TI.140.9608.recode.vcf --maf 0.000001 --recode --recode-INFO-all --out CHS.TI.140.8343
 ```
-Check that this is the right number of loci by comparing this to the number of snp_batch files found when the .txt input file is split (see above). Remember that these are numbered from 0. 
+
+
+Check that this is the right number of loci by comparing this to the number of snp_batch files found when the .txt input file is split 
+(see above). Remember that these are numbered from 0. 
 
 Next, convert to plink. 
 
@@ -3252,9 +3248,9 @@ Once this is done, the names can be read into R and indexed.
 
 vcftools --vcf CHN.229.5265.recode.vcf --plink --out CHN.229.5265.plink
 
-#vcftools --vcf CHS.275.9295.recode.vcf --plink --out CHS.275.9295.plink
+vcftools --vcf CHS.275.6339.recode.vcf --plink --out CHS.275.9295.plink
 
-#vcftools --vcf CZ.404.9528.recode.vcf --plink --out CZ.404.9528.plink
+vcftools --vcf CZ.404.7288.recode.vcf --plink --out CZ.404.7288.plink
 
 vcftools --vcf CHS.VS.135.5835.recode.vcf --plink --out CHS.VS.135.5835.plink
 
@@ -3382,7 +3378,7 @@ colnames(XtX.outliers) <- ("loci")
 
 ########  CHS
 ```
-CHS.locus.names <- read.table("/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/CHS.275.9295.plink.map", header=F) #import the locus names into R
+CHS.locus.names <- read.table("CHS.275.6339.plink.map", header=F) #import the locus names into R
 CHS.locus.names$ID <- seq.int(nrow(CHS.locus.names)) ##index the CHS.locus.names file so that all the loci are numbered in order of appearance
 
 CHS.BF.all$ID <- seq.int(nrow(CHS.BF.all))  ##do the same with the CHS.BF.all file. Make sure this is the original output from BayEnv, and not a sorted file. 
@@ -3462,12 +3458,12 @@ CHS.BayEnv.outliers <- as.character(CHS.BayEnv.outliers$loci)
 Write top 100 XtX loci to file
 
 ```
-CHS.XtX.run1 <- read.table("CHS.Run1/XtX_out.ENVIRONFILE.CHS.n5.env", header=F)
+#CHS.XtX.run1 <- read.table("CHS.Run1/XtX_out.ENVIRONFILE.CHS.n5.env", header=F)
 CHS.XtX.run2 <- read.table("CHS.Run2/XtX_out.ENVIRONFILE.CHS.n5.env", header=F)
 CHS.XtX.run3 <- read.table("CHS.Run3/XtX_out.ENVIRONFILE.CHS.n5.env", header=F)
 
 
-CHS.XtX.all <- rbindlist(list(CHS.XtX.run1, CHS.XtX.run2, CHS.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
+CHS.XtX.all <- rbindlist(list(CHS.XtX.run2, CHS.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
 
 colnames(CHS.XtX.all) <- c("snp", "XtX")
 ##index the loci 
@@ -3499,7 +3495,7 @@ colnames(XtX.outliers) <- ("loci")
 
 ####### CZ
 ```
-CZ.locus.names <- read.table("/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/CZ.404.9528.plink.map", header=F) #import the locus names into R
+CZ.locus.names <- read.table("CZ.404.7288.plink.map", header=F) #import the locus names into R
 CZ.locus.names$ID <- seq.int(nrow(CZ.locus.names)) ##index the CZ.locus.names file so that all the loci are numbered in order of appearance
 
 CZ.BF.all$ID <- seq.int(nrow(CZ.BF.all))  ##do the same with the CZ.BF.all file. Make sure this is the original output from BayEnv, and not a sorted file. 
@@ -3579,9 +3575,9 @@ CZ.BayEnv.outliers <- as.character(CZ.BayEnv.outliers$loci)
 Write top 100 XtX loci to file
 
 ```
-CZ.XtX.run1 <- read.table("CZ.Run1/XtX_out.ENVIRON.CZ.5n.env", header=F)
-CZ.XtX.run2 <- read.table("CZ.Run2/XtX_out.ENVIRON.CZ.5n.env", header=F)
-CZ.XtX.run3 <- read.table("CZ.Run3/XtX_out.ENVIRON.CZ.5n.env", header=F)
+CZ.XtX.run1 <- read.table("CZ.Run1/XtX_out.CZ.n5.p38.ENVIRONFILE", header=F)
+CZ.XtX.run2 <- read.table("CZ.Run2/XtX_out.CZ.n5.p38.ENVIRONFILE", header=F)
+CZ.XtX.run3 <- read.table("CZ.Run3/XtX_out.CZ.n5.p38.ENVIRONFILE", header=F)
 
 
 CZ.XtX.all <- rbindlist(list(CZ.XtX.run1, CZ.XtX.run2, CZ.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
