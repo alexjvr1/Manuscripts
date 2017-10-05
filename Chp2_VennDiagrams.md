@@ -675,51 +675,121 @@ dev.off()
 
 ##### CZ
 
+##### CZ
+
+prep data
+```
+lfmm.outliers <- read.table("CZ.LFMM.alloutliers")
+pcadapt.outliers <- read.table("CZ.pcadapt.outliers")
+bayenv.outliers <- read.table("CZ.BayEnv.alloutliers")
+XtX.outliers <- read.table("CZ.XtX.100outliers")
+bayescan.outliers <- read.table("CZ.bayescan.outliers.FDR0.01")
+
+
+lfmm.outliers <- as.data.frame(lfmm.outliers)
+pcadapt.outliers <- as.data.frame(pcadapt.outliers)
+XtX.outliers <- as.data.frame(XtX.outliers)
+bayenv.outliers <- as.data.frame(bayenv.outliers)
+bayescan.outliers <- as.data.frame(bayescan.outliers)
+
+lfmm.outliers.new <- gsub("X\\.", "", lfmm.outliers$V1)
+lfmm.outliers <- NULL
+lfmm.outliers <- as.data.frame(lfmm.outliers.new)
+
+bayenv.outliers.new <- gsub("X\\.", "", bayenv.outliers$V1)
+bayenv.outliers <- NULL
+bayenv.outliers <- as.data.frame(bayenv.outliers.new)
+
+XtX.outliers.new <- gsub("X\\.", "", XtX.outliers$V1)
+XtX.outliers <- NULL
+XtX.outliers <- as.data.frame(XtX.outliers.new)
+
+pcadapt.new <- gsub("X\\.", "", pcadapt.outliers$V1)
+pcadapt.new <- as.data.frame(pcadapt.new)
+pcadapt.new <- gsub(":", "\\.", pcadapt.new$pcadapt.new)
+pcadapt.outliers <- as.data.frame(pcadapt.new)
+
+
+colnames(lfmm.outliers) <- "loci"
+colnames(XtX.outliers) <- "loci"
+colnames(pcadapt.outliers) <- "loci"
+colnames(bayenv.outliers) <- "loci"
+colnames(bayescan.outliers) <- "loci"
+
+```
+
+
+and draw Venn
 ```
 library(VennDiagram)
 
-lfmm.outliers <- read.table("CZ.LFMM.alloutliers")
-colnames(lfmm.outliers) <- "loci"
-lfmm.outliers <- as.character(lfmm.outliers$loci)
+bayenv.outliers.names <- bayenv.outliers$loci
+XtX.outliers.names <- XtX.outliers$loci
+lfmm.outliers.names <- lfmm.outliers$loci
+bayescan.outliers.names <- bayescan.outliers$loci
+pcadapt.outliers.names <- pcadapt.outliers$loci
 
-bayenv.outliers <- read.table("CZ.BayEnv.alloutliers", header=F)
-colnames(bayenv.outliers) <- "loci"
-bayenv.outliers <- as.character(bayenv.outliers$loci)
+d1 <- length(bayenv.outliers.names)
+d2 <- length(XtX.outliers.names)
+d3 <- length(lfmm.outliers.names)
+d4 <- length(bayescan.outliers.names)
+d5 <- length(pcadapt.outliers.names)
 
-XtX.outliers <- read.table("CZ.XtX.100outliers")
-colnames(XtX.outliers) <- "loci"
-XtX.outliers <- as.character(XtX.outliers$loci)
 
-pcadapt.outliers <- read.table("CZ.pcadapt.outliers")
-colnames(pcadapt.outliers) <- "loci"
-pcadapt.outliers <- as.character(pcadapt.outliers$loci)
+d12 <- length(Reduce(intersect, list(bayenv.outliers.names, XtX.outliers.names)))
+d13 <- length(Reduce(intersect, list(bayenv.outliers.names, lfmm.outliers.names)))
+d14 <- length(Reduce(intersect, list(bayenv.outliers.names, bayescan.outliers.names)))
+d15 <- length(Reduce(intersect, list(bayenv.outliers.names, pcadapt.outliers.names)))
+d23 <- length(Reduce(intersect, list(XtX.outliers.names, lfmm.outliers.names)))
+d24 <- length(Reduce(intersect, list(XtX.outliers.names, bayescan.outliers.names)))
+d25 <- length(Reduce(intersect, list(XtX.outliers.names, pcadapt.outliers.names)))
+d34 <- length(Reduce(intersect, list(lfmm.outliers.names, bayescan.outliers.names)))
+d35 <- length(Reduce(intersect, list(lfmm.outliers.names, pcadapt.outliers.names)))
+d45 <- length(Reduce(intersect, list(bayescan.outliers.names, pcadapt.outliers.names)))
 
-d1 <- length(lfmm.outliers)
-d2 <- length(bayenv.outliers)
-d3 <- length(XtX.outliers)
-d4 <- length(pcadapt.outliers)
+d123 <- length(Reduce(intersect, list(bayenv.outliers.names, XtX.outliers.names,lfmm.outliers.names)))
+d124 <- length(Reduce(intersect, list(bayenv.outliers.names, XtX.outliers.names,bayescan.outliers.names)))
+d125 <- length(Reduce(intersect, list(bayenv.outliers.names, XtX.outliers.names,pcadapt.outliers.names)))
+d234 <- length(Reduce(intersect, list(XtX.outliers.names, lfmm.outliers.names,bayescan.outliers.names)))
+d134 <- length(Reduce(intersect, list(bayenv.outliers.names, lfmm.outliers.names,bayescan.outliers.names)))
+d135 <- length(Reduce(intersect, list(bayenv.outliers.names, lfmm.outliers.names,pcadapt.outliers.names)))
+d145 <- length(Reduce(intersect, list(bayenv.outliers.names, bayescan.outliers.names,pcadapt.outliers.names)))
+d235 <- length(Reduce(intersect, list(XtX.outliers.names, lfmm.outliers.names,pcadapt.outliers.names)))
+d245 <- length(Reduce(intersect, list(XtX.outliers.names, bayescan.outliers.names,pcadapt.outliers.names)))
+d345 <- length(Reduce(intersect, list(lfmm.outliers.names, bayescan.outliers.names,pcadapt.outliers.names)))
 
-d12 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers)))
-d13 <- length(Reduce(intersect, list(lfmm.outliers, XtX.outliers)))
-d14 <- length(Reduce(intersect, list(lfmm.outliers, pcadapt.outliers)))
-d23 <- length(Reduce(intersect, list(bayenv.outliers, XtX.outliers)))
-d24 <- length(Reduce(intersect, list(bayenv.outliers, pcadapt.outliers)))
-d34 <- length(Reduce(intersect, list(XtX.outliers, pcadapt.outliers)))
 
-d123 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers,XtX.outliers)))
-d124 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers,pcadapt.outliers)))
-d234 <- length(Reduce(intersect, list(bayenv.outliers, XtX.outliers,pcadapt.outliers)))
-d134 <- length(Reduce(intersect, list(lfmm.outliers, XtX.outliers,pcadapt.outliers)))
+d1234 <- length(Reduce(intersect, list(XtX.outliers.names, lfmm.outliers.names,
+bayescan.outliers.names, bayenv.outliers.names)))
+d1235 <- length(Reduce(intersect, list(XtX.outliers.names, lfmm.outliers.names,
+pcadapt.outliers.names, bayenv.outliers.names)))
 
-d1234 <- length(Reduce(intersect, list(lfmm.outliers, bayenv.outliers, XtX.outliers, pcadapt.outliers)))
+d2345 <- length(Reduce(intersect, list(XtX.outliers.names, lfmm.outliers.names,
+bayescan.outliers.names, pcadapt.outliers.names)))
+d1245 <- length(Reduce(intersect, list(XtX.outliers.names, bayenv.outliers.names,
+bayescan.outliers.names, pcadapt.outliers.names)))
+d1345 <- length(Reduce(intersect, list(lfmm.outliers.names, bayenv.outliers.names,
+bayescan.outliers.names, pcadapt.outliers.names)))
+d12345 <- length(Reduce(intersect, list(bayenv.outliers.names, XtX.outliers.names, lfmm.outliers.names, 
+bayescan.outliers.names, pcadapt.outliers.names)))
 
-pdf(file="Venn.CZ.alloutliers.pdf")
-draw.quad.venn(area1=d1, area2=d2, area3=d3, area4=d4, n12=d12, n13=d13, n14=d14, n23=d23, n24=d24, n34=d34, n123=d123, n124=d124, n134=d134, n234=d234, n1234=d1234, category=c("lfmm", "bayenv", "XtX", "pcadapt"), lty="blank", fill=c("yellow", "orange", "skyblue1", "blue"))
+pdf("CZ.Venn.alloutliers.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("bayenv", "XtX", "lfmm", "bayescan", "pcadapt"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
 dev.off()
-
-
-
 ```
+
+![alt_txt][CZ.Venn.allmethods]
+
+[CZ.Venn.allmethods]:https://user-images.githubusercontent.com/12142475/31231271-4a451eea-a9de-11e7-8a4a-7c17db951078.png
+
+
 
 ##### CHS.VS
 
