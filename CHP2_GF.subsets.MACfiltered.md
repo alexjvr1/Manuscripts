@@ -1680,49 +1680,49 @@ Plot of individual SNPs for a specific dataset and environmental variable
 ```
 ### CHN
 pdf("CHN.individual.AdaptiveSNPs.GF.pdf")
-plot(gf.CHN.Adaptive.SNPs)
+species.cumulative.plot(gf.CHN.Adaptive.SNPs)
 dev.off()
 
 pdf("CHN.individual.NeutralSNPs.GF.pdf")
-plot(gf.CHN.Neutral.SNPs)
+species.cumulative.plot(gf.CHN.Neutral.SNPs)
 dev.off()
 
 ### CZ
 pdf("CZ.individual.AdaptiveSNPs.GF.pdf")
-plot(gf.CZ.Adaptive.SNPs)
+species.cumulative.plot(gf.CZ.Adaptive.SNPs)
 dev.off()
 
 pdf("CZ.individual.NeutralSNPs.GF.pdf")
-plot(gf.CZ.Neutral.SNPs)
+species.cumulative.plot(gf.CZ.Neutral.SNPs)
 dev.off()
 
 
 ### CHS
 pdf("CHS.individual.AdaptiveSNPs.GF.pdf")
-plot(gf.CHS.Adaptive.SNPs)
+species.cumulative.plot(gf.CHS.Adaptive.SNPs)
 dev.off()
 
 pdf("CHS.individual.NeutralSNPs.GF.pdf")
-plot(gf.CHS.Neutral.SNPs)
+species.cumulative.plot(gf.CHS.Neutral.SNPs)
 dev.off()
 
 
 ### CHS.VS
 pdf("CHS.VS.individual.AdaptiveSNPs.GF.pdf")
-plot(gf.CHS.VS.Adaptive.SNPs)
+species.cumulative.plot(gf.CHS.VS.Adaptive.SNPs)
 dev.off()
 
 pdf("CHS.VS.individual.NeutralSNPs.GF.pdf")
-plot(gf.CHS.VS.Neutral.SNPs)
+species.cumulative.plot(gf.CHS.VS.Neutral.SNPs)
 dev.off()
 
 ### CHS.TI
 pdf("CHS.TI.individual.AdaptiveSNPs.GF.pdf")
-plot(gf.CHS.TI.Adaptive.SNPs)
+species.cumulative.plot(gf.CHS.TI.Adaptive.SNPs)
 dev.off()
 
 pdf("CHS.TI.individual.NeutralSNPs.GF.pdf")
-plot(gf.CHS.TI.Neutral.SNPs)
+species.cumulative.plot(gf.CHS.TI.Neutral.SNPs)
 dev.off()
 
 ```
