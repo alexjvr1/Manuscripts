@@ -915,6 +915,286 @@ write.csv(CHS.TI.Neutral.MAF3, file="CHS.TI.140.Neutral.MAF.csv")
 ```
 
 
+#### CHS.VS
+```
+#Calculating MEM variables
+#install.packages("tripack")
+#install.packages("spacemakeR", repos="http://R-Forge.R-project.org")
+
+library(spacemakeR)
+
+
+env.data.CHS.VS <- read.csv("AllEnv.Data_CHS.VS_20161010.csv", header=T)
+head(env.data.CHS.VS)
+#extract x and y
+CHS.VS.xy <- env.data.CHS.VS[, c("long","lat")]
+
+#install.packages("geosphere")
+library(geosphere) #calculate a matrix of geographic distances
+CHS.VS.dxy <- distm(CHS.VS.xy)
+CHS.VS.dxy <- as.dist(CHS.VS.dxy)
+
+#Function that returns the maximum distance of the minimum spanning tree based on a distance matrix.
+CHS.VS.th <- give.thresh(CHS.VS.dxy)
+#Function to compute neighborhood based on the minimum spanning tree. Returns an object of the class nb (see spdep package).
+CHS.VS.nb1 <- mst.nb(CHS.VS.dxy)
+CHS.VS.wh1 <- which(as.matrix(CHS.VS.dxy)==CHS.VS.th,arr.ind=TRUE)
+plot(CHS.VS.nb1,CHS.VS.xy,pch=20,cex=2,lty=3)
+lines(CHS.VS.xy[CHS.VS.wh1[1,],1],CHS.VS.xy[CHS.VS.wh1[1,],2],lwd=2)
+title(main="Maximum distance of the minimum spanning tree in bold")
+#thershold distance
+CHS.VS.th 
+#[1] 41004.58
+CHS.VS.nb1
+Neighbour list object:
+Number of regions: 10 
+Number of nonzero links: 18 
+Percentage nonzero weights: 18 
+Average number of links: 1.8  
+
+#install.packages("spdep")
+library(spdep)
+#transform nb to listw (spdep package)
+CHS.VS.listw=nb2listw(CHS.VS.nb1, glist=NULL, style="W", zero.policy=NULL)
+#The can.be.simmed helper function checks whether a spatial weights object is similar to
+#symmetric and can be so transformed to yield real eigenvalues or for Cholesky decomposition.
+can.be.simmed(CHS.VS.listw)
+#[1] TRUE
+ 
+#Function to compute Moran's eigenvectors of a listw object
+#This functions compute eigenvector's of a doubly centered spatial weighting matrix. 
+#Corresponding eigenvalues are linearly related to Moran's index of spatial autocorrelation.
+#scores=scores.listw(listw, echo = FALSE, MEM.autocor = c("all","positive", "negative"))
+#MEM.autocor: A string indicating if all MEMs must be returned or only those corresponding to positive or negative autocorrelation.
+#Only positive correlations:
+CHS.VS.scores=scores.listw(CHS.VS.listw, echo = FALSE, MEM.autocor = "positive")
+	#listw not symmetric, (w+t(w)) used in the place of w 
+
+#Function to compute and test Moran's I for eigenvectors of spatial weighting matrices. 
+#This function tests Moran's I for each eigenvector of a spatial weighting matrix
+test.scores(CHS.VS.scores,CHS.VS.listw,nsim=999)
+         stat  pval
+1 0.998929647 0.001
+2 0.750000000 0.001
+3 0.523833554 0.043
+4 0.008291494 0.350
+
+#3 significant MEM eigenfunctions with positive correlations. OBS. use first half (2 in our case)
+
+write.table (CHS.VS.scores$vectors[,1], "CHS.VS.scores_MEM1.txt") 
+write.table (CHS.VS.scores$vectors[,2], "CHS.VS.scores_MEM2.txt") 
+```
+
+## Great circle distance between all sampling points
+
+```
+##Geographic distance between all CHS.VS populations
+##using package Rdist
+
+library(fields)
+#Import .csv with coordinates (done above)
+
+setwd("/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GradientForest/Oct2017")
+
+#rdist.earth (in fields package) wants only long & lat
+CHS.VS_lon.lat <- cbind(env.data.CHS.VS$long, env.data.CHS.VS$lat)
+CHS.VS_lon.lat
+
+#calculate great circle distances
+distance.matrix.CHS.VS <- rdist.earth(CHS.VS_lon.lat)
+summary(distance.matrix.CHS.VS)
+dim(distance.matrix.CHS.VS)
+
+#and use only the lower half of the matrix
+upper.tri(distance.matrix.CHS.VS)
+distance.matrix.CHS.VS[lower.tri(distance.matrix.CHS.VS)]<-NA
+distance.matrix.CHS.VS
+
+#change from matrix to dataframe
+CHS.VS.bli <- as.data.frame(distance.matrix.CHS.VS)
+head(CHS.VS.bli)
+colnames(CHS.VS.bli) <- env.data.CHS.VS$site
+rownames(CHS.VS.bli) <- env.data.CHS.VS$site
+
+CHS.VS.bli[lower.tri(CHS.VS.bli,diag=TRUE)]=NA  #Prepare to drop duplicates and meaningless information
+CHS.VS.bli=as.data.frame(as.table(as.matrix(CHS.VS.bli)))  #Turn into a 3-column table
+CHS.VS.bli
+CHS.VS.bli=na.omit(CHS.VS.bli)  #Get rid of the junk we flagged above
+CHS.VS.bli
+colnames(CHS.VS.bli)<-c("site1", "site2", "dist(km)")
+head(CHS.VS.bli)
+
+CHS.VS.bli2 <- CHS.VS.bli[sort(CHS.VS.bli$site2),]
+
+head(CHS.VS.bli2)
+
+
+##write to csv
+write.csv(CHS.VS.bli, file="distance.CHS.VS.csv",row.names=F)
+```
+
+## Create a SNP input file 
+
+I'm creating two input files.
+
+1. Adaptive Loci (found by at least two methods)
+
+2. Neutral loci (All - adaptive)
+
+
+##### 1. Adaptive loci
+```
+
+###Change Duplicated Adaptive Loci names to vcf formate
+
+##R
+
+CHS.VS.AdaptiveLoci <- read.table("CHS.VS.duplicated.outliers")
+head(CHS.VS.AdaptiveLoci)
+CHS.VS.AdaptiveLoci <- gsub("\\.", ":", CHS.VS.AdaptiveLoci$V1)
+head(CHS.VS.AdaptiveLoci)
+write.table(CHS.VS.AdaptiveLoci, "CHS.VS.AdaptiveLoci.names", quote=F, row.names=F, col.names=F)
+
+
+#Filter the Adaptive loci from the vcf file
+
+vcftools --vcf CHS.VS.135.5835.recode.vcf --snps CHS.VS.AdaptiveLoci.names --recode --recode-INFO-all --out CHS.VS.135.358
+
+#Create a plink file from the vcf file. 
+
+vcftools --vcf CHS.VS.135.358.recode.vcf --plink --out CHS.VS.135.358.plink
+
+plink --file CHS.VS.135.358.plink --noweb --recode --recodeA --out CHS.VS.135.358.plink
+
+```
+
+Find the sample names in the *nosex file, and add pop names (i.e. 3 columns) to create a file for specifying clusters > CHS.VS.PlinkCluster
+
+```
+##in R
+
+CHS.VS.nosex <- read.table("CHS.VS.135.358.plink.nosex", header=F)
+head(CHS.VS.nosex)
+CHS.VS.pop <- gsub("_\\d+", "", CHS.VS.nosex$V1)
+CHS.VS.pop
+CHS.VS.nosex$V3 <- CHS.VS.pop
+head(CHS.VS.nosex)
+write.table(CHS.VS.nosex, "CHS.VS.PlinkCluster", quote=F, row.names=F, col.names=F)
+
+```
+
+
+
+And calculate MAF with Plink
+
+```
+
+plink --file CHS.VS.135.358.plink --within CHS.VS.PlinkCluster --freq --noweb --out CHS.VS.135.358
+
+```
+
+Import into R to reformat the output - by population and loci as columns
+```
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CHS.VS.Adaptive.MAF <- read.table("CHS.VS.135.358.frq.strat", header=T)
+head(CHS.VS.Adaptive.MAF)
+
+CHS.VS.Adaptive.MAF <- CHS.VS.Adaptive.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CHS.VS.Adaptive.MAF2 <- melt(CHS.VS.Adaptive.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHS.VS.Adaptive.MAF2)
+head(CHS.VS.Adaptive.MAF2)
+
+
+CHS.VS.Adaptive.MAF3 <- dcast(CHS.VS.Adaptive.MAF2, formula= CLST ~ SNP)
+head(CHS.VS.Adaptive.MAF3)
+colnames(CHS.VS.Adaptive.MAF3) <- paste("X", colnames(CHS.VS.Adaptive.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CHS.VS.Adaptive.MAF3, file="CHS.VS.135.358.Adaptive.MAF.csv")
+```
+
+
+##### 2. Neutral loci
+
+
+
+```
+
+#Filter the Neutral loci from the vcf file
+
+vcftools --vcf CHS.VS.135.5835.recode.vcf --exclude CHS.VS.AdaptiveLoci.names --recode --recode-INFO-all --out CHS.VS.135.Neutral
+
+#Create a plink file from the vcf file. 
+
+vcftools --vcf CHS.VS.135.Neutral.recode.vcf --plink --out CHS.VS.135.Neutral.plink
+
+```
+
+Import the .map file into R to get a list of the SNP names and to subset this to 1000 random names
+```
+CHS.VS.Neutral.loci.names.map <- read.table("CHS.VS.135.Neutral.plink.map", header=F)
+CHS.VS.Neutral.loci.names <-  CHS.VS.Neutral.loci.names.map$V2
+CHS.VS.Neutral.loci.names <- as.data.frame(CHS.VS.Neutral.loci.names)
+CHS.VS.1000.loci.names <- CHS.VS.Neutral.loci.names[sample(nrow(CHS.VS.Neutral.loci.names),1000),]
+CHS.VS.1000.loci.names <- as.data.frame(CHS.VS.1000.loci.names)
+summary(CHS.VS.1000.loci.names)
+write.table(CHS.VS.1000.loci.names, "CHS.VS.1000.loci.names", quote=F, row.names=F, col.names=F)
+```
+
+Subset the vcf file to get 1000 loci and convert to plink
+```
+vcftools --vcf CHS.VS.135.Neutral.recode.vcf --snps CHS.VS.1000.loci.names --recode --recode-INFO-all --out CHS.VS.1000NeutralLoci
+
+vcftools --vcf CHS.VS.1000NeutralLoci.recode.vcf --plink --out CHS.VS.1000NeutralLoci.plink
+plink --file CHS.VS.1000NeutralLoci.plink --noweb --recode --recodeA --out CHS.VS.1000NeutralLoci.plink
+```
+
+
+Find the sample names in the *nosex file, and add pop names (i.e. 3 columns) to create a file for specifying clusters > CHS.VS.PlinkCluster (done before)
+
+And calculate MAF with Plink
+
+```
+
+plink --file CHS.VS.1000NeutralLoci.plink --within CHS.VS.PlinkCluster --noweb --freq --out CHS.VS.1000NeutralLoci
+
+```
+
+Import into R to reformat the output - by population and loci as columns
+```
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CHS.VS.Neutral.MAF <- read.table("CHS.VS.1000NeutralLoci.frq.strat", header=T)
+head(CHS.VS.Neutral.MAF)
+
+CHS.VS.Neutral.MAF <- CHS.VS.Neutral.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CHS.VS.Neutral.MAF2 <- melt(CHS.VS.Neutral.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHS.VS.Neutral.MAF2)
+head(CHS.VS.Neutral.MAF2)
+
+
+CHS.VS.Neutral.MAF3 <- dcast(CHS.VS.Neutral.MAF2, formula= CLST ~ SNP)
+head(CHS.VS.Neutral.MAF3)
+colnames(CHS.VS.Neutral.MAF3) <- paste("X", colnames(CHS.VS.Neutral.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CHS.VS.Neutral.MAF3, file="CHS.VS.135.Neutral.MAF.csv")
+```
+
+
 
 
 #### ENV data
@@ -956,12 +1236,62 @@ CHS.TI.GF.AdaptiveLoci.Input.csv
 
 CHS.TI.GF.NeutralLoci.Input.csv
 
+CHS.VS.GF.AdaptiveLoci.Input.csv
+
+CHS.VS.GF.NeutralLoci.Input.csv
+
 
 ### Run GF
 
 1. Adaptive Loci
 ```
-gf.CHS.VS.Adaptive <- read.csv("CHS.VS.135.358.Adaptive.MAF.csv", header=T)
+library(gradientForest)
+
+###CHN
+
+gf.CHN.Adaptive <- read.csv("CHN.GF.AdaptiveLoci.Input.csv", header=T)
+envGF.CHN.Adaptive <- gf.CHN.Adaptive[,-1]
+colnames(envGF.CHN.Adaptive)
+
+CHN.AdaptiveSNPS <- CHN.Adaptive.MAF3[,grep("X.", colnames(CHN.Adaptive.MAF3))]
+maxLevel <- log2(0.368*nrow(envGF.CHN.Adaptive)/2)
+maxLevel
+
+gf.CHN.Adaptive.SNPs <- gradientForest(cbind(envGF.CHN.Adaptive, CHN.AdaptiveSNPS), predictor.vars=colnames(envGF.CHN.Adaptive), response.vars=colnames(CHN.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##12 warnings (loci variable in less than 5 populations)
+
+
+###CZ
+
+gf.CZ.Adaptive <- read.csv("CZ.GF.AdaptiveLoci.Input.csv", header=T)
+envGF.CZ.Adaptive <- gf.CZ.Adaptive[,-1]
+colnames(envGF.CZ.Adaptive)
+
+CZ.AdaptiveSNPS <- CZ.Adaptive.MAF3[,grep("X.", colnames(CZ.Adaptive.MAF3))]
+maxLevel <- log2(0.368*nrow(envGF.CZ.Adaptive)/2)
+maxLevel
+
+gf.CZ.Adaptive.SNPs <- gradientForest(cbind(envGF.CZ.Adaptive, CZ.AdaptiveSNPS), predictor.vars=colnames(envGF.CZ.Adaptive), response.vars=colnames(CZ.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+
+###CHS.TI
+
+gf.CHS.TI.Adaptive <- read.csv("CHS.TI.GF.AdaptiveLoci.Input.csv", header=T)
+envGF.CHS.TI.Adaptive <- gf.CHS.TI.Adaptive[,-1]
+colnames(envGF.CHS.TI.Adaptive)
+
+CHS.TI.AdaptiveSNPS <- CHS.TI.Adaptive.MAF3[,grep("X.", colnames(CHS.TI.Adaptive.MAF3))]
+maxLevel <- log2(0.368*nrow(envGF.CHS.TI.Adaptive)/2)
+maxLevel
+
+gf.CHS.TI.Adaptive.SNPs <- gradientForest(cbind(envGF.CHS.TI.Adaptive, CHS.TI.AdaptiveSNPS), predictor.vars=colnames(envGF.CHS.TI.Adaptive), response.vars=colnames(CHS.TI.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##26 warnings - loci variable in less than 5 pops
+
+###CHS.VS
+
+gf.CHS.VS.Adaptive <- read.csv("CHS.VS.GF.AdaptiveLoci.Input.csv", header=T)
 envGF.CHS.VS.Adaptive <- gf.CHS.VS.Adaptive[,-1]
 colnames(envGF.CHS.VS.Adaptive)
 
@@ -970,11 +1300,42 @@ maxLevel <- log2(0.368*nrow(envGF.CHS.VS.Adaptive)/2)
 maxLevel
 
 gf.CHS.VS.Adaptive.SNPs <- gradientForest(cbind(envGF.CHS.VS.Adaptive, CHS.VS.AdaptiveSNPS), predictor.vars=colnames(envGF.CHS.VS.Adaptive), response.vars=colnames(CHS.VS.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+###more than 50 warnings about non-polymorphic loci
+
 ```
 
 2. Neutral Loci
 
 ```
+###CHN
+
+gf.CHN.Neutral <- read.csv("CHN.GF.Neutral.MAF.csv", header=T)
+envGF.CHN.Neutral <- gf.CHN.Neutral[,-1]
+colnames(envGF.CHN.Neutral)
+
+CHN.Neutral.SNPs <- CHN.Neutral.MAF3[,grep("X.", colnames(CHN.Neutral.MAF3))]
+maxLevel <- log2(0.368*nrow(envGF.CHN.Neutral)/2)
+maxLevel
+
+gf.CHN.Neutral.SNPs <- gradientForest(cbind(envGF.CHN.Neutral, CHN.Neutral.SNPs), predictor.vars=colnames(envGF.CHN.Neutral), response.vars=colnames(CHN.Neutral.SNPs), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+###CZ
+
+gf.CZ.Neutral <- read.csv("CZ.GF.Neutral.MAF.csv", header=T)
+envGF.CZ.Neutral <- gf.CZ.Neutral[,-1]
+colnames(envGF.CZ.Neutral)
+
+CZ.Neutral.SNPs <- CZ.Neutral.MAF3[,grep("X.", colnames(CZ.Neutral.MAF3))]
+maxLevel <- log2(0.368*nrow(envGF.CZ.Neutral)/2)
+maxLevel
+
+gf.CZ.Neutral.SNPs <- gradientForest(cbind(envGF.CZ.Neutral, CZ.Neutral.SNPs), predictor.vars=colnames(envGF.CZ.Neutral), response.vars=colnames(CZ.Neutral.SNPs), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+
+
+###CHS.VS
+
 gf.CHS.VS.Neutral <- read.csv("CHS.VS.135.Neutral.MAF.csv", header=T)
 envGF.CHS.VS.Neutral <- gf.CHS.VS.Neutral[,-1]
 colnames(envGF.CHS.VS.Neutral)
