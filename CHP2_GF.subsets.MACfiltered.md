@@ -1333,10 +1333,22 @@ maxLevel
 gf.CZ.Neutral.SNPs <- gradientForest(cbind(envGF.CZ.Neutral, CZ.Neutral.SNPs), predictor.vars=colnames(envGF.CZ.Neutral), response.vars=colnames(CZ.Neutral.SNPs), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
 
+###CHS.TI
+
+gf.CHS.TI.Neutral <- read.csv("CHS.TI.GF.NeutralLoci.Input.csv", header=T)
+envGF.CHS.TI.Neutral <- gf.CHS.TI.Neutral[,-1]
+colnames(envGF.CHS.TI.Neutral)
+
+CHS.TI.Neutral.SNPs <- CHS.TI.Neutral.MAF3[,grep("X.", colnames(CHS.TI.Neutral.MAF3))]
+maxLevel <- log2(0.368*nrow(envGF.CHS.TI.Neutral)/2)
+maxLevel
+
+gf.CHS.TI.Neutral.SNPs <- gradientForest(cbind(envGF.CHS.TI.Neutral, CHS.TI.Neutral.SNPs), predictor.vars=colnames(envGF.CHS.TI.Neutral), response.vars=colnames(CHS.TI.Neutral.SNPs), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
 
 ###CHS.VS
 
-gf.CHS.VS.Neutral <- read.csv("CHS.VS.135.Neutral.MAF.csv", header=T)
+gf.CHS.VS.Neutral <- read.csv("CHS.VS.GF.NeutralLoci.Input.csv", header=T)
 envGF.CHS.VS.Neutral <- gf.CHS.VS.Neutral[,-1]
 colnames(envGF.CHS.VS.Neutral)
 
@@ -1377,9 +1389,10 @@ I had a lot of problems creating the geographic maps. I got scripts from Karina 
 
 The R2 can be obtained from the importance of each "Species" in the gf model:  see getAnywhere(performance.plot)
 ```
+###CHS.VS
+
 perf.NEUTRAL <- importance(gf.CHS.VS.Neutral.SNPs, type="Species")
 perf.Fst <- importance(gf.CHS.VS.Adaptive.SNPs, type="Species")
-
 
 ##mean and range
 summary(perf.NEUTRAL)
@@ -1388,19 +1401,15 @@ summary(perf.Fst)
 perf.NEUT.df <- as.data.frame(perf.NEUTRAL)
 perf.Fst.df <- as.data.frame(perf.Fst)
 
-
 ##count the number of loci above R2 of x (here 0.25)
 length(perf.NEUT.df[which(perf.NEUT.df$perf.NEUTRAL>0.25),])
 length(perf.Fst.df[which(perf.Fst.df>0.25),])
-
-
 
 #variable in more than 5 pops: this will be the number of loci run in the final model. Can be seen with: 
 gf.CHS.VS.Neutral.SNPs
 gf.CHS.VS.Adaptive.SNPs
 
 #How many loci were originally included?
-
 
 ##And we can plot the frequency of R2 for each dataset: 
 par(mfrow=c(1,2))
@@ -1415,7 +1424,7 @@ hist(perf.Fst.df$perf.Fst)
 ```
 #R
 
-#Retrieve results from the individual outputs for the three GF models: 
+#Retrieve results from the individual outputs for both GF models: 
 
 R.sq.alldatasets <- (rowMeans(gf.CHS.VS.Adaptive.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
 R.sq.alldatasets <- as.data.frame(R.sq.alldatasets)
