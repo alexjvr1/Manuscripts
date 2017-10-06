@@ -1424,6 +1424,113 @@ hist(perf.Fst.df$perf.Fst)
 ```
 #R
 
+###CHN
+
+#Retrieve results from the individual outputs for both GF models: 
+
+R.sq.alldatasets <- (rowMeans(gf.CHN.Adaptive.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.alldatasets <- as.data.frame(R.sq.alldatasets)
+R.sq.alldatasets
+colnames(R.sq.alldatasets) <- "Adaptive"
+
+R.sq.Neutral <- (rowMeans(gf.CHN.Neutral.SNPs$imp.rsq, na.rm=T))
+R.sq.Neutral <- as.data.frame(R.sq.Neutral)
+
+##we're only interested in the first 8 variables
+R.sq.EnvVariables <- R.sq.alldatasets[1:8,]  #get the first 8 rows from the Adaptive dataset
+R.sq.EnvVariables <- as.data.frame(R.sq.EnvVariables)
+colnames(R.sq.EnvVariables) <- "Adaptive"
+row.names(R.sq.EnvVariables) <- c("dist", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm", "MEM1", "MEM2")
+R.sq.EnvVariables$Neutral <- R.sq.Neutral[1:8,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
+
+R.sq.EnvVariables <- as.matrix(R.sq.EnvVariables)  ##turn into matrix for heatmap
+R.sq.all.melt <- melt(R.sq.EnvVariables)  ##melt for ggplot heatmap
+R.sq.all.melt <- R.sq.all.melt[order(R.sq.all.melt$Var1),]  ##order by predictor variable
+
+R.sq.all.melt
+
+library(RColorBrewer)
+#hm.palette <- colorRampPalette(rev(brewer.pal(9, 'YlOrRd')), space='Lab')  ##change the colour palette to red. Default is blue
+
+pdf("CHN.R2plot.pdf")
+ggplot(R.sq.all.melt, aes(x=Var2, y=Var1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
+scale_fill_gradient(name="R2 CHN") +   ##title of the legend
+theme(axis.title.x=element_blank(), axis.title.y=element_blank())   ##remove names of axes
+dev.off()
+
+
+###CZ
+#Retrieve results from the individual outputs for both GF models: 
+
+R.sq.alldatasets <- (rowMeans(gf.CZ.Adaptive.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.alldatasets <- as.data.frame(R.sq.alldatasets)
+R.sq.alldatasets
+colnames(R.sq.alldatasets) <- "Adaptive"
+
+R.sq.Neutral <- (rowMeans(gf.CZ.Neutral.SNPs$imp.rsq, na.rm=T))
+R.sq.Neutral <- as.data.frame(R.sq.Neutral)
+
+##we're only interested in the first 8 variables
+R.sq.EnvVariables <- R.sq.alldatasets[1:8,]  #get the first 8 rows from the Adaptive dataset
+R.sq.EnvVariables <- as.data.frame(R.sq.EnvVariables)
+colnames(R.sq.EnvVariables) <- "Adaptive"
+row.names(R.sq.EnvVariables) <- c("dist", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm", "MEM1", "MEM2")
+R.sq.EnvVariables$Neutral <- R.sq.Neutral[1:8,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
+
+R.sq.EnvVariables <- as.matrix(R.sq.EnvVariables)  ##turn into matrix for heatmap
+R.sq.all.melt <- melt(R.sq.EnvVariables)  ##melt for ggplot heatmap
+R.sq.all.melt <- R.sq.all.melt[order(R.sq.all.melt$Var1),]  ##order by predictor variable
+
+R.sq.all.melt
+
+library(RColorBrewer)
+#hm.palette <- colorRampPalette(rev(brewer.pal(9, 'YlOrRd')), space='Lab')  ##change the colour palette to red. Default is blue
+
+pdf("CZ.R2plot.pdf")
+ggplot(R.sq.all.melt, aes(x=Var2, y=Var1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
+scale_fill_gradient(name="R2 CZ") +   ##title of the legend
+theme(axis.title.x=element_blank(), axis.title.y=element_blank())   ##remove names of axes
+dev.off()
+
+
+
+###CHS.TI
+
+#Retrieve results from the individual outputs for both GF models: 
+
+R.sq.alldatasets <- (rowMeans(gf.CHS.TI.Adaptive.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.alldatasets <- as.data.frame(R.sq.alldatasets)
+R.sq.alldatasets
+colnames(R.sq.alldatasets) <- "Adaptive"
+
+R.sq.Neutral <- (rowMeans(gf.CHS.TI.Neutral.SNPs$imp.rsq, na.rm=T))
+R.sq.Neutral <- as.data.frame(R.sq.Neutral)
+
+##we're only interested in the first 8 variables
+R.sq.EnvVariables <- R.sq.alldatasets[1:8,]  #get the first 8 rows from the Adaptive dataset
+R.sq.EnvVariables <- as.data.frame(R.sq.EnvVariables)
+colnames(R.sq.EnvVariables) <- "Adaptive"
+row.names(R.sq.EnvVariables) <- c("dist", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm", "MEM1", "MEM2")
+R.sq.EnvVariables$Neutral <- R.sq.Neutral[1:8,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
+
+R.sq.EnvVariables <- as.matrix(R.sq.EnvVariables)  ##turn into matrix for heatmap
+R.sq.all.melt <- melt(R.sq.EnvVariables)  ##melt for ggplot heatmap
+R.sq.all.melt <- R.sq.all.melt[order(R.sq.all.melt$Var1),]  ##order by predictor variable
+
+R.sq.all.melt
+
+library(RColorBrewer)
+#hm.palette <- colorRampPalette(rev(brewer.pal(9, 'YlOrRd')), space='Lab')  ##change the colour palette to red. Default is blue
+
+pdf("CHS.TI.R2plot.pdf")
+ggplot(R.sq.all.melt, aes(x=Var2, y=Var1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
+scale_fill_gradient(name="R2 CHS.TI") +   ##title of the legend
+theme(axis.title.x=element_blank(), axis.title.y=element_blank())   ##remove names of axes
+dev.off()
+
+
+###CHS.VS
+
 #Retrieve results from the individual outputs for both GF models: 
 
 R.sq.alldatasets <- (rowMeans(gf.CHS.VS.Adaptive.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
@@ -1467,8 +1574,150 @@ dev.off()
 
 It took me a while to find the code for the gf plots so that I could figure out what was being plotted, and so combine the plots. 
 ```
-leg.txt <- c("Adaptive", "Neutral")  ##define the text that will be added to the legend
+leg.txt <- c("Neutral", "Adaptive")  ##define the text that will be added to the legend
+```
 
+
+
+
+
+
+##### CHS.TI Cumulative plot
+```
+##sol.rad.60d
+
+CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "sol.rad.60d") ##find the cumulative importance for each gf.model output
+CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "sol.rad.60d")
+
+isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
+isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
+
+ymax=0.0015 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("sol.rad.60d.CumImp.CHS.TI.pdf")
+plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="Cumulative Importance", xlab="sol.rad.60d: mean solar radiation 60days after laying", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+
+##temp.laying.date
+CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "temp.laying.date") ##find the cumulative importance for each gf.model output
+CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "temp.laying.date")
+
+isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
+isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
+
+pdf("temp.laying.date.CumImp.CHS.TI.pdf")
+plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="", xlab="temp.laying.date", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+
+
+##pcpt.60d
+CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "pcpt.60d") 
+CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "pcpt.60d")
+
+isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
+isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
+
+
+pdf("pcpt.60d.CumImp.CHS.TI.pdf")
+plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="", xlab="pcpt.60d: Precipitation 60days after laying", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+
+
+##shadow.days
+CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "shadow.days") ##find the cumulative importance for each gf.model output. 
+CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "shadow.days")
+
+isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
+isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
+
+pdf("shadow.days.CumImp.CHS.TI.pdf")
+plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="Cumulative Importance", xlab="shadow.days", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+##day10cm
+CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "day10cm") ##find the cumulative importance for each gf.model output. Correcting label (see above)
+CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "day10cm")
+
+isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
+isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
+
+
+pdf("day10cm.CumImp.CHS.TI.pdf")
+plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="", xlab="day10cm: calendar day with 10+cm snow", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+##MEM1
+CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "MEM1") ##find the cumulative importance for each gf.model output
+CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "MEM1")
+
+isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
+isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
+
+pdf("MEM1.CumImp.CHS.TI.pdf")
+plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="", xlab="MEM1", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+
+##MEM2
+CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "MEM2") ##find the cumulative importance for each gf.model output
+CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "MEM2")
+
+
+isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
+isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
+
+
+pdf("MEM2.CumImp.CHS.TI.pdf")
+plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="Cumulative Importance", xlab="MEM2", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+
+##dist
+CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "dist") ##find the cumulative importance for each gf.model output
+CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "dist")
+
+isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
+isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
+
+
+pdf("dist.CumImp.CHS.TI.pdf")
+plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="", xlab="Distance (km)", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+##Create the combined plot in AdobeIllustrator
+```
+
+
+
+##### CHS.VS Cumulative plot
+```
 ##sol.rad.60d
 
 CU.Fst <- cumimp(gf.CHS.VS.Adaptive.SNPs, "sol.rad.60d") ##find the cumulative importance for each gf.model output
@@ -1504,8 +1753,8 @@ dev.off()
 
 
 ##pcpt.60d
-CU.Fst <- cumimp(gf.CHS.VS.Adaptive.SNPs, "pcpt.60d") ##find the cumulative importance for each gf.model output
-CU.Neutral <- cumimp(gf.CHS.VS.Neutral.SNPs, "pcpt.60d")
+CU.Fst <- cumimp(gf.CHS.VS.Adaptive.SNPs, "day10cm") ##I mislabeled these in the original excel sheet (now corrected). Only for CHS.VS. The rest of the transects are correct
+CU.Neutral <- cumimp(gf.CHS.VS.Neutral.SNPs, "day10cm")
 
 isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
 isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
@@ -1521,8 +1770,8 @@ dev.off()
 
 
 ##shadow.days
-CU.Fst <- cumimp(gf.CHS.VS.Adaptive.SNPs, "shadow.days") ##find the cumulative importance for each gf.model output
-CU.Neutral <- cumimp(gf.CHS.VS.Neutral.SNPs, "shadow.days")
+CU.Fst <- cumimp(gf.CHS.VS.Adaptive.SNPs, "pcpt.60d") ##find the cumulative importance for each gf.model output. Correcting the excel mislabelling here: see above
+CU.Neutral <- cumimp(gf.CHS.VS.Neutral.SNPs, "pcpt.60d")
 
 isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
 isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
@@ -1535,8 +1784,8 @@ plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", yli
 dev.off()
 
 ##day10cm
-CU.Fst <- cumimp(gf.CHS.VS.Adaptive.SNPs, "day10cm") ##find the cumulative importance for each gf.model output
-CU.Neutral <- cumimp(gf.CHS.VS.Neutral.SNPs, "day10cm")
+CU.Fst <- cumimp(gf.CHS.VS.Adaptive.SNPs, "shadow.days") ##find the cumulative importance for each gf.model output. Correcting label (see above)
+CU.Neutral <- cumimp(gf.CHS.VS.Neutral.SNPs, "shadow.days")
 
 isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
 isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
