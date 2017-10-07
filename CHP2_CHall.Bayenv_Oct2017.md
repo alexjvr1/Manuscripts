@@ -1361,7 +1361,7 @@ colnames(BF.CHN.Run3) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF"
 
 
 ###CHS
-BF.CHS.Run1 <- read.table("CHS.Run1/bf_environ.ENVIRONFILE.CHS.n5.env", header=F)
+BF.CHS.Run1 <- read.table("CHS.Run1.new/bf_environ.ENVIRONFILE.CHS.n5.env", header=F)
 colnames(BF.CHS.Run1) <- c("snp", "rad.BF", "rad.rho", "rad.r", "shadow.days.BF", "shadow.days.rho", "shadow.days.r", "temp.BF", "temp.rho", "temp.r", "pcpt.BF", "pcpt.rho", "pcpt.r", "day.10cm.BF", "day.10cm.rho", "day.10cm.r")
 
 BF.CHS.Run2 <- read.table("CHS.Run2/bf_environ.ENVIRONFILE.CHS.n5.env", header=F)
@@ -1693,7 +1693,7 @@ CHS.rad.23 <- Reduce(intersect, list(CHS.rad.run2.top100.set1$snp, CHS.rad.run3.
 CHS.rad.123 <- Reduce(intersect, list(CHS.rad.run2.top100.set1$snp, CHS.rad.run3.top100.set1$snp, CHS.rad.run1.top100.set1$snp))
 
 summary(CHS.rad.123)
-#87
+#78
 ```
 
 ##overlap in 6-10% of outlier loci for CHS.rad
@@ -1708,7 +1708,7 @@ CHS.rad.23 <- Reduce(intersect, list(CHS.rad.run2.top100.set2$snp, CHS.rad.run3.
 CHS.rad.123 <- Reduce(intersect, list(CHS.rad.run2.top100.set2$snp, CHS.rad.run3.top100.set2$snp, CHS.rad.run1.top100.set2$snp))
 
 summary(CHS.rad.123)
-#59
+#41
 ```
 
 ##overlap in 11-15% of outlier loci for CHS.rad
@@ -1723,7 +1723,7 @@ CHS.rad.23 <- Reduce(intersect, list(CHS.rad.run2.top100.set2$snp, CHS.rad.run3.
 CHS.rad.123 <- Reduce(intersect, list(CHS.rad.run2.top100.set2$snp, CHS.rad.run3.top100.set2$snp, CHS.rad.run1.top100.set2$snp))
 
 summary(CHS.rad.123)
-#38
+#20
 ```
 
 2. shadow.days
@@ -1746,7 +1746,7 @@ CHS.shadow.days.23 <- Reduce(intersect, list(CHS.shadow.days.run2.top100.set1$sn
 CHS.shadow.days.123 <- Reduce(intersect, list(CHS.shadow.days.run2.top100.set1$snp, CHS.shadow.days.run3.top100.set1$snp, CHS.shadow.days.run1.top100.set1$snp))
 
 summary(CHS.shadow.days.123)
-#84
+#78
 ```
 
 ##overlap in 6-10% of outlier loci for CHS.shadow.days
@@ -1761,7 +1761,7 @@ CHS.shadow.days.23 <- Reduce(intersect, list(CHS.shadow.days.run2.top100.set2$sn
 CHS.shadow.days.123 <- Reduce(intersect, list(CHS.shadow.days.run2.top100.set2$snp, CHS.shadow.days.run3.top100.set2$snp, CHS.shadow.days.run1.top100.set2$snp))
 
 summary(CHS.shadow.days.123)
-#60
+#50
 ```
 
 ##overlap in 11-15% of outlier loci for CHS.shadow.days
@@ -1776,7 +1776,7 @@ CHS.shadow.days.23 <- Reduce(intersect, list(CHS.shadow.days.run2.top100.set2$sn
 CHS.shadow.days.123 <- Reduce(intersect, list(CHS.shadow.days.run2.top100.set2$snp, CHS.shadow.days.run3.top100.set2$snp, CHS.shadow.days.run1.top100.set2$snp))
 
 summary(CHS.shadow.days.123)
-#46
+#26
 ```
 
 3. temp
@@ -1799,7 +1799,7 @@ CHS.temp.23 <- Reduce(intersect, list(CHS.temp.run2.top100.set1$snp, CHS.temp.ru
 CHS.temp.123 <- Reduce(intersect, list(CHS.temp.run2.top100.set1$snp, CHS.temp.run3.top100.set1$snp, CHS.temp.run1.top100.set1$snp))
 
 summary(CHS.temp.123)
-#85
+#81
 ```
 
 ##overlap in 6-10% of outlier loci for CHS.temp
@@ -1813,7 +1813,7 @@ CHS.temp.13 <- Reduce(intersect, list(CHS.temp.run3.top100.set2$snp, CHS.temp.ru
 CHS.temp.23 <- Reduce(intersect, list(CHS.temp.run2.top100.set2$snp, CHS.temp.run3.top100.set2$snp))
 CHS.temp.123 <- Reduce(intersect, list(CHS.temp.run2.top100.set2$snp, CHS.temp.run3.top100.set2$snp, CHS.temp.run1.top100.set2$snp))
 summary(CHS.temp.123)
-#65
+#49
 ```
 
 ##overlap in 11-15% of outlier loci for CHS.temp
@@ -1828,7 +1828,7 @@ CHS.temp.23 <- Reduce(intersect, list(CHS.temp.run2.top100.set2$snp, CHS.temp.ru
 CHS.temp.123 <- Reduce(intersect, list(CHS.temp.run2.top100.set2$snp, CHS.temp.run3.top100.set2$snp, CHS.temp.run1.top100.set2$snp))
 
 summary(CHS.temp.123)
-#53
+#35
 ```
 
 4. pcpt
@@ -1851,7 +1851,7 @@ CHS.pcpt.23 <- Reduce(intersect, list(CHS.pcpt.run2.top100.set1$snp, CHS.pcpt.ru
 CHS.pcpt.123 <- Reduce(intersect, list(CHS.pcpt.run2.top100.set1$snp, CHS.pcpt.run3.top100.set1$snp, CHS.pcpt.run1.top100.set1$snp))
 
 summary(CHS.pcpt.123)
-#85
+#81
 ```
 
 ##overlap in 6-10% of outlier loci for CHS.pcpt
@@ -1866,7 +1866,7 @@ CHS.pcpt.23 <- Reduce(intersect, list(CHS.pcpt.run2.top100.set2$snp, CHS.pcpt.ru
 CHS.pcpt.123 <- Reduce(intersect, list(CHS.pcpt.run2.top100.set2$snp, CHS.pcpt.run3.top100.set2$snp, CHS.pcpt.run1.top100.set2$snp))
 
 summary(CHS.pcpt.123)
-#61
+#44
 ```
 
 ##overlap in 11-15% of outlier loci for CHS.pcpt
@@ -1881,7 +1881,7 @@ CHS.pcpt.23 <- Reduce(intersect, list(CHS.pcpt.run2.top100.set2$snp, CHS.pcpt.ru
 CHS.pcpt.123 <- Reduce(intersect, list(CHS.pcpt.run2.top100.set2$snp, CHS.pcpt.run3.top100.set2$snp, CHS.pcpt.run1.top100.set2$snp))
 
 summary(CHS.pcpt.123)
-#46
+#26
 ```
 
 5. day.10cm
@@ -1903,7 +1903,7 @@ CHS.day.10cm.23 <- Reduce(intersect, list(CHS.day.10cm.run2.top100.set1$snp, CHS
 CHS.day.10cm.123 <- Reduce(intersect, list(CHS.day.10cm.run2.top100.set1$snp, CHS.day.10cm.run3.top100.set1$snp, CHS.day.10cm.run1.top100.set1$snp))
 
 summary(CHS.day.10cm.123)
-#80
+#75
 ```
 
 ##overlap in 6-10% of outlier loci for CHS.day.10cm
@@ -1917,7 +1917,7 @@ CHS.day.10cm.13 <- Reduce(intersect, list(CHS.day.10cm.run3.top100.set2$snp, CHS
 CHS.day.10cm.23 <- Reduce(intersect, list(CHS.day.10cm.run2.top100.set2$snp, CHS.day.10cm.run3.top100.set2$snp))
 CHS.day.10cm.123 <- Reduce(intersect, list(CHS.day.10cm.run2.top100.set2$snp, CHS.day.10cm.run3.top100.set2$snp, CHS.day.10cm.run1.top100.set2$snp))
 summary(CHS.day.10cm.123)
-#62
+#51
 ```
 
 ##overlap in 11-15% of outlier loci for CHS.day.10cm
@@ -1932,7 +1932,7 @@ CHS.day.10cm.23 <- Reduce(intersect, list(CHS.day.10cm.run2.top100.set2$snp, CHS
 CHS.day.10cm.123 <- Reduce(intersect, list(CHS.day.10cm.run2.top100.set2$snp, CHS.day.10cm.run3.top100.set2$snp, CHS.day.10cm.run1.top100.set2$snp))
 
 summary(CHS.day.10cm.123)
-#50
+#30
 ```
 
 ####CZ
@@ -2901,6 +2901,7 @@ abline(h=1.0, col=3, lty=2)
 dev.off()
 ```
 
+
 ##plot BF vs absolute p value
 ```
 pdf("CHS.BFvsp.pdf")
@@ -3248,7 +3249,7 @@ Once this is done, the names can be read into R and indexed.
 
 vcftools --vcf CHN.229.5265.recode.vcf --plink --out CHN.229.5265.plink
 
-vcftools --vcf CHS.275.6339.recode.vcf --plink --out CHS.275.9295.plink
+vcftools --vcf CHS.275.6339.recode.vcf --plink --out CHS.275.6339.plink
 
 vcftools --vcf CZ.404.7288.recode.vcf --plink --out CZ.404.7288.plink
 
@@ -3376,7 +3377,7 @@ colnames(XtX.outliers) <- ("loci")
 ```
 
 
-########  CHS
+###### CHS
 ```
 CHS.locus.names <- read.table("CHS.275.6339.plink.map", header=F) #import the locus names into R
 CHS.locus.names$ID <- seq.int(nrow(CHS.locus.names)) ##index the CHS.locus.names file so that all the loci are numbered in order of appearance
@@ -3419,7 +3420,7 @@ CHS.day.10cm.bayenv.candidates.names <- paste("X", CHS.day.10cm.bayenv.candidate
 
 ```
 
-find names and write to file
+Find names and write to file
 ```
 CHS.rad.names <- as.data.frame(CHS.rad.bayenv.candidates.names)
 colnames(CHS.rad.names) <- "names"
@@ -3458,12 +3459,14 @@ CHS.BayEnv.outliers <- as.character(CHS.BayEnv.outliers$loci)
 Write top 100 XtX loci to file
 
 ```
-#CHS.XtX.run1 <- read.table("CHS.Run1/XtX_out.ENVIRONFILE.CHS.n5.env", header=F)
+library(data.table)
+
+CHS.XtX.run1 <- read.table("CHS.Run1.new/XtX_out.ENVIRONFILE.CHS.p19.env", header=F)
 CHS.XtX.run2 <- read.table("CHS.Run2/XtX_out.ENVIRONFILE.CHS.n5.env", header=F)
 CHS.XtX.run3 <- read.table("CHS.Run3/XtX_out.ENVIRONFILE.CHS.n5.env", header=F)
 
 
-CHS.XtX.all <- rbindlist(list(CHS.XtX.run2, CHS.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
+CHS.XtX.all <- rbindlist(list(CHS.XtX.run1, CHS.XtX.run2, CHS.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
 
 colnames(CHS.XtX.all) <- c("snp", "XtX")
 ##index the loci 
