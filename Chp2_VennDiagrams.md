@@ -1228,9 +1228,8 @@ First I need to find the unique loci for each dataset. CHS was already done in t
 ```
 CHS.VS.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
 
-CHS.VS.duplicated.outliers <- CHS.VS.alloutliers[duplicated(CHS.VS.alloutliers),]  ##select only loci occurring more than once (here 482)
-
-write.table(CHS.VS.duplicated.outliers, "CHS.VS.duplicated.outliers.20171007", col.names=F, row.names=F, quote=F)
+CHS.VS.alloutliers <- lapply(CHS.VS.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 3090 to 3044)
+write.table(CHS.VS.alloutliers, "CHS.VS.alloutliers.20171007", col.names=F, row.names=F, quote=F)
 
 ```
 
@@ -1238,9 +1237,8 @@ write.table(CHS.VS.duplicated.outliers, "CHS.VS.duplicated.outliers.20171007", c
 ```
 CHS.TI.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
 
-CHS.TI.duplicated.outliers <- CHS.TI.alloutliers[duplicated(CHS.TI.alloutliers),]  ##select only loci occurring more than once (here 332)
-
-write.table(CHS.TI.duplicated.outliers, "CHS.TI.duplicated.outliers.20171007", col.names=F, row.names=F, quote=F)
+CHS.TI.alloutliers <- lapply(CHS.TI.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 3090 to 3044)
+write.table(CHS.TI.alloutliers, "CHS.TI.alloutliers.20171007", col.names=F, row.names=F, quote=F)
 
 ```
 
@@ -1273,8 +1271,8 @@ d23 <- length(Reduce(intersect, list(CHS.outliers, CHS.TI.outliers)))
 
 d123 <- length(Reduce(intersect, list(CHS.VS.outliers, CHS.outliers,CHS.TI.outliers)))
 
-
-pdf("Venn.CHSandVS.TI.alloutliers.pdf")
+library(VennDiagram)
+pdf("Venn.CHSandVS.TI.alloutliers.20171007.pdf")
 draw.triple.venn(area1=d1, area2=d2, area3=d3, n12=d12, n13=d13, n23=d23, n123=d123, category=c("CHS.VS", "CHS", "CHS.TI"), lty="blank", fill=c("yellow", "orange", "skyblue1"))
 dev.off()
 
@@ -1328,9 +1326,10 @@ First I need to find only the loci that occur more than once in each dataset.
 ```
 CHN.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
 
+
 CHN.duplicated.outliers <- CHN.alloutliers[duplicated(CHN.alloutliers),]  ##select only loci occurring more than once (here 308)
 
-write.table(CHN.duplicated.outliers, "CHN.duplicated.outliers", col.names=F, row.names=F, quote=F)
+write.table(CHN.duplicated.outliers, "CHN.duplicated.outliers.20171007", col.names=F, row.names=F, quote=F)
 ```
 
 #### CHS
@@ -1368,7 +1367,7 @@ CHS.alloutliers <- rbind(CHS.lfmm.outliers, CHS.bayenv.outliers, CHS.pcadapt.out
 
 CHS.duplicated.outliers <- CHS.alloutliers[duplicated(CHS.alloutliers),]  ##select only loci occurring more than once (here 26)
 
-write.table(CHS.duplicated.outliers, "CHS.duplicated.outliers", col.names=F, row.names=F, quote=F)
+write.table(CHS.duplicated.outliers, "CHS.duplicated.outliers.20171007", col.names=F, row.names=F, quote=F)
 ```
 
 ##### CZ
@@ -1378,28 +1377,28 @@ CZ.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcada
 
 CZ.duplicated.outliers <- CZ.alloutliers[duplicated(CZ.alloutliers),]  ##select only loci occurring more than once (here 242)
 
-write.table(CZ.duplicated.outliers, "CZ.duplicated.outliers", col.names=F, row.names=F, quote=F)
+write.table(CZ.duplicated.outliers, "CZ.duplicated.outliers.20171007", col.names=F, row.names=F, quote=F)
 ```
 
 
 Then I can read them into R and draw the VennDiagrams
 
-/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/Venn/CHP2
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/Venn/CHP2/MAC.filtered
 
 First without CHall
 ```
 library(VennDiagram)
 
 
-CHN.duplicated.outliers <- read.table("CHN.duplicated.outliers", header=F)
+CHN.duplicated.outliers <- read.table("CHN/CHN.duplicated.outliers.20171007", header=F)
 colnames(CHN.duplicated.outliers) <- "loci"
 CHN.duplicated.outliers <- as.character(CHN.duplicated.outliers$loci)
 
-CZ.duplicated.outliers <- read.table("CZ.duplicated.outliers", header=F)
+CZ.duplicated.outliers <- read.table("CZ/CZ.duplicated.outliers.20171007", header=F)
 colnames(CZ.duplicated.outliers) <- "loci"
 CZ.duplicated.outliers <- as.character(CZ.duplicated.outliers$loci)
 
-CHS.duplicated.outliers <- read.table("CHS.duplicated.outliers", header=F)
+CHS.duplicated.outliers <- read.table("CHS/CHS.duplicated.outliers.20171007", header=F)
 colnames(CHS.duplicated.outliers) <- "loci"
 CHS.duplicated.outliers <- as.character(CHS.duplicated.outliers$loci)
 
@@ -1415,7 +1414,7 @@ d23 <- length(Reduce(intersect, list(CHS.duplicated.outliers, CZ.duplicated.outl
 d123 <- length(Reduce(intersect, list(CHN.duplicated.outliers, CHS.duplicated.outliers,CZ.duplicated.outliers)))
 
 
-pdf("Venn.CHN.CHS.CZ.duplicated.outliers.pdf")
+pdf("Venn.CHN.CHS.CZ.duplicated.outliers.20171007.pdf")
 draw.triple.venn(area1=d1, area2=d2, area3=d3, n12=d12, n13=d13, n23=d23, n123=d123, category=c("CHN", "CHS", "CZ"), lty="blank", fill=c("yellow", "orange", "skyblue1"))
 dev.off()
 
@@ -1425,58 +1424,7 @@ dev.off()
 
 
 
-
-
-
-And with CHall
-```
-library(VennDiagram)
-
-CHall.outliers <- read.table("CHall/CHall.alloutliers", header=F)
-colnames(CHall.outliers) <- "loci"
-CHall.outliers <- as.character(CHall.outliers$loci)
-
-CHN.outliers <- read.table("CHN/CHN.alloutliers", header=F)
-colnames(CHN.outliers) <- "loci"
-CHN.outliers <- as.character(CHN.outliers$loci)
-
-CHS.outliers <- read.table("CHS/CHS.alloutliers", header=F)
-colnames(CHS.outliers) <- "loci"
-CHS.outliers <- as.character(CHS.outliers$loci)
-
-CZ.outliers <- read.table("CZ/CZ.alloutliers", header=F)
-colnames(CZ.outliers) <- "loci"
-CZ.outliers <- as.character(CZ.outliers$loci)
-
-
-d1 <- length(CHall.outliers)
-d2 <- length(CHN.outliers)
-d3 <- length(CHS.outliers)
-d4 <- length(CZ.outliers)
-
-d12 <- length(Reduce(intersect, list(CHall.outliers, CHN.outliers)))
-d13 <- length(Reduce(intersect, list(CHall.outliers, CHS.outliers)))
-d14 <- length(Reduce(intersect, list(CHall.outliers, CZ.outliers)))
-d23 <- length(Reduce(intersect, list(CHN.outliers, CHS.outliers)))
-d24 <- length(Reduce(intersect, list(CHN.outliers, CZ.outliers)))
-d34 <- length(Reduce(intersect, list(CHS.outliers, CZ.outliers)))
-
-d123 <- length(Reduce(intersect, list(CHall.outliers, CHN.outliers,CHS.outliers)))
-d124 <- length(Reduce(intersect, list(CHall.outliers, CHN.outliers,CZ.outliers)))
-d234 <- length(Reduce(intersect, list(CHN.outliers, CHS.outliers,CZ.outliers)))
-d134 <- length(Reduce(intersect, list(CHall.outliers, CHS.outliers,CZ.outliers)))
-
-d1234 <- length(Reduce(intersect, list(CHall.outliers, CHN.outliers, CHS.outliers, CZ.outliers)))
-
-#pdf(file="Venn.CHall.CHS.CHN.CZ.duplicated.outliers.pdf")
-draw.quad.venn(area1=d1, area2=d2, area3=d3, area4=d4, n12=d12, n13=d13, n14=d14, n23=d23, n24=d24, n34=d34, n123=d123, n124=d124, n134=d134, n234=d234, n1234=d1234, category=c("lfmm", "bayenv", "XtX", "pcadapt"), lty="blank", fill=c("yellow", "orange", "skyblue1", "blue"))
-#dev.off()
-
-```
-
-
-
-### 4. Overlap between all candidate loci identified for CHS, CHS.TI, CHS.VS
+### 6. Overlap between all candidate loci identified for CHS, CHS.TI, CHS.VS
 
 First I need to find the loci that occur more than once. CHS was already done in the previous batch. 
 
@@ -1487,7 +1435,7 @@ CHS.VS.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, p
 
 CHS.VS.duplicated.outliers <- CHS.VS.alloutliers[duplicated(CHS.VS.alloutliers),]  ##select only loci occurring more than once (here 482)
 
-write.table(CHS.VS.duplicated.outliers, "CHS.VS.duplicated.outliers", col.names=F, row.names=F, quote=F)
+write.table(CHS.VS.duplicated.outliers, "CHS.VS.duplicated.outliers.20171007", col.names=F, row.names=F, quote=F)
 ```
 
 ###### CHS.TI
@@ -1497,7 +1445,7 @@ CHS.TI.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, p
 
 CHS.TI.duplicated.outliers <- CHS.TI.alloutliers[duplicated(CHS.TI.alloutliers),]  ##select only loci occurring more than once (here 332)
 
-write.table(CHS.TI.duplicated.outliers, "CHS.TI.duplicated.outliers", col.names=F, row.names=F, quote=F)
+write.table(CHS.TI.duplicated.outliers, "CHS.TI.duplicated.outliers.20171007", col.names=F, row.names=F, quote=F)
 ```
 
 And then draw the Venn diagram
@@ -1506,15 +1454,15 @@ And then draw the Venn diagram
 library(VennDiagram)
 
 
-CHS.VS.duplicated.outliers <- read.table("CHS.VS.duplicated.outliers", header=F)
+CHS.VS.duplicated.outliers <- read.table("CHS.VS/CHS.VS.duplicated.outliers.20171007", header=F)
 colnames(CHS.VS.duplicated.outliers) <- "loci"
 CHS.VS.duplicated.outliers <- as.character(CHS.VS.duplicated.outliers$loci)
 
-CHS.TI.duplicated.outliers <- read.table("CHS.TI.duplicated.outliers", header=F)
+CHS.TI.duplicated.outliers <- read.table("CHS.TI/CHS.TI.duplicated.outliers.20171007", header=F)
 colnames(CHS.TI.duplicated.outliers) <- "loci"
 CHS.TI.duplicated.outliers <- as.character(CHS.TI.duplicated.outliers$loci)
 
-CHS.duplicated.outliers <- read.table("CHS.duplicated.outliers", header=F)
+CHS.duplicated.outliers <- read.table("CHS/CHS.duplicated.outliers.20171007", header=F)
 colnames(CHS.duplicated.outliers) <- "loci"
 CHS.duplicated.outliers <- as.character(CHS.duplicated.outliers$loci)
 
@@ -1530,7 +1478,7 @@ d23 <- length(Reduce(intersect, list(CHS.duplicated.outliers, CHS.TI.duplicated.
 d123 <- length(Reduce(intersect, list(CHS.VS.duplicated.outliers, CHS.duplicated.outliers,CHS.TI.duplicated.outliers)))
 
 
-pdf("Venn.CHS.withVS.TI.duplicated.outliers.pdf")
+pdf("Venn.CHS.withVS.TI.duplicated.outliers.20171007.pdf")
 draw.triple.venn(area1=d1, area2=d2, area3=d3, n12=d12, n13=d13, n23=d23, n123=d123, category=c("CHS.VS", "CHS", "CHS.TI"), lty="blank", fill=c("yellow", "orange", "skyblue1"))
 dev.off()
 
