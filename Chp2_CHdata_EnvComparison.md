@@ -1329,3 +1329,101 @@ m2.day10cm <- lm(CHS.VS.TIonly.EnvData$day10cm~CHS.VS.TIonly.EnvData$elev.c + CH
 
 ```
 
+## Model comparison
+
+To see which model is the best: 
+
+```
+## CHS.VS and TI
+AIC(m1.sol.rad)
+[1] 559.1436
+AIC(m2.sol.rad.60d)
+[1] 552.2046
+ 
+AIC(m1.temp.laying.date)
+[1] 86.88899
+AIC(m2.temp.laying.date)
+[1] 85.21746
+
+AIC(m1.pcpt.60d)
+[1] 149.3764
+AIC(m2.pcpt.60d)
+[1] 144.6123
+ 
+AIC(m1.shadow.days)
+[1] 161.6098
+AIC(m2.shadow.days)
+[1] 164.3827
+ 
+AIC(m1.day10cm)
+[1] 211.1539
+AIC(m2.day10cm)
+[1] 190.9545
+
+##CHS, CZ, and CHN
+
+AIC(m1.CHall.sol.rad)
+[1] 1893.023
+AIC(m2.CHall.sol.rad.60d)
+[1] 1890.752
+
+AIC(m1.CHall.temp.laying.date)
+[1] 280.659
+AIC(m2.CHall.temp.laying.date)
+[1] 279.2502
+ 
+AIC(m1.CHall.pcpt.60d)
+[1] 553.919
+AIC(m2.CHall.pcpt.60d)
+[1] 551.0943
+ 
+AIC(m1.CHall.shadow.days)
+[1] 584.143
+AIC(m2.CHall.shadow.days)
+[1] 589.1039
+ 
+AIC(m1.CHall.day10cm)
+[1] 780.4261
+AIC(m2.CHall.day10cm)
+[1] 772.8727
+```
+
+
+### Assess the best models
+
+##### CHS.TI and CHS.VS
+```
+library(car)
+Anova(m2.sol.rad.60d)
+
+Anova Table (Type II tests)
+
+Response: CHS.VS.TIonly.EnvData$sol.rad.60d
+                                                                        Sum Sq
+CHS.VS.TIonly.EnvData$elev.c                                        3494817539
+CHS.VS.TIonly.EnvData$elev.c.squared                                3826335562
+CHS.VS.TIonly.EnvData$Transect                                      1960869323
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$Transect          460077479
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$Transect  623763911
+Residuals                                                           7706781316
+                                                                    Df F value
+CHS.VS.TIonly.EnvData$elev.c                                         1  8.1625
+CHS.VS.TIonly.EnvData$elev.c.squared                                 1  8.9368
+CHS.VS.TIonly.EnvData$Transect                                       1  4.5798
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$Transect          1  1.0746
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$Transect  1  1.4569
+Residuals                                                           18        
+                                                                      Pr(>F)   
+CHS.VS.TIonly.EnvData$elev.c                                        0.010473 * 
+CHS.VS.TIonly.EnvData$elev.c.squared                                0.007864 **
+CHS.VS.TIonly.EnvData$Transect                                      0.046298 * 
+CHS.VS.TIonly.EnvData$elev.c:CHS.VS.TIonly.EnvData$Transect         0.313644   
+CHS.VS.TIonly.EnvData$elev.c.squared:CHS.VS.TIonly.EnvData$Transect 0.243053   
+Residuals                                                                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+```
+
+
