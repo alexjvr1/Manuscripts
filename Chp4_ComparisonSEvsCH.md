@@ -1190,8 +1190,18 @@ Find names and write to file
 CHN.temp.names <- as.data.frame(CHN.temp.bayenv.candidates.names)
 colnames(CHN.temp.names) <- "names"
 
+CHN.temp.outlier.names <- sub(":", ".", CHN.temp.names$names)
+CHN.temp.outlier.names <- as.data.frame(CHN.temp.outlier.names)
+
+write.table(CHN.temp.outlier.names$CHN.temp.outlier.names, "CHN.CHP4.temp.outlier.names", col.names=F, row.names=F, quote=F)
+
 CHN.season.days.names <- as.data.frame(CHN.season.days.bayenv.candidates.names)
 colnames(CHN.season.days.names) <- "names"
+
+CHN.season.outlier.names <- sub(":", ".", CHN.season.days.names$names)
+CHN.season.outlier.names <- as.data.frame(CHN.season.outlier.names)
+
+write.table(CHN.season.outlier.names$CHN.season.outlier.names, "CHN.CHP4.season.outlier.names", col.names=F, row.names=F, quote=F)
 
 
 CHN.alloutliers.names <- rbind(CHN.temp.names, CHN.season.days.names)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
@@ -1281,8 +1291,19 @@ Find names and write to file
 CHS.temp.names <- as.data.frame(CHS.temp.bayenv.candidates.names)
 colnames(CHS.temp.names) <- "names"
 
+CHS.temp.outlier.names <- sub(":", ".", CHS.temp.names$names)
+CHS.temp.outlier.names <- as.data.frame(CHS.temp.outlier.names)
+
+write.table(CHS.temp.outlier.names$CHS.temp.outlier.names, "CHS.CHP4.temp.outlier.names", col.names=F, row.names=F, quote=F)
+
 CHS.season.days.names <- as.data.frame(CHS.season.days.bayenv.candidates.names)
 colnames(CHS.season.days.names) <- "names"
+
+CHS.season.outlier.names <- sub(":", ".", CHS.season.days.names$names)
+CHS.season.outlier.names <- as.data.frame(CHS.season.outlier.names)
+
+write.table(CHS.season.outlier.names$CHS.season.outlier.names, "CHS.CHP4.season.outlier.names", col.names=F, row.names=F, quote=F)
+
 
 
 CHS.alloutliers.names <- rbind(CHS.temp.names, CHS.season.days.names)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
@@ -1372,8 +1393,19 @@ find names and write to file
 CZ.temp.names <- as.data.frame(CZ.temp.bayenv.candidates.names)
 colnames(CZ.temp.names) <- "names"
 
+CZ.temp.outlier.names <- sub(":", ".", CZ.temp.names$names)
+CZ.temp.outlier.names <- as.data.frame(CZ.temp.outlier.names)
+
+write.table(CZ.temp.outlier.names$CZ.temp.outlier.names, "CZ.CHP4.temp.outlier.names", col.names=F, row.names=F, quote=F)
+
 CZ.season.days.names <- as.data.frame(CZ.season.days.bayenv.candidates.names)
 colnames(CZ.season.days.names) <- "names"
+
+CZ.season.outlier.names <- sub(":", ".", CZ.season.days.names$names)
+CZ.season.outlier.names <- as.data.frame(CZ.season.outlier.names)
+
+write.table(CZ.season.outlier.names$CZ.season.outlier.names, "CZ.CHP4.season.outlier.names", col.names=F, row.names=F, quote=F)
+
 
 
 
@@ -1468,8 +1500,19 @@ find names and write to file
 CHS.VS.temp.names <- as.data.frame(CHS.VS.temp.bayenv.candidates.names)
 colnames(CHS.VS.temp.names) <- "names"
 
+CHS.VS.temp.outlier.names <- sub(":", ".", CHS.VS.temp.names$names)
+CHS.VS.temp.outlier.names <- as.data.frame(CHS.VS.temp.outlier.names)
+
+write.table(CHS.VS.temp.outlier.names$CHS.VS.temp.outlier.names, "CHS.VS.CHP4.temp.outlier.names", col.names=F, row.names=F, quote=F)
+
 CHS.VS.season.days.names <- as.data.frame(CHS.VS.season.days.bayenv.candidates.names)
 colnames(CHS.VS.season.days.names) <- "names"
+
+CHS.VS.season.outlier.names <- sub(":", ".", CHS.VS.season.days.names$names)
+CHS.VS.season.outlier.names <- as.data.frame(CHS.VS.season.outlier.names)
+
+write.table(CHS.VS.season.outlier.names$CHS.VS.season.outlier.names, "CHS.VS.CHP4.season.outlier.names", col.names=F, row.names=F, quote=F)
+
 
 
 
@@ -1560,8 +1603,19 @@ Find names and write to file
 CHS.TI.temp.names <- as.data.frame(CHS.TI.temp.bayenv.candidates.names)
 colnames(CHS.TI.temp.names) <- "names"
 
+CHS.TI.temp.outlier.names <- sub(":", ".", CHS.TI.temp.names$names)
+CHS.TI.temp.outlier.names <- as.data.frame(CHS.TI.temp.outlier.names)
+
+write.table(CHS.TI.temp.outlier.names$CHS.TI.temp.outlier.names, "CHS.TI.CHP4.temp.outlier.names", col.names=F, row.names=F, quote=F)
+
 CHS.TI.season.days.names <- as.data.frame(CHS.TI.season.days.bayenv.candidates.names)
 colnames(CHS.TI.season.days.names) <- "names"
+
+CHS.TI.season.outlier.names <- sub(":", ".", CHS.TI.season.days.names$names)
+CHS.TI.season.outlier.names <- as.data.frame(CHS.TI.season.outlier.names)
+
+write.table(CHS.TI.season.outlier.names$CHS.TI.season.outlier.names, "CHS.TI.CHP4.season.outlier.names", col.names=F, row.names=F, quote=F)
+
 
 
 
@@ -1790,7 +1844,19 @@ dev.off()
 Prepare the data to incorporate with the Fst outlier graph
 ```
 d1.names <- as.data.frame(candidates.d1.k5.names)
+temp.names <- d1.names
+colnames(temp.names) <- "names"
+temp.names <- sub(":", ".", temp.names$names) 
+temp.names <- as.data.frame(temp.names)
+write.table(temp.names$temp.names, "SE.CHP4.temp.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+
 d2.names <- as.data.frame(candidates.d2.k5.names)
+season.names <- d2.names
+colnames(season.names) <- "names"
+season.names <- sub(":", ".", season.names$names) 
+season.names <- as.data.frame(season.names)
+write.table(season.names$season.names, "SE.CHP4.season.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+
 
 colnames(d1.names) <- "names"
 colnames(d2.names) <- "names"
@@ -1830,7 +1896,7 @@ Open R and import project. This CHN project contains K3-5. 5 runs for each K. d1
 library(LEA)
 
 project=import.lfmmProject("CHN.229.5265.recode_CHN.temp_lfmmProject.zip")
-
+#project=load.lfmmProject("CHN.229.5265.recode_CHN.temp.lfmmProject")
 
 zs.d1 <- z.scores(project, K=4, d=1)
 zs.d1.median =apply(zs.d1, MARGIN=1, median)
@@ -1933,10 +1999,19 @@ dev.off()
 Prepare the data to incorporate with the Fst outlier graph
 ```
 d1.names <- as.data.frame(candidates.d1.k5.names)
-d2.names <- as.data.frame(candidates.d2.k5.names)
+temp.names <- d1.names
+colnames(temp.names) <- "names"
+temp.names <- sub(":", ".", temp.names$names) 
+temp.names <- as.data.frame(temp.names)
+write.table(temp.names$temp.names, "CHN.CHP4.temp.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
 
-colnames(d1.names) <- "names"
-colnames(d2.names) <- "names"
+d2.names <- as.data.frame(candidates.d2.k5.names)
+season.names <- d2.names
+colnames(season.names) <- "names"
+season.names <- sub(":", ".", season.names$names) 
+season.names <- as.data.frame(season.names)
+write.table(season.names$season.names, "CHN.CHP4.season.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+
 
 
 d12.names <- rbind(d1.names, d2.names)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
@@ -1972,6 +2047,7 @@ These datasets all have less individuals than the full dataset. I have to find o
 Open R and import project. This CHN project contains K3-5. 5 runs for each K. d1-5. I show only results from K=4 here: 
 ```
 CHS.lfmm=import.lfmmProject("CHS.275.6339.recode_CHS.temp_lfmmProject.zip")
+#project=load.lfmmProject("CHS.275.6339.recode_CHS.temp.lfmmProject")
 
 project <- CHS.lfmm
 
@@ -2076,7 +2152,20 @@ dev.off()
 Prepare the data to incorporate with the Fst outlier graph
 ```
 d1.names <- as.data.frame(candidates.d1.k5.names)
+temp.names <- d1.names
+colnames(temp.names) <- "names"
+temp.names <- sub(":", ".", temp.names$names) 
+temp.names <- as.data.frame(temp.names)
+write.table(temp.names$temp.names, "CHS.CHP4.temp.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+
 d2.names <- as.data.frame(candidates.d2.k5.names)
+season.names <- d2.names
+colnames(season.names) <- "names"
+season.names <- sub(":", ".", season.names$names) 
+season.names <- as.data.frame(season.names)
+write.table(season.names$season.names, "CHS.CHP4.season.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+
+
 
 colnames(d1.names) <- "names"
 colnames(d2.names) <- "names"
@@ -2110,7 +2199,7 @@ These datasets all have less individuals than the full dataset. I have to find o
 Open R and import project.  
 ```
 project=import.lfmmProject("CHS.VS.135.5835.recode_CHS.VS.temp_lfmmProject.zip")
-
+#project=load.lfmmProject("CHS.VS.135.5835.recode_CHS.VS.temp.lfmmProject")
 
 zs.d1 <- z.scores(project, K=4, d=1)
 zs.d1.median =apply(zs.d1, MARGIN=1, median)
@@ -2212,7 +2301,20 @@ dev.off()
 Prepare the data to incorporate with the Fst outlier graph
 ```
 d1.names <- as.data.frame(candidates.d1.k5.names)
+temp.names <- d1.names
+colnames(temp.names) <- "names"
+temp.names <- sub(":", ".", temp.names$names) 
+temp.names <- as.data.frame(temp.names)
+write.table(temp.names$temp.names, "CHS.VS.CHP4.temp.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+
 d2.names <- as.data.frame(candidates.d2.k5.names)
+season.names <- d2.names
+colnames(season.names) <- "names"
+season.names <- sub(":", ".", season.names$names) 
+season.names <- as.data.frame(season.names)
+write.table(season.names$season.names, "CHS.VS.CHP4.season.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+
+
 
 colnames(d1.names) <- "names"
 colnames(d2.names) <- "names"
@@ -2247,7 +2349,7 @@ These datasets all have less individuals than the full dataset. I have to find o
 Open R and import project.  
 ```
 project=import.lfmmProject("CHS.TI.140.5692.recode_CHS.TI.temp_lfmmProject.zip")
-
+#project=load.lfmmProject("CHS.TI.140.5692.recode_CHS.TI.temp.lfmmProject")
 
 zs.d1 <- z.scores(project, K=6, d=1)
 zs.d1.median =apply(zs.d1, MARGIN=1, median)
@@ -2349,7 +2451,20 @@ dev.off()
 Prepare the data to incorporate with the Fst outlier graph
 ```
 d1.names <- as.data.frame(candidates.d1.k5.names)
+temp.names <- d1.names
+colnames(temp.names) <- "names"
+temp.names <- sub(":", ".", temp.names$names) 
+temp.names <- as.data.frame(temp.names)
+write.table(temp.names$temp.names, "CHS.TI.CHP4.temp.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+
 d2.names <- as.data.frame(candidates.d2.k5.names)
+season.names <- d2.names
+colnames(season.names) <- "names"
+season.names <- sub(":", ".", season.names$names) 
+season.names <- as.data.frame(season.names)
+write.table(season.names$season.names, "CHS.TI.CHP4.season.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+
+
 
 colnames(d1.names) <- "names"
 colnames(d2.names) <- "names"
@@ -2385,7 +2500,7 @@ These datasets all have less individuals than the full dataset. I have to find o
 Open R and import project.  
 ```
 project=import.lfmmProject("CZ.404.7288.recode_CZ.temp_lfmmProject.zip")
-
+#project=load.lfmmProject("CZ.404.7288.recode_CZ.temp.lfmmProject")
 
 zs.d1 <- z.scores(project, K=9, d=1)
 zs.d1.median =apply(zs.d1, MARGIN=1, median)
@@ -2486,7 +2601,20 @@ dev.off()
 Prepare the data to incorporate with the Fst outlier graph
 ```
 d1.names <- as.data.frame(candidates.d1.k5.names)
+temp.names <- d1.names
+colnames(temp.names) <- "names"
+temp.names <- sub(":", ".", temp.names$names) 
+temp.names <- as.data.frame(temp.names)
+write.table(temp.names$temp.names, "CZ.CHP4.temp.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+
 d2.names <- as.data.frame(candidates.d2.k5.names)
+season.names <- d2.names
+colnames(season.names) <- "names"
+season.names <- sub(":", ".", season.names$names) 
+season.names <- as.data.frame(season.names)
+write.table(season.names$season.names, "CZ.CHP4.season.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+
+
 
 colnames(d1.names) <- "names"
 colnames(d2.names) <- "names"
