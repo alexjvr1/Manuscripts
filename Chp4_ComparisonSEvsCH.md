@@ -62,7 +62,78 @@ This removes only 54 loci from the previous dataset.
 
 ### 1. BayEnv2
 
+#### SE
 
+Input files: 
+
+1. Env file
+
+2. Genotype file
+
+3. Matrix file
+
+
+##### Env file
+
+I got the new derived environmental data from Josh today (9 Oct 2017) after getting approximate spawning dates from Maria. 
+
+A copy of the per individual data is found here /Users/alexjvr/2016RADAnalysis/6_CHP4.SEvsCH/SE.bayenv
+ in the same order as the vcf file. 
+ 
+Env data needs to be normalised and transcribed
+``` 
+##R
+
+library(clusterSim)
+
+
+file <- read.csv("SE.Derived.EnvData_20171009.csv", header=T) ##make sure the order here is the same as in the vcf file
+
+df <- data.frame(pop=file$pop, mean.temp=file$mean.temp.60.days, season=file$days.6.degrees)
+
+n <- df$pop
+
+df.norm <- data.Normalization(df[,2:ncol(df)], type="n1", normalization="column") ##normalise the data. See --help for data.Normalisation to see other normalisation options
+
+## transpose all standardised data
+df.norm.transposed <- as.data.frame(t(df.norm))
+colnames(df.norm.transposed) <- n ##just to check the order of the pops in the file
+head(df.norm.transposed)
+colnames(df.norm.transposed) <- NULL ##and drop the column names
+#df.norm.transposed$myfactor <- factor(row.names(df.norm.transposed))
+
+str(df.norm.transposed) # Check the column types
+head(df.norm.transposed)
+
+write.table(df.norm.transposed, "SE.ENVIRONFILE.csv", sep=",")##write to file
+
+```
+
+
+##### Matrix file
+
+We're using the same matrix as before - just check that the pop order is the same in both vcf files. 
+
+
+##### Genetic data input
+
+
+converted with pgdspider
+
+##### Run BayEnv
+
+fgcz47:/srv/kenlab/alexjvr_p1795/CHcomplete/BayENV2/MACfilter/CHP4/
+
+```
+split -d -a 10 -l 2 SE132.2027.bayenv.txt snp_batch
+
+for f in $(ls snp_batch*); do ./bayenv2 -i $f -m SE132.MATRIX -e SE.Oct.ENVIRONFILE -p 15 -n 2 -k 100000 -r $RANDOM -t -c -X; done
+
+```
+
+
+
+#### CH
 Input files for CH have been generated in CHP2. 
 
 Env input is taken from the data that Josh calculated. 
@@ -1551,6 +1622,37 @@ colnames(XtX.outliers) <- ("loci")
 
 
 ### 2. LFMM
+
+
+Prepeare SE data: 
+
+I got the new derived variables from Josh after getting estimated spawning dates from Maria: 
+
+SE.temp.season.Data_no.indivs.20171009.csv   
+
+/Users/alexjvr/2016RADAnalysis/6_CHP4.SEvsCH/SE.lfmm
+
+```
+library(LEA)
+env <- read.csv("SE.temp.season.Data_no.indivs.20171009.csv", header=F)
+write.env(env, "SE.CHP4.env")
+```
+
+Move the .geno and .env files onto the gdc server and run lfmm: 
+
+
+```
+scp * fgcz47:/srv/kenlab/alexjvr_p1795/CHcomplete/lfmm/lfmm.MAFfilter.Oct2017/CHP4/SE
+
+##R
+library(LEA)
+
+project=lfmm("SE132.2027.recode.geno", "SE.CHP4.env", K=2, repetitions=5, project="new")
+
+export.lfmmProject("")
+```
+
+
 
 Import project into R
 
