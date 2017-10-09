@@ -1649,19 +1649,21 @@ library(LEA)
 
 project=lfmm("SE132.2027.recode.geno", "SE.CHP4.env", K=2, repetitions=5, project="new")
 
-export.lfmmProject("")
+export.lfmmProject("SE132.2027.recode_SE_lfmmProject")
 ```
 
 
 
 Import project into R
 
-/Users/alexjvr/2016RADAnalysis/6_CHP4.SEvsCH/lfmm
+/Users/alexjvr/2016RADAnalysis/6_CHP4.SEvsCH/SE.lfmm
 
 ```
 ##R
 
-import.lfmmProject(obj.lfmmProject) ##to import the project into R from the new folder
+project=import.lfmmProject("SE132.2027.recode_SE_lfmmProject.zip")  ##import the lfmm project in the directory
+
+
 
 ```
 
@@ -1674,6 +1676,149 @@ stba had to be removed from CHS.TI, because of missing data in the env. variable
 
 
 First calculate the lambda for each K to determine what the correct K is: 
+
+##### SE
+
+snmf K = 2
+
+
+Open R and import project. 
+```
+library(LEA)
+
+project=import.lfmmProject("SE132.2027.recode_SE_lfmmProject.zip")
+
+
+zs.d1 <- z.scores(project, K=2, d=1)
+zs.d1.median =apply(zs.d1, MARGIN=1, median)
+
+
+lambda=median(zs.d1.median^2)/0.4549364
+lambda
+   # [1] 3.605604
+
+    
+lambda=median(zs.d1.median^2)/1.5
+lambda
+  #  [1] 1.093547
+
+adj.p.values.d1 =pchisq(zs.d1.median^2/1.5, df=1, lower=F)
+q = 0.05
+L = length(adj.p.values.d1)
+w = which(sort(adj.p.values.d1) < q * (1:L) / L)
+candidates.d1.k5 = order(adj.p.values.d1)[w]
+
+
+
+zs.d2 <- z.scores(project, K=2, d=2)
+zs.d2.median =apply(zs.d2, MARGIN=1, median)
+lambda=median(zs.d2.median^2)/0.4549364
+lambda
+ #   [1]  3.765671
+lambda=median(zs.d2.median^2)/1.7
+lambda
+   # [1] 1.00773
+adj.p.values.d2 =pchisq(zs.d2.median^2/1.7, df=1, lower=F)
+
+q = 0.05
+L = length(adj.p.values.d2)
+w = which(sort(adj.p.values.d2) < q * (1:L) / L)
+candidates.d2.k5 = order(adj.p.values.d2)[w]
+
+
+
+pdf(file="SE.LFMM.CHP4.hist.pdf")
+par(mfrow=c(1,2))
+hist(adj.p.values.d1)
+hist(adj.p.values.d2)
+dev.off()
+
+```
+
+
+![alt_txt][SE.hist]
+
+[SE.hist]:https://user-images.githubusercontent.com/12142475/31121188-1e4eff0a-a82f-11e7-8060-e2ae5ec595dc.png
+
+
+
+Select all the candidates from the full list of SNPs
+
+```
+#read the SNP names into R
+
+locus.names <- read.table("SE132.2017.plink.map", header=F)
+colnames(locus.names) <- c("V1", "SNP", "V3", "V4")
+locus.names$ID <- seq.int(nrow(locus.names)) #add an index of the SNP numbers, since the LFMM output is a numbered list corresponding to the original genotype input order
+candidates.d1.k5 <- as.character(candidates.d1.k5)  ##change the list of candidates from LFMM output to a list of characters
+candidates.d1.k5.names <- locus.names[locus.names$ID %in% candidates.d1.k5,]  ##select from locus.names$ID the rows that match candidates vector
+
+candidates.d1.k5.names <- paste("X", candidates.d1.k5.names$SNP, sep=".") #rename the SNPs so that they don't get renamed in excel
+
+
+candidates.d2.k5 <- as.character(candidates.d2.k5)  ##change the list of candidates from LFMM output to a list of characters
+candidates.d2.k5.names <- locus.names[locus.names$ID %in% candidates.d2.k5,]  ##select from locus.names$ID the rows that match candidates vector
+
+candidates.d2.k5.names <- paste("X", candidates.d2.k5.names$SNP, sep=".") #rename the SNPs so that they don't get renamed in excel
+
+```
+
+
+VennDiagram of data
+
+```
+library(VennDiagram)
+
+d1 <- length(candidates.d1.k5.names)
+d2 <- length(candidates.d2.k5.names)
+
+d12 <- length(Reduce(intersect, list(candidates.d1.k5.names, candidates.d2.k5.names)))
+
+pdf(file="Venn.SE.CHP4.n2.LFMMonly_20171009.pdf")
+draw.pairwise.venn(area1=d1, area2=d2, cross.area=d12, 
+category=c("mean.temp", "season.length"),
+lty="blank", 
+fill=c("yellow", "orange"))
+dev.off()
+```
+
+![alt_txt][SE.Venn]
+
+[SE.Venn]:https://user-images.githubusercontent.com/12142475/31121243-52d11a88-a82f-11e7-81b8-6cce216ca8e9.png
+
+
+Prepare the data to incorporate with the Fst outlier graph
+```
+d1.names <- as.data.frame(candidates.d1.k5.names)
+d2.names <- as.data.frame(candidates.d2.k5.names)
+
+colnames(d1.names) <- "names"
+colnames(d2.names) <- "names"
+
+
+d12.names <- rbind(d1.names, d2.names)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
+d12.names <- lapply(d12.names, unique)  #select only the unique rows. 
+
+d12.names <- sub(":", ".", d12.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
+
+d12.names <- as.data.frame(d12.names)
+
+write.table(d12.names$d12.names, "SE.CHP4.LFMM.alloutliers", col.names=F, row.names=F, quote=F)
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+
+SE.LFMM.outliers <- read.table("SE.LFMM.alloutliers", header=F)
+
+colnames(SE.LFMM.outliers) <- ("loci")
+SE.LFMM.outliers <- as.character(SE.LFMM.outliers$loci)
+
+```
+
+
 
 
 ##### CHN
