@@ -12,19 +12,19 @@ pwd
 
 I'm showing: 
 
-1. Venn Diagram within analysis for 
+Venn Diagram within analysis for 
   
   
-  1. LFMM
+  1.1. LFMM
   
-  2. bayEnv2
+  1.2. bayEnv2
 
 
-2. overlap between LFMM, Bayenv2, PCadapt, XtX, and Bayescan within each region (i.e. 6 plots)
+overlap between LFMM, Bayenv2, PCadapt, XtX, and Bayescan within each region (i.e. 6 plots)
 
-  1. temp
+  2.1. temp
   
-  2. season
+  2.2. season
   
 
 3. Overlap between all candidate loci identified by 2+ methods for CHN, CHS, CZ
@@ -1562,6 +1562,262 @@ write.table(CHS.TI.season.duplicated.outliers, "CHS.TI.season.duplicated.outlier
 [CHS.TI.allmethods]:https://user-images.githubusercontent.com/12142475/31176809-0bdc9db8-a90c-11e7-8779-9d784057db2a.png
 
 
+##### SE
+
+######## 1. temp
+
+prep data
+```
+temp.lfmm.outliers <- read.table("SE.CHP4.temp.LFMM.alloutliers")
+pcadapt.outliers <- read.table("SE.pcadapt.outliers")
+temp.bayenv.outliers <- read.table("SE.CHP4.temp.outlier.names")
+XtX.outliers <- read.table("SE.XtX.100outliers")
+bayescan.outliers <- read.table("SE.bayescan.outliers.FDR0.01")
+
+
+temp.lfmm.outliers <- as.data.frame(temp.lfmm.outliers)
+pcadapt.outliers <- as.data.frame(pcadapt.outliers)
+XtX.outliers <- as.data.frame(XtX.outliers)
+temp.bayenv.outliers <- as.data.frame(temp.bayenv.outliers)
+bayescan.outliers <- as.data.frame(bayescan.outliers)
+
+temp.lfmm.outliers.new <- gsub("X\\.", "", temp.lfmm.outliers$V1)
+temp.lfmm.outliers <- NULL
+temp.lfmm.outliers <- as.data.frame(temp.lfmm.outliers.new)
+
+temp.bayenv.outliers.new <- gsub("X\\.", "", temp.bayenv.outliers$V1)
+temp.bayenv.outliers <- NULL
+temp.bayenv.outliers <- as.data.frame(temp.bayenv.outliers.new)
+
+XtX.outliers.new <- gsub("X\\.", "", XtX.outliers$V1)
+XtX.outliers <- NULL
+XtX.outliers <- as.data.frame(XtX.outliers.new)
+
+pcadapt.new <- gsub("X\\.", "", pcadapt.outliers$V1)
+pcadapt.new <- as.data.frame(pcadapt.new)
+pcadapt.new <- gsub(":", "\\.", pcadapt.new$pcadapt.new)
+pcadapt.outliers <- as.data.frame(pcadapt.new)
+
+
+colnames(temp.lfmm.outliers) <- "loci"
+colnames(XtX.outliers) <- "loci"
+colnames(pcadapt.outliers) <- "loci"
+colnames(temp.bayenv.outliers) <- "loci"
+colnames(bayescan.outliers) <- "loci"
+
+```
+
+
+and draw Venn
+```
+library(VennDiagram)
+
+temp.bayenv.outliers.names <- temp.bayenv.outliers$loci
+XtX.outliers.names <- XtX.outliers$loci
+temp.lfmm.outliers.names <- temp.lfmm.outliers$loci
+bayescan.outliers.names <- bayescan.outliers$loci
+pcadapt.outliers.names <- pcadapt.outliers$loci
+
+d1 <- length(temp.bayenv.outliers.names)
+d2 <- length(XtX.outliers.names)
+d3 <- length(temp.lfmm.outliers.names)
+d4 <- length(bayescan.outliers.names)
+d5 <- length(pcadapt.outliers.names)
+
+
+d12 <- length(Reduce(intersect, list(temp.bayenv.outliers.names, XtX.outliers.names)))
+d13 <- length(Reduce(intersect, list(temp.bayenv.outliers.names, temp.lfmm.outliers.names)))
+d14 <- length(Reduce(intersect, list(temp.bayenv.outliers.names, bayescan.outliers.names)))
+d15 <- length(Reduce(intersect, list(temp.bayenv.outliers.names, pcadapt.outliers.names)))
+d23 <- length(Reduce(intersect, list(XtX.outliers.names, temp.lfmm.outliers.names)))
+d24 <- length(Reduce(intersect, list(XtX.outliers.names, bayescan.outliers.names)))
+d25 <- length(Reduce(intersect, list(XtX.outliers.names, pcadapt.outliers.names)))
+d34 <- length(Reduce(intersect, list(temp.lfmm.outliers.names, bayescan.outliers.names)))
+d35 <- length(Reduce(intersect, list(temp.lfmm.outliers.names, pcadapt.outliers.names)))
+d45 <- length(Reduce(intersect, list(bayescan.outliers.names, pcadapt.outliers.names)))
+
+d123 <- length(Reduce(intersect, list(temp.bayenv.outliers.names, XtX.outliers.names,temp.lfmm.outliers.names)))
+d124 <- length(Reduce(intersect, list(temp.bayenv.outliers.names, XtX.outliers.names,bayescan.outliers.names)))
+d125 <- length(Reduce(intersect, list(temp.bayenv.outliers.names, XtX.outliers.names,pcadapt.outliers.names)))
+d234 <- length(Reduce(intersect, list(XtX.outliers.names, temp.lfmm.outliers.names,bayescan.outliers.names)))
+d134 <- length(Reduce(intersect, list(temp.bayenv.outliers.names, temp.lfmm.outliers.names,bayescan.outliers.names)))
+d135 <- length(Reduce(intersect, list(temp.bayenv.outliers.names, temp.lfmm.outliers.names,pcadapt.outliers.names)))
+d145 <- length(Reduce(intersect, list(temp.bayenv.outliers.names, bayescan.outliers.names,pcadapt.outliers.names)))
+d235 <- length(Reduce(intersect, list(XtX.outliers.names, temp.lfmm.outliers.names,pcadapt.outliers.names)))
+d245 <- length(Reduce(intersect, list(XtX.outliers.names, bayescan.outliers.names,pcadapt.outliers.names)))
+d345 <- length(Reduce(intersect, list(temp.lfmm.outliers.names, bayescan.outliers.names,pcadapt.outliers.names)))
+
+
+d1234 <- length(Reduce(intersect, list(XtX.outliers.names, temp.lfmm.outliers.names,
+bayescan.outliers.names, temp.bayenv.outliers.names)))
+d1235 <- length(Reduce(intersect, list(XtX.outliers.names, temp.lfmm.outliers.names,
+pcadapt.outliers.names, temp.bayenv.outliers.names)))
+
+d2345 <- length(Reduce(intersect, list(XtX.outliers.names, temp.lfmm.outliers.names,
+bayescan.outliers.names, pcadapt.outliers.names)))
+d1245 <- length(Reduce(intersect, list(XtX.outliers.names, temp.bayenv.outliers.names,
+bayescan.outliers.names, pcadapt.outliers.names)))
+d1345 <- length(Reduce(intersect, list(temp.lfmm.outliers.names, temp.bayenv.outliers.names,
+bayescan.outliers.names, pcadapt.outliers.names)))
+d12345 <- length(Reduce(intersect, list(temp.bayenv.outliers.names, XtX.outliers.names, temp.lfmm.outliers.names, 
+bayescan.outliers.names, pcadapt.outliers.names)))
+
+pdf("SE.Venn.temp.outliers_20171009.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("temp.bayenv", "XtX", "temp.lfmm", "bayescan", "pcadapt"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+```
+
+
+Write all duplicated loci to file
+
+```
+SE.temp.alloutliers <- rbind(bayescan.outliers, temp.lfmm.outliers, temp.bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by “loci” column. This only works of colnames are the same (at least one column name)
+
+
+SE.temp.duplicated.outliers <- SE.temp.alloutliers[duplicated(SE.temp.alloutliers),]  ##select only loci occurring more than once (here 88 of 430)
+
+length(SE.temp.alloutliers$loci)
+length(SE.temp.duplicated.outliers)
+
+write.table(SE.temp.duplicated.outliers, "SE.temp.duplicated.outliers.20171009", col.names=F, row.names=F, quote=F)
+
+```
+
+
+
+
+######## 2. season
+
+prep data
+```
+season.lfmm.outliers <- read.table("SE.CHP4.season.LFMM.alloutliers")
+pcadapt.outliers <- read.table("SE.pcadapt.outliers")
+season.bayenv.outliers <- read.table("SE.CHP4.season.outlier.names")
+XtX.outliers <- read.table("SE.XtX.100outliers")
+bayescan.outliers <- read.table("SE.bayescan.outliers.FDR0.01")
+
+
+season.lfmm.outliers <- as.data.frame(season.lfmm.outliers)
+pcadapt.outliers <- as.data.frame(pcadapt.outliers)
+XtX.outliers <- as.data.frame(XtX.outliers)
+season.bayenv.outliers <- as.data.frame(season.bayenv.outliers)
+bayescan.outliers <- as.data.frame(bayescan.outliers)
+
+season.lfmm.outliers.new <- gsub("X\\.", "", season.lfmm.outliers$V1)
+season.lfmm.outliers <- NULL
+season.lfmm.outliers <- as.data.frame(season.lfmm.outliers.new)
+
+season.bayenv.outliers.new <- gsub("X\\.", "", season.bayenv.outliers$V1)
+season.bayenv.outliers <- NULL
+season.bayenv.outliers <- as.data.frame(season.bayenv.outliers.new)
+
+XtX.outliers.new <- gsub("X\\.", "", XtX.outliers$V1)
+XtX.outliers <- NULL
+XtX.outliers <- as.data.frame(XtX.outliers.new)
+
+pcadapt.new <- gsub("X\\.", "", pcadapt.outliers$V1)
+pcadapt.new <- as.data.frame(pcadapt.new)
+pcadapt.new <- gsub(":", "\\.", pcadapt.new$pcadapt.new)
+pcadapt.outliers <- as.data.frame(pcadapt.new)
+
+
+colnames(season.lfmm.outliers) <- "loci"
+colnames(XtX.outliers) <- "loci"
+colnames(pcadapt.outliers) <- "loci"
+colnames(season.bayenv.outliers) <- "loci"
+colnames(bayescan.outliers) <- "loci"
+
+```
+
+
+and draw Venn
+```
+library(VennDiagram)
+
+season.bayenv.outliers.names <- season.bayenv.outliers$loci
+XtX.outliers.names <- XtX.outliers$loci
+season.lfmm.outliers.names <- season.lfmm.outliers$loci
+bayescan.outliers.names <- bayescan.outliers$loci
+pcadapt.outliers.names <- pcadapt.outliers$loci
+
+d1 <- length(season.bayenv.outliers.names)
+d2 <- length(XtX.outliers.names)
+d3 <- length(season.lfmm.outliers.names)
+d4 <- length(bayescan.outliers.names)
+d5 <- length(pcadapt.outliers.names)
+
+
+d12 <- length(Reduce(intersect, list(season.bayenv.outliers.names, XtX.outliers.names)))
+d13 <- length(Reduce(intersect, list(season.bayenv.outliers.names, season.lfmm.outliers.names)))
+d14 <- length(Reduce(intersect, list(season.bayenv.outliers.names, bayescan.outliers.names)))
+d15 <- length(Reduce(intersect, list(season.bayenv.outliers.names, pcadapt.outliers.names)))
+d23 <- length(Reduce(intersect, list(XtX.outliers.names, season.lfmm.outliers.names)))
+d24 <- length(Reduce(intersect, list(XtX.outliers.names, bayescan.outliers.names)))
+d25 <- length(Reduce(intersect, list(XtX.outliers.names, pcadapt.outliers.names)))
+d34 <- length(Reduce(intersect, list(season.lfmm.outliers.names, bayescan.outliers.names)))
+d35 <- length(Reduce(intersect, list(season.lfmm.outliers.names, pcadapt.outliers.names)))
+d45 <- length(Reduce(intersect, list(bayescan.outliers.names, pcadapt.outliers.names)))
+
+d123 <- length(Reduce(intersect, list(season.bayenv.outliers.names, XtX.outliers.names,season.lfmm.outliers.names)))
+d124 <- length(Reduce(intersect, list(season.bayenv.outliers.names, XtX.outliers.names,bayescan.outliers.names)))
+d125 <- length(Reduce(intersect, list(season.bayenv.outliers.names, XtX.outliers.names,pcadapt.outliers.names)))
+d234 <- length(Reduce(intersect, list(XtX.outliers.names, season.lfmm.outliers.names,bayescan.outliers.names)))
+d134 <- length(Reduce(intersect, list(season.bayenv.outliers.names, season.lfmm.outliers.names,bayescan.outliers.names)))
+d135 <- length(Reduce(intersect, list(season.bayenv.outliers.names, season.lfmm.outliers.names,pcadapt.outliers.names)))
+d145 <- length(Reduce(intersect, list(season.bayenv.outliers.names, bayescan.outliers.names,pcadapt.outliers.names)))
+d235 <- length(Reduce(intersect, list(XtX.outliers.names, season.lfmm.outliers.names,pcadapt.outliers.names)))
+d245 <- length(Reduce(intersect, list(XtX.outliers.names, bayescan.outliers.names,pcadapt.outliers.names)))
+d345 <- length(Reduce(intersect, list(season.lfmm.outliers.names, bayescan.outliers.names,pcadapt.outliers.names)))
+
+
+d1234 <- length(Reduce(intersect, list(XtX.outliers.names, season.lfmm.outliers.names,
+bayescan.outliers.names, season.bayenv.outliers.names)))
+d1235 <- length(Reduce(intersect, list(XtX.outliers.names, season.lfmm.outliers.names,
+pcadapt.outliers.names, season.bayenv.outliers.names)))
+
+d2345 <- length(Reduce(intersect, list(XtX.outliers.names, season.lfmm.outliers.names,
+bayescan.outliers.names, pcadapt.outliers.names)))
+d1245 <- length(Reduce(intersect, list(XtX.outliers.names, season.bayenv.outliers.names,
+bayescan.outliers.names, pcadapt.outliers.names)))
+d1345 <- length(Reduce(intersect, list(season.lfmm.outliers.names, season.bayenv.outliers.names,
+bayescan.outliers.names, pcadapt.outliers.names)))
+d12345 <- length(Reduce(intersect, list(season.bayenv.outliers.names, XtX.outliers.names, season.lfmm.outliers.names, 
+bayescan.outliers.names, pcadapt.outliers.names)))
+
+pdf("SE.Venn.season.outliers_20171009.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("season.bayenv", "XtX", "season.lfmm", "bayescan", "pcadapt"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+```
+
+
+Write all duplicated loci to file
+
+```
+SE.season.alloutliers <- rbind(bayescan.outliers, season.lfmm.outliers, season.bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by “loci” column. This only works of colnames are the same (at least one column name)
+
+
+SE.season.duplicated.outliers <- SE.season.alloutliers[duplicated(SE.season.alloutliers),]  ##select only loci occurring more than once (here 83 of 408)
+
+length(SE.season.alloutliers$loci)
+length(SE.season.duplicated.outliers)
+
+write.table(SE.season.duplicated.outliers, "SE.season.duplicated.outliers.20171009", col.names=F, row.names=F, quote=F)
+
+```
 
 
 ### 3. Overlap between duplicated candidate loci identified for CHN, CHS, CZ
