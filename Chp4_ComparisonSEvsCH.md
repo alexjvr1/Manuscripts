@@ -214,6 +214,21 @@ diff names.1 names.2
 diff names.1 names.3
 diff names.2 names.3
 
+
+
+## SE
+
+/Users/alexjvr/2016RADAnalysis/6_CHP4.SEvsCH/SE.bayenv
+
+##this prints the first line of each snp output file 
+awk '{print $1}' SE.Run1/bf_environ.SE.Oct.ENVIRONFILE > SE.Run1.names
+awk '{print $1}' SE.Run2/bf_environ.SE.Oct.ENVIRONFILE > SE.Run2.names
+awk '{print $1}' SE.Run3/bf_environ.SE.Oct.ENVIRONFILE > SE.Run3.names
+
+##this compares the files and prints the differences
+diff SE.Run1.names SE.Run2.names 
+diff SE.Run1.names SE.Run3.names 
+diff SE.Run2.names SE.Run3.names
 ```
 
 
@@ -276,8 +291,24 @@ colnames(BF.CHS.TI.Run2) <- c("snp", "temp.BF", "temp.rho", "temp.r", "season.da
 BF.CHS.TI.Run3 <- read.table("CHS.TI.Run2/bf_environ.CHS.TI.ENV", header=F)
 colnames(BF.CHS.TI.Run3) <- c("snp", "temp.BF", "temp.rho", "temp.r", "season.days.BF", "season.days.rho", "season.days.r")
 
+```
+
+and SE
+
+/Users/alexjvr/2016RADAnalysis/6_CHP4.SEvsCH/SE.bayenv
+```
+BF.SE.Run1 <- read.table("SE.Run1/bf_environ.SE.Oct.ENVIRONFILE", header=F)
+colnames(BF.SE.Run1) <- c("snp", "temp.BF", "temp.rho", "temp.r", "season.days.BF", "season.days.rho", "season.days.r")
+
+BF.SE.Run2 <- read.table("SE.Run2/bf_environ.SE.Oct.ENVIRONFILE", header=F)
+colnames(BF.SE.Run2) <- c("snp", "temp.BF", "temp.rho", "temp.r", "season.days.BF", "season.days.rho", "season.days.r")
+
+BF.SE.Run3 <- read.table("SE.Run2/bf_environ.SE.Oct.ENVIRONFILE", header=F)
+colnames(BF.SE.Run3) <- c("snp", "temp.BF", "temp.rho", "temp.r", "season.days.BF", "season.days.rho", "season.days.r")
 
 ```
+
+
 
 
 Compare ranking SNPs 5% at a time
@@ -827,6 +858,116 @@ summary(CHS.TI.season.days.123)
 ```
 
 
+####SE
+
+1. temp
+```
+SE.temp.run1.top100 <- BF.SE.Run1[order(-BF.SE.Run1$temp.rho),]  ##descending order by rho
+SE.temp.run2.top100 <- BF.SE.Run2[order(-BF.SE.Run2$temp.rho),]  ##descending order by rho
+SE.temp.run3.top100 <- BF.SE.Run3[order(-BF.SE.Run3$temp.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for SE.temp
+###############
+```
+SE.temp.run1.top100.set1 <- head(SE.temp.run1.top100, 100)
+SE.temp.run2.top100.set1 <- head(SE.temp.run2.top100, 100)
+SE.temp.run3.top100.set1 <- head(SE.temp.run3.top100, 100)
+SE.temp.12 <- Reduce(intersect, list(SE.temp.run2.top100.set1$snp, SE.temp.run1.top100.set1$snp))
+SE.temp.13 <- Reduce(intersect, list(SE.temp.run3.top100.set1$snp, SE.temp.run1.top100.set1$snp))
+SE.temp.23 <- Reduce(intersect, list(SE.temp.run2.top100.set1$snp, SE.temp.run3.top100.set1$snp))
+SE.temp.123 <- Reduce(intersect, list(SE.temp.run2.top100.set1$snp, SE.temp.run3.top100.set1$snp, SE.temp.run1.top100.set1$snp))
+
+summary(SE.temp.123)
+#87
+```
+
+##overlap in 6-10% of outlier loci for SE.temp
+###############
+```
+SE.temp.run1.top100.set2 <- SE.temp.run1.top100[101:200,]
+SE.temp.run2.top100.set2 <- SE.temp.run2.top100[101:200,]
+SE.temp.run3.top100.set2 <- SE.temp.run3.top100[101:200,]
+SE.temp.12 <- Reduce(intersect, list(SE.temp.run2.top100.set2$snp, SE.temp.run1.top100.set2$snp))
+SE.temp.13 <- Reduce(intersect, list(SE.temp.run3.top100.set2$snp, SE.temp.run1.top100.set2$snp))
+SE.temp.23 <- Reduce(intersect, list(SE.temp.run2.top100.set2$snp, SE.temp.run3.top100.set2$snp))
+SE.temp.123 <- Reduce(intersect, list(SE.temp.run2.top100.set2$snp, SE.temp.run3.top100.set2$snp, SE.temp.run1.top100.set2$snp))
+
+summary(SE.temp.123)
+#64
+```
+
+##overlap in 11-15% of outlier loci for SE.temp
+###############
+```
+SE.temp.run1.top100.set2 <- SE.temp.run1.top100[201:300,]
+SE.temp.run2.top100.set2 <- SE.temp.run2.top100[201:300,]
+SE.temp.run3.top100.set2 <- SE.temp.run3.top100[201:300,]
+SE.temp.12 <- Reduce(intersect, list(SE.temp.run2.top100.set2$snp, SE.temp.run1.top100.set2$snp))
+SE.temp.13 <- Reduce(intersect, list(SE.temp.run3.top100.set2$snp, SE.temp.run1.top100.set2$snp))
+SE.temp.23 <- Reduce(intersect, list(SE.temp.run2.top100.set2$snp, SE.temp.run3.top100.set2$snp))
+SE.temp.123 <- Reduce(intersect, list(SE.temp.run2.top100.set2$snp, SE.temp.run3.top100.set2$snp, SE.temp.run1.top100.set2$snp))
+
+summary(SE.temp.123)
+#47
+```
+
+2. season.days
+
+```
+SE.season.days.run1.top100 <- BF.SE.Run1[order(-BF.SE.Run1$season.days.rho),]  ##descending order by rho
+SE.season.days.run2.top100 <- BF.SE.Run2[order(-BF.SE.Run2$season.days.rho),]  ##descending order by rho
+SE.season.days.run3.top100 <- BF.SE.Run3[order(-BF.SE.Run3$season.days.rho),]  ##descending order by rho
+```
+
+##overlap in top 5% of outliers loci for SE.season.days
+###############
+```
+SE.season.days.run1.top100.set1 <- head(SE.season.days.run1.top100, 100)
+SE.season.days.run2.top100.set1 <- head(SE.season.days.run2.top100, 100)
+SE.season.days.run3.top100.set1 <- head(SE.season.days.run3.top100, 100)
+SE.season.days.12 <- Reduce(intersect, list(SE.season.days.run2.top100.set1$snp, SE.season.days.run1.top100.set1$snp))
+SE.season.days.13 <- Reduce(intersect, list(SE.season.days.run3.top100.set1$snp, SE.season.days.run1.top100.set1$snp))
+SE.season.days.23 <- Reduce(intersect, list(SE.season.days.run2.top100.set1$snp, SE.season.days.run3.top100.set1$snp))
+SE.season.days.123 <- Reduce(intersect, list(SE.season.days.run2.top100.set1$snp, SE.season.days.run3.top100.set1$snp, SE.season.days.run1.top100.set1$snp))
+
+summary(SE.season.days.123)
+#89
+```
+
+##overlap in 6-10% of outlier loci for SE.season.days
+###############
+```
+SE.season.days.run1.top100.set2 <- SE.season.days.run1.top100[101:200,]
+SE.season.days.run2.top100.set2 <- SE.season.days.run2.top100[101:200,]
+SE.season.days.run3.top100.set2 <- SE.season.days.run3.top100[101:200,]
+SE.season.days.12 <- Reduce(intersect, list(SE.season.days.run2.top100.set2$snp, SE.season.days.run1.top100.set2$snp))
+SE.season.days.13 <- Reduce(intersect, list(SE.season.days.run3.top100.set2$snp, SE.season.days.run1.top100.set2$snp))
+SE.season.days.23 <- Reduce(intersect, list(SE.season.days.run2.top100.set2$snp, SE.season.days.run3.top100.set2$snp))
+SE.season.days.123 <- Reduce(intersect, list(SE.season.days.run2.top100.set2$snp, SE.season.days.run3.top100.set2$snp, SE.season.days.run1.top100.set2$snp))
+
+summary(SE.season.days.123)
+#66
+```
+
+##overlap in 11-15% of outlier loci for SE.season.days
+###############
+```
+SE.season.days.run1.top100.set2 <- SE.season.days.run1.top100[201:300,]
+SE.season.days.run2.top100.set2 <- SE.season.days.run2.top100[201:300,]
+SE.season.days.run3.top100.set2 <- SE.season.days.run3.top100[201:300,]
+SE.season.days.12 <- Reduce(intersect, list(SE.season.days.run2.top100.set2$snp, SE.season.days.run1.top100.set2$snp))
+SE.season.days.13 <- Reduce(intersect, list(SE.season.days.run3.top100.set2$snp, SE.season.days.run1.top100.set2$snp))
+SE.season.days.23 <- Reduce(intersect, list(SE.season.days.run2.top100.set2$snp, SE.season.days.run3.top100.set2$snp))
+SE.season.days.123 <- Reduce(intersect, list(SE.season.days.run2.top100.set2$snp, SE.season.days.run3.top100.set2$snp, SE.season.days.run1.top100.set2$snp))
+
+summary(SE.season.days.123)
+#43
+```
+
+
+
+
 
 #####Concatenating the data and finding candidate loci: BayENV2
 ################################
@@ -861,6 +1002,10 @@ CHS.VS.BF.all <- rbindlist(list(BF.CHS.VS.Run1, BF.CHS.VS.Run2, BF.CHS.VS.Run3))
 
 ##CHS.TI
 CHS.TI.BF.all <- rbindlist(list(BF.CHS.TI.Run1, BF.CHS.TI.Run2, BF.CHS.TI.Run3))[,lapply(.SD,median), list(snp)]
+
+##SE
+library(data.table)
+SE.BF.all <- rbindlist(list(BF.SE.Run1, BF.SE.Run2, BF.SE.Run3))[,lapply(.SD,median), list(snp)]
 ```
 
 
@@ -1132,6 +1277,55 @@ CHS.TI.season.days.bayenv.candidates <- CHS.TI.BF.all[which(CHS.TI.BF.all$season
 ```
 
 
+####SE
+```
+#calculate the log10 of BF for each environmental variable
+
+SE.BF.all$temp.log10BF <- log10(SE.BF.all$temp.BF)
+SE.BF.all$season.days.log10BF <- log10(SE.BF.all$season.days.BF)
+
+##Sort and plot
+
+SE.BF.all.sort <- SE.BF.all[order(SE.BF.all$temp.log10BF),]
+
+pdf("SE.CHP4.BF.plot.pdf")
+par(mfrow=c(1,2))
+SE.BF.all.sort <- SE.BF.all[order(SE.BF.all$temp.log10BF),]
+plot(SE.BF.all.sort$temp.log10BF, main="temp")
+abline(h=0.5, col=4, lty=2)
+abline(h=1.0, col=3, lty=2)
+
+SE.BF.all.sort <- SE.BF.all[order(SE.BF.all$season.days.log10BF),]
+plot(SE.BF.all.sort$season.days.log10BF, main="season.days")
+abline(h=0.5, col=4, lty=2)
+abline(h=1.0, col=3, lty=2)
+
+dev.off()
+```
+
+##plot BF vs absolute p value
+```
+pdf("SE.CHP4.BFvsp.pdf")
+par(mfrow=c(1,2))
+SE.BF.all.sort <- SE.BF.all[order(SE.BF.all$temp.log10BF),]
+plot(SE.BF.all.sort$temp.log10BF~(abs(SE.BF.all.sort$temp.rho)), main="temp")
+abline(h=0.5, col=4, lty=2)
+abline(h=1.0, col=3, lty=2)
+abline(v=0.3, col=3, lty=2)
+SE.BF.all.sort <- SE.BF.all[order(SE.BF.all$season.days.log10BF),]
+plot(SE.BF.all.sort$season.days.log10BF~(abs(SE.BF.all.sort$season.days.rho)), main="season.days")
+abline(h=0.5, col=4, lty=2)
+abline(h=1.0, col=3, lty=2)
+abline(v=0.3, col=3, lty=2)
+dev.off()
+```
+
+Identify the candidates for each env variable
+```
+SE.temp.bayenv.candidates <- SE.BF.all[which(SE.BF.all$temp.log10BF>0.5 & (abs(SE.BF.all$temp.rho))>0.3),]
+SE.season.days.bayenv.candidates <- SE.BF.all[which(SE.BF.all$season.days.log10BF>0.5 & (abs(SE.BF.all$season.days.rho))>0.3),]
+```
+
 
 
 ###Determine the names of all the loci. 
@@ -1157,6 +1351,8 @@ vcftools --vcf CHS.VS.135.5835.recode.vcf --plink --out CHS.VS.135.5835.plink
 
 vcftools --vcf CHS.TI.140.5692.recode.vcf --plink --out CHS.TI.140.5692.plink
 
+
+vcftools --vcf SE132.2027.recode.vcf --plink --out SE132.2027.plink
 ```
 
 
@@ -1672,6 +1868,104 @@ XtX.outliers <- read.table("XtX.100outliers")
 colnames(XtX.outliers) <- ("loci")
 ```
 
+####### SE
+```
+SE.locus.names <- read.table("SE132.2027.plink.map", header=F) #import the locus names into R
+SE.locus.names$ID <- seq.int(nrow(SE.locus.names)) ##index the SE.locus.names file so that all the loci are numbered in order of appearance
+
+SE.BF.all$ID <- seq.int(nrow(SE.BF.all))  ##do the same with the SE.BF.all file. Make sure this is the original output from BayEnv, and not a sorted file. 
+
+##find the candidate loci using the indexed .SE.BF.all file
+
+##Find all the candidate loci
+SE.temp.bayenv.candidates <- SE.BF.all[which(SE.BF.all$temp.log10BF>0.5 & (abs(SE.BF.all$temp.rho))>0.3),]
+SE.season.days.bayenv.candidates <- SE.BF.all[which(SE.BF.all$season.days.log10BF>0.5 & (abs(SE.BF.all$season.days.rho))>0.3),]
+
+SE.temp.bayenv.candidates$ID <- as.character(SE.temp.bayenv.candidates$ID)
+SE.temp.bayenv.candidates.names <- SE.locus.names[SE.locus.names$ID %in% SE.temp.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(SE.temp.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+SE.temp.bayenv.candidates.names <- paste("X", SE.temp.bayenv.candidates.names$SNP, sep=".")
+
+SE.season.days.bayenv.candidates$ID <- as.character(SE.season.days.bayenv.candidates$ID)
+SE.season.days.bayenv.candidates.names <- SE.locus.names[SE.locus.names$ID %in% SE.season.days.bayenv.candidates$ID,]  #Find the actual locus names
+colnames(SE.season.days.bayenv.candidates.names) <- c("V1", "SNP", "V3", "V4", "ID")
+SE.season.days.bayenv.candidates.names <- paste("X", SE.season.days.bayenv.candidates.names$SNP, sep=".")
+
+```
+
+Find names and write to file
+```
+SE.temp.names <- as.data.frame(SE.temp.bayenv.candidates.names)
+colnames(SE.temp.names) <- "names"
+
+SE.temp.outlier.names <- sub(":", ".", SE.temp.names$names)
+SE.temp.outlier.names <- as.data.frame(SE.temp.outlier.names)
+
+write.table(SE.temp.outlier.names$SE.temp.outlier.names, "SE.CHP4.temp.outlier.names", col.names=F, row.names=F, quote=F)
+
+SE.season.days.names <- as.data.frame(SE.season.days.bayenv.candidates.names)
+colnames(SE.season.days.names) <- "names"
+
+SE.season.outlier.names <- sub(":", ".", SE.season.days.names$names)
+SE.season.outlier.names <- as.data.frame(SE.season.outlier.names)
+
+write.table(SE.season.outlier.names$SE.season.outlier.names, "SE.CHP4.season.outlier.names", col.names=F, row.names=F, quote=F)
+
+
+
+library(data.table)
+SE.alloutliers.names <- rbind(SE.temp.names, SE.season.days.names)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
+SE.alloutliers.names <- lapply(SE.alloutliers.names, unique)  #select only the unique rows. 
+
+SE.alloutliers.names <- sub(":", ".", SE.alloutliers.names$names) ##replace the ":" in the locus names so that they're in the same format as the Fst and RDA lists
+
+SE.alloutliers.names <- as.data.frame(SE.alloutliers.names)
+write.table(SE.alloutliers.names$SE.alloutliers.names, "SE.BayEnv.alloutliers", col.names=F, row.names=F, quote=F)
+
+##linux.
+##copy the list over to /Users/alexjvr/2016RADAnalysis/6_CHP4.SEvsCH/BayEnv
+
+#Read into R
+SE.BayEnv.outliers <- read.table("SE.BayEnv.alloutliers")
+colnames(SE.BayEnv.outliers) <- ("loci")
+SE.BayEnv.outliers <- as.character(SE.BayEnv.outliers$loci)
+```
+
+Write top 100 XtX loci to file
+
+```
+SE.XtX.run1 <- read.table("SE.Run1/XtX_out.SE.Oct.ENVIRONFILE", header=F)
+SE.XtX.run2 <- read.table("SE.Run2/XtX_out.SE.Oct.ENVIRONFILE", header=F)
+SE.XtX.run3 <- read.table("SE.Run3/XtX_out.SE.Oct.ENVIRONFILE", header=F)
+
+
+SE.XtX.all <- rbindlist(list(SE.XtX.run1, SE.XtX.run2, SE.XtX.run3))[,lapply(.SD,median), list(V1)]   ##combine by SNP and calculate the median XtX value
+
+colnames(SE.XtX.all) <- c("snp", "XtX")
+##index the loci 
+SE.XtX.all$ID <- seq.int(nrow(SE.XtX.all))   ##index the loci in the original output
+SE.XtX.all.sort <- SE.XtX.all[order(-SE.XtX.all$XtX),]  ##order to get the top 100 loci. The minus means its descending order
+SE.XtX.top100 <- SE.XtX.all.sort[1:100,]  #select the first 100 loci
+SE.XtX.top100.names <- SE.locus.names[SE.locus.names$ID %in% SE.XtX.top100$ID,]  ##get their names
+summary(SE.XtX.top100.names)
+colnames(SE.XtX.top100.names) <- c("V1", "SNP", "V3", "V4", "ID")   #rename the columns to match the code
+SE.XtX.top100.names <- paste("X", SE.XtX.top100.names$SNP, sep=".")  #rename loci
+SE.XtX.top100.names <- as.data.frame(SE.XtX.top100.names)
+SE.XtX.top100.names
+colnames(SE.XtX.top100.names) <- "names"
+SE.XtX.top100.names <- sub(":", ".", SE.XtX.top100.names$names)  ##rename to match Fst table
+SE.XtX.top100.names <- as.data.frame(SE.XtX.top100.names)
+write.table(SE.XtX.top100.names$SE.XtX.top100.names, "SE.XtX.100outliers", col.names=F, row.names=F, quote=F)  ##write the table
+
+
+##linux.
+##copy the list over to /Users/alexjvr/2016tempAnalysis/5_SE.MS1/DEC2016_SEonly/SumStats
+
+#Read into R
+XtX.outliers <- read.table("XtX.100outliers")
+colnames(XtX.outliers) <- ("loci")
+```
 
 
 
