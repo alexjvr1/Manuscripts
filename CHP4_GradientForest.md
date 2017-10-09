@@ -44,6 +44,8 @@ CHN, CHS, CHS.VS, CHS.TI, CZ, and SE
 
 5. CHS.TI
 
+6. SE
+
 
 
 
@@ -1159,6 +1161,311 @@ write.csv(CHS.VS.Neutral.MAF3, file="CHS.VS.135.Neutral.MAF.csv")
 
 
 
+### SE
+
+```
+#Calculating MEM variables
+#install.packages("tripack")
+#install.packages("spacemakeR", repos="http://R-Forge.R-project.org")
+
+library(spacemakeR)
+
+
+env.data.SE <- read.csv("SE.Derived.EnvData_20171009.csv", header=T)
+head(env.data.SE)
+#extract x and y
+SE.xy <- env.data.SE[, c("Long","Lat")]
+
+#install.packages("geosphere")
+library(geosphere) #calculate a matrix of geographic distances
+SE.dxy <- distm(SE.xy)
+SE.dxy <- as.dist(SE.dxy)
+
+#Function that returns the maximum distance of the minimum spanning tree based on a distance matrix.
+SE.th <- give.thresh(SE.dxy)
+#Function to compute neighborhood based on the minimum spanning tree. Returns an object of the class nb (see spdep package).
+SE.nb1 <- mst.nb(SE.dxy)
+SE.wh1 <- which(as.matrix(SE.dxy)==SE.th,arr.ind=TRUE)
+plot(SE.nb1,SE.xy,pch=20,cex=2,lty=3)
+lines(SE.xy[SE.wh1[1,],1],SE.xy[SE.wh1[1,],2],lwd=2)
+title(main="Maximum distance of the minimum spanning tree in bold")
+#thershold distance
+SE.th 
+#[1] 493707.1
+SE.nb1
+Neighbour list object:
+Number of regions: 15 
+Number of nonzero links: 28 
+Percentage nonzero weights: 12.44444 
+Average number of links: 1.866667 
+
+#install.packages("spdep")
+library(spdep)
+#transform nb to listw (spdep package)
+SE.listw=nb2listw(SE.nb1, glist=NULL, style="W", zero.policy=NULL)
+#The can.be.simmed helper function checks whether a spatial weights object is similar to
+#symmetric and can be so transformed to yield real eigenvalues or for Cholesky decomposition.
+can.be.simmed(SE.listw)
+#[1] TRUE
+ 
+#Function to compute Moran's eigenvectors of a listw object
+#This functions compute eigenvector's of a doubly centered spatial weighting matrix. 
+#Corresponding eigenvalues are linearly related to Moran's index of spatial autocorrelation.
+#scores=scores.listw(listw, echo = FALSE, MEM.autocor = c("all","positive", "negative"))
+#MEM.autocor: A string indicating if all MEMs must be returned or only those corresponding to positive or negative autocorrelation.
+#Only positive correlations:
+SE.scores=scores.listw(SE.listw, echo = FALSE, MEM.autocor = "positive")
+	#listw not symmetric, (w+t(w)) used in the place of w 
+
+#Function to compute and test Moran's I for eigenvectors of spatial weighting matrices. 
+#This function tests Moran's I for each eigenvector of a spatial weighting matrix
+test.scores(SE.scores,SE.listw,nsim=999)
+       stat  pval
+1 0.9934033 0.001
+2 0.9164982 0.001
+3 0.7945233 0.001
+4 0.6336452 0.002
+5 0.4408883 0.018
+6 0.2268045 0.127
+
+#5 significant MEM eigenfunctions with positive correlations. OBS. use first half (3 in our case)
+
+write.table (SE.scores$vectors[,1], "SE.scores_MEM1.txt") 
+write.table (SE.scores$vectors[,2], "SE.scores_MEM2.txt") 
+write.table (SE.scores$vectors[,3], "SE.scores_MEM3.txt") 
+
+```
+
+## Great circle distance between all sampling points
+
+```
+##Geographic distance between all SE populations
+##using package Rdist
+
+library(fields)
+#Import .csv with coordinates (done above)
+
+setwd("/Users/alexjvr/2016RADAnalysis/6_CHP4.SEvsCH/GradientForest")
+
+#rdist.earth (in fields package) wants only long & lat
+SE_lon.lat <- cbind(env.data.SE$Long, env.data.SE$Lat)
+SE_lon.lat
+
+#calculate great circle distances
+distance.matrix.SE <- rdist.earth(SE_lon.lat)
+summary(distance.matrix.SE)
+dim(distance.matrix.SE)
+
+#and use only the lower half of the matrix
+upper.tri(distance.matrix.SE)
+distance.matrix.SE[lower.tri(distance.matrix.SE)]<-NA
+distance.matrix.SE
+
+#change from matrix to dataframe
+SE.bli <- as.data.frame(distance.matrix.SE)
+head(SE.bli)
+colnames(SE.bli) <- env.data.SE$pop
+rownames(SE.bli) <- env.data.SE$pop
+
+SE.bli[lower.tri(SE.bli,diag=TRUE)]=NA  #Prepare to drop duplicates and meaningless information
+SE.bli=as.data.frame(as.table(as.matrix(SE.bli)))  #Turn into a 3-column table
+SE.bli
+SE.bli=na.omit(SE.bli)  #Get rid of the junk we flagged above
+SE.bli
+colnames(SE.bli)<-c("site1", "site2", "dist(km)")
+head(SE.bli)
+
+SE.bli2 <- SE.bli[sort(SE.bli$site2),]
+
+head(SE.bli2)
+
+
+##write to csv
+write.csv(SE.bli, file="distance.SE.csv",row.names=F)
+```
+
+### SE
+
+##### 1. TempLoci
+```
+
+###Change Duplicated Adaptive Loci names to vcf format
+
+##R
+
+SE.TempLoci <- read.table("SE.temp.duplicated.outliers.20171009")
+head(SE.TempLoci)
+SE.TempLoci <- gsub("\\.", ":", SE.TempLoci$V1)
+head(SE.TempLoci)
+write.table(SE.TempLoci, "SE.TempLoci.names", quote=F, row.names=F, col.names=F)
+
+
+#Filter the Temp loci from the vcf file
+
+vcftools --vcf SE132.2027.recode.vcf --snps SE.TempLoci.names --recode --recode-INFO-all --out SE.132.TempLoci
+
+#Create a plink file from the vcf file. 
+
+vcftools --vcf SE.132.TempLoci.recode.vcf --plink --out SE.132.TempLoci.plink
+
+plink --file SE.132.TempLoci.plink --noweb --recode --recodeA --out SE.132.TempLoci.plink
+
+```
+
+Find the sample names in the *nosex file, and add pop names (i.e. 3 columns) to create a file for specifying clusters > SE.PlinkCluster
+
+```
+##in R
+
+SE.nosex <- read.table("SE.132.TempLoci.plink.nosex", header=F)
+head(SE.nosex)
+SE.pop <- gsub("_\\d+", "", SE.nosex$V1)
+SE.pop
+SE.nosex$V3 <- SE.pop
+head(SE.nosex)
+write.table(SE.nosex, "SE.PlinkCluster", quote=F, row.names=F, col.names=F)
+
+```
+
+##### 2. SeasonLoci
+```
+
+###Change Duplicated Adaptive Loci names to vcf format
+
+##R
+
+SE.SeasonLoci <- read.table("SE.Season.duplicated.outliers.20171009")
+head(SE.SeasonLoci)
+SE.SeasonLoci <- gsub("\\.", ":", SE.SeasonLoci$V1)
+head(SE.SeasonLoci)
+write.table(SE.SeasonLoci, "SE.SeasonLoci.names", quote=F, row.names=F, col.names=F)
+
+
+#Filter the Season loci from the vcf file
+
+vcftools --vcf SE132.2027.recode.vcf --snps SE.SeasonLoci.names --recode --recode-INFO-all --out SE.132.SeasonLoci
+
+#Create a plink file from the vcf file. 
+
+vcftools --vcf SE.132.SeasonLoci.recode.vcf --plink --out SE.132.SeasonLoci.plink
+
+plink --file SE.132.SeasonLoci.plink --noweb --recode --recodeA --out SE.132.SeasonLoci.plink
+
+```
+
+
+And calculate MAF with Plink
+
+```
+
+plink --file SE.132.SeasonLoci.plink --within SE.PlinkCluster --freq --noweb --out SE.132.SeasonLoci
+
+```
+
+Import into R to reformat the output - by population and loci as columns
+```
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+SE.SeasonLoci.MAF <- read.table("SE.132.SeasonLoci.frq.strat", header=T)
+head(SE.SeasonLoci.MAF)
+
+SE.SeasonLoci.MAF <- SE.SeasonLoci.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+SE.SeasonLoci.MAF2 <- melt(SE.SeasonLoci.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(SE.SeasonLoci.MAF2)
+head(SE.SeasonLoci.MAF2)
+
+
+SE.SeasonLoci.MAF3 <- dcast(SE.SeasonLoci.MAF2, formula= CLST ~ SNP)
+head(SE.SeasonLoci.MAF3)
+colnames(SE.SeasonLoci.MAF3) <- paste("X", colnames(SE.SeasonLoci.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(SE.SeasonLoci.MAF3, file="SE.132.SeasonLoci.MAF.csv")
+```
+
+
+
+
+##### 3. Neutral loci
+
+
+```
+
+#Filter the Neutral loci from the vcf file
+
+vcftools --vcf SE132.2027.recode.vcf --exclude SE.SeasonLoci.names --recode --recode-INFO-all --out SE.132.Neutral.temporary
+vcftools --vcf SE.132.Neutral.temporary.recode.vcf --exclude SE.TempLoci.names --recode --recode-INFO-all --out SE.132.Neutral
+
+#Create a plink file from the vcf file. 
+
+vcftools --vcf SE.132.Neutral.recode.vcf --plink --out SE.132.Neutral.plink
+
+```
+
+Import the .map file into R to get a list of the SNP names and to subset this to 1000 random names
+```
+SE.Neutral.loci.names.map <- read.table("SE.132.Neutral.plink.map", header=F)
+SE.Neutral.loci.names <-  SE.Neutral.loci.names.map$V2
+SE.Neutral.loci.names <- as.data.frame(SE.Neutral.loci.names)
+SE.1000.loci.names <- SE.Neutral.loci.names[sample(nrow(SE.Neutral.loci.names),1000),]
+SE.1000.loci.names <- as.data.frame(SE.1000.loci.names)
+summary(SE.1000.loci.names)
+write.table(SE.1000.loci.names, "SE.1000.loci.names", quote=F, row.names=F, col.names=F)
+```
+
+Subset the vcf file to get 1000 loci and convert to plink
+```
+vcftools --vcf SE.132.Neutral.recode.vcf --snps SE.1000.loci.names --recode --recode-INFO-all --out SE.1000NeutralLoci
+
+vcftools --vcf SE.1000NeutralLoci.recode.vcf --plink --out SE.1000NeutralLoci.plink
+plink --file SE.1000NeutralLoci.plink --noweb --recode --recodeA --out SE.1000NeutralLoci.plink
+```
+
+
+Find the sample names in the *nosex file, and add pop names (i.e. 3 columns) to create a file for specifying clusters > SE.PlinkCluster (done before)
+
+And calculate MAF with Plink
+
+```
+
+plink --file SE.1000NeutralLoci.plink --within SE.PlinkCluster --noweb --freq --out SE.1000NeutralLoci
+
+```
+
+Import into R to reformat the output - by population and loci as columns
+```
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+SE.Neutral.MAF <- read.table("SE.1000NeutralLoci.frq.strat", header=T)
+head(SE.Neutral.MAF)
+
+SE.Neutral.MAF <- SE.Neutral.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+SE.Neutral.MAF2 <- melt(SE.Neutral.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(SE.Neutral.MAF2)
+head(SE.Neutral.MAF2)
+
+
+SE.Neutral.MAF3 <- dcast(SE.Neutral.MAF2, formula= CLST ~ SNP)
+head(SE.Neutral.MAF3)
+colnames(SE.Neutral.MAF3) <- paste("X", colnames(SE.Neutral.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(SE.Neutral.MAF3, file="SE.132.Neutral.MAF.csv")
+```
+
+
 
 
 #### ENV data
@@ -1167,15 +1474,10 @@ Variables used:
 
 Same as for the EAA: 
 
-1. sol.rad.60d
+1. mean.temp
 
-2. temp.laying.date
+2. season.length
 
-3. pcpt.60d
-
-4. shadow.days
-
-5. day10cm
 
 
 Create a .csv input file with
@@ -1186,23 +1488,42 @@ Create a .csv input file with
 
 Use the last population (trpa) as distance 0. So all distances are measured from here.
 
+
 ##### Input Files
 
-CHN.GF.AdaptiveLoci.Input.csv
+CHN.GF.TempLoci.Input.csv
+
+CHN.GF.SeasonLoci.Input.csv
 
 CHN.GF.NeutralLoci.Input.csv
 
-CZ.GF.AdaptiveLoci.Input.csv
+
+CZ.GF.TempLoci.Input.csv
 
 CZ.GF.NeutralLoci.Input.csv
 
-CHS.TI.GF.AdaptiveLoci.Input.csv
+CZ.GF.SeasonLoci.Input.csv
+
+
+CHS.TI.GF.TempLoci.Input.csv
 
 CHS.TI.GF.NeutralLoci.Input.csv
 
-CHS.VS.GF.AdaptiveLoci.Input.csv
+CHS.TI.GF.SeasonLoci.Input.csv
+
+
+CHS.VS.GF.TempLoci.Input.csv
 
 CHS.VS.GF.NeutralLoci.Input.csv
+
+CHS.VS.GF.SeasonLoci.Input.csv
+
+
+SE.GF.TempLoci.Input.csv
+
+SE.GF.NeutralLoci.Input.csv
+
+SE.GF.SeasonLoci.Input.csv
 
 
 ### Run GF
