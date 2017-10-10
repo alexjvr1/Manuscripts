@@ -2978,9 +2978,9 @@ dev.off()
 ```
 ##Temp.Loci
 
-CU.Temp.SE.Temp.Loci <- cumimp(gf.SE.TempLoci.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
-CU.Season.SE.Temp.Loci <- cumimp(gf.SE.SeasonLoci.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
-CU.Neutral.SE.Temp.Loci <- cumimp(gf.SE.Neutral.SNPs, "mean.temp.60d")
+CU.Temp.SE.Temp.Loci <- cumimp(gf.SE.TempLoci.SNPs, "mean.temp.60.days") ##find the cumulative importance for each gf.model output
+CU.Season.SE.Temp.Loci <- cumimp(gf.SE.SeasonLoci.SNPs, "mean.temp.60.days") ##find the cumulative importance for each gf.model output
+CU.Neutral.SE.Temp.Loci <- cumimp(gf.SE.Neutral.SNPs, "mean.temp.60.days")
 
 isub.Temp.SE.Temp.Loci <- seq(1, length(CU.Temp.SE.Temp.Loci$x), len = pmin(500, length(CU.Temp.SE.Temp.Loci$x)))
 isub.Season.SE.Temp.Loci <- seq(1, length(CU.Season.SE.Temp.Loci$x), len = pmin(500, length(CU.Season.SE.Temp.Loci$x)))
@@ -3001,9 +3001,9 @@ dev.off()
 
 ##Season.Loci
 
-CU.Temp.SE.Season.Loci <- cumimp(gf.SE.TempLoci.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
-CU.Season.SE.Season.Loci <- cumimp(gf.SE.SeasonLoci.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
-CU.Neutral.SE.Season.Loci <- cumimp(gf.SE.Neutral.SNPs, "days.above.6")
+CU.Temp.SE.Season.Loci <- cumimp(gf.SE.TempLoci.SNPs, "days.6.degrees") ##find the cumulative importance for each gf.model output
+CU.Season.SE.Season.Loci <- cumimp(gf.SE.SeasonLoci.SNPs, "days.6.degrees") ##find the cumulative importance for each gf.model output
+CU.Neutral.SE.Season.Loci <- cumimp(gf.SE.Neutral.SNPs, "days.6.degrees")
 
 isub.Temp.SE.Season.Loci <- seq(1, length(CU.Temp.SE.Season.Loci$x), len = pmin(500, length(CU.Temp.SE.Season.Loci$x)))
 isub.Season.SE.Season.Loci <- seq(1, length(CU.Season.SE.Season.Loci$x), len = pmin(500, length(CU.Season.SE.Season.Loci$x)))
