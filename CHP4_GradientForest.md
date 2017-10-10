@@ -104,6 +104,43 @@ write.table(CHN.nosex, "CHN.PlinkCluster", quote=F, row.names=F, col.names=F)
 
 ```
 
+And calculate MAF with Plink
+
+```
+
+plink --file CHN.229.TempLoci.plink --within CHN.PlinkCluster --freq --noweb --out CHN.229.TempLoci
+
+```
+
+Import into R to reformat the output - by population and loci as columns
+```
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CHN.TempLoci.MAF <- read.table("CHN.229.TempLoci.frq.strat", header=T)
+head(CHN.TempLoci.MAF)
+
+CHN.TempLoci.MAF <- CHN.TempLoci.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CHN.TempLoci.MAF2 <- melt(CHN.TempLoci.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHN.TempLoci.MAF2)
+head(CHN.TempLoci.MAF2)
+
+
+CHN.TempLoci.MAF3 <- dcast(CHN.TempLoci.MAF2, formula= CLST ~ SNP)
+head(CHN.TempLoci.MAF3)
+colnames(CHN.TempLoci.MAF3) <- paste("X", colnames(CHN.TempLoci.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CHN.TempLoci.MAF3, file="CHN.229.TempLoci.MAF.csv")
+```
+
+
+
 ##### 2. SeasonLoci
 ```
 
@@ -288,6 +325,42 @@ write.table(CZ.nosex, "CZ.PlinkCluster", quote=F, row.names=F, col.names=F)
 
 ```
 
+And calculate MAF with Plink
+
+```
+
+plink --file CZ.404.TempLoci.plink --within CZ.PlinkCluster --freq --noweb --out CZ.404.TempLoci
+
+```
+
+Import into R to reformat the output - by population and loci as columns
+```
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CZ.TempLoci.MAF <- read.table("CZ.404.TempLoci.frq.strat", header=T)
+head(CZ.TempLoci.MAF)
+
+CZ.TempLoci.MAF <- CZ.TempLoci.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CZ.TempLoci.MAF2 <- melt(CZ.TempLoci.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CZ.TempLoci.MAF2)
+head(CZ.TempLoci.MAF2)
+
+
+CZ.TempLoci.MAF3 <- dcast(CZ.TempLoci.MAF2, formula= CLST ~ SNP)
+head(CZ.TempLoci.MAF3)
+colnames(CZ.TempLoci.MAF3) <- paste("X", colnames(CZ.TempLoci.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CZ.TempLoci.MAF3, file="CZ.404.TempLoci.MAF.csv")
+```
+
+
 ##### 2. SeasonLoci
 ```
 
@@ -429,6 +502,143 @@ write.csv(CZ.Neutral.MAF3, file="CZ.404.Neutral.MAF.csv")
 
 ### CHS
 
+##### Dist and MEM
+
+
+```
+#Calculating MEM variables
+#install.packages("tripack")
+#install.packages("spacemakeR", repos="http://R-Forge.R-project.org")
+
+library(spacemakeR)
+
+
+env.data.CHS <- read.csv("AllEnv.Data_CHS_20161010.csv", header=T)
+head(env.data.CHS)
+#extract x and y
+CHS.xy <- env.data.CHS[, c("long","lat")]
+
+#install.packages("geosphere")
+library(geosphere) #calculate a matrix of geographic distances
+CHS.dxy <- distm(CHS.xy)
+CHS.dxy <- as.dist(CHS.dxy)
+
+#Function that returns the maximum distance of the minimum spanning tree based on a distance matrix.
+CHS.th <- give.thresh(CHS.dxy)
+#Function to compute neighborhood based on the minimum spanning tree. Returns an object of the class nb (see spdep package).
+CHS.nb1 <- mst.nb(CHS.dxy)
+CHS.wh1 <- which(as.matrix(CHS.dxy)==CHS.th,arr.ind=TRUE)
+plot(CHS.nb1,CHS.xy,pch=20,cex=2,lty=3)
+lines(CHS.xy[CHS.wh1[1,],1],CHS.xy[CHS.wh1[1,],2],lwd=2)
+title(main="Maximum distance of the minimum spanning tree in bold")
+#thershold distance
+CHS.th 
+#[1] 47654.6
+CHS.nb1
+Neighbour list object:
+Number of regions: 25 
+Number of nonzero links: 48 
+Percentage nonzero weights: 7.68 
+Average number of links: 1.92 
+
+#install.packages("spdep")
+library(spdep)
+#transform nb to listw (spdep package)
+CHS.listw=nb2listw(CHS.nb1, glist=NULL, style="W", zero.policy=NULL)
+#The can.be.simmed helper function checks whether a spatial weights object is similar to
+#symmetric and can be so transformed to yield real eigenvalues or for Cholesky decomposition.
+can.be.simmed(CHS.listw)
+#[1] TRUE
+ 
+#Function to compute Moran's eigenvectors of a listw object
+#This functions compute eigenvector's of a doubly centered spatial weighting matrix. 
+#Corresponding eigenvalues are linearly related to Moran's index of spatial autocorrelation.
+#scores=scores.listw(listw, echo = FALSE, MEM.autocor = c("all","positive", "negative"))
+#MEM.autocor: A string indicating if all MEMs must be returned or only those corresponding to positive or negative autocorrelation.
+#Only positive correlations:
+CHS.scores=scores.listw(CHS.listw, echo = FALSE, MEM.autocor = "positive")
+	#listw not symmetric, (w+t(w)) used in the place of w 
+
+#Function to compute and test Moran's I for eigenvectors of spatial weighting matrices. 
+#This function tests Moran's I for each eigenvector of a spatial weighting matrix
+test.scores(CHS.scores,CHS.listw,nsim=999)
+          stat  pval
+1  1.055611750 0.001
+2  1.001597791 0.001
+3  0.953101581 0.001
+4  0.886104818 0.001
+5  0.750000000 0.001
+6  0.741690676 0.001
+7  0.735557055 0.001
+8  0.494402427 0.003
+9  0.426721469 0.008
+10 0.009058062 0.383
+
+#9 significant MEM eigenfunctions with positive correlations. OBS. use first half (5 in our case)
+
+write.table (CHS.scores$vectors[,1], "CHS.scores_MEM1.txt") 
+write.table (CHS.scores$vectors[,2], "CHS.scores_MEM2.txt") 
+write.table (CHS.scores$vectors[,3], "CHS.scores_MEM3.txt") 
+write.table (CHS.scores$vectors[,4], "CHS.scores_MEM4.txt")
+write.table (CHS.scores$vectors[,5], "CHS.scores_MEM5.txt")
+
+```
+
+######## Distance
+
+```
+##Geographic distance between all CHS populations
+##using package Rdist
+
+library(fields)
+#Import .csv with coordinates (done above)
+
+
+
+#rdist.earth (in fields package) wants only long & lat
+CHS_lon.lat <- cbind(env.data.CHS$long, env.data.CHS$lat)
+CHS_lon.lat
+
+#calculate great circle distances
+distance.matrix.CHS <- rdist.earth(CHS_lon.lat)
+summary(distance.matrix.CHS)
+dim(distance.matrix.CHS)
+
+#and use only the lower half of the matrix
+upper.tri(distance.matrix.CHS)
+distance.matrix.CHS[lower.tri(distance.matrix.CHS)]<-NA
+distance.matrix.CHS
+
+#change from matrix to dataframe
+CHS.bli <- as.data.frame(distance.matrix.CHS)
+head(CHS.bli)
+colnames(CHS.bli) <- env.data.CHS$site
+rownames(CHS.bli) <- env.data.CHS$site
+
+CHS.bli[lower.tri(CHS.bli,diag=TRUE)]=NA  #Prepare to drop duplicates and meaningless information
+CHS.bli=as.data.frame(as.table(as.matrix(CHS.bli)))  #Turn into a 3-column table
+CHS.bli
+CHS.bli=na.omit(CHS.bli)  #Get rid of the junk we flagged above
+CHS.bli
+colnames(CHS.bli)<-c("site1", "site2", "dist(km)")
+head(CHS.bli)
+
+CHS.bli2 <- CHS.bli[sort(CHS.bli$site2),]
+
+head(CHS.bli2)
+
+
+##write to csv
+write.csv(CHS.bli, file="distance.CHS.csv",row.names=F)
+
+
+
+```
+
+
+
+
+
 ##### 1. TempLoci
 ```
 
@@ -469,6 +679,42 @@ head(CHS.nosex)
 write.table(CHS.nosex, "CHS.PlinkCluster", quote=F, row.names=F, col.names=F)
 
 ```
+
+And calculate MAF with Plink
+
+```
+
+plink --file CHS.275.TempLoci.plink --within CHS.PlinkCluster --freq --noweb --out CHS.275.TempLoci
+
+```
+
+Import into R to reformat the output - by population and loci as columns
+```
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CHS.TempLoci.MAF <- read.table("CHS.275.TempLoci.frq.strat", header=T)
+head(CHS.TempLoci.MAF)
+
+CHS.TempLoci.MAF <- CHS.TempLoci.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CHS.TempLoci.MAF2 <- melt(CHS.TempLoci.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHS.TempLoci.MAF2)
+head(CHS.TempLoci.MAF2)
+
+
+CHS.TempLoci.MAF3 <- dcast(CHS.TempLoci.MAF2, formula= CLST ~ SNP)
+head(CHS.TempLoci.MAF3)
+colnames(CHS.TempLoci.MAF3) <- paste("X", colnames(CHS.TempLoci.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CHS.TempLoci.MAF3, file="CHS.275.TempLoci.MAF.csv")
+```
+
 
 ##### 2. SeasonLoci
 ```
@@ -654,6 +900,42 @@ write.table(CHS.TI.nosex, "CHS.TI.PlinkCluster", quote=F, row.names=F, col.names
 
 ```
 
+And calculate MAF with Plink
+
+```
+
+plink --file CHS.TI.140.TempLoci.plink --within CHS.TI.PlinkCluster --freq --noweb --out CHS.TI.140.TempLoci
+
+```
+
+Import into R to reformat the output - by population and loci as columns
+```
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CHS.TI.TempLoci.MAF <- read.table("CHS.TI.140.TempLoci.frq.strat", header=T)
+head(CHS.TI.TempLoci.MAF)
+
+CHS.TI.TempLoci.MAF <- CHS.TI.TempLoci.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CHS.TI.TempLoci.MAF2 <- melt(CHS.TI.TempLoci.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHS.TI.TempLoci.MAF2)
+head(CHS.TI.TempLoci.MAF2)
+
+
+CHS.TI.TempLoci.MAF3 <- dcast(CHS.TI.TempLoci.MAF2, formula= CLST ~ SNP)
+head(CHS.TI.TempLoci.MAF3)
+colnames(CHS.TI.TempLoci.MAF3) <- paste("X", colnames(CHS.TI.TempLoci.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CHS.TI.TempLoci.MAF3, file="CHS.TI.140.TempLoci.MAF.csv")
+```
+
+
 ##### 2. SeasonLoci
 ```
 
@@ -716,6 +998,79 @@ colnames(CHS.TI.SeasonLoci.MAF3) <- paste("X", colnames(CHS.TI.SeasonLoci.MAF3),
 write.csv(CHS.TI.SeasonLoci.MAF3, file="CHS.TI.140.SeasonLoci.MAF.csv")
 ```
 
+##### 3. Neutral loci
+
+
+```
+
+#Filter the Neutral loci from the vcf file
+
+vcftools --vcf CHS.TI.140.5692.recode.vcf --exclude CHS.TI.SeasonLoci.names --recode --recode-INFO-all --out CHS.TI.140.Neutral.temporary
+vcftools --vcf CHS.TI.140.Neutral.temporary.recode.vcf --exclude CHS.TI.TempLoci.names --recode --recode-INFO-all --out CHS.TI.140.Neutral
+
+#Create a plink file from the vcf file. 
+
+vcftools --vcf CHS.TI.140.Neutral.recode.vcf --plink --out CHS.TI.140.Neutral.plink
+
+```
+
+Import the .map file into R to get a list of the SNP names and to subset this to 1000 random names
+```
+CHS.TI.Neutral.loci.names.map <- read.table("CHS.TI.140.Neutral.plink.map", header=F)
+CHS.TI.Neutral.loci.names <-  CHS.TI.Neutral.loci.names.map$V2
+CHS.TI.Neutral.loci.names <- as.data.frame(CHS.TI.Neutral.loci.names)
+CHS.TI.1000.loci.names <- CHS.TI.Neutral.loci.names[sample(nrow(CHS.TI.Neutral.loci.names),1000),]
+CHS.TI.1000.loci.names <- as.data.frame(CHS.TI.1000.loci.names)
+summary(CHS.TI.1000.loci.names)
+write.table(CHS.TI.1000.loci.names, "CHS.TI.1000.loci.names", quote=F, row.names=F, col.names=F)
+```
+
+Subset the vcf file to get 1000 loci and convert to plink
+```
+vcftools --vcf CHS.TI.140.Neutral.recode.vcf --snps CHS.TI.1000.loci.names --recode --recode-INFO-all --out CHS.TI.1000NeutralLoci
+
+vcftools --vcf CHS.TI.1000NeutralLoci.recode.vcf --plink --out CHS.TI.1000NeutralLoci.plink
+plink --file CHS.TI.1000NeutralLoci.plink --noweb --recode --recodeA --out CHS.TI.1000NeutralLoci.plink
+```
+
+
+Find the sample names in the *nosex file, and add pop names (i.e. 3 columns) to create a file for specifying clusters > CHS.TI.PlinkCluster (done before)
+
+And calculate MAF with Plink
+
+```
+
+plink --file CHS.TI.1000NeutralLoci.plink --within CHS.TI.PlinkCluster --noweb --freq --out CHS.TI.1000NeutralLoci
+
+```
+
+Import into R to reformat the output - by population and loci as columns
+```
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CHS.TI.Neutral.MAF <- read.table("CHS.TI.1000NeutralLoci.frq.strat", header=T)
+head(CHS.TI.Neutral.MAF)
+
+CHS.TI.Neutral.MAF <- CHS.TI.Neutral.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CHS.TI.Neutral.MAF2 <- melt(CHS.TI.Neutral.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHS.TI.Neutral.MAF2)
+head(CHS.TI.Neutral.MAF2)
+
+
+CHS.TI.Neutral.MAF3 <- dcast(CHS.TI.Neutral.MAF2, formula= CLST ~ SNP)
+head(CHS.TI.Neutral.MAF3)
+colnames(CHS.TI.Neutral.MAF3) <- paste("X", colnames(CHS.TI.Neutral.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CHS.TI.Neutral.MAF3, file="CHS.TI.140.Neutral.MAF.csv")
+```
+
 
 ### SE
 
@@ -759,6 +1114,42 @@ head(SE.nosex)
 write.table(SE.nosex, "SE.PlinkCluster", quote=F, row.names=F, col.names=F)
 
 ```
+
+And calculate MAF with Plink
+
+```
+
+plink --file SE.132.TempLoci.plink --within SE.PlinkCluster --freq --noweb --out SE.132.TempLoci
+
+```
+
+Import into R to reformat the output - by population and loci as columns
+```
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+SE.TempLoci.MAF <- read.table("SE.132.TempLoci.frq.strat", header=T)
+head(SE.TempLoci.MAF)
+
+SE.TempLoci.MAF <- SE.TempLoci.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+SE.TempLoci.MAF2 <- melt(SE.TempLoci.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(SE.TempLoci.MAF2)
+head(SE.TempLoci.MAF2)
+
+
+SE.TempLoci.MAF3 <- dcast(SE.TempLoci.MAF2, formula= CLST ~ SNP)
+head(SE.TempLoci.MAF3)
+colnames(SE.TempLoci.MAF3) <- paste("X", colnames(SE.TempLoci.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(SE.TempLoci.MAF3, file="SE.132.TempLoci.MAF.csv")
+```
+
 
 ##### 2. SeasonLoci
 ```
@@ -900,79 +1291,6 @@ write.csv(SE.Neutral.MAF3, file="SE.132.Neutral.MAF.csv")
 
 
 
-
-##### 3. Neutral loci
-
-
-```
-
-#Filter the Neutral loci from the vcf file
-
-vcftools --vcf CHS.TI.140.5692.recode.vcf --exclude CHS.TI.SeasonLoci.names --recode --recode-INFO-all --out CHS.TI.140.Neutral.temporary
-vcftools --vcf CHS.TI.140.Neutral.temporary.recode.vcf --exclude CHS.TI.TempLoci.names --recode --recode-INFO-all --out CHS.TI.140.Neutral
-
-#Create a plink file from the vcf file. 
-
-vcftools --vcf CHS.TI.140.Neutral.recode.vcf --plink --out CHS.TI.140.Neutral.plink
-
-```
-
-Import the .map file into R to get a list of the SNP names and to subset this to 1000 random names
-```
-CHS.TI.Neutral.loci.names.map <- read.table("CHS.TI.140.Neutral.plink.map", header=F)
-CHS.TI.Neutral.loci.names <-  CHS.TI.Neutral.loci.names.map$V2
-CHS.TI.Neutral.loci.names <- as.data.frame(CHS.TI.Neutral.loci.names)
-CHS.TI.1000.loci.names <- CHS.TI.Neutral.loci.names[sample(nrow(CHS.TI.Neutral.loci.names),1000),]
-CHS.TI.1000.loci.names <- as.data.frame(CHS.TI.1000.loci.names)
-summary(CHS.TI.1000.loci.names)
-write.table(CHS.TI.1000.loci.names, "CHS.TI.1000.loci.names", quote=F, row.names=F, col.names=F)
-```
-
-Subset the vcf file to get 1000 loci and convert to plink
-```
-vcftools --vcf CHS.TI.140.Neutral.recode.vcf --snps CHS.TI.1000.loci.names --recode --recode-INFO-all --out CHS.TI.1000NeutralLoci
-
-vcftools --vcf CHS.TI.1000NeutralLoci.recode.vcf --plink --out CHS.TI.1000NeutralLoci.plink
-plink --file CHS.TI.1000NeutralLoci.plink --noweb --recode --recodeA --out CHS.TI.1000NeutralLoci.plink
-```
-
-
-Find the sample names in the *nosex file, and add pop names (i.e. 3 columns) to create a file for specifying clusters > CHS.TI.PlinkCluster (done before)
-
-And calculate MAF with Plink
-
-```
-
-plink --file CHS.TI.1000NeutralLoci.plink --within CHS.TI.PlinkCluster --noweb --freq --out CHS.TI.1000NeutralLoci
-
-```
-
-Import into R to reformat the output - by population and loci as columns
-```
-######Reformat PLINK output
-###For Gradient Forest
-###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
-
-
-
-CHS.TI.Neutral.MAF <- read.table("CHS.TI.1000NeutralLoci.frq.strat", header=T)
-head(CHS.TI.Neutral.MAF)
-
-CHS.TI.Neutral.MAF <- CHS.TI.Neutral.MAF[,c(3,2,6)]
-
-library("ggplot2")
-library("reshape2")
-
-CHS.TI.Neutral.MAF2 <- melt(CHS.TI.Neutral.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
-str(CHS.TI.Neutral.MAF2)
-head(CHS.TI.Neutral.MAF2)
-
-
-CHS.TI.Neutral.MAF3 <- dcast(CHS.TI.Neutral.MAF2, formula= CLST ~ SNP)
-head(CHS.TI.Neutral.MAF3)
-colnames(CHS.TI.Neutral.MAF3) <- paste("X", colnames(CHS.TI.Neutral.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
-write.csv(CHS.TI.Neutral.MAF3, file="CHS.TI.140.Neutral.MAF.csv")
-```
 
 
 
