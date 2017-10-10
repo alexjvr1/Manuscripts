@@ -3420,5 +3420,388 @@ dev.off()
 [Fig3]:https://cloud.githubusercontent.com/assets/12142475/22886425/19e50622-f1fe-11e6-9b8e-8d91624e3b87.png
 
 
+# Part2: Find thresholds
 
+For this part I will run GF with all the loci and identify the loci that are most associated with 
+
+1: temp
+
+2: season. 
+
+Questions: 
+
+Is there a threshold response in any of the transects? 
+
+Is the threshold the same between transects? 
+
+
+Set up gf for each trasect using all of the loci: 
+
+
+### CHN
+
+```
+
+vcftools --vcf CHN.229.5265.recode.vcf --plink --out CHN.229.5265.plink
+
+plink --file CHN.229.5265.plink --recode --recodeA --noweb --out CHN.229.5265.plink
+
+##calculate MAF within each population
+
+plink --file CHN.229.5265.plink --within CHN.PlinkCluster --freq --noweb --out CHN.229.5265.plink 
+
+
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CHN.FullModel.MAF <- read.table("CHN.229.5265.plink.frq.strat", header=T)
+head(CHN.FullModel.MAF)
+
+CHN.FullModel.MAF <- CHN.FullModel.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CHN.FullModel.MAF2 <- melt(CHN.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHN.FullModel.MAF2)
+head(CHN.FullModel.MAF2)
+
+
+CHN.FullModel.MAF3 <- dcast(CHN.FullModel.MAF2, formula= CLST ~ SNP)
+head(CHN.FullModel.MAF3)
+colnames(CHN.FullModel.MAF3) <- paste("X", colnames(CHN.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CHN.FullModel.MAF3, file="CHN.229.5265.FullModel.MAF.csv")
+
+```
+
+Run GF
+
+```
+library(gradientForest)
+
+gf.CHN.FullModel <- read.csv("CHN.229.5265.FullModel.MAF.csv", header=T)
+envGF.CHN.FullModel <- gf.CHN.FullModel[,2:8]
+colnames(envGF.CHN.Adaptive)
+
+CHN.FullModelSNPS <- CHN.FullModel.MAF3[,grep("X.", colnames(CHN.FullModel.MAF3))]
+CHN.FullModelSNPS <- CHN.FullModelSNPS[,-1]
+maxLevel <- log2(0.368*nrow(envGF.CHN.FullModel)/2)
+maxLevel
+
+gf.CHN.FullModel.SNPs <- gradientForest(cbind(envGF.CHN.FullModel, CHN.FullModelSNPS), predictor.vars=colnames(envGF.CHN.FullModel), response.vars=colnames(CHN.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##25 warnings (loci variable in less than 5 populations)
+
+
+```
+
+
+### CHS
+
+```
+###CHS
+
+vcftools --vcf CHS.275.6339.recode.vcf --plink --out CHS.275.6339.plink
+
+plink --file CHS.275.6339.plink --recode --recodeA --noweb --out CHS.275.6339.plink
+
+##calculate MAF within each population
+
+plink --file CHS.275.6339.plink --within CHS.PlinkCluster --freq --noweb --out CHS.275.6339.plink 
+
+
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CHS.FullModel.MAF <- read.table("CHS.275.6339.plink.frq.strat", header=T)
+head(CHS.FullModel.MAF)
+
+CHS.FullModel.MAF <- CHS.FullModel.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CHS.FullModel.MAF2 <- melt(CHS.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHS.FullModel.MAF2)
+head(CHS.FullModel.MAF2)
+
+
+CHS.FullModel.MAF3 <- dcast(CHS.FullModel.MAF2, formula= CLST ~ SNP)
+head(CHS.FullModel.MAF3)
+colnames(CHS.FullModel.MAF3) <- paste("X", colnames(CHS.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CHS.FullModel.MAF3, file="CHS.275.6339.FullModel.MAF.csv")
+
+```
+
+Run GF
+
+```
+library(gradientForest)
+
+gf.CHS.FullModel <- read.csv("CHS.275.6339.FullModel.MAF.csv", header=T)
+envGF.CHS.FullModel <- gf.CHS.FullModel[,2:8]
+colnames(envGF.CHS.Adaptive)
+
+CHS.FullModelSNPS <- CHS.FullModel.MAF3[,grep("X.", colnames(CHS.FullModel.MAF3))]
+CHS.FullModelSNPS <- CHS.FullModelSNPS[,-1]
+maxLevel <- log2(0.368*nrow(envGF.CHS.FullModel)/2)
+maxLevel
+
+gf.CHS.FullModel.SNPs <- gradientForest(cbind(envGF.CHS.FullModel, CHS.FullModelSNPS), predictor.vars=colnames(envGF.CHS.FullModel), response.vars=colnames(CHS.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##25 warnings (loci variable in less than 5 populations)
+
+
+```
+
+
+### CZ
+
+```
+
+vcftools --vcf CZ.404.7288.recode.vcf --plink --out CZ.404.7288.plink
+
+plink --file CZ.404.7288.plink --recode --recodeA --noweb --out CZ.404.7288.plink
+
+##calculate MAF within each population
+
+plink --file CZ.404.7288.plink --within CZ.PlinkCluster --freq --noweb --out CZ.404.7288.plink 
+
+
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CZ.FullModel.MAF <- read.table("CZ.404.7288.plink.frq.strat", header=T)
+head(CZ.FullModel.MAF)
+
+CZ.FullModel.MAF <- CZ.FullModel.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CZ.FullModel.MAF2 <- melt(CZ.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CZ.FullModel.MAF2)
+head(CZ.FullModel.MAF2)
+
+
+CZ.FullModel.MAF3 <- dcast(CZ.FullModel.MAF2, formula= CLST ~ SNP)
+head(CZ.FullModel.MAF3)
+colnames(CZ.FullModel.MAF3) <- paste("X", colnames(CZ.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CZ.FullModel.MAF3, file="CZ.404.7288.FullModel.MAF.csv")
+
+```
+
+Run GF
+
+```
+library(gradientForest)
+
+gf.CZ.FullModel <- read.csv("CZ.404.7288.FullModel.MAF.csv", header=T)
+envGF.CZ.FullModel <- gf.CZ.FullModel[,2:8]
+colnames(envGF.CZ.Adaptive)
+
+CZ.FullModelSNPS <- CZ.FullModel.MAF3[,grep("X.", colnames(CZ.FullModel.MAF3))]
+CZ.FullModelSNPS <- CZ.FullModelSNPS[,-1]
+maxLevel <- log2(0.368*nrow(envGF.CZ.FullModel)/2)
+maxLevel
+
+gf.CZ.FullModel.SNPs <- gradientForest(cbind(envGF.CZ.FullModel, CZ.FullModelSNPS), predictor.vars=colnames(envGF.CZ.FullModel), response.vars=colnames(CZ.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##25 warnings (loci variable in less than 5 populations)
+
+
+```
+
+
+### CHS.VS
+
+```
+###CHS.VS
+
+vcftools --vcf CHS.VS.135.5835.recode.vcf --plink --out CHS.VS.135.5835.plink
+
+plink --file CHS.VS.135.5835.plink --recode --recodeA --noweb --out CHS.VS.135.5835.plink
+
+##calculate MAF within each population
+
+plink --file CHS.VS.135.5835.plink --within CHS.VS.PlinkCluster --freq --noweb --out CHS.VS.135.5835.plink 
+
+
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CHS.VS.FullModel.MAF <- read.table("CHS.VS.135.5835.plink.frq.strat", header=T)
+head(CHS.VS.FullModel.MAF)
+
+CHS.VS.FullModel.MAF <- CHS.VS.FullModel.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CHS.VS.FullModel.MAF2 <- melt(CHS.VS.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHS.VS.FullModel.MAF2)
+head(CHS.VS.FullModel.MAF2)
+
+
+CHS.VS.FullModel.MAF3 <- dcast(CHS.VS.FullModel.MAF2, formula= CLST ~ SNP)
+head(CHS.VS.FullModel.MAF3)
+colnames(CHS.VS.FullModel.MAF3) <- paste("X", colnames(CHS.VS.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CHS.VS.FullModel.MAF3, file="CHS.VS.135.5835.FullModel.MAF.csv")
+
+```
+
+Run GF
+
+```
+library(gradientForest)
+
+gf.CHS.VS.FullModel <- read.csv("CHS.VS.135.5835.FullModel.MAF.csv", header=T)
+envGF.CHS.VS.FullModel <- gf.CHS.VS.FullModel[,2:8]
+colnames(envGF.CHS.VS.Adaptive)
+
+CHS.VS.FullModelSNPS <- CHS.VS.FullModel.MAF3[,grep("X.", colnames(CHS.VS.FullModel.MAF3))]
+CHS.VS.FullModelSNPS <- CHS.VS.FullModelSNPS[,-1]
+maxLevel <- log2(0.368*nrow(envGF.CHS.VS.FullModel)/2)
+maxLevel
+
+gf.CHS.VS.FullModel.SNPs <- gradientForest(cbind(envGF.CHS.VS.FullModel, CHS.VS.FullModelSNPS), predictor.vars=colnames(envGF.CHS.VS.FullModel), response.vars=colnames(CHS.VS.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##25 warnings (loci variable in less than 5 populations)
+
+
+```
+
+
+
+### CHS.TI
+```
+
+vcftools --vcf CHS.TI.140.5692.recode.vcf --plink --out CHS.TI.140.5692.plink
+
+plink --file CHS.TI.140.5692.plink --recode --recodeA --noweb --out CHS.TI.140.5692.plink
+
+##calculate MAF within each population
+
+plink --file CHS.TI.140.5692.plink --within CHS.TI.PlinkCluster --freq --noweb --out CHS.TI.140.5692.plink 
+
+
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CHS.TI.FullModel.MAF <- read.table("CHS.TI.140.5692.plink.frq.strat", header=T)
+head(CHS.TI.FullModel.MAF)
+
+CHS.TI.FullModel.MAF <- CHS.TI.FullModel.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CHS.TI.FullModel.MAF2 <- melt(CHS.TI.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHS.TI.FullModel.MAF2)
+head(CHS.TI.FullModel.MAF2)
+
+
+CHS.TI.FullModel.MAF3 <- dcast(CHS.TI.FullModel.MAF2, formula= CLST ~ SNP)
+head(CHS.TI.FullModel.MAF3)
+colnames(CHS.TI.FullModel.MAF3) <- paste("X", colnames(CHS.TI.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CHS.TI.FullModel.MAF3, file="CHS.TI.140.5692.FullModel.MAF.csv")
+
+```
+
+Run GF
+
+```
+library(gradientForest)
+
+gf.CHS.TI.FullModel <- read.csv("CHS.TI.140.5692.FullModel.MAF.csv", header=T)
+envGF.CHS.TI.FullModel <- gf.CHS.TI.FullModel[,2:8]
+colnames(envGF.CHS.TI.Adaptive)
+
+CHS.TI.FullModelSNPS <- CHS.TI.FullModel.MAF3[,grep("X.", colnames(CHS.TI.FullModel.MAF3))]
+CHS.TI.FullModelSNPS <- CHS.TI.FullModelSNPS[,-1]
+maxLevel <- log2(0.368*nrow(envGF.CHS.TI.FullModel)/2)
+maxLevel
+
+gf.CHS.TI.FullModel.SNPs <- gradientForest(cbind(envGF.CHS.TI.FullModel, CHS.TI.FullModelSNPS), predictor.vars=colnames(envGF.CHS.TI.FullModel), response.vars=colnames(CHS.TI.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##25 warnings (loci variable in less than 5 populations)
+
+
+```
+
+
+
+### SE
+```
+
+vcftools --vcf SE132.2027.recode.vcf --plink --out SE.132.2027.plink
+
+plink --file SE.132.2027.plink --recode --recodeA --noweb --out SE.132.2027.plink
+
+##calculate MAF within each population
+
+plink --file SE.132.2027.plink --within SE.PlinkCluster --freq --noweb --out SE.132.2027.plink 
+
+
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+SE.FullModel.MAF <- read.table("SE.132.2027.plink.frq.strat", header=T)
+head(SE.FullModel.MAF)
+
+SE.FullModel.MAF <- SE.FullModel.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+SE.FullModel.MAF2 <- melt(SE.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(SE.FullModel.MAF2)
+head(SE.FullModel.MAF2)
+
+
+SE.FullModel.MAF3 <- dcast(SE.FullModel.MAF2, formula= CLST ~ SNP)
+head(SE.FullModel.MAF3)
+colnames(SE.FullModel.MAF3) <- paste("X", colnames(SE.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(SE.FullModel.MAF3, file="SE.132.2027.FullModel.MAF.csv")
+
+```
+
+Run GF
+
+```
+library(gradientForest)
+
+gf.SE.FullModel <- read.csv("SE.132.2027.FullModel.MAF.csv", header=T)
+envGF.SE.FullModel <- gf.SE.FullModel[,2:8]
+colnames(envGF.SE.Adaptive)
+
+SE.FullModelSNPS <- SE.FullModel.MAF3[,grep("X.", colnames(SE.FullModel.MAF3))]
+SE.FullModelSNPS <- SE.FullModelSNPS[,-1]
+maxLevel <- log2(0.368*nrow(envGF.SE.FullModel)/2)
+maxLevel
+
+gf.SE.FullModel.SNPs <- gradientForest(cbind(envGF.SE.FullModel, SE.FullModelSNPS), predictor.vars=colnames(envGF.SE.FullModel), response.vars=colnames(SE.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##25 warnings (loci variable in less than 5 populations)
+
+
+```
 
