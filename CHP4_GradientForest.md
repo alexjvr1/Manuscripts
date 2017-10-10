@@ -3262,7 +3262,7 @@ species.cumulative.plot <- function (obj, imp.vars = NULL, imp.vars.names = imp.
     ...) 
 {
     if (is.null(imp.vars)) 
-        imp.vars <- imp.var.names <- c("sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm")
+        imp.vars <- imp.var.names <- c("mean.temp.60.days", "days.6.degrees", "dist")
     par(mfrow = mfrow)
     cols <- rainbow(length(levels(obj$res.u$spec)))
     names(cols) <- levels(obj$res.u$spec)
@@ -3273,7 +3273,7 @@ species.cumulative.plot <- function (obj, imp.vars = NULL, imp.vars.names = imp.
         for (varX in imp.vars) {
             CU <- cumimp(obj, varX, "Species")
             xlim <- range(sapply(CU, "[[", "x"))
-            ylim <- c(0,0.02)   ###I'm editing this so that I can plot on one plot
+            ylim <- c(0,0.5)   ###I'm editing this so that I can plot on one plot
             plot(xlim, ylim, type = "n", xlab = if (show.overall) 
                 ""
             else imp.vars.names[imp.vars == varX], ylab = "", 
@@ -3317,17 +3317,28 @@ species.cumulative.plot <- function (obj, imp.vars = NULL, imp.vars.names = imp.
 Plot of individual SNPs for a specific dataset and environmental variable
 ```
 ### CHN
-pdf("CHN.individual.AdaptiveSNPs.GF.pdf")
-species.cumulative.plot(gf.CHN.Adaptive.SNPs)
+pdf("CHN.individual.TempSNPs.GF.pdf")
+species.cumulative.plot(gf.CHN.TempLoci.SNPs)
+dev.off()
+
+pdf("CHN.individual.SeasonSNPs.GF.pdf")
+species.cumulative.plot(gf.CHN.SeasonLoci.SNPs)
 dev.off()
 
 pdf("CHN.individual.NeutralSNPs.GF.pdf")
 species.cumulative.plot(gf.CHN.Neutral.SNPs)
 dev.off()
 
+
+
+
 ### CZ
-pdf("CZ.individual.AdaptiveSNPs.GF.pdf")
-species.cumulative.plot(gf.CZ.Adaptive.SNPs)
+pdf("CZ.individual.TempSNPs.GF.pdf")
+species.cumulative.plot(gf.CZ.TempLoci.SNPs)
+dev.off()
+
+pdf("CZ.individual.SeasonSNPs.GF.pdf")
+species.cumulative.plot(gf.CZ.SeasonLoci.SNPs)
 dev.off()
 
 pdf("CZ.individual.NeutralSNPs.GF.pdf")
@@ -3335,9 +3346,16 @@ species.cumulative.plot(gf.CZ.Neutral.SNPs)
 dev.off()
 
 
+
+
+
 ### CHS
-pdf("CHS.individual.AdaptiveSNPs.GF.pdf")
-species.cumulative.plot(gf.CHS.Adaptive.SNPs)
+pdf("CHS.individual.TempSNPs.GF.pdf")
+species.cumulative.plot(gf.CHS.TempLoci.SNPs)
+dev.off()
+
+pdf("CHS.individual.SeasonSNPs.GF.pdf")
+species.cumulative.plot(gf.CHS.SeasonLoci.SNPs)
 dev.off()
 
 pdf("CHS.individual.NeutralSNPs.GF.pdf")
@@ -3345,23 +3363,56 @@ species.cumulative.plot(gf.CHS.Neutral.SNPs)
 dev.off()
 
 
+
+
+
 ### CHS.VS
-pdf("CHS.VS.individual.AdaptiveSNPs.GF.pdf")
-species.cumulative.plot(gf.CHS.VS.Adaptive.SNPs)
+pdf("CHS.VS.individual.TempSNPs.GF.pdf")
+species.cumulative.plot(gf.CHS.VS.TempLoci.SNPs)
+dev.off()
+
+pdf("CHS.VS.individual.SeasonSNPs.GF.pdf")
+species.cumulative.plot(gf.CHS.VS.SeasonLoci.SNPs)
 dev.off()
 
 pdf("CHS.VS.individual.NeutralSNPs.GF.pdf")
 species.cumulative.plot(gf.CHS.VS.Neutral.SNPs)
 dev.off()
 
+
+
+
 ### CHS.TI
-pdf("CHS.TI.individual.AdaptiveSNPs.GF.pdf")
-species.cumulative.plot(gf.CHS.TI.Adaptive.SNPs)
+pdf("CHS.TI.individual.TempSNPs.GF.pdf")
+species.cumulative.plot(gf.CHS.TI.TempLoci.SNPs)
+dev.off()
+
+pdf("CHS.TI.individual.SeasonSNPs.GF.pdf")
+species.cumulative.plot(gf.CHS.TI.SeasonLoci.SNPs)
 dev.off()
 
 pdf("CHS.TI.individual.NeutralSNPs.GF.pdf")
 species.cumulative.plot(gf.CHS.TI.Neutral.SNPs)
 dev.off()
+
+
+
+##redefine the function with the new column names
+### SE
+pdf("SE.individual.TempSNPs.GF.pdf")
+species.cumulative.plot(gf.SE.TempLoci.SNPs)
+dev.off()
+
+pdf("SE.individual.SeasonSNPs.GF.pdf")
+species.cumulative.plot(gf.SE.SeasonLoci.SNPs)
+dev.off()
+
+pdf("SE.individual.NeutralSNPs.GF.pdf")
+species.cumulative.plot(gf.SE.Neutral.SNPs)
+dev.off()
+
+
+
 
 ```
 ![alt_txt][Fig3]
