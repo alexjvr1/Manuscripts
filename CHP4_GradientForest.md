@@ -3047,11 +3047,10 @@ dev.off()
 
 
 
-Combined plots: CHS.TI and CHS.VS
-```
+## CumImP: Combined plots
 ymax=0.08
 
-
+```
 ##TEMP
 
 xmax=11.5
@@ -3069,6 +3068,34 @@ par(new=T)  ##allows you to overlay the plots
 plot(CU.Temp.CHS.TI.Temp.Loci$x[isub.Temp.CHS.TI.Temp.Loci], CU.Temp.CHS.TI.Temp.Loci$y[isub.Temp.CHS.TI.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid1", xlim=c(7,xmax))
 par(new=T)  ##allows you to overlay the plots
 plot(CU.Season.CHS.TI.Temp.Loci$x[isub.Season.CHS.TI.Temp.Loci], CU.Season.CHS.TI.Temp.Loci$y[isub.Season.CHS.TI.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid1", xlim=c(7,xmax))
+
+par(new=T)
+plot(CU.Neutral.CHN.Temp.Loci$x[isub.Neutral.CHN.Temp.Loci], CU.Neutral.CHN.Temp.Loci$y[isub.Neutral.CHN.Temp.Loci], type = "s", ylab ="Cumulative Importance", xlab="Temp.Loci", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHN.Temp.Loci$x[isub.Temp.CHN.Temp.Loci], CU.Temp.CHN.Temp.Loci$y[isub.Temp.CHN.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHN.Temp.Loci$x[isub.Season.CHN.Temp.Loci], CU.Season.CHN.Temp.Loci$y[isub.Season.CHN.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="springgreen4")
+
+par(new=T)
+plot(CU.Neutral.CZ.Temp.Loci$x[isub.Neutral.CZ.Temp.Loci], CU.Neutral.CZ.Temp.Loci$y[isub.Neutral.CZ.Temp.Loci], type = "s", ylab ="Cumulative Importance", xlab="Temp.Loci", ylim=c(0,ymax), lty=1, lwd=1.5, col="violetred")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CZ.Temp.Loci$x[isub.Temp.CZ.Temp.Loci], CU.Temp.CZ.Temp.Loci$y[isub.Temp.CZ.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="violetred")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CZ.Temp.Loci$x[isub.Season.CZ.Temp.Loci], CU.Season.CZ.Temp.Loci$y[isub.Season.CZ.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="violetred")
+
+par(new=T)
+plot(CU.Neutral.CHS.Temp.Loci$x[isub.Neutral.CHS.Temp.Loci], CU.Neutral.CHS.Temp.Loci$y[isub.Neutral.CHS.Temp.Loci], type = "s", ylab ="Cumulative Importance", xlab="Temp.Loci", ylim=c(0,ymax), lty=1, lwd=1.5, col="slategray4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHS.Temp.Loci$x[isub.Temp.CHS.Temp.Loci], CU.Temp.CHS.Temp.Loci$y[isub.Temp.CHS.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="slategray4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.Temp.Loci$x[isub.Season.CHS.Temp.Loci], CU.Season.CHS.Temp.Loci$y[isub.Season.CHS.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="slategray4")
+
+par(new=T)
+plot(CU.Neutral.SE.Temp.Loci$x[isub.Neutral.SE.Temp.Loci], CU.Neutral.SE.Temp.Loci$y[isub.Neutral.SE.Temp.Loci], type = "s", ylab ="Cumulative Importance", xlab="Temp.Loci", ylim=c(0,ymax), lty=1, lwd=1.5, col="steelblue3")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.SE.Temp.Loci$x[isub.Temp.SE.Temp.Loci], CU.Temp.SE.Temp.Loci$y[isub.Temp.SE.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="steelblue3")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.SE.Temp.Loci$x[isub.Season.SE.Temp.Loci], CU.Season.SE.Temp.Loci$y[isub.Season.SE.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="steelblue3")
 
 legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
 dev.off()
@@ -3090,6 +3117,34 @@ plot(CU.Temp.CHS.TI.Season.Loci$x[isub.Temp.CHS.TI.Season.Loci], CU.Temp.CHS.TI.
 par(new=T)  ##allows you to overlay the plots
 plot(CU.Season.CHS.TI.Season.Loci$x[isub.Season.CHS.TI.Season.Loci], CU.Season.CHS.TI.Season.Loci$y[isub.Season.CHS.TI.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid1")
 
+par(new=T)
+plot(CU.Neutral.CHN.Season.Loci$x[isub.Neutral.CHN.Season.Loci], CU.Neutral.CHN.Season.Loci$y[isub.Neutral.CHN.Season.Loci], type = "s", ylab ="Cumulative Importance", xlab="Season.Loci", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHN.Season.Loci$x[isub.Temp.CHN.Season.Loci], CU.Temp.CHN.Season.Loci$y[isub.Temp.CHN.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHN.Season.Loci$x[isub.Season.CHN.Season.Loci], CU.Season.CHN.Season.Loci$y[isub.Season.CHN.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="springgreen4")
+
+par(new=T)
+plot(CU.Neutral.CZ.Season.Loci$x[isub.Neutral.CZ.Season.Loci], CU.Neutral.CZ.Season.Loci$y[isub.Neutral.CZ.Season.Loci], type = "s", ylab ="Cumulative Importance", xlab="Season.Loci", ylim=c(0,ymax), lty=1, lwd=1.5, col="violetred")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CZ.Season.Loci$x[isub.Temp.CZ.Season.Loci], CU.Temp.CZ.Season.Loci$y[isub.Temp.CZ.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="violetred")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CZ.Season.Loci$x[isub.Season.CZ.Season.Loci], CU.Season.CZ.Season.Loci$y[isub.Season.CZ.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="violetred")
+
+par(new=T)
+plot(CU.Neutral.CHS.Season.Loci$x[isub.Neutral.CHS.Season.Loci], CU.Neutral.CHS.Season.Loci$y[isub.Neutral.CHS.Season.Loci], type = "s", ylab ="Cumulative Importance", xlab="Season.Loci", ylim=c(0,ymax), lty=1, lwd=1.5, col="slategray4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHS.Season.Loci$x[isub.Temp.CHS.Season.Loci], CU.Temp.CHS.Season.Loci$y[isub.Temp.CHS.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="slategray4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.Season.Loci$x[isub.Season.CHS.Season.Loci], CU.Season.CHS.Season.Loci$y[isub.Season.CHS.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="slategray4")
+
+par(new=T)
+plot(CU.Neutral.SE.Season.Loci$x[isub.Neutral.SE.Season.Loci], CU.Neutral.SE.Season.Loci$y[isub.Neutral.SE.Season.Loci], type = "s", ylab ="Cumulative Importance", xlab="Season.Loci", ylim=c(0,ymax), lty=1, lwd=1.5, col="steelblue3")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.SE.Season.Loci$x[isub.Temp.SE.Season.Loci], CU.Temp.SE.Season.Loci$y[isub.Temp.SE.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="steelblue3")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.SE.Season.Loci$x[isub.Season.SE.Season.Loci], CU.Season.SE.Season.Loci$y[isub.Season.SE.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="steelblue3")
+
 dev.off()
 
 
@@ -3108,11 +3163,37 @@ plot(CU.Temp.CHS.TI.dist$x[isub.Temp.CHS.TI.dist], CU.Temp.CHS.TI.dist$y[isub.Te
 par(new=T)  ##allows you to overlay the plots
 plot(CU.Season.CHS.TI.dist$x[isub.Season.CHS.TI.dist], CU.Season.CHS.TI.dist$y[isub.Season.CHS.TI.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid1")
 
+par(new=T)
+plot(CU.Neutral.CHN.dist$x[isub.Neutral.CHN.dist], CU.Neutral.CHN.dist$y[isub.Neutral.CHN.dist], type = "s", ylab ="Cumulative Importance", xlab="dist", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHN.dist$x[isub.Temp.CHN.dist], CU.Temp.CHN.dist$y[isub.Temp.CHN.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHN.dist$x[isub.Season.CHN.dist], CU.Season.CHN.dist$y[isub.Season.CHN.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="springgreen4")
+
+par(new=T)
+plot(CU.Neutral.CZ.dist$x[isub.Neutral.CZ.dist], CU.Neutral.CZ.dist$y[isub.Neutral.CZ.dist], type = "s", ylab ="Cumulative Importance", xlab="dist", ylim=c(0,ymax), lty=1, lwd=1.5, col="violetred")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CZ.dist$x[isub.Temp.CZ.dist], CU.Temp.CZ.dist$y[isub.Temp.CZ.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="violetred")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CZ.dist$x[isub.Season.CZ.dist], CU.Season.CZ.dist$y[isub.Season.CZ.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="violetred")
+
+par(new=T)
+plot(CU.Neutral.CHS.dist$x[isub.Neutral.CHS.dist], CU.Neutral.CHS.dist$y[isub.Neutral.CHS.dist], type = "s", ylab ="Cumulative Importance", xlab="dist", ylim=c(0,ymax), lty=1, lwd=1.5, col="slategray4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHS.dist$x[isub.Temp.CHS.dist], CU.Temp.CHS.dist$y[isub.Temp.CHS.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="slategray4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.dist$x[isub.Season.CHS.dist], CU.Season.CHS.dist$y[isub.Season.CHS.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="slategray4")
+
+plot(CU.Neutral.SE.dist$x[isub.Neutral.SE.dist], CU.Neutral.SE.dist$y[isub.Neutral.SE.dist], type = "s", ylab ="Cumulative Importance", xlab="dist", ylim=c(0,ymax), lty=1, lwd=1.5, col="steelblue3")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.SE.dist$x[isub.Temp.SE.dist], CU.Temp.SE.dist$y[isub.Temp.SE.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="steelblue3")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.SE.dist$x[isub.Season.SE.dist], CU.Season.SE.dist$y[isub.Season.SE.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="steelblue3")
+
 
 #legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
 dev.off()
 ```
-
 
 
 
