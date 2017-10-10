@@ -1074,6 +1074,132 @@ write.csv(CHS.TI.Neutral.MAF3, file="CHS.TI.140.Neutral.MAF.csv")
 
 ### SE
 
+
+##### Dist and MEM
+
+
+```
+#Calculating MEM variables
+#install.packages("tripack")
+#install.packages("spacemakeR", repos="http://R-Forge.R-project.org")
+
+library(spacemakeR)
+
+
+env.data.SE <- read.csv("SE.Derived.EnvData_20171009.csv", header=T)
+head(env.data.SE)
+#extract x and y
+SE.xy <- env.data.SE[, c("Long","Lat")]
+
+#install.packages("geosphere")
+library(geosphere) #calculate a matrix of geographic distances
+SE.dxy <- distm(SE.xy)
+SE.dxy <- as.dist(SE.dxy)
+
+#Function that returns the maximum distance of the minimum spanning tree based on a distance matrix.
+SE.th <- give.thresh(SE.dxy)
+#Function to compute neighborhood based on the minimum spanning tree. Returns an object of the class nb (see spdep package).
+SE.nb1 <- mst.nb(SE.dxy)
+SE.wh1 <- which(as.matrix(SE.dxy)==SE.th,arr.ind=TRUE)
+plot(SE.nb1,SE.xy,pch=20,cex=2,lty=3)
+lines(SE.xy[SE.wh1[1,],1],SE.xy[SE.wh1[1,],2],lwd=2)
+title(main="Maximum distance of the minimum spanning tree in bold")
+#thershold distance
+SE.th 
+#[1] 493707.1
+SE.nb1
+Neighbour list object:
+Number of regions: 15 
+Number of nonzero links: 28 
+Percentage nonzero weights: 12.44444 
+Average number of links: 1.866667  
+
+#install.packages("spdep")
+library(spdep)
+#transform nb to listw (spdep package)
+SE.listw=nb2listw(SE.nb1, glist=NULL, style="W", zero.policy=NULL)
+#The can.be.simmed helper function checks whether a spatial weights object is similar to
+#symmetric and can be so transformed to yield real eigenvalues or for Cholesky decomposition.
+can.be.simmed(SE.listw)
+#[1] TRUE
+ 
+#Function to compute Moran's eigenvectors of a listw object
+#This functions compute eigenvector's of a doubly centered spatial weighting matrix. 
+#Corresponding eigenvalues are linearly related to Moran's index of spatial autocorrelation.
+#scores=scores.listw(listw, echo = FALSE, MEM.autocor = c("all","positive", "negative"))
+#MEM.autocor: A string indicating if all MEMs must be returned or only those corresponding to positive or negative autocorrelation.
+#Only positive correlations:
+SE.scores=scores.listw(SE.listw, echo = FALSE, MEM.autocor = "positive")
+	#listw not symmetric, (w+t(w)) used in the place of w 
+
+#Function to compute and test Moran's I for eigenvectors of spatial weighting matrices. 
+#This function tests Moran's I for each eigenvector of a spatial weighting matrix
+test.scores(SE.scores,SE.listw,nsim=999)
+       stat  pval
+1 0.9934033 0.001
+2 0.9164982 0.001
+3 0.7945233 0.001
+4 0.6336452 0.003
+5 0.4408883 0.022
+6 0.2268045 0.138
+
+#5 significant MEM eigenfunctions with positive correlations. OBS. use first half (3 in our case)
+
+write.table (SE.scores$vectors[,1], "SE.scores_MEM1.txt") 
+write.table (SE.scores$vectors[,2], "SE.scores_MEM2.txt") 
+write.table (SE.scores$vectors[,3], "SE.scores_MEM3.txt") 
+```
+
+######## Distance
+
+```
+##Geographic distance between all SE populations
+##using package Rdist
+
+library(fields)
+#Import .csv with coordinates (done above)
+
+
+
+#rdist.earth (in fields package) wants only long & lat
+SE_lon.lat <- cbind(env.data.SE$Long, env.data.SE$Lat)
+SE_lon.lat
+
+#calculate great circle distances
+distance.matrix.SE <- rdist.earth(SE_lon.lat)
+summary(distance.matrix.SE)
+dim(distance.matrix.SE)
+
+#and use only the lower half of the matrix
+upper.tri(distance.matrix.SE)
+distance.matrix.SE[lower.tri(distance.matrix.SE)]<-NA
+distance.matrix.SE
+
+#change from matrix to dataframe
+SE.bli <- as.data.frame(distance.matrix.SE)
+head(SE.bli)
+colnames(SE.bli) <- env.data.SE$pop
+rownames(SE.bli) <- env.data.SE$pop
+
+SE.bli[lower.tri(SE.bli,diag=TRUE)]=NA  #Prepare to drop duplicates and meaningless information
+SE.bli=as.data.frame(as.table(as.matrix(SE.bli)))  #Turn into a 3-column table
+SE.bli
+SE.bli=na.omit(SE.bli)  #Get rid of the junk we flagged above
+SE.bli
+colnames(SE.bli)<-c("site1", "site2", "dist(km)")
+head(SE.bli)
+
+SE.bli2 <- SE.bli[sort(SE.bli$site2),]
+
+head(SE.bli2)
+
+
+##write to csv
+write.csv(SE.bli, file="distance.SE.csv",row.names=F)
+
+```
+
+
 ##### 1. TempLoci
 ```
 
@@ -1102,18 +1228,8 @@ plink --file SE.132.TempLoci.plink --noweb --recode --recodeA --out SE.132.TempL
 
 Find the sample names in the *nosex file, and add pop names (i.e. 3 columns) to create a file for specifying clusters > SE.PlinkCluster
 
-```
-##in R
+For SE I created this in excel because the names were formatted strangely. 
 
-SE.nosex <- read.table("SE.132.TempLoci.plink.nosex", header=F)
-head(SE.nosex)
-SE.pop <- gsub("_\\d+", "", SE.nosex$V1)
-SE.pop
-SE.nosex$V3 <- SE.pop
-head(SE.nosex)
-write.table(SE.nosex, "SE.PlinkCluster", quote=F, row.names=F, col.names=F)
-
-```
 
 And calculate MAF with Plink
 
