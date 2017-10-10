@@ -1962,225 +1962,325 @@ SE.GF.SeasonLoci.Input.csv
 
 ### Run GF
 
-#### 1. Temp Loci
+#### 1.Temp Loci
 ```
 library(gradientForest)
 
 ###CHN
 
-gf.CHN.Adaptive <- read.csv("CHN.GF.TempLoci.Input.csv", header=T)
-envGF.CHN.Adaptive <- gf.CHN.Adaptive[,-1]
-colnames(envGF.CHN.Adaptive)
+gf.CHN.TempLoci <- read.csv("CHN.229.TempLoci.MAF.csv", header=T)
+envGF.CHN.TempLoci <- gf.CHN.TempLoci[,2:8]
+colnames(envGF.CHN.TempLoci)
 
-CHN.AdaptiveSNPS <- CHN.Adaptive.MAF3[,grep("X.", colnames(CHN.Adaptive.MAF3))]
-maxLevel <- log2(0.368*nrow(envGF.CHN.Adaptive)/2)
+CHN.TempLoci.SNPS <- gf.CHN.TempLoci[,9:ncol(gf.CHN.TempLoci)]
+maxLevel <- log2(0.368*nrow(envGF.CHN.TempLoci)/2)
 maxLevel
 
-gf.CHN.Adaptive.SNPs <- gradientForest(cbind(envGF.CHN.Adaptive, CHN.AdaptiveSNPS), predictor.vars=colnames(envGF.CHN.Adaptive), response.vars=colnames(CHN.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+gf.CHN.TempLoci.SNPs <- gradientForest(cbind(envGF.CHN.TempLoci, CHN.TempLoci.SNPS), predictor.vars=colnames(envGF.CHN.TempLoci), response.vars=colnames(CHN.TempLoci.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
-##12 warnings (loci variable in less than 5 populations)
+##4 warnings (loci variable in less than 5 populations)
+
+
+
+###CHS
+
+#library(gradientForest)
+gf.CHS.TempLoci <- read.csv("CHS.275.TempLoci.MAF.csv", header=T)
+colnames(gf.CHS.TempLoci)
+envGF.CHS.TempLoci <- gf.CHS.TempLoci[,2:9]
+colnames(envGF.CHS.TempLoci)
+
+CHS.TempLoci.SNPS <- gf.CHS.TempLoci[,10:ncol(gf.CHS.TempLoci)]
+maxLevel <- log2(0.368*nrow(envGF.CHS.TempLoci)/2)
+maxLevel
+
+gf.CHS.TempLoci.SNPs <- gradientForest(cbind(envGF.CHS.TempLoci, CHS.TempLoci.SNPS), predictor.vars=colnames(envGF.CHS.TempLoci), response.vars=colnames(CHS.TempLoci.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##4 warnings (loci variable in less than 5 populations)
+
 
 
 ###CZ
 
-gf.CZ.Adaptive <- read.csv("CZ.GF.TempLoci.Input.csv", header=T)
-envGF.CZ.Adaptive <- gf.CZ.Adaptive[,-1]
-colnames(envGF.CZ.Adaptive)
+#library(gradientForest)
+gf.CZ.TempLoci <- read.csv("CZ.404.TempLoci.MAF.csv", header=T)
+colnames(gf.CZ.TempLoci)
+envGF.CZ.TempLoci <- gf.CZ.TempLoci[,2:12]
+colnames(envGF.CZ.TempLoci)
 
-CZ.AdaptiveSNPS <- CZ.Adaptive.MAF3[,grep("X.", colnames(CZ.Adaptive.MAF3))]
-maxLevel <- log2(0.368*nrow(envGF.CZ.Adaptive)/2)
+CZ.TempLoci.SNPS <- gf.CZ.TempLoci[,13:ncol(gf.CZ.TempLoci)]
+maxLevel <- log2(0.368*nrow(envGF.CZ.TempLoci)/2)
 maxLevel
 
-gf.CZ.Adaptive.SNPs <- gradientForest(cbind(envGF.CZ.Adaptive, CZ.AdaptiveSNPS), predictor.vars=colnames(envGF.CZ.Adaptive), response.vars=colnames(CZ.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+gf.CZ.TempLoci.SNPs <- gradientForest(cbind(envGF.CZ.TempLoci, CZ.TempLoci.SNPS), predictor.vars=colnames(envGF.CZ.TempLoci), response.vars=colnames(CZ.TempLoci.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
 
 ###CHS.TI
 
-gf.CHS.TI.Adaptive <- read.csv("CHS.TI.GF.TempLoci.Input.csv", header=T)
-envGF.CHS.TI.Adaptive <- gf.CHS.TI.Adaptive[,-1]
-colnames(envGF.CHS.TI.Adaptive)
+#library(gradientForest)
+gf.CHS.TI.TempLoci <- read.csv("CHS.TI.140.TempLoci.MAF.csv", header=T)
+colnames(gf.CHS.TI.TempLoci)
+envGF.CHS.TI.TempLoci <- gf.CHS.TI.TempLoci[,2:7]
+colnames(envGF.CHS.TI.TempLoci)
 
-CHS.TI.AdaptiveSNPS <- CHS.TI.Adaptive.MAF3[,grep("X.", colnames(CHS.TI.Adaptive.MAF3))]
-maxLevel <- log2(0.368*nrow(envGF.CHS.TI.Adaptive)/2)
+CHS.TI.TempLoci.SNPS <- gf.CHS.TI.TempLoci[,8:ncol(gf.CHS.TI.TempLoci)]
+maxLevel <- log2(0.368*nrow(envGF.CHS.TI.TempLoci)/2)
 maxLevel
 
-gf.CHS.TI.Adaptive.SNPs <- gradientForest(cbind(envGF.CHS.TI.Adaptive, CHS.TI.AdaptiveSNPS), predictor.vars=colnames(envGF.CHS.TI.Adaptive), response.vars=colnames(CHS.TI.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+gf.CHS.TI.TempLoci.SNPs <- gradientForest(cbind(envGF.CHS.TI.TempLoci, CHS.TI.TempLoci.SNPS), predictor.vars=colnames(envGF.CHS.TI.TempLoci), response.vars=colnames(CHS.TI.TempLoci.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
-##26 warnings - loci variable in less than 5 pops
+##10 warnings (loci variable in less than 5 populations)
+
+
 
 ###CHS.VS
 
-gf.CHS.VS.Adaptive <- read.csv("CHS.VS.GF.TempLoci.Input.csv", header=T)
-envGF.CHS.VS.Adaptive <- gf.CHS.VS.Adaptive[,-1]
-colnames(envGF.CHS.VS.Adaptive)
+#library(gradientForest)
+gf.CHS.VS.TempLoci <- read.csv("CHS.VS.135.TempLoci.MAF.csv", header=T)
+colnames(gf.CHS.VS.TempLoci)
+envGF.CHS.VS.TempLoci <- gf.CHS.VS.TempLoci[,2:6]
+colnames(envGF.CHS.VS.TempLoci)
 
-CHS.VS.AdaptiveSNPS <- CHS.VS.Adaptive.MAF3[,grep("X.", colnames(CHS.VS.Adaptive.MAF3))]
-maxLevel <- log2(0.368*nrow(envGF.CHS.VS.Adaptive)/2)
+CHS.VS.TempLoci.SNPS <- gf.CHS.VS.TempLoci[,7:ncol(gf.CHS.VS.TempLoci)]
+maxLevel <- log2(0.368*nrow(envGF.CHS.VS.TempLoci)/2)
 maxLevel
 
-gf.CHS.VS.Adaptive.SNPs <- gradientForest(cbind(envGF.CHS.VS.Adaptive, CHS.VS.AdaptiveSNPS), predictor.vars=colnames(envGF.CHS.VS.Adaptive), response.vars=colnames(CHS.VS.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+gf.CHS.VS.TempLoci.SNPs <- gradientForest(cbind(envGF.CHS.VS.TempLoci, CHS.VS.TempLoci.SNPS), predictor.vars=colnames(envGF.CHS.VS.TempLoci), response.vars=colnames(CHS.VS.TempLoci.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
-###more than 50 warnings about non-polymorphic loci
+##32 warnings (loci variable in less than 5 populations)
+
+
 
 
 ###SE
 
-gf.SE.Adaptive <- read.csv("SE.GF.TempLoci.Input.csv", header=T)
-envGF.SE.Adaptive <- gf.SE.Adaptive[,-1]
-colnames(envGF.SE.Adaptive)
+#library(gradientForest)
+gf.SE.TempLoci <- read.csv("SE.132.TempLoci.MAF.csv", header=T)
+colnames(gf.SE.TempLoci)
+envGF.SE.TempLoci <- gf.SE.TempLoci[,2:7]
+colnames(envGF.SE.TempLoci)
 
-SE.AdaptiveSNPS <- SE.Adaptive.MAF3[,grep("X.", colnames(SE.Adaptive.MAF3))]
-maxLevel <- log2(0.368*nrow(envGF.SE.Adaptive)/2)
+SE.TempLoci.SNPS <- gf.SE.TempLoci[,8:ncol(gf.SE.TempLoci)]
+maxLevel <- log2(0.368*nrow(envGF.SE.TempLoci)/2)
 maxLevel
 
-gf.SE.Adaptive.SNPs <- gradientForest(cbind(envGF.SE.Adaptive, SE.AdaptiveSNPS), predictor.vars=colnames(envGF.SE.Adaptive), response.vars=colnames(SE.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+gf.SE.TempLoci.SNPs <- gradientForest(cbind(envGF.SE.TempLoci, SE.TempLoci.SNPS), predictor.vars=colnames(envGF.SE.TempLoci), response.vars=colnames(SE.TempLoci.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
-
+##6 warnings (loci variable in less than 5 populations)
 
 ```
 
-#### 2. Season Loci
+
+#### 1.Season Loci
 ```
 library(gradientForest)
 
 ###CHN
 
-gf.CHN.Adaptive <- read.csv("CHN.GF.SeasonLoci.Input.csv", header=T)
-envGF.CHN.Adaptive <- gf.CHN.Adaptive[,-1]
-colnames(envGF.CHN.Adaptive)
+gf.CHN.SeasonLoci <- read.csv("CHN.229.SeasonLoci.MAF.csv", header=T)
+envGF.CHN.SeasonLoci <- gf.CHN.SeasonLoci[,2:8]
+colnames(envGF.CHN.SeasonLoci)
 
-CHN.AdaptiveSNPS <- CHN.Adaptive.MAF3[,grep("X.", colnames(CHN.Adaptive.MAF3))]
-maxLevel <- log2(0.368*nrow(envGF.CHN.Adaptive)/2)
+CHN.SeasonLoci.SNPS <- gf.CHN.SeasonLoci[,9:ncol(gf.CHN.SeasonLoci)]
+maxLevel <- log2(0.368*nrow(envGF.CHN.SeasonLoci)/2)
 maxLevel
 
-gf.CHN.Adaptive.SNPs <- gradientForest(cbind(envGF.CHN.Adaptive, CHN.AdaptiveSNPS), predictor.vars=colnames(envGF.CHN.Adaptive), response.vars=colnames(CHN.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+gf.CHN.SeasonLoci.SNPs <- gradientForest(cbind(envGF.CHN.SeasonLoci, CHN.SeasonLoci.SNPS), predictor.vars=colnames(envGF.CHN.SeasonLoci), response.vars=colnames(CHN.SeasonLoci.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
-##12 warnings (loci variable in less than 5 populations)
+##8 warnings (loci variable in less than 5 populations)
+
+
+
+###CHS
+
+#library(gradientForest)
+gf.CHS.SeasonLoci <- read.csv("CHS.275.SeasonLoci.MAF.csv", header=T)
+colnames(gf.CHS.SeasonLoci)
+envGF.CHS.SeasonLoci <- gf.CHS.SeasonLoci[,2:9]
+colnames(envGF.CHS.SeasonLoci)
+
+CHS.SeasonLoci.SNPS <- gf.CHS.SeasonLoci[,10:ncol(gf.CHS.SeasonLoci)]
+maxLevel <- log2(0.368*nrow(envGF.CHS.SeasonLoci)/2)
+maxLevel
+
+gf.CHS.SeasonLoci.SNPs <- gradientForest(cbind(envGF.CHS.SeasonLoci, CHS.SeasonLoci.SNPS), predictor.vars=colnames(envGF.CHS.SeasonLoci), response.vars=colnames(CHS.SeasonLoci.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##4 warnings (loci variable in less than 5 populations)
+
 
 
 ###CZ
 
-gf.CZ.Adaptive <- read.csv("CZ.GF.SeasonLoci.Input.csv", header=T)
-envGF.CZ.Adaptive <- gf.CZ.Adaptive[,-1]
-colnames(envGF.CZ.Adaptive)
+#library(gradientForest)
+gf.CZ.SeasonLoci <- read.csv("CZ.404.SeasonLoci.MAF.csv", header=T)
+colnames(gf.CZ.SeasonLoci)
+envGF.CZ.SeasonLoci <- gf.CZ.SeasonLoci[,2:12]
+colnames(envGF.CZ.SeasonLoci)
 
-CZ.AdaptiveSNPS <- CZ.Adaptive.MAF3[,grep("X.", colnames(CZ.Adaptive.MAF3))]
-maxLevel <- log2(0.368*nrow(envGF.CZ.Adaptive)/2)
+CZ.SeasonLoci.SNPS <- gf.CZ.SeasonLoci[,13:ncol(gf.CZ.SeasonLoci)]
+maxLevel <- log2(0.368*nrow(envGF.CZ.SeasonLoci)/2)
 maxLevel
 
-gf.CZ.Adaptive.SNPs <- gradientForest(cbind(envGF.CZ.Adaptive, CZ.AdaptiveSNPS), predictor.vars=colnames(envGF.CZ.Adaptive), response.vars=colnames(CZ.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+gf.CZ.SeasonLoci.SNPs <- gradientForest(cbind(envGF.CZ.SeasonLoci, CZ.SeasonLoci.SNPS), predictor.vars=colnames(envGF.CZ.SeasonLoci), response.vars=colnames(CZ.SeasonLoci.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
 
 ###CHS.TI
 
-gf.CHS.TI.Adaptive <- read.csv("CHS.TI.GF.SeasonLoci.Input.csv", header=T)
-envGF.CHS.TI.Adaptive <- gf.CHS.TI.Adaptive[,-1]
-colnames(envGF.CHS.TI.Adaptive)
+#library(gradientForest)
+gf.CHS.TI.SeasonLoci <- read.csv("CHS.TI.140.SeasonLoci.MAF.csv", header=T)
+colnames(gf.CHS.TI.SeasonLoci)
+envGF.CHS.TI.SeasonLoci <- gf.CHS.TI.SeasonLoci[,2:7]
+colnames(envGF.CHS.TI.SeasonLoci)
 
-CHS.TI.AdaptiveSNPS <- CHS.TI.Adaptive.MAF3[,grep("X.", colnames(CHS.TI.Adaptive.MAF3))]
-maxLevel <- log2(0.368*nrow(envGF.CHS.TI.Adaptive)/2)
+CHS.TI.SeasonLoci.SNPS <- gf.CHS.TI.SeasonLoci[,8:ncol(gf.CHS.TI.SeasonLoci)]
+maxLevel <- log2(0.368*nrow(envGF.CHS.TI.SeasonLoci)/2)
 maxLevel
 
-gf.CHS.TI.Adaptive.SNPs <- gradientForest(cbind(envGF.CHS.TI.Adaptive, CHS.TI.AdaptiveSNPS), predictor.vars=colnames(envGF.CHS.TI.Adaptive), response.vars=colnames(CHS.TI.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+gf.CHS.TI.SeasonLoci.SNPs <- gradientForest(cbind(envGF.CHS.TI.SeasonLoci, CHS.TI.SeasonLoci.SNPS), predictor.vars=colnames(envGF.CHS.TI.SeasonLoci), response.vars=colnames(CHS.TI.SeasonLoci.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
-##26 warnings - loci variable in less than 5 pops
+##17 warnings (loci variable in less than 5 populations)
+
+
 
 ###CHS.VS
 
-gf.CHS.VS.Adaptive <- read.csv("CHS.VS.GF.SeasonLoci.Input.csv", header=T)
-envGF.CHS.VS.Adaptive <- gf.CHS.VS.Adaptive[,-1]
-colnames(envGF.CHS.VS.Adaptive)
+#library(gradientForest)
+gf.CHS.VS.SeasonLoci <- read.csv("CHS.VS.135.SeasonLoci.MAF.csv", header=T)
+colnames(gf.CHS.VS.SeasonLoci)
+envGF.CHS.VS.SeasonLoci <- gf.CHS.VS.SeasonLoci[,2:6]
+colnames(envGF.CHS.VS.SeasonLoci)
 
-CHS.VS.AdaptiveSNPS <- CHS.VS.Adaptive.MAF3[,grep("X.", colnames(CHS.VS.Adaptive.MAF3))]
-maxLevel <- log2(0.368*nrow(envGF.CHS.VS.Adaptive)/2)
+CHS.VS.SeasonLoci.SNPS <- gf.CHS.VS.SeasonLoci[,7:ncol(gf.CHS.VS.SeasonLoci)]
+maxLevel <- log2(0.368*nrow(envGF.CHS.VS.SeasonLoci)/2)
 maxLevel
 
-gf.CHS.VS.Adaptive.SNPs <- gradientForest(cbind(envGF.CHS.VS.Adaptive, CHS.VS.AdaptiveSNPS), predictor.vars=colnames(envGF.CHS.VS.Adaptive), response.vars=colnames(CHS.VS.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+gf.CHS.VS.SeasonLoci.SNPs <- gradientForest(cbind(envGF.CHS.VS.SeasonLoci, CHS.VS.SeasonLoci.SNPS), predictor.vars=colnames(envGF.CHS.VS.SeasonLoci), response.vars=colnames(CHS.VS.SeasonLoci.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
-###more than 50 warnings about non-polymorphic loci
+##21 warnings (loci variable in less than 5 populations)
+
+
 
 
 ###SE
 
-gf.SE.Adaptive <- read.csv("SE.GF.SeasonLoci.Input.csv", header=T)
-envGF.SE.Adaptive <- gf.SE.Adaptive[,-1]
-colnames(envGF.SE.Adaptive)
+#library(gradientForest)
+gf.SE.SeasonLoci <- read.csv("SE.132.SeasonLoci.MAF.csv", header=T)
+colnames(gf.SE.SeasonLoci)
+envGF.SE.SeasonLoci <- gf.SE.SeasonLoci[,2:7]
+colnames(envGF.SE.SeasonLoci)
 
-SE.AdaptiveSNPS <- SE.Adaptive.MAF3[,grep("X.", colnames(SE.Adaptive.MAF3))]
-maxLevel <- log2(0.368*nrow(envGF.SE.Adaptive)/2)
+SE.SeasonLoci.SNPS <- gf.SE.SeasonLoci[,8:ncol(gf.SE.SeasonLoci)]
+maxLevel <- log2(0.368*nrow(envGF.SE.SeasonLoci)/2)
 maxLevel
 
-gf.SE.Adaptive.SNPs <- gradientForest(cbind(envGF.SE.Adaptive, SE.AdaptiveSNPS), predictor.vars=colnames(envGF.SE.Adaptive), response.vars=colnames(SE.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+gf.SE.SeasonLoci.SNPs <- gradientForest(cbind(envGF.SE.SeasonLoci, SE.SeasonLoci.SNPS), predictor.vars=colnames(envGF.SE.SeasonLoci), response.vars=colnames(SE.SeasonLoci.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##6 warnings (loci variable in less than 5 populations)
 
 ```
-
-
 
 #### 3. Neutral Loci
-
 ```
+library(gradientForest)
+
 ###CHN
 
-gf.CHN.Neutral <- read.csv("CHN.GF.Neutral.MAF.csv", header=T)
-envGF.CHN.Neutral <- gf.CHN.Neutral[,-1]
+gf.CHN.Neutral <- read.csv("CHN.229.Neutral.MAF.csv", header=T)
+envGF.CHN.Neutral <- gf.CHN.Neutral[,2:8]
 colnames(envGF.CHN.Neutral)
 
-CHN.Neutral.SNPs <- CHN.Neutral.MAF3[,grep("X.", colnames(CHN.Neutral.MAF3))]
+CHN.Neutral.SNPS <- gf.CHN.Neutral[,9:ncol(gf.CHN.Neutral)]
 maxLevel <- log2(0.368*nrow(envGF.CHN.Neutral)/2)
 maxLevel
 
-gf.CHN.Neutral.SNPs <- gradientForest(cbind(envGF.CHN.Neutral, CHN.Neutral.SNPs), predictor.vars=colnames(envGF.CHN.Neutral), response.vars=colnames(CHN.Neutral.SNPs), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+gf.CHN.Neutral.SNPs <- gradientForest(cbind(envGF.CHN.Neutral, CHN.Neutral.SNPS), predictor.vars=colnames(envGF.CHN.Neutral), response.vars=colnames(CHN.Neutral.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##3 warnings (loci variable in less than 5 populations)
+
+
+
+
+###CHS
+
+#library(gradientForest)
+gf.CHS.Neutral <- read.csv("CHS.275.Neutral.MAF.csv", header=T)
+colnames(gf.CHS.Neutral)
+envGF.CHS.Neutral <- gf.CHS.Neutral[,2:9]
+colnames(envGF.CHS.Neutral)
+
+CHS.Neutral.SNPS <- gf.CHS.Neutral[,10:ncol(gf.CHS.Neutral)]
+maxLevel <- log2(0.368*nrow(envGF.CHS.Neutral)/2)
+maxLevel
+
+gf.CHS.Neutral.SNPs <- gradientForest(cbind(envGF.CHS.Neutral, CHS.Neutral.SNPS), predictor.vars=colnames(envGF.CHS.Neutral), response.vars=colnames(CHS.Neutral.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##2 warnings (loci variable in less than 5 populations)
+
 
 ###CZ
 
-gf.CZ.Neutral <- read.csv("CZ.GF.Neutral.MAF.csv", header=T)
-envGF.CZ.Neutral <- gf.CZ.Neutral[,-1]
+#library(gradientForest)
+gf.CZ.Neutral <- read.csv("CZ.404.Neutral.MAF.csv", header=T)
+colnames(gf.CZ.Neutral)
+envGF.CZ.Neutral <- gf.CZ.Neutral[,2:12]
 colnames(envGF.CZ.Neutral)
 
-CZ.Neutral.SNPs <- CZ.Neutral.MAF3[,grep("X.", colnames(CZ.Neutral.MAF3))]
+CZ.Neutral.SNPS <- gf.CZ.Neutral[,13:ncol(gf.CZ.Neutral)]
 maxLevel <- log2(0.368*nrow(envGF.CZ.Neutral)/2)
 maxLevel
 
-gf.CZ.Neutral.SNPs <- gradientForest(cbind(envGF.CZ.Neutral, CZ.Neutral.SNPs), predictor.vars=colnames(envGF.CZ.Neutral), response.vars=colnames(CZ.Neutral.SNPs), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+gf.CZ.Neutral.SNPs <- gradientForest(cbind(envGF.CZ.Neutral, CZ.Neutral.SNPS), predictor.vars=colnames(envGF.CZ.Neutral), response.vars=colnames(CZ.Neutral.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
 
 ###CHS.TI
 
-gf.CHS.TI.Neutral <- read.csv("CHS.TI.GF.NeutralLoci.Input.csv", header=T)
-envGF.CHS.TI.Neutral <- gf.CHS.TI.Neutral[,-1]
+#library(gradientForest)
+gf.CHS.TI.Neutral <- read.csv("CHS.TI.140.Neutral.MAF.csv", header=T)
+colnames(gf.CHS.TI.Neutral)
+envGF.CHS.TI.Neutral <- gf.CHS.TI.Neutral[,2:7]
 colnames(envGF.CHS.TI.Neutral)
 
-CHS.TI.Neutral.SNPs <- CHS.TI.Neutral.MAF3[,grep("X.", colnames(CHS.TI.Neutral.MAF3))]
+CHS.TI.Neutral.SNPS <- gf.CHS.TI.Neutral[,8:ncol(gf.CHS.TI.Neutral)]
 maxLevel <- log2(0.368*nrow(envGF.CHS.TI.Neutral)/2)
 maxLevel
 
-gf.CHS.TI.Neutral.SNPs <- gradientForest(cbind(envGF.CHS.TI.Neutral, CHS.TI.Neutral.SNPs), predictor.vars=colnames(envGF.CHS.TI.Neutral), response.vars=colnames(CHS.TI.Neutral.SNPs), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+gf.CHS.TI.Neutral.SNPs <- gradientForest(cbind(envGF.CHS.TI.Neutral, CHS.TI.Neutral.SNPS), predictor.vars=colnames(envGF.CHS.TI.Neutral), response.vars=colnames(CHS.TI.Neutral.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##33 warnings (loci variable in less than 5 populations)
 
 
 ###CHS.VS
 
-gf.CHS.VS.Neutral <- read.csv("CHS.VS.GF.NeutralLoci.Input.csv", header=T)
-envGF.CHS.VS.Neutral <- gf.CHS.VS.Neutral[,-1]
+#library(gradientForest)
+gf.CHS.VS.Neutral <- read.csv("CHS.VS.135.Neutral.MAF.csv", header=T)
+colnames(gf.CHS.VS.Neutral)
+envGF.CHS.VS.Neutral <- gf.CHS.VS.Neutral[,2:6]
 colnames(envGF.CHS.VS.Neutral)
 
-CHS.VS.Neutral.SNPs <- CHS.VS.Neutral.MAF3[,grep("X.", colnames(CHS.VS.Neutral.MAF3))]
+CHS.VS.Neutral.SNPS <- gf.CHS.VS.Neutral[,7:ncol(gf.CHS.VS.Neutral)]
 maxLevel <- log2(0.368*nrow(envGF.CHS.VS.Neutral)/2)
 maxLevel
 
-gf.CHS.VS.Neutral.SNPs <- gradientForest(cbind(envGF.CHS.VS.Neutral, CHS.VS.Neutral.SNPs), predictor.vars=colnames(envGF.CHS.VS.Neutral), response.vars=colnames(CHS.VS.Neutral.SNPs), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+gf.CHS.VS.Neutral.SNPs <- gradientForest(cbind(envGF.CHS.VS.Neutral, CHS.VS.Neutral.SNPS), predictor.vars=colnames(envGF.CHS.VS.Neutral), response.vars=colnames(CHS.VS.Neutral.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##47 warnings (loci variable in less than 5 populations)
 
 
 ###SE
 
-gf.SE.Neutral <- read.csv("SE.GF.NeutralLoci.Input.csv", header=T)
-envGF.SE.Neutral <- gf.SE.Neutral[,-1]
+#library(gradientForest)
+gf.SE.Neutral <- read.csv("SE.132.Neutral.MAF.csv", header=T)
+colnames(gf.SE.Neutral)
+envGF.SE.Neutral <- gf.SE.Neutral[,2:7]
 colnames(envGF.SE.Neutral)
 
-SE.Neutral.SNPs <- SE.Neutral.MAF3[,grep("X.", colnames(SE.Neutral.MAF3))]
+SE.Neutral.SNPS <- gf.SE.Neutral[,8:ncol(gf.SE.Neutral)]
 maxLevel <- log2(0.368*nrow(envGF.SE.Neutral)/2)
 maxLevel
 
-gf.SE.Neutral.SNPs <- gradientForest(cbind(envGF.SE.Neutral, SE.Neutral.SNPs), predictor.vars=colnames(envGF.SE.Neutral), response.vars=colnames(SE.Neutral.SNPs), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+gf.SE.Neutral.SNPs <- gradientForest(cbind(envGF.SE.Neutral, SE.Neutral.SNPS), predictor.vars=colnames(envGF.SE.Neutral), response.vars=colnames(SE.Neutral.SNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##6 warnings (loci variable in less than 5 populations)
 ```
 
 
@@ -2248,73 +2348,179 @@ hist(perf.Fst.df$perf.Fst)
 ```
 #R
 
+library(reshape)
+library(ggplot2)
+
 ###CHN
 
 #Retrieve results from the individual outputs for both GF models: 
 
-R.sq.alldatasets <- (rowMeans(gf.CHN.Adaptive.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
-R.sq.alldatasets <- as.data.frame(R.sq.alldatasets)
-R.sq.alldatasets
-colnames(R.sq.alldatasets) <- "Adaptive"
+R.sq.CHN.TempLoci <- (rowMeans(gf.CHN.TempLoci.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.CHN.TempLoci <- as.data.frame(R.sq.CHN.TempLoci)
+R.sq.CHN.TempLoci
+colnames(R.sq.CHN.TempLoci) <- "TempLoci"
+
+R.sq.CHN.SeasonLoci <- (rowMeans(gf.CHN.SeasonLoci.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.CHN.SeasonLoci <- as.data.frame(R.sq.CHN.SeasonLoci)
+R.sq.CHN.SeasonLoci
+colnames(R.sq.CHN.SeasonLoci) <- "SeasonLoci"
 
 R.sq.Neutral <- (rowMeans(gf.CHN.Neutral.SNPs$imp.rsq, na.rm=T))
 R.sq.Neutral <- as.data.frame(R.sq.Neutral)
 
-##we're only interested in the first 8 variables
-R.sq.EnvVariables <- R.sq.alldatasets[1:8,]  #get the first 8 rows from the Adaptive dataset
-R.sq.EnvVariables <- as.data.frame(R.sq.EnvVariables)
-colnames(R.sq.EnvVariables) <- "Adaptive"
-row.names(R.sq.EnvVariables) <- c("dist", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm", "MEM1", "MEM2")
-R.sq.EnvVariables$Neutral <- R.sq.Neutral[1:8,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
+##we're only interested in the first 7 variables
+R.sq.CHN.EnvVariables <- R.sq.CHN.TempLoci[1:7,]  #get the first 8 rows from the Adaptive dataset
+R.sq.CHN.EnvVariables <- as.data.frame(R.sq.CHN.EnvVariables)
+colnames(R.sq.CHN.EnvVariables) <- "TempLoci"
+row.names(R.sq.CHN.EnvVariables) <- c("dist", "mean.temp", "season.length", "MEM1", "MEM2", "MEM3", "MEM4")
 
-R.sq.EnvVariables <- as.matrix(R.sq.EnvVariables)  ##turn into matrix for heatmap
-R.sq.all.melt <- melt(R.sq.EnvVariables)  ##melt for ggplot heatmap
-R.sq.all.melt <- R.sq.all.melt[order(R.sq.all.melt$Var1),]  ##order by predictor variable
+R.sq.CHN.EnvVariables$SeasonLoci <- R.sq.CHN.SeasonLoci[1:7,] 
+R.sq.CHN.EnvVariables$Neutral <- R.sq.Neutral[1:7,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
 
-R.sq.all.melt
+R.sq.CHN.EnvVariables <- as.matrix(R.sq.CHN.EnvVariables)  ##turn into matrix for heatmap
+R.sq.CHN.all.melt <- melt(R.sq.CHN.EnvVariables)  ##melt for ggplot heatmap
+R.sq.CHN.all.melt <- R.sq.CHN.all.melt[order(R.sq.CHN.all.melt$X1),]  ##order by predictor variable
+
+R.sq.CHN.all.melt
 
 library(RColorBrewer)
 #hm.palette <- colorRampPalette(rev(brewer.pal(9, 'YlOrRd')), space='Lab')  ##change the colour palette to red. Default is blue
 
-pdf("CHN.R2plot.pdf")
-ggplot(R.sq.all.melt, aes(x=Var2, y=Var1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
+pdf("CHN.CHP4.R2plot.pdf")
+ggplot(R.sq.CHN.all.melt, aes(x=X2, y=X1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
 scale_fill_gradient(name="R2 CHN") +   ##title of the legend
 theme(axis.title.x=element_blank(), axis.title.y=element_blank())   ##remove names of axes
 dev.off()
 
 
-###CZ
+
+###CHS
+
 #Retrieve results from the individual outputs for both GF models: 
 
-R.sq.alldatasets <- (rowMeans(gf.CZ.Adaptive.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
-R.sq.alldatasets <- as.data.frame(R.sq.alldatasets)
-R.sq.alldatasets
-colnames(R.sq.alldatasets) <- "Adaptive"
+R.sq.CHS.TempLoci <- (rowMeans(gf.CHS.TempLoci.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.CHS.TempLoci <- as.data.frame(R.sq.CHS.TempLoci)
+R.sq.CHS.TempLoci
+colnames(R.sq.CHS.TempLoci) <- "TempLoci"
 
-R.sq.Neutral <- (rowMeans(gf.CZ.Neutral.SNPs$imp.rsq, na.rm=T))
+R.sq.CHS.SeasonLoci <- (rowMeans(gf.CHS.SeasonLoci.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.CHS.SeasonLoci <- as.data.frame(R.sq.CHS.SeasonLoci)
+R.sq.CHS.SeasonLoci
+colnames(R.sq.CHS.SeasonLoci) <- "SeasonLoci"
+
+R.sq.Neutral <- (rowMeans(gf.CHS.Neutral.SNPs$imp.rsq, na.rm=T))
 R.sq.Neutral <- as.data.frame(R.sq.Neutral)
 
 ##we're only interested in the first 8 variables
-R.sq.EnvVariables <- R.sq.alldatasets[1:8,]  #get the first 8 rows from the Adaptive dataset
-R.sq.EnvVariables <- as.data.frame(R.sq.EnvVariables)
-colnames(R.sq.EnvVariables) <- "Adaptive"
-row.names(R.sq.EnvVariables) <- c("dist", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm", "MEM1", "MEM2")
-R.sq.EnvVariables$Neutral <- R.sq.Neutral[1:8,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
+R.sq.CHS.EnvVariables <- R.sq.CHS.TempLoci[1:8,]  #get the first 8 rows from the Adaptive dataset
+R.sq.CHS.EnvVariables <- as.data.frame(R.sq.CHS.EnvVariables)
+colnames(R.sq.CHS.EnvVariables) <- "TempLoci"
+row.names(R.sq.CHS.EnvVariables) <- c("dist", "mean.temp", "season.length", "MEM1", "MEM2", "MEM3", "MEM4", "MEM5")
 
-R.sq.EnvVariables <- as.matrix(R.sq.EnvVariables)  ##turn into matrix for heatmap
-R.sq.all.melt <- melt(R.sq.EnvVariables)  ##melt for ggplot heatmap
-R.sq.all.melt <- R.sq.all.melt[order(R.sq.all.melt$Var1),]  ##order by predictor variable
+R.sq.CHS.EnvVariables$SeasonLoci <- R.sq.CHS.SeasonLoci[1:8,] 
+R.sq.CHS.EnvVariables$Neutral <- R.sq.Neutral[1:8,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
 
-R.sq.all.melt
+R.sq.CHS.EnvVariables <- as.matrix(R.sq.CHS.EnvVariables)  ##turn into matrix for heatmap
+R.sq.CHS.all.melt <- melt(R.sq.CHS.EnvVariables)  ##melt for ggplot heatmap
+R.sq.CHS.all.melt <- R.sq.CHS.all.melt[order(R.sq.CHS.all.melt$X1),]  ##order by predictor variable
+
+R.sq.CHS.all.melt
 
 library(RColorBrewer)
 #hm.palette <- colorRampPalette(rev(brewer.pal(9, 'YlOrRd')), space='Lab')  ##change the colour palette to red. Default is blue
 
-pdf("CZ.R2plot.pdf")
-ggplot(R.sq.all.melt, aes(x=Var2, y=Var1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
+pdf("CHS.CHP4.R2plot.pdf")
+ggplot(R.sq.CHS.all.melt, aes(x=X2, y=X1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
+scale_fill_gradient(name="R2 CHS") +   ##title of the legend
+theme(axis.title.x=element_blank(), axis.title.y=element_blank())   ##remove names of axes
+dev.off()
+
+
+
+###CZ
+
+#Retrieve results from the individual outputs for both GF models: 
+
+R.sq.CZ.TempLoci <- (rowMeans(gf.CZ.TempLoci.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.CZ.TempLoci <- as.data.frame(R.sq.CZ.TempLoci)
+R.sq.CZ.TempLoci
+colnames(R.sq.CZ.TempLoci) <- "TempLoci"
+
+R.sq.CZ.SeasonLoci <- (rowMeans(gf.CZ.SeasonLoci.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.CZ.SeasonLoci <- as.data.frame(R.sq.CZ.SeasonLoci)
+R.sq.CZ.SeasonLoci
+colnames(R.sq.CZ.SeasonLoci) <- "SeasonLoci"
+
+R.sq.Neutral <- (rowMeans(gf.CZ.Neutral.SNPs$imp.rsq, na.rm=T))
+R.sq.Neutral <- as.data.frame(R.sq.Neutral)
+
+##we're only interested in the first 11 variables
+R.sq.CZ.EnvVariables <- R.sq.CZ.TempLoci[1:11,]  #get the first 8 rows from the Adaptive dataset
+R.sq.CZ.EnvVariables <- as.data.frame(R.sq.CZ.EnvVariables)
+colnames(R.sq.CZ.EnvVariables) <- "TempLoci"
+row.names(R.sq.CZ.EnvVariables) <- c("dist", "mean.temp", "season.length", "MEM1", "MEM2", "MEM3", "MEM4", "MEM5", "MEM6", "MEM7", "MEM8")
+
+R.sq.CZ.EnvVariables$SeasonLoci <- R.sq.CZ.SeasonLoci[1:11,] 
+R.sq.CZ.EnvVariables$Neutral <- R.sq.Neutral[1:11,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
+
+R.sq.CZ.EnvVariables <- as.matrix(R.sq.CZ.EnvVariables)  ##turn into matrix for heatmap
+R.sq.CZ.all.melt <- melt(R.sq.CZ.EnvVariables)  ##melt for ggplot heatmap
+R.sq.CZ.all.melt <- R.sq.CZ.all.melt[order(R.sq.CZ.all.melt$X1),]  ##order by predictor variable
+
+R.sq.CZ.all.melt
+
+library(RColorBrewer)
+#hm.palette <- colorRampPalette(rev(brewer.pal(9, 'YlOrRd')), space='Lab')  ##change the colour palette to red. Default is blue
+
+pdf("CZ.CHP4.R2plot.pdf")
+ggplot(R.sq.CZ.all.melt, aes(x=X2, y=X1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
 scale_fill_gradient(name="R2 CZ") +   ##title of the legend
 theme(axis.title.x=element_blank(), axis.title.y=element_blank())   ##remove names of axes
 dev.off()
+
+
+
+###CHS.VS
+
+#Retrieve results from the individual outputs for both GF models: 
+
+R.sq.CHS.VS.TempLoci <- (rowMeans(gf.CHS.VS.TempLoci.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.CHS.VS.TempLoci <- as.data.frame(R.sq.CHS.VS.TempLoci)
+R.sq.CHS.VS.TempLoci
+colnames(R.sq.CHS.VS.TempLoci) <- "TempLoci"
+
+R.sq.CHS.VS.SeasonLoci <- (rowMeans(gf.CHS.VS.SeasonLoci.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.CHS.VS.SeasonLoci <- as.data.frame(R.sq.CHS.VS.SeasonLoci)
+R.sq.CHS.VS.SeasonLoci
+colnames(R.sq.CHS.VS.SeasonLoci) <- "SeasonLoci"
+
+R.sq.Neutral <- (rowMeans(gf.CHS.VS.Neutral.SNPs$imp.rsq, na.rm=T))
+R.sq.Neutral <- as.data.frame(R.sq.Neutral)
+
+##we're only interested in the first 5 variables
+R.sq.CHS.VS.EnvVariables <- R.sq.CHS.VS.TempLoci[1:5,]  #get the first 8 rows from the Adaptive dataset
+R.sq.CHS.VS.EnvVariables <- as.data.frame(R.sq.CHS.VS.EnvVariables)
+colnames(R.sq.CHS.VS.EnvVariables) <- "TempLoci"
+row.names(R.sq.CHS.VS.EnvVariables) <- c("dist", "mean.temp", "season.length", "MEM1", "MEM2")
+
+R.sq.CHS.VS.EnvVariables$SeasonLoci <- R.sq.CHS.VS.SeasonLoci[1:5,] 
+R.sq.CHS.VS.EnvVariables$Neutral <- R.sq.Neutral[1:5,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
+
+R.sq.CHS.VS.EnvVariables <- as.matrix(R.sq.CHS.VS.EnvVariables)  ##turn into matrix for heatmap
+R.sq.CHS.VS.all.melt <- melt(R.sq.CHS.VS.EnvVariables)  ##melt for ggplot heatmap
+R.sq.CHS.VS.all.melt <- R.sq.CHS.VS.all.melt[order(R.sq.CHS.VS.all.melt$X1),]  ##order by predictor variable
+
+R.sq.CHS.VS.all.melt
+
+library(RColorBrewer)
+#hm.palette <- colorRampPalette(rev(brewer.pal(9, 'YlOrRd')), space='Lab')  ##change the colour palette to red. Default is blue
+
+pdf("CHS.VS.CHP4.R2plot.pdf")
+ggplot(R.sq.CHS.VS.all.melt, aes(x=X2, y=X1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
+scale_fill_gradient(name="R2 CHS.VS") +   ##title of the legend
+theme(axis.title.x=element_blank(), axis.title.y=element_blank())   ##remove names of axes
+dev.off()
+
 
 
 
@@ -2322,75 +2528,90 @@ dev.off()
 
 #Retrieve results from the individual outputs for both GF models: 
 
-R.sq.alldatasets <- (rowMeans(gf.CHS.TI.Adaptive.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
-R.sq.alldatasets <- as.data.frame(R.sq.alldatasets)
-R.sq.alldatasets
-colnames(R.sq.alldatasets) <- "Adaptive"
+R.sq.CHS.TI.TempLoci <- (rowMeans(gf.CHS.TI.TempLoci.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.CHS.TI.TempLoci <- as.data.frame(R.sq.CHS.TI.TempLoci)
+R.sq.CHS.TI.TempLoci
+colnames(R.sq.CHS.TI.TempLoci) <- "TempLoci"
+
+R.sq.CHS.TI.SeasonLoci <- (rowMeans(gf.CHS.TI.SeasonLoci.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.CHS.TI.SeasonLoci <- as.data.frame(R.sq.CHS.TI.SeasonLoci)
+R.sq.CHS.TI.SeasonLoci
+colnames(R.sq.CHS.TI.SeasonLoci) <- "SeasonLoci"
 
 R.sq.Neutral <- (rowMeans(gf.CHS.TI.Neutral.SNPs$imp.rsq, na.rm=T))
 R.sq.Neutral <- as.data.frame(R.sq.Neutral)
 
-##we're only interested in the first 8 variables
-R.sq.EnvVariables <- R.sq.alldatasets[1:8,]  #get the first 8 rows from the Adaptive dataset
-R.sq.EnvVariables <- as.data.frame(R.sq.EnvVariables)
-colnames(R.sq.EnvVariables) <- "Adaptive"
-row.names(R.sq.EnvVariables) <- c("dist", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm", "MEM1", "MEM2")
-R.sq.EnvVariables$Neutral <- R.sq.Neutral[1:8,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
+##we're only interested in the first 6 variables
+R.sq.CHS.TI.EnvVariables <- R.sq.CHS.TI.TempLoci[1:6,]  #get the first 8 rows from the Adaptive dataset
+R.sq.CHS.TI.EnvVariables <- as.data.frame(R.sq.CHS.TI.EnvVariables)
+colnames(R.sq.CHS.TI.EnvVariables) <- "TempLoci"
+row.names(R.sq.CHS.TI.EnvVariables) <- c("dist", "mean.temp", "season.length", "MEM1", "MEM2", "MEM3")
 
-R.sq.EnvVariables <- as.matrix(R.sq.EnvVariables)  ##turn into matrix for heatmap
-R.sq.all.melt <- melt(R.sq.EnvVariables)  ##melt for ggplot heatmap
-R.sq.all.melt <- R.sq.all.melt[order(R.sq.all.melt$Var1),]  ##order by predictor variable
+R.sq.CHS.TI.EnvVariables$SeasonLoci <- R.sq.CHS.TI.SeasonLoci[1:6,] 
+R.sq.CHS.TI.EnvVariables$Neutral <- R.sq.Neutral[1:6,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
 
-R.sq.all.melt
+R.sq.CHS.TI.EnvVariables <- as.matrix(R.sq.CHS.TI.EnvVariables)  ##turn into matrix for heatmap
+R.sq.CHS.TI.all.melt <- melt(R.sq.CHS.TI.EnvVariables)  ##melt for ggplot heatmap
+R.sq.CHS.TI.all.melt <- R.sq.CHS.TI.all.melt[order(R.sq.CHS.TI.all.melt$X1),]  ##order by predictor variable
+
+R.sq.CHS.TI.all.melt
 
 library(RColorBrewer)
 #hm.palette <- colorRampPalette(rev(brewer.pal(9, 'YlOrRd')), space='Lab')  ##change the colour palette to red. Default is blue
 
-pdf("CHS.TI.R2plot.pdf")
-ggplot(R.sq.all.melt, aes(x=Var2, y=Var1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
+pdf("CHS.TI.CHP4.R2plot.pdf")
+ggplot(R.sq.CHS.TI.all.melt, aes(x=X2, y=X1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
 scale_fill_gradient(name="R2 CHS.TI") +   ##title of the legend
 theme(axis.title.x=element_blank(), axis.title.y=element_blank())   ##remove names of axes
 dev.off()
 
 
-###CHS.VS
+
+###SE
 
 #Retrieve results from the individual outputs for both GF models: 
 
-R.sq.alldatasets <- (rowMeans(gf.CHS.VS.Adaptive.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
-R.sq.alldatasets <- as.data.frame(R.sq.alldatasets)
-R.sq.alldatasets
-colnames(R.sq.alldatasets) <- "Adaptive"
+R.sq.SE.TempLoci <- (rowMeans(gf.SE.TempLoci.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.SE.TempLoci <- as.data.frame(R.sq.SE.TempLoci)
+R.sq.SE.TempLoci
+colnames(R.sq.SE.TempLoci) <- "TempLoci"
 
-R.sq.Neutral <- (rowMeans(gf.CHS.VS.Neutral.SNPs$imp.rsq, na.rm=T))
+R.sq.SE.SeasonLoci <- (rowMeans(gf.SE.SeasonLoci.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.SE.SeasonLoci <- as.data.frame(R.sq.SE.SeasonLoci)
+R.sq.SE.SeasonLoci
+colnames(R.sq.SE.SeasonLoci) <- "SeasonLoci"
+
+R.sq.Neutral <- (rowMeans(gf.SE.Neutral.SNPs$imp.rsq, na.rm=T))
 R.sq.Neutral <- as.data.frame(R.sq.Neutral)
 
-##we're only interested in the first 8 variables
-R.sq.EnvVariables <- R.sq.alldatasets[1:8,]  #get the first 8 rows from the Adaptive dataset
-R.sq.EnvVariables <- as.data.frame(R.sq.EnvVariables)
-colnames(R.sq.EnvVariables) <- "Adaptive"
-row.names(R.sq.EnvVariables) <- c("dist", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm", "MEM1", "MEM2")
-R.sq.EnvVariables$Neutral <- R.sq.Neutral[1:8,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
+##we're only interested in the first 6 variables
+R.sq.SE.EnvVariables <- R.sq.SE.TempLoci[1:6,]  #get the first 8 rows from the Adaptive dataset
+R.sq.SE.EnvVariables <- as.data.frame(R.sq.SE.EnvVariables)
+colnames(R.sq.SE.EnvVariables) <- "TempLoci"
+row.names(R.sq.SE.EnvVariables) <- c("dist", "mean.temp", "season.length", "MEM1", "MEM2", "MEM3")
 
-R.sq.EnvVariables <- as.matrix(R.sq.EnvVariables)  ##turn into matrix for heatmap
-R.sq.all.melt <- melt(R.sq.EnvVariables)  ##melt for ggplot heatmap
-R.sq.all.melt <- R.sq.all.melt[order(R.sq.all.melt$Var1),]  ##order by predictor variable
+R.sq.SE.EnvVariables$SeasonLoci <- R.sq.SE.SeasonLoci[1:6,] 
+R.sq.SE.EnvVariables$Neutral <- R.sq.Neutral[1:6,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
 
-R.sq.all.melt
+R.sq.SE.EnvVariables <- as.matrix(R.sq.SE.EnvVariables)  ##turn into matrix for heatmap
+R.sq.SE.all.melt <- melt(R.sq.SE.EnvVariables)  ##melt for ggplot heatmap
+R.sq.SE.all.melt <- R.sq.SE.all.melt[order(R.sq.SE.all.melt$X1),]  ##order by predictor variable
+
+R.sq.SE.all.melt
 
 library(RColorBrewer)
 #hm.palette <- colorRampPalette(rev(brewer.pal(9, 'YlOrRd')), space='Lab')  ##change the colour palette to red. Default is blue
 
-pdf("CHS.VS.R2plot.pdf")
-ggplot(R.sq.all.melt, aes(x=Var2, y=Var1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
-scale_fill_gradient(name="R2 CHS.VS") +   ##title of the legend
+pdf("SE.CHP4.R2plot.pdf")
+ggplot(R.sq.SE.all.melt, aes(x=X2, y=X1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
+scale_fill_gradient(name="R2 SE") +   ##title of the legend
 theme(axis.title.x=element_blank(), axis.title.y=element_blank())   ##remove names of axes
 dev.off()
 ```
 
 ![alt_txt][Fig1]
 
-[Fig1]:https://user-images.githubusercontent.com/12142475/31220345-07976010-a9b8-11e7-83de-bf481fa4cc4e.png
+[Fig1]:
 
 
 
@@ -2398,7 +2619,7 @@ dev.off()
 
 It took me a while to find the code for the gf plots so that I could figure out what was being plotted, and so combine the plots. 
 ```
-leg.txt <- c("Neutral", "Adaptive")  ##define the text that will be added to the legend
+leg.txt <- c("Neutral", "Mean.Temp", "Season.Length")  ##define the text that will be added to the legend
 ```
 
 
@@ -2408,273 +2629,493 @@ leg.txt <- c("Neutral", "Adaptive")  ##define the text that will be added to the
 
 ##### CHS.TI Cumulative plot
 ```
-##sol.rad.60d
+##Temp.Loci
 
-CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "sol.rad.60d") ##find the cumulative importance for each gf.model output
-CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "sol.rad.60d")
+CU.Temp.CHS.TI.Temp.Loci <- cumimp(gf.CHS.TI.TempLoci.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.Season.CHS.TI.Temp.Loci <- cumimp(gf.CHS.TI.SeasonLoci.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.Neutral.CHS.TI.Temp.Loci <- cumimp(gf.CHS.TI.Neutral.SNPs, "mean.temp.60d")
 
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
+isub.Temp.CHS.TI.Temp.Loci <- seq(1, length(CU.Temp.CHS.TI.Temp.Loci$x), len = pmin(500, length(CU.Temp.CHS.TI.Temp.Loci$x)))
+isub.Season.CHS.TI.Temp.Loci <- seq(1, length(CU.Season.CHS.TI.Temp.Loci$x), len = pmin(500, length(CU.Season.CHS.TI.Temp.Loci$x)))
+isub.Neutral.CHS.TI.Temp.Loci <- seq(1, length(CU.Neutral.CHS.TI.Temp.Loci$x), len = pmin(500, length(CU.Neutral.CHS.TI.Temp.Loci$x)))
 
-ymax=0.0015 #set the ymax so that it's the same for the the plots to be overlaid
+ymax=0.04 #set the ymax so that it's the same for the the plots to be overlaid
 
-pdf("sol.rad.60d.CumImp.CHS.TI.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="Cumulative Importance", xlab="sol.rad.60d: mean solar radiation 60days after laying", ylim=c(0,ymax), lty=1, lwd=1.5)
+pdf("CHP4.Temp.Loci.CumImp.CHS.TI.pdf")
+plot(CU.Neutral.CHS.TI.Temp.Loci$x[isub.Neutral.CHS.TI.Temp.Loci], CU.Neutral.CHS.TI.Temp.Loci$y[isub.Neutral.CHS.TI.Temp.Loci], type = "s", ylab ="Cumulative Importance", xlab="Temp.Loci", ylim=c(0,ymax), lty=1, lwd=1.5)
 par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+plot(CU.Temp.CHS.TI.Temp.Loci$x[isub.Temp.CHS.TI.Temp.Loci], CU.Temp.CHS.TI.Temp.Loci$y[isub.Temp.CHS.TI.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.TI.Temp.Loci$x[isub.Season.CHS.TI.Temp.Loci], CU.Season.CHS.TI.Temp.Loci$y[isub.Season.CHS.TI.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
 legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
 dev.off()
 
 
-##temp.laying.date
-CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "temp.laying.date") ##find the cumulative importance for each gf.model output
-CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "temp.laying.date")
 
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
+##Season.Loci
 
-pdf("temp.laying.date.CumImp.CHS.TI.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="", xlab="temp.laying.date", ylim=c(0,ymax), lty=1, lwd=1.5)
+CU.Temp.CHS.TI.Season.Loci <- cumimp(gf.CHS.TI.TempLoci.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.Season.CHS.TI.Season.Loci <- cumimp(gf.CHS.TI.SeasonLoci.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.Neutral.CHS.TI.Season.Loci <- cumimp(gf.CHS.TI.Neutral.SNPs, "days.above.6")
+
+isub.Temp.CHS.TI.Season.Loci <- seq(1, length(CU.Temp.CHS.TI.Season.Loci$x), len = pmin(500, length(CU.Temp.CHS.TI.Season.Loci$x)))
+isub.Season.CHS.TI.Season.Loci <- seq(1, length(CU.Season.CHS.TI.Season.Loci$x), len = pmin(500, length(CU.Season.CHS.TI.Season.Loci$x)))
+isub.Neutral.CHS.TI.Season.Loci <- seq(1, length(CU.Neutral.CHS.TI.Season.Loci$x), len = pmin(500, length(CU.Neutral.CHS.TI.Season.Loci$x)))
+
+ymax=0.04 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.Season.Loci.CumImp.CHS.TI.pdf")
+plot(CU.Neutral.CHS.TI.Season.Loci$x[isub.Neutral.CHS.TI.Season.Loci], CU.Neutral.CHS.TI.Season.Loci$y[isub.Neutral.CHS.TI.Season.Loci], type = "s", ylab ="Cumulative Importance", xlab="Season.Loci", ylim=c(0,ymax), lty=1, lwd=1.5)
 par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
-dev.off()
-
-
-
-##pcpt.60d
-CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "pcpt.60d") 
-CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "pcpt.60d")
-
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
-
-
-pdf("pcpt.60d.CumImp.CHS.TI.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="", xlab="pcpt.60d: Precipitation 60days after laying", ylim=c(0,ymax), lty=1, lwd=1.5)
+plot(CU.Temp.CHS.TI.Season.Loci$x[isub.Temp.CHS.TI.Season.Loci], CU.Temp.CHS.TI.Season.Loci$y[isub.Temp.CHS.TI.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
 par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
-dev.off()
-
-
-
-##shadow.days
-CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "shadow.days") ##find the cumulative importance for each gf.model output. 
-CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "shadow.days")
-
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
-
-pdf("shadow.days.CumImp.CHS.TI.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="Cumulative Importance", xlab="shadow.days", ylim=c(0,ymax), lty=1, lwd=1.5)
-par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
-dev.off()
-
-##day10cm
-CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "day10cm") ##find the cumulative importance for each gf.model output. Correcting label (see above)
-CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "day10cm")
-
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
-
-
-pdf("day10cm.CumImp.CHS.TI.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="", xlab="day10cm: calendar day with 10+cm snow", ylim=c(0,ymax), lty=1, lwd=1.5)
-par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
-dev.off()
-
-##MEM1
-CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "MEM1") ##find the cumulative importance for each gf.model output
-CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "MEM1")
-
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
-
-pdf("MEM1.CumImp.CHS.TI.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="", xlab="MEM1", ylim=c(0,ymax), lty=1, lwd=1.5)
-par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
-dev.off()
-
-
-##MEM2
-CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "MEM2") ##find the cumulative importance for each gf.model output
-CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "MEM2")
-
-
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
-
-
-pdf("MEM2.CumImp.CHS.TI.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="Cumulative Importance", xlab="MEM2", ylim=c(0,ymax), lty=1, lwd=1.5)
-par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+plot(CU.Season.CHS.TI.Season.Loci$x[isub.Season.CHS.TI.Season.Loci], CU.Season.CHS.TI.Season.Loci$y[isub.Season.CHS.TI.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
 #legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
 dev.off()
 
 
 ##dist
-CU.Fst <- cumimp(gf.CHS.TI.Adaptive.SNPs, "dist") ##find the cumulative importance for each gf.model output
-CU.Neutral <- cumimp(gf.CHS.TI.Neutral.SNPs, "dist")
 
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
+CU.Temp.CHS.TI.dist <- cumimp(gf.CHS.TI.TempLoci.SNPs, "dist") ##find the cumulative importance for each gf.model output
+CU.Season.CHS.TI.dist <- cumimp(gf.CHS.TI.SeasonLoci.SNPs, "dist") ##find the cumulative importance for each gf.model output
+CU.Neutral.CHS.TI.dist <- cumimp(gf.CHS.TI.Neutral.SNPs, "dist")
 
+isub.Temp.CHS.TI.dist <- seq(1, length(CU.Temp.CHS.TI.dist$x), len = pmin(500, length(CU.Temp.CHS.TI.dist$x)))
+isub.Season.CHS.TI.dist <- seq(1, length(CU.Season.CHS.TI.dist$x), len = pmin(500, length(CU.Season.CHS.TI.dist$x)))
+isub.Neutral.CHS.TI.dist <- seq(1, length(CU.Neutral.CHS.TI.dist$x), len = pmin(500, length(CU.Neutral.CHS.TI.dist$x)))
 
-pdf("dist.CumImp.CHS.TI.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="", xlab="Distance (km)", ylim=c(0,ymax), lty=1, lwd=1.5)
+ymax=0.1 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.dist.CumImp.CHS.TI.pdf")
+plot(CU.Neutral.CHS.TI.dist$x[isub.Neutral.CHS.TI.dist], CU.Neutral.CHS.TI.dist$y[isub.Neutral.CHS.TI.dist], type = "s", ylab ="Cumulative Importance", xlab="dist", ylim=c(0,ymax), lty=1, lwd=1.5)
 par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+plot(CU.Temp.CHS.TI.dist$x[isub.Temp.CHS.TI.dist], CU.Temp.CHS.TI.dist$y[isub.Temp.CHS.TI.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.TI.dist$x[isub.Season.CHS.TI.dist], CU.Season.CHS.TI.dist$y[isub.Season.CHS.TI.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
 #legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
 dev.off()
-
-##Create the combined plot in AdobeIllustrator
 ```
-
 
 
 ##### CHS.VS Cumulative plot
 ```
-##sol.rad.60d
+##Temp.Loci
 
-CU.Fst <- cumimp(gf.CHS.VS.Adaptive.SNPs, "sol.rad.60d") ##find the cumulative importance for each gf.model output
-CU.Neutral <- cumimp(gf.CHS.VS.Neutral.SNPs, "sol.rad.60d")
+CU.Temp.CHS.VS.Temp.Loci <- cumimp(gf.CHS.VS.TempLoci.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.Season.CHS.VS.Temp.Loci <- cumimp(gf.CHS.VS.SeasonLoci.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.Neutral.CHS.VS.Temp.Loci <- cumimp(gf.CHS.VS.Neutral.SNPs, "mean.temp.60d")
 
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
+isub.Temp.CHS.VS.Temp.Loci <- seq(1, length(CU.Temp.CHS.VS.Temp.Loci$x), len = pmin(500, length(CU.Temp.CHS.VS.Temp.Loci$x)))
+isub.Season.CHS.VS.Temp.Loci <- seq(1, length(CU.Season.CHS.VS.Temp.Loci$x), len = pmin(500, length(CU.Season.CHS.VS.Temp.Loci$x)))
+isub.Neutral.CHS.VS.Temp.Loci <- seq(1, length(CU.Neutral.CHS.VS.Temp.Loci$x), len = pmin(500, length(CU.Neutral.CHS.VS.Temp.Loci$x)))
 
-ymax=0.0015 #set the ymax so that it's the same for the the plots to be overlaid
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
 
-pdf("sol.rad.60d.CumImp.CHS.VS.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="Cumulative Importance", xlab="sol.rad.60d: mean solar radiation 60days after laying", ylim=c(0,ymax), lty=1, lwd=1.5)
+pdf("CHP4.Temp.Loci.CumImp.CHS.VS.pdf")
+plot(CU.Neutral.CHS.VS.Temp.Loci$x[isub.Neutral.CHS.VS.Temp.Loci], CU.Neutral.CHS.VS.Temp.Loci$y[isub.Neutral.CHS.VS.Temp.Loci], type = "s", ylab ="Cumulative Importance", xlab="Temp.Loci", ylim=c(0,ymax), lty=1, lwd=1.5)
 par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+plot(CU.Temp.CHS.VS.Temp.Loci$x[isub.Temp.CHS.VS.Temp.Loci], CU.Temp.CHS.VS.Temp.Loci$y[isub.Temp.CHS.VS.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.VS.Temp.Loci$x[isub.Season.CHS.VS.Temp.Loci], CU.Season.CHS.VS.Temp.Loci$y[isub.Season.CHS.VS.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
 legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
 dev.off()
 
 
-##temp.laying.date
-CU.Fst <- cumimp(gf.CHS.VS.Adaptive.SNPs, "temp.laying.date") ##find the cumulative importance for each gf.model output
-CU.Neutral <- cumimp(gf.CHS.VS.Neutral.SNPs, "temp.laying.date")
 
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
+##Season.Loci
 
-pdf("temp.laying.date.CumImp.CHS.VS.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="", xlab="temp.laying.date", ylim=c(0,ymax), lty=1, lwd=1.5)
+CU.Temp.CHS.VS.Season.Loci <- cumimp(gf.CHS.VS.TempLoci.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.Season.CHS.VS.Season.Loci <- cumimp(gf.CHS.VS.SeasonLoci.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.Neutral.CHS.VS.Season.Loci <- cumimp(gf.CHS.VS.Neutral.SNPs, "days.above.6")
+
+isub.Temp.CHS.VS.Season.Loci <- seq(1, length(CU.Temp.CHS.VS.Season.Loci$x), len = pmin(500, length(CU.Temp.CHS.VS.Season.Loci$x)))
+isub.Season.CHS.VS.Season.Loci <- seq(1, length(CU.Season.CHS.VS.Season.Loci$x), len = pmin(500, length(CU.Season.CHS.VS.Season.Loci$x)))
+isub.Neutral.CHS.VS.Season.Loci <- seq(1, length(CU.Neutral.CHS.VS.Season.Loci$x), len = pmin(500, length(CU.Neutral.CHS.VS.Season.Loci$x)))
+
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.Season.Loci.CumImp.CHS.VS.pdf")
+plot(CU.Neutral.CHS.VS.Season.Loci$x[isub.Neutral.CHS.VS.Season.Loci], CU.Neutral.CHS.VS.Season.Loci$y[isub.Neutral.CHS.VS.Season.Loci], type = "s", ylab ="Cumulative Importance", xlab="Season.Loci", ylim=c(0,ymax), lty=1, lwd=1.5)
 par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
-dev.off()
-
-
-
-##pcpt.60d
-CU.Fst <- cumimp(gf.CHS.VS.Adaptive.SNPs, "day10cm") ##I mislabeled these in the original excel sheet (now corrected). Only for CHS.VS. The rest of the transects are correct
-CU.Neutral <- cumimp(gf.CHS.VS.Neutral.SNPs, "day10cm")
-
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
-
-
-pdf("pcpt.60d.CumImp.CHS.VS.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="", xlab="pcpt.60d: Precipitation 60days after laying", ylim=c(0,ymax), lty=1, lwd=1.5)
+plot(CU.Temp.CHS.VS.Season.Loci$x[isub.Temp.CHS.VS.Season.Loci], CU.Temp.CHS.VS.Season.Loci$y[isub.Temp.CHS.VS.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
 par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
-dev.off()
-
-
-
-##shadow.days
-CU.Fst <- cumimp(gf.CHS.VS.Adaptive.SNPs, "pcpt.60d") ##find the cumulative importance for each gf.model output. Correcting the excel mislabelling here: see above
-CU.Neutral <- cumimp(gf.CHS.VS.Neutral.SNPs, "pcpt.60d")
-
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
-
-pdf("shadow.days.CumImp.CHS.VS.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="Cumulative Importance", xlab="shadow.days", ylim=c(0,ymax), lty=1, lwd=1.5)
-par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
-dev.off()
-
-##day10cm
-CU.Fst <- cumimp(gf.CHS.VS.Adaptive.SNPs, "shadow.days") ##find the cumulative importance for each gf.model output. Correcting label (see above)
-CU.Neutral <- cumimp(gf.CHS.VS.Neutral.SNPs, "shadow.days")
-
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
-
-
-pdf("day10cm.CumImp.CHS.VS.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="", xlab="day10cm: calendar day with 10+cm snow", ylim=c(0,ymax), lty=1, lwd=1.5)
-par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
-dev.off()
-
-##MEM1
-CU.Fst <- cumimp(gf.CHS.VS.Adaptive.SNPs, "MEM1") ##find the cumulative importance for each gf.model output
-CU.Neutral <- cumimp(gf.CHS.VS.Neutral.SNPs, "MEM1")
-
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
-
-pdf("MEM1.CumImp.CHS.VS.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="", xlab="MEM1", ylim=c(0,ymax), lty=1, lwd=1.5)
-par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
-#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
-dev.off()
-
-
-##MEM2
-CU.Fst <- cumimp(gf.CHS.VS.Adaptive.SNPs, "MEM2") ##find the cumulative importance for each gf.model output
-CU.Neutral <- cumimp(gf.CHS.VS.Neutral.SNPs, "MEM2")
-
-
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
-
-
-pdf("MEM2.CumImp.CHS.VS.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="Cumulative Importance", xlab="MEM2", ylim=c(0,ymax), lty=1, lwd=1.5)
-par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+plot(CU.Season.CHS.VS.Season.Loci$x[isub.Season.CHS.VS.Season.Loci], CU.Season.CHS.VS.Season.Loci$y[isub.Season.CHS.VS.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
 #legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
 dev.off()
 
 
 ##dist
-CU.Fst <- cumimp(gf.CHS.VS.Adaptive.SNPs, "dist") ##find the cumulative importance for each gf.model output
-CU.Neutral <- cumimp(gf.CHS.VS.Neutral.SNPs, "dist")
 
-isub.Fst <- seq(1, length(CU.Fst$x), len = pmin(500, length(CU.Fst$x)))
-isub.Neutral <- seq(1, length(CU.Neutral$x), len = pmin(500, length(CU.Neutral$x)))
+CU.Temp.CHS.VS.dist <- cumimp(gf.CHS.VS.TempLoci.SNPs, "dist") ##find the cumulative importance for each gf.model output
+CU.Season.CHS.VS.dist <- cumimp(gf.CHS.VS.SeasonLoci.SNPs, "dist") ##find the cumulative importance for each gf.model output
+CU.Neutral.CHS.VS.dist <- cumimp(gf.CHS.VS.Neutral.SNPs, "dist")
 
+isub.Temp.CHS.VS.dist <- seq(1, length(CU.Temp.CHS.VS.dist$x), len = pmin(500, length(CU.Temp.CHS.VS.dist$x)))
+isub.Season.CHS.VS.dist <- seq(1, length(CU.Season.CHS.VS.dist$x), len = pmin(500, length(CU.Season.CHS.VS.dist$x)))
+isub.Neutral.CHS.VS.dist <- seq(1, length(CU.Neutral.CHS.VS.dist$x), len = pmin(500, length(CU.Neutral.CHS.VS.dist$x)))
 
-pdf("dist.CumImp.CHS.VS.pdf")
-plot(CU.Neutral$x[isub.Neutral], CU.Neutral$y[isub.Neutral], type = "s", ylab ="", xlab="Distance (km)", ylim=c(0,ymax), lty=1, lwd=1.5)
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.dist.CumImp.CHS.VS.pdf")
+plot(CU.Neutral.CHS.VS.dist$x[isub.Neutral.CHS.VS.dist], CU.Neutral.CHS.VS.dist$y[isub.Neutral.CHS.VS.dist], type = "s", ylab ="Cumulative Importance", xlab="dist", ylim=c(0,ymax), lty=1, lwd=1.5)
 par(new=T)  ##allows you to overlay the plots
-plot(CU.Fst$x[isub.Fst], CU.Fst$y[isub.Fst], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+plot(CU.Temp.CHS.VS.dist$x[isub.Temp.CHS.VS.dist], CU.Temp.CHS.VS.dist$y[isub.Temp.CHS.VS.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.VS.dist$x[isub.Season.CHS.VS.dist], CU.Season.CHS.VS.dist$y[isub.Season.CHS.VS.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+```
+
+##### CHN Cumulative plot
+```
+##Temp.Loci
+
+CU.Temp.CHN.Temp.Loci <- cumimp(gf.CHN.TempLoci.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.Season.CHN.Temp.Loci <- cumimp(gf.CHN.SeasonLoci.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.Neutral.CHN.Temp.Loci <- cumimp(gf.CHN.Neutral.SNPs, "mean.temp.60d")
+
+isub.Temp.CHN.Temp.Loci <- seq(1, length(CU.Temp.CHN.Temp.Loci$x), len = pmin(500, length(CU.Temp.CHN.Temp.Loci$x)))
+isub.Season.CHN.Temp.Loci <- seq(1, length(CU.Season.CHN.Temp.Loci$x), len = pmin(500, length(CU.Season.CHN.Temp.Loci$x)))
+isub.Neutral.CHN.Temp.Loci <- seq(1, length(CU.Neutral.CHN.Temp.Loci$x), len = pmin(500, length(CU.Neutral.CHN.Temp.Loci$x)))
+
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.Temp.Loci.CumImp.CHN.pdf")
+plot(CU.Neutral.CHN.Temp.Loci$x[isub.Neutral.CHN.Temp.Loci], CU.Neutral.CHN.Temp.Loci$y[isub.Neutral.CHN.Temp.Loci], type = "s", ylab ="Cumulative Importance", xlab="Temp.Loci", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHN.Temp.Loci$x[isub.Temp.CHN.Temp.Loci], CU.Temp.CHN.Temp.Loci$y[isub.Temp.CHN.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHN.Temp.Loci$x[isub.Season.CHN.Temp.Loci], CU.Season.CHN.Temp.Loci$y[isub.Season.CHN.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
+legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+
+
+##Season.Loci
+
+CU.Temp.CHN.Season.Loci <- cumimp(gf.CHN.TempLoci.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.Season.CHN.Season.Loci <- cumimp(gf.CHN.SeasonLoci.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.Neutral.CHN.Season.Loci <- cumimp(gf.CHN.Neutral.SNPs, "days.above.6")
+
+isub.Temp.CHN.Season.Loci <- seq(1, length(CU.Temp.CHN.Season.Loci$x), len = pmin(500, length(CU.Temp.CHN.Season.Loci$x)))
+isub.Season.CHN.Season.Loci <- seq(1, length(CU.Season.CHN.Season.Loci$x), len = pmin(500, length(CU.Season.CHN.Season.Loci$x)))
+isub.Neutral.CHN.Season.Loci <- seq(1, length(CU.Neutral.CHN.Season.Loci$x), len = pmin(500, length(CU.Neutral.CHN.Season.Loci$x)))
+
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.Season.Loci.CumImp.CHN.pdf")
+plot(CU.Neutral.CHN.Season.Loci$x[isub.Neutral.CHN.Season.Loci], CU.Neutral.CHN.Season.Loci$y[isub.Neutral.CHN.Season.Loci], type = "s", ylab ="Cumulative Importance", xlab="Season.Loci", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHN.Season.Loci$x[isub.Temp.CHN.Season.Loci], CU.Temp.CHN.Season.Loci$y[isub.Temp.CHN.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHN.Season.Loci$x[isub.Season.CHN.Season.Loci], CU.Season.CHN.Season.Loci$y[isub.Season.CHN.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
 #legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
 dev.off()
 
-##Create the combined plot in AdobeIllustrator
+
+##dist
+
+CU.Temp.CHN.dist <- cumimp(gf.CHN.TempLoci.SNPs, "dist") ##find the cumulative importance for each gf.model output
+CU.Season.CHN.dist <- cumimp(gf.CHN.SeasonLoci.SNPs, "dist") ##find the cumulative importance for each gf.model output
+CU.Neutral.CHN.dist <- cumimp(gf.CHN.Neutral.SNPs, "dist")
+
+isub.Temp.CHN.dist <- seq(1, length(CU.Temp.CHN.dist$x), len = pmin(500, length(CU.Temp.CHN.dist$x)))
+isub.Season.CHN.dist <- seq(1, length(CU.Season.CHN.dist$x), len = pmin(500, length(CU.Season.CHN.dist$x)))
+isub.Neutral.CHN.dist <- seq(1, length(CU.Neutral.CHN.dist$x), len = pmin(500, length(CU.Neutral.CHN.dist$x)))
+
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.dist.CumImp.CHN.pdf")
+plot(CU.Neutral.CHN.dist$x[isub.Neutral.CHN.dist], CU.Neutral.CHN.dist$y[isub.Neutral.CHN.dist], type = "s", ylab ="Cumulative Importance", xlab="dist", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHN.dist$x[isub.Temp.CHN.dist], CU.Temp.CHN.dist$y[isub.Temp.CHN.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHN.dist$x[isub.Season.CHN.dist], CU.Season.CHN.dist$y[isub.Season.CHN.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
 ```
 
-![alt_txt][Fig2]
 
-[Fig2]:https://cloud.githubusercontent.com/assets/12142475/22886423/13fc2d1c-f1fe-11e6-9f5b-2fbad3e0ca54.png
+##### CZ Cumulative plot
+```
+##Temp.Loci
+
+CU.Temp.CZ.Temp.Loci <- cumimp(gf.CZ.TempLoci.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.Season.CZ.Temp.Loci <- cumimp(gf.CZ.SeasonLoci.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.Neutral.CZ.Temp.Loci <- cumimp(gf.CZ.Neutral.SNPs, "mean.temp.60d")
+
+isub.Temp.CZ.Temp.Loci <- seq(1, length(CU.Temp.CZ.Temp.Loci$x), len = pmin(500, length(CU.Temp.CZ.Temp.Loci$x)))
+isub.Season.CZ.Temp.Loci <- seq(1, length(CU.Season.CZ.Temp.Loci$x), len = pmin(500, length(CU.Season.CZ.Temp.Loci$x)))
+isub.Neutral.CZ.Temp.Loci <- seq(1, length(CU.Neutral.CZ.Temp.Loci$x), len = pmin(500, length(CU.Neutral.CZ.Temp.Loci$x)))
+
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.Temp.Loci.CumImp.CZ.pdf")
+plot(CU.Neutral.CZ.Temp.Loci$x[isub.Neutral.CZ.Temp.Loci], CU.Neutral.CZ.Temp.Loci$y[isub.Neutral.CZ.Temp.Loci], type = "s", ylab ="Cumulative Importance", xlab="Temp.Loci", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CZ.Temp.Loci$x[isub.Temp.CZ.Temp.Loci], CU.Temp.CZ.Temp.Loci$y[isub.Temp.CZ.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CZ.Temp.Loci$x[isub.Season.CZ.Temp.Loci], CU.Season.CZ.Temp.Loci$y[isub.Season.CZ.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
+legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+
+
+##Season.Loci
+
+CU.Temp.CZ.Season.Loci <- cumimp(gf.CZ.TempLoci.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.Season.CZ.Season.Loci <- cumimp(gf.CZ.SeasonLoci.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.Neutral.CZ.Season.Loci <- cumimp(gf.CZ.Neutral.SNPs, "days.above.6")
+
+isub.Temp.CZ.Season.Loci <- seq(1, length(CU.Temp.CZ.Season.Loci$x), len = pmin(500, length(CU.Temp.CZ.Season.Loci$x)))
+isub.Season.CZ.Season.Loci <- seq(1, length(CU.Season.CZ.Season.Loci$x), len = pmin(500, length(CU.Season.CZ.Season.Loci$x)))
+isub.Neutral.CZ.Season.Loci <- seq(1, length(CU.Neutral.CZ.Season.Loci$x), len = pmin(500, length(CU.Neutral.CZ.Season.Loci$x)))
+
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.Season.Loci.CumImp.CZ.pdf")
+plot(CU.Neutral.CZ.Season.Loci$x[isub.Neutral.CZ.Season.Loci], CU.Neutral.CZ.Season.Loci$y[isub.Neutral.CZ.Season.Loci], type = "s", ylab ="Cumulative Importance", xlab="Season.Loci", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CZ.Season.Loci$x[isub.Temp.CZ.Season.Loci], CU.Temp.CZ.Season.Loci$y[isub.Temp.CZ.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CZ.Season.Loci$x[isub.Season.CZ.Season.Loci], CU.Season.CZ.Season.Loci$y[isub.Season.CZ.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+
+##dist
+
+CU.Temp.CZ.dist <- cumimp(gf.CZ.TempLoci.SNPs, "dist") ##find the cumulative importance for each gf.model output
+CU.Season.CZ.dist <- cumimp(gf.CZ.SeasonLoci.SNPs, "dist") ##find the cumulative importance for each gf.model output
+CU.Neutral.CZ.dist <- cumimp(gf.CZ.Neutral.SNPs, "dist")
+
+isub.Temp.CZ.dist <- seq(1, length(CU.Temp.CZ.dist$x), len = pmin(500, length(CU.Temp.CZ.dist$x)))
+isub.Season.CZ.dist <- seq(1, length(CU.Season.CZ.dist$x), len = pmin(500, length(CU.Season.CZ.dist$x)))
+isub.Neutral.CZ.dist <- seq(1, length(CU.Neutral.CZ.dist$x), len = pmin(500, length(CU.Neutral.CZ.dist$x)))
+
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.dist.CumImp.CZ.pdf")
+plot(CU.Neutral.CZ.dist$x[isub.Neutral.CZ.dist], CU.Neutral.CZ.dist$y[isub.Neutral.CZ.dist], type = "s", ylab ="Cumulative Importance", xlab="dist", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CZ.dist$x[isub.Temp.CZ.dist], CU.Temp.CZ.dist$y[isub.Temp.CZ.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CZ.dist$x[isub.Season.CZ.dist], CU.Season.CZ.dist$y[isub.Season.CZ.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+```
+
+##### CHS Cumulative plot
+```
+##Temp.Loci
+
+CU.Temp.CHS.Temp.Loci <- cumimp(gf.CHS.TempLoci.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.Season.CHS.Temp.Loci <- cumimp(gf.CHS.SeasonLoci.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.Neutral.CHS.Temp.Loci <- cumimp(gf.CHS.Neutral.SNPs, "mean.temp.60d")
+
+isub.Temp.CHS.Temp.Loci <- seq(1, length(CU.Temp.CHS.Temp.Loci$x), len = pmin(500, length(CU.Temp.CHS.Temp.Loci$x)))
+isub.Season.CHS.Temp.Loci <- seq(1, length(CU.Season.CHS.Temp.Loci$x), len = pmin(500, length(CU.Season.CHS.Temp.Loci$x)))
+isub.Neutral.CHS.Temp.Loci <- seq(1, length(CU.Neutral.CHS.Temp.Loci$x), len = pmin(500, length(CU.Neutral.CHS.Temp.Loci$x)))
+
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.Temp.Loci.CumImp.CHS.pdf")
+plot(CU.Neutral.CHS.Temp.Loci$x[isub.Neutral.CHS.Temp.Loci], CU.Neutral.CHS.Temp.Loci$y[isub.Neutral.CHS.Temp.Loci], type = "s", ylab ="Cumulative Importance", xlab="Temp.Loci", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHS.Temp.Loci$x[isub.Temp.CHS.Temp.Loci], CU.Temp.CHS.Temp.Loci$y[isub.Temp.CHS.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.Temp.Loci$x[isub.Season.CHS.Temp.Loci], CU.Season.CHS.Temp.Loci$y[isub.Season.CHS.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
+legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+
+
+##Season.Loci
+
+CU.Temp.CHS.Season.Loci <- cumimp(gf.CHS.TempLoci.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.Season.CHS.Season.Loci <- cumimp(gf.CHS.SeasonLoci.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.Neutral.CHS.Season.Loci <- cumimp(gf.CHS.Neutral.SNPs, "days.above.6")
+
+isub.Temp.CHS.Season.Loci <- seq(1, length(CU.Temp.CHS.Season.Loci$x), len = pmin(500, length(CU.Temp.CHS.Season.Loci$x)))
+isub.Season.CHS.Season.Loci <- seq(1, length(CU.Season.CHS.Season.Loci$x), len = pmin(500, length(CU.Season.CHS.Season.Loci$x)))
+isub.Neutral.CHS.Season.Loci <- seq(1, length(CU.Neutral.CHS.Season.Loci$x), len = pmin(500, length(CU.Neutral.CHS.Season.Loci$x)))
+
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.Season.Loci.CumImp.CHS.pdf")
+plot(CU.Neutral.CHS.Season.Loci$x[isub.Neutral.CHS.Season.Loci], CU.Neutral.CHS.Season.Loci$y[isub.Neutral.CHS.Season.Loci], type = "s", ylab ="Cumulative Importance", xlab="Season.Loci", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHS.Season.Loci$x[isub.Temp.CHS.Season.Loci], CU.Temp.CHS.Season.Loci$y[isub.Temp.CHS.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.Season.Loci$x[isub.Season.CHS.Season.Loci], CU.Season.CHS.Season.Loci$y[isub.Season.CHS.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+
+##dist
+
+CU.Temp.CHS.dist <- cumimp(gf.CHS.TempLoci.SNPs, "dist") ##find the cumulative importance for each gf.model output
+CU.Season.CHS.dist <- cumimp(gf.CHS.SeasonLoci.SNPs, "dist") ##find the cumulative importance for each gf.model output
+CU.Neutral.CHS.dist <- cumimp(gf.CHS.Neutral.SNPs, "dist")
+
+isub.Temp.CHS.dist <- seq(1, length(CU.Temp.CHS.dist$x), len = pmin(500, length(CU.Temp.CHS.dist$x)))
+isub.Season.CHS.dist <- seq(1, length(CU.Season.CHS.dist$x), len = pmin(500, length(CU.Season.CHS.dist$x)))
+isub.Neutral.CHS.dist <- seq(1, length(CU.Neutral.CHS.dist$x), len = pmin(500, length(CU.Neutral.CHS.dist$x)))
+
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.dist.CumImp.CHS.pdf")
+plot(CU.Neutral.CHS.dist$x[isub.Neutral.CHS.dist], CU.Neutral.CHS.dist$y[isub.Neutral.CHS.dist], type = "s", ylab ="Cumulative Importance", xlab="dist", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHS.dist$x[isub.Temp.CHS.dist], CU.Temp.CHS.dist$y[isub.Temp.CHS.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.dist$x[isub.Season.CHS.dist], CU.Season.CHS.dist$y[isub.Season.CHS.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+```
+
+##### SE Cumulative plot
+```
+##Temp.Loci
+
+CU.Temp.SE.Temp.Loci <- cumimp(gf.SE.TempLoci.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.Season.SE.Temp.Loci <- cumimp(gf.SE.SeasonLoci.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.Neutral.SE.Temp.Loci <- cumimp(gf.SE.Neutral.SNPs, "mean.temp.60d")
+
+isub.Temp.SE.Temp.Loci <- seq(1, length(CU.Temp.SE.Temp.Loci$x), len = pmin(500, length(CU.Temp.SE.Temp.Loci$x)))
+isub.Season.SE.Temp.Loci <- seq(1, length(CU.Season.SE.Temp.Loci$x), len = pmin(500, length(CU.Season.SE.Temp.Loci$x)))
+isub.Neutral.SE.Temp.Loci <- seq(1, length(CU.Neutral.SE.Temp.Loci$x), len = pmin(500, length(CU.Neutral.SE.Temp.Loci$x)))
+
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.Temp.Loci.CumImp.SE.pdf")
+plot(CU.Neutral.SE.Temp.Loci$x[isub.Neutral.SE.Temp.Loci], CU.Neutral.SE.Temp.Loci$y[isub.Neutral.SE.Temp.Loci], type = "s", ylab ="Cumulative Importance", xlab="Temp.Loci", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.SE.Temp.Loci$x[isub.Temp.SE.Temp.Loci], CU.Temp.SE.Temp.Loci$y[isub.Temp.SE.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.SE.Temp.Loci$x[isub.Season.SE.Temp.Loci], CU.Season.SE.Temp.Loci$y[isub.Season.SE.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
+legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+
+
+##Season.Loci
+
+CU.Temp.SE.Season.Loci <- cumimp(gf.SE.TempLoci.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.Season.SE.Season.Loci <- cumimp(gf.SE.SeasonLoci.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.Neutral.SE.Season.Loci <- cumimp(gf.SE.Neutral.SNPs, "days.above.6")
+
+isub.Temp.SE.Season.Loci <- seq(1, length(CU.Temp.SE.Season.Loci$x), len = pmin(500, length(CU.Temp.SE.Season.Loci$x)))
+isub.Season.SE.Season.Loci <- seq(1, length(CU.Season.SE.Season.Loci$x), len = pmin(500, length(CU.Season.SE.Season.Loci$x)))
+isub.Neutral.SE.Season.Loci <- seq(1, length(CU.Neutral.SE.Season.Loci$x), len = pmin(500, length(CU.Neutral.SE.Season.Loci$x)))
+
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.Season.Loci.CumImp.SE.pdf")
+plot(CU.Neutral.SE.Season.Loci$x[isub.Neutral.SE.Season.Loci], CU.Neutral.SE.Season.Loci$y[isub.Neutral.SE.Season.Loci], type = "s", ylab ="Cumulative Importance", xlab="Season.Loci", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.SE.Season.Loci$x[isub.Temp.SE.Season.Loci], CU.Temp.SE.Season.Loci$y[isub.Temp.SE.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.SE.Season.Loci$x[isub.Season.SE.Season.Loci], CU.Season.SE.Season.Loci$y[isub.Season.SE.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+
+##dist
+
+CU.Temp.SE.dist <- cumimp(gf.SE.TempLoci.SNPs, "dist") ##find the cumulative importance for each gf.model output
+CU.Season.SE.dist <- cumimp(gf.SE.SeasonLoci.SNPs, "dist") ##find the cumulative importance for each gf.model output
+CU.Neutral.SE.dist <- cumimp(gf.SE.Neutral.SNPs, "dist")
+
+isub.Temp.SE.dist <- seq(1, length(CU.Temp.SE.dist$x), len = pmin(500, length(CU.Temp.SE.dist$x)))
+isub.Season.SE.dist <- seq(1, length(CU.Season.SE.dist$x), len = pmin(500, length(CU.Season.SE.dist$x)))
+isub.Neutral.SE.dist <- seq(1, length(CU.Neutral.SE.dist$x), len = pmin(500, length(CU.Neutral.SE.dist$x)))
+
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
+
+pdf("CHP4.dist.CumImp.SE.pdf")
+plot(CU.Neutral.SE.dist$x[isub.Neutral.SE.dist], CU.Neutral.SE.dist$y[isub.Neutral.SE.dist], type = "s", ylab ="Cumulative Importance", xlab="dist", ylim=c(0,ymax), lty=1, lwd=1.5)
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.SE.dist$x[isub.Temp.SE.dist], CU.Temp.SE.dist$y[isub.Temp.SE.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n')
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.SE.dist$x[isub.Season.SE.dist], CU.Season.SE.dist$y[isub.Season.SE.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n')
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+```
+
+
+
+
+
+Combined plots: CHS.TI and CHS.VS
+```
+ymax=0.08
+
+
+##TEMP
+
+xmax=11.5
+
+pdf("CHP4.Temp.Loci.CumImp.CHS.TI.VS.pdf")
+plot(CU.Neutral.CHS.VS.Temp.Loci$x[isub.Neutral.CHS.VS.Temp.Loci], CU.Neutral.CHS.VS.Temp.Loci$y[isub.Neutral.CHS.VS.Temp.Loci], type = "s", ylab ="Cumulative Importance", xlab="Temp.Loci", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", xlim=c(7,xmax))
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHS.VS.Temp.Loci$x[isub.Temp.CHS.VS.Temp.Loci], CU.Temp.CHS.VS.Temp.Loci$y[isub.Temp.CHS.VS.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid4", xlim=c(7,xmax))
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.VS.Temp.Loci$x[isub.Season.CHS.VS.Temp.Loci], CU.Season.CHS.VS.Temp.Loci$y[isub.Season.CHS.VS.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid4", xlim=c(7,xmax))
+
+par(new=T)
+plot(CU.Neutral.CHS.TI.Temp.Loci$x[isub.Neutral.CHS.TI.Temp.Loci], CU.Neutral.CHS.TI.Temp.Loci$y[isub.Neutral.CHS.TI.Temp.Loci], type = "s", ylab ="Cumulative Importance", xlab="Temp.Loci", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid1", xlim=c(7,xmax))
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHS.TI.Temp.Loci$x[isub.Temp.CHS.TI.Temp.Loci], CU.Temp.CHS.TI.Temp.Loci$y[isub.Temp.CHS.TI.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid1", xlim=c(7,xmax))
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.TI.Temp.Loci$x[isub.Season.CHS.TI.Temp.Loci], CU.Season.CHS.TI.Temp.Loci$y[isub.Season.CHS.TI.Temp.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid1", xlim=c(7,xmax))
+
+legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+
+
+##SEASON
+pdf("CHP4.Season.Loci.CumImp.CHS.TI.VS.pdf")
+plot(CU.Neutral.CHS.VS.Season.Loci$x[isub.Neutral.CHS.VS.Season.Loci], CU.Neutral.CHS.VS.Season.Loci$y[isub.Neutral.CHS.VS.Season.Loci], type = "s", ylab ="Cumulative Importance", xlab="Season.Loci", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHS.VS.Season.Loci$x[isub.Temp.CHS.VS.Season.Loci], CU.Temp.CHS.VS.Season.Loci$y[isub.Temp.CHS.VS.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.VS.Season.Loci$x[isub.Season.CHS.VS.Season.Loci], CU.Season.CHS.VS.Season.Loci$y[isub.Season.CHS.VS.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid4")
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+
+par(new=T)
+plot(CU.Neutral.CHS.TI.Season.Loci$x[isub.Neutral.CHS.TI.Season.Loci], CU.Neutral.CHS.TI.Season.Loci$y[isub.Neutral.CHS.TI.Season.Loci], type = "s", ylab ="Cumulative Importance", xlab="Season.Loci", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid1")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHS.TI.Season.Loci$x[isub.Temp.CHS.TI.Season.Loci], CU.Temp.CHS.TI.Season.Loci$y[isub.Temp.CHS.TI.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid1")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.TI.Season.Loci$x[isub.Season.CHS.TI.Season.Loci], CU.Season.CHS.TI.Season.Loci$y[isub.Season.CHS.TI.Season.Loci], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid1")
+
+dev.off()
+
+
+## DISTANCE
+pdf("CHP4.dist.CumImp.CHS.TI.VS.pdf")
+plot(CU.Neutral.CHS.VS.dist$x[isub.Neutral.CHS.VS.dist], CU.Neutral.CHS.VS.dist$y[isub.Neutral.CHS.VS.dist], type = "s", ylab ="Cumulative Importance", xlab="dist", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHS.VS.dist$x[isub.Temp.CHS.VS.dist], CU.Temp.CHS.VS.dist$y[isub.Temp.CHS.VS.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.VS.dist$x[isub.Season.CHS.VS.dist], CU.Season.CHS.VS.dist$y[isub.Season.CHS.VS.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid4")
+
+par(new=T)
+plot(CU.Neutral.CHS.TI.dist$x[isub.Neutral.CHS.TI.dist], CU.Neutral.CHS.TI.dist$y[isub.Neutral.CHS.TI.dist], type = "s", ylab ="Cumulative Importance", xlab="dist", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid1")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Temp.CHS.TI.dist$x[isub.Temp.CHS.TI.dist], CU.Temp.CHS.TI.dist$y[isub.Temp.CHS.TI.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=3, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid1")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.Season.CHS.TI.dist$x[isub.Season.CHS.TI.dist], CU.Season.CHS.TI.dist$y[isub.Season.CHS.TI.dist], type = "s", ylab = "", xlab="", ylim=c(0,ymax), lty=4, lwd=1.5, xaxt='n', yaxt='n', col="darkorchid1")
+
+
+#legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+dev.off()
+```
+
+
+
+
 
 
 
