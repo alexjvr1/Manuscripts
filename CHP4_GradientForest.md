@@ -3790,7 +3790,7 @@ Run GF
 library(gradientForest)
 
 gf.SE.FullModel <- read.csv("SE.132.2027.FullModel.MAF.csv", header=T)
-envGF.SE.FullModel <- gf.SE.FullModel[,2:8]
+envGF.SE.FullModel <- gf.SE.FullModel[,2:7]
 colnames(envGF.SE.FullModel)
 
 SE.FullModelSNPS <- gf.SE.FullModel[,grep("X.", colnames(gf.SE.FullModel))]
@@ -3800,7 +3800,7 @@ maxLevel
 
 gf.SE.FullModel.SNPs <- gradientForest(cbind(envGF.SE.FullModel, SE.FullModelSNPS), predictor.vars=colnames(envGF.SE.FullModel), response.vars=colnames(SE.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
-##25 warnings (loci variable in less than 5 populations)
+##50+ warnings (loci variable in less than 5 populations)
 
 
 ```
