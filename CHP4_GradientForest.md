@@ -3545,17 +3545,17 @@ Run GF
 library(gradientForest)
 
 gf.CHS.FullModel <- read.csv("CHS.275.6339.FullModel.MAF.csv", header=T)
-envGF.CHS.FullModel <- gf.CHS.FullModel[,2:8]
-colnames(envGF.CHS.Adaptive)
+envGF.CHS.FullModel <- gf.CHS.FullModel[,2:9]
+colnames(envGF.CHS.FullModel)
 
-CHS.FullModelSNPS <- CHS.FullModel.MAF3[,grep("X.", colnames(CHS.FullModel.MAF3))]
+CHS.FullModelSNPS <- gf.CHS.FullModel[,grep("X.", colnames(gf.CHS.FullModel))]
 CHS.FullModelSNPS <- CHS.FullModelSNPS[,-1]
 maxLevel <- log2(0.368*nrow(envGF.CHS.FullModel)/2)
 maxLevel
 
 gf.CHS.FullModel.SNPs <- gradientForest(cbind(envGF.CHS.FullModel, CHS.FullModelSNPS), predictor.vars=colnames(envGF.CHS.FullModel), response.vars=colnames(CHS.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
-##25 warnings (loci variable in less than 5 populations)
+##16 warnings (loci variable in less than 5 populations)
 
 
 ```
@@ -3606,10 +3606,10 @@ Run GF
 library(gradientForest)
 
 gf.CZ.FullModel <- read.csv("CZ.404.7288.FullModel.MAF.csv", header=T)
-envGF.CZ.FullModel <- gf.CZ.FullModel[,2:8]
-colnames(envGF.CZ.Adaptive)
+envGF.CZ.FullModel <- gf.CZ.FullModel[,2:12]
+colnames(envGF.CZ.FullModel)
 
-CZ.FullModelSNPS <- CZ.FullModel.MAF3[,grep("X.", colnames(CZ.FullModel.MAF3))]
+CZ.FullModelSNPS <- gf.CZ.FullModel[,grep("X.", colnames(gf.CZ.FullModel))]
 CZ.FullModelSNPS <- CZ.FullModelSNPS[,-1]
 maxLevel <- log2(0.368*nrow(envGF.CZ.FullModel)/2)
 maxLevel
@@ -3669,16 +3669,16 @@ library(gradientForest)
 
 gf.CHS.VS.FullModel <- read.csv("CHS.VS.135.5835.FullModel.MAF.csv", header=T)
 envGF.CHS.VS.FullModel <- gf.CHS.VS.FullModel[,2:8]
-colnames(envGF.CHS.VS.Adaptive)
+colnames(envGF.CHS.VS.FullModel)
 
-CHS.VS.FullModelSNPS <- CHS.VS.FullModel.MAF3[,grep("X.", colnames(CHS.VS.FullModel.MAF3))]
+CHS.VS.FullModelSNPS <- gf.CHS.VS.FullModel[,grep("X.", colnames(gf.CHS.VS.FullModel))]
 CHS.VS.FullModelSNPS <- CHS.VS.FullModelSNPS[,-1]
 maxLevel <- log2(0.368*nrow(envGF.CHS.VS.FullModel)/2)
 maxLevel
 
 gf.CHS.VS.FullModel.SNPs <- gradientForest(cbind(envGF.CHS.VS.FullModel, CHS.VS.FullModelSNPS), predictor.vars=colnames(envGF.CHS.VS.FullModel), response.vars=colnames(CHS.VS.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
-##25 warnings (loci variable in less than 5 populations)
+##50+ warnings (loci variable in less than 5 populations)
 
 
 ```
@@ -3729,10 +3729,10 @@ Run GF
 library(gradientForest)
 
 gf.CHS.TI.FullModel <- read.csv("CHS.TI.140.5692.FullModel.MAF.csv", header=T)
-envGF.CHS.TI.FullModel <- gf.CHS.TI.FullModel[,2:8]
-colnames(envGF.CHS.TI.Adaptive)
+envGF.CHS.TI.FullModel <- gf.CHS.TI.FullModel[,2:7]
+colnames(envGF.CHS.TI.FullModel)
 
-CHS.TI.FullModelSNPS <- CHS.TI.FullModel.MAF3[,grep("X.", colnames(CHS.TI.FullModel.MAF3))]
+CHS.TI.FullModelSNPS <- gf.CHS.TI.FullModel[,grep("X.", colnames(gf.CHS.TI.FullModel))]
 CHS.TI.FullModelSNPS <- CHS.TI.FullModelSNPS[,-1]
 maxLevel <- log2(0.368*nrow(envGF.CHS.TI.FullModel)/2)
 maxLevel
@@ -3791,9 +3791,9 @@ library(gradientForest)
 
 gf.SE.FullModel <- read.csv("SE.132.2027.FullModel.MAF.csv", header=T)
 envGF.SE.FullModel <- gf.SE.FullModel[,2:8]
-colnames(envGF.SE.Adaptive)
+colnames(envGF.SE.FullModel)
 
-SE.FullModelSNPS <- SE.FullModel.MAF3[,grep("X.", colnames(SE.FullModel.MAF3))]
+SE.FullModelSNPS <- gf.SE.FullModel[,grep("X.", colnames(gf.SE.FullModel))]
 SE.FullModelSNPS <- SE.FullModelSNPS[,-1]
 maxLevel <- log2(0.368*nrow(envGF.SE.FullModel)/2)
 maxLevel
