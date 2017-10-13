@@ -1458,6 +1458,40 @@ scale_fill_gradient(name="R2 CHN") +   ##title of the legend
 theme(axis.title.x=element_blank(), axis.title.y=element_blank())   ##remove names of axes
 dev.off()
 
+###CHS
+
+#Retrieve results from the individual outputs for both GF models: 
+
+R.sq.alldatasets <- (rowMeans(gf.CHS.Adaptive.SNPs$imp.rsq, na.rm=T))  ##get the mean across all loci
+R.sq.alldatasets <- as.data.frame(R.sq.alldatasets)
+R.sq.alldatasets
+colnames(R.sq.alldatasets) <- "Adaptive"
+
+R.sq.Neutral <- (rowMeans(gf.CHS.Neutral.SNPs$imp.rsq, na.rm=T))
+R.sq.Neutral <- as.data.frame(R.sq.Neutral)
+
+##we're only interested in the first 8 variables
+R.sq.EnvVariables <- R.sq.alldatasets[1:8,]  #get the first 8 rows from the Adaptive dataset
+R.sq.EnvVariables <- as.data.frame(R.sq.EnvVariables)
+colnames(R.sq.EnvVariables) <- "Adaptive"
+row.names(R.sq.EnvVariables) <- c("dist", "sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm", "MEM1", "MEM2")
+R.sq.EnvVariables$Neutral <- R.sq.Neutral[1:8,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
+
+R.sq.EnvVariables <- as.matrix(R.sq.EnvVariables)  ##turn into matrix for heatmap
+R.sq.all.melt <- melt(R.sq.EnvVariables)  ##melt for ggplot heatmap
+R.sq.all.melt <- R.sq.all.melt[order(R.sq.all.melt$Var1),]  ##order by predictor variable
+
+R.sq.all.melt
+
+library(RColorBrewer)
+#hm.palette <- colorRampPalette(rev(brewer.pal(9, 'YlOrRd')), space='Lab')  ##change the colour palette to red. Default is blue
+
+pdf("CHS.R2plot.pdf")
+ggplot(R.sq.all.melt, aes(x=Var2, y=Var1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
+scale_fill_gradient(name="R2 CHS") +   ##title of the legend
+theme(axis.title.x=element_blank(), axis.title.y=element_blank())   ##remove names of axes
+dev.off()
+
 
 ###CZ
 #Retrieve results from the individual outputs for both GF models: 
