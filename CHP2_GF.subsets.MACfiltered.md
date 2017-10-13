@@ -1250,10 +1250,11 @@ library(gradientForest)
 ###CHN
 
 gf.CHN.Adaptive <- read.csv("CHN.GF.AdaptiveLoci.Input.csv", header=T)
-envGF.CHN.Adaptive <- gf.CHN.Adaptive[,-1]
+envGF.CHN.Adaptive <- gf.CHN.Adaptive[,2:11]
 colnames(envGF.CHN.Adaptive)
 
-CHN.AdaptiveSNPS <- CHN.Adaptive.MAF3[,grep("X.", colnames(CHN.Adaptive.MAF3))]
+CHN.AdaptiveSNPS <- gf.CHN.Adaptive[,grep("X.", colnames(gf.CHN.Adaptive))]
+CHN.AdaptiveSNPS <- CHN.AdaptiveSNPS[,-1]
 maxLevel <- log2(0.368*nrow(envGF.CHN.Adaptive)/2)
 maxLevel
 
@@ -1265,23 +1266,29 @@ gf.CHN.Adaptive.SNPs <- gradientForest(cbind(envGF.CHN.Adaptive, CHN.AdaptiveSNP
 ###CZ
 
 gf.CZ.Adaptive <- read.csv("CZ.GF.AdaptiveLoci.Input.csv", header=T)
-envGF.CZ.Adaptive <- gf.CZ.Adaptive[,-1]
+colnames(gf.CZ.Adaptive)
+envGF.CZ.Adaptive <- gf.CZ.Adaptive[,2:15]
 colnames(envGF.CZ.Adaptive)
 
-CZ.AdaptiveSNPS <- CZ.Adaptive.MAF3[,grep("X.", colnames(CZ.Adaptive.MAF3))]
+CZ.AdaptiveSNPS <- gf.CZ.Adaptive[,grep("X.", colnames(gf.CZ.Adaptive))]
+CZ.AdaptiveSNPS <- CZ.AdaptiveSNPS[,-1]
+colnames(CZ.AdaptiveSNPS)
 maxLevel <- log2(0.368*nrow(envGF.CZ.Adaptive)/2)
 maxLevel
 
 gf.CZ.Adaptive.SNPs <- gradientForest(cbind(envGF.CZ.Adaptive, CZ.AdaptiveSNPS), predictor.vars=colnames(envGF.CZ.Adaptive), response.vars=colnames(CZ.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
+##0 warnings (loci variable in less than 5 populations)
 
 ###CHS.TI
 
 gf.CHS.TI.Adaptive <- read.csv("CHS.TI.GF.AdaptiveLoci.Input.csv", header=T)
-envGF.CHS.TI.Adaptive <- gf.CHS.TI.Adaptive[,-1]
+colnames(gf.CHS.TI.Adaptive)
+envGF.CHS.TI.Adaptive <- gf.CHS.TI.Adaptive[,2:10]
 colnames(envGF.CHS.TI.Adaptive)
 
-CHS.TI.AdaptiveSNPS <- CHS.TI.Adaptive.MAF3[,grep("X.", colnames(CHS.TI.Adaptive.MAF3))]
+CHS.TI.AdaptiveSNPS <- gf.CHS.TI.Adaptive[,grep("X.", colnames(gf.CHS.TI.Adaptive))]
+CHS.TI.AdaptiveSNPS <- CHS.TI.AdaptiveSNPS[,-1]
 maxLevel <- log2(0.368*nrow(envGF.CHS.TI.Adaptive)/2)
 maxLevel
 
@@ -1292,10 +1299,12 @@ gf.CHS.TI.Adaptive.SNPs <- gradientForest(cbind(envGF.CHS.TI.Adaptive, CHS.TI.Ad
 ###CHS.VS
 
 gf.CHS.VS.Adaptive <- read.csv("CHS.VS.GF.AdaptiveLoci.Input.csv", header=T)
-envGF.CHS.VS.Adaptive <- gf.CHS.VS.Adaptive[,-1]
+colnames(gf.CHS.VS.Adaptive)
+envGF.CHS.VS.Adaptive <- gf.CHS.VS.Adaptive[,2:9]
 colnames(envGF.CHS.VS.Adaptive)
 
-CHS.VS.AdaptiveSNPS <- CHS.VS.Adaptive.MAF3[,grep("X.", colnames(CHS.VS.Adaptive.MAF3))]
+CHS.VS.AdaptiveSNPS <- gf.CHS.VS.Adaptive[,grep("X.", colnames(gf.CHS.VS.Adaptive))]
+CHS.VS.AdaptiveSNPS <- CHS.VS.AdaptiveSNPS[,-1]
 maxLevel <- log2(0.368*nrow(envGF.CHS.VS.Adaptive)/2)
 maxLevel
 
@@ -1303,6 +1312,20 @@ gf.CHS.VS.Adaptive.SNPs <- gradientForest(cbind(envGF.CHS.VS.Adaptive, CHS.VS.Ad
 
 ###more than 50 warnings about non-polymorphic loci
 
+
+###CHS
+
+gf.CHS.Adaptive <- read.csv("CHS.GF.AdaptiveLoci.Input.csv", header=T)
+colnames(gf.CHS.Adaptive)
+envGF.CHS.Adaptive <- gf.CHS.Adaptive[,2:9]
+colnames(envGF.CHS.Adaptive)
+
+CHS.AdaptiveSNPS <- gf.CHS.Adaptive[,grep("X.", colnames(gf.CHS.Adaptive))]
+CHS.AdaptiveSNPS <- CHS.AdaptiveSNPS[,-1]
+maxLevel <- log2(0.368*nrow(envGF.CHS.Adaptive)/2)
+maxLevel
+
+gf.CHS.Adaptive.SNPs <- gradientForest(cbind(envGF.CHS.Adaptive, CHS.AdaptiveSNPS), predictor.vars=colnames(envGF.CHS.Adaptive), response.vars=colnames(CHS.AdaptiveSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 ```
 
 2. Neutral Loci
