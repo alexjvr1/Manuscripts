@@ -3805,3 +3805,70 @@ gf.SE.FullModel.SNPs <- gradientForest(cbind(envGF.SE.FullModel, SE.FullModelSNP
 
 ```
 
+
+## Figure 1: R2 importance
+
+Which of the variables is the most important across all the gradients. 
+
+I'm comparing only dist, season and temp (ie. excluding MEM. And I'm rescaling R2 between 0 and 1 
+
+
+```
+R.sq.CHN.FullModel <- (rowMeans(gf.CHN.FullModel.SNPs$imp.rsq, na.rm=T))
+R.sq.CHN.FullModel <- as.data.frame(R.sq.CHN.FullModel)
+colnames(R.sq.CHN.FullModel) <- "CHN"
+
+R.sq.CHS.FullModel <- (rowMeans(gf.CHS.FullModel.SNPs$imp.rsq, na.rm=T))
+R.sq.CHS.FullModel <- as.data.frame(R.sq.CHS.FullModel)
+colnames(R.sq.CHS.FullModel) <- "CHS"
+
+R.sq.CHS.VS.FullModel <- rowMeans(gf.CHS.VS.FullModel.SNPs$imp.rsq, na.rm=T)
+R.sq.CHS.VS.FullModel <- as.data.frame(R.sq.CHS.VS.FullModel)
+colnames(R.sq.CHS.VS.FullModel) <- "CHS.VS"
+
+R.sq.CHS.TI.FullModel <- rowMeans(gf.CHS.TI.FullModel.SNPs$imp.rsq, na.rm=T)
+R.sq.CHS.TI.FullModel <- as.data.frame(R.sq.CHS.TI.FullModel)
+colnames(R.sq.CHS.TI.FullModel) <- "CHS.TI"
+
+R.sq.SE.FullModel <- rowMeans(gf.SE.FullModel.SNPs$imp.rsq, na.rm=T)
+R.sq.SE.FullModel <- as.data.frame(R.sq.SE.FullModel)
+colnames(R.sq.SE.FullModel) <- "SE"
+
+R.sq.CZ.FullModel <- rowMeans(gf.CZ.FullModel.SNPs$imp.rsq, na.rm=T)
+R.sq.CZ.FullModel <- as.data.frame(R.sq.CZ.FullModel)
+colnames(R.sq.CZ.FullModel) <- "CZ"
+
+
+R.sq.ALL <- R.sq.CHN.FullModel[1:5,]
+R.sq.ALL <- as.data.frame(R.sq.ALL)
+colnames(R.sq.ALL) <- "CHN"
+row.names(R.sq.ALL) <- c("dist", "mean.temp.60d", "days.above.6", "MEM1", "MEM2")
+R.sq.ALL$CHS <- R.sq.CHS.FullModel[1:5,]
+R.sq.ALL$CHS.VS <- R.sq.CHS.VS.FullModel[1:5,]
+R.sq.ALL$CHS.TI <- R.sq.CHS.TI.FullModel[1:5,]
+R.sq.ALL$CZ <- R.sq.CZ.FullModel[1:5,]
+R.sq.ALL$SE <- R.sq.SE.FullModel[1:5,]
+
+
+library(reshape)
+library(ggplot2)
+
+R.sq.ALL <- as.matrix(R.sq.ALL)
+
+R.sq.ALL.scale <- R.sq.ALL.scale[1:3,]   ##select only the variables of interest
+R.sq.ALL.scale <- apply(R.sq.ALL.scale, MARGIN=2, FUN=function(X) (X - min(X))/diff(range(X)))   ##rescale between 0 and 1
+R.sq.ALL.scale.melt <- melt(R.sq.ALL.scale)
+R.sq.ALL.melt
+R.sq.ALL.scale.melt <- R.sq.ALL.scale.melt[order(R.sq.ALL.scale.melt$X1),]
+R.sq.ALL.scale.melt
+
+pdf("GF.ALL.Figure1.R2_20171013.pdf")
+ggplot(R.sq.ALL.scale.melt, aes(x=X2, y=X1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
+scale_fill_gradient(name="R2") +   ##title of the legend
+theme(axis.title.x=element_blank(), axis.title.y=element_blank())
+dev.off()
+```
+
+
+
+
