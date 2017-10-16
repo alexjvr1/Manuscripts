@@ -1317,14 +1317,11 @@ dev.off()
 
 First I need to find only the loci that occur more than once in each dataset. 
 
-##### CHall
-```
-###I still need the LFMM results for this
-```
 
 ##### CHN
 ```
 CHN.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+
 
 
 CHN.duplicated.outliers <- CHN.alloutliers[duplicated(CHN.alloutliers),]  ##select only loci occurring more than once (here 308)
