@@ -1447,7 +1447,7 @@ fit.sol.rad.60d.CHS.VS.TI <- augment(sol.rad.60d.fit.CHS.VS.TI)
 fit.sol.rad.60d.CHS.VS.TI$colour <- gsub("CHS.TI", "thistle3", fit.sol.rad.60d.CHS.VS.TI$CHS.VS.TIonly.EnvData.Transect)
 fit.sol.rad.60d.CHS.VS.TI$colour <- gsub("CHS.VS", "mediumpurple4", fit.sol.rad.60d.CHS.VS.TI$colour)
 
-p5.CHS.TI.VS <- ggplot(fit.sol.rad.60d.CHS.VS.TI, aes(x=CHS.VS.TIonly.EnvData.elev, y=CHS.VS.TIonly.EnvData.sol.rad.60d, group=CHS.VS.TIonly.EnvData.Transect)) + geom_point(color=fit.sol.rad.60d.CHS.VS.TI$colour) + geom_line(aes(x=CHS.VS.TIonly.EnvData.elev, y=.fitted, colour=CHS.VS.TIonly.EnvData.Transect, group=CHS.VS.TIonly.EnvData.Transect, color=fit.sol.rad.60d.CHS.VS.TI$colour), size=2) + scale_colour_manual(values= c("CHS.TI"="thistle3", "CHS.VS"="mediumpurple4"))
+p1.sol.rad.60d.CHS.TI.VS <- ggplot(fit.sol.rad.60d.CHS.VS.TI, aes(x=CHS.VS.TIonly.EnvData.elev, y=CHS.VS.TIonly.EnvData.sol.rad.60d, group=CHS.VS.TIonly.EnvData.Transect)) + geom_point(color=fit.sol.rad.60d.CHS.VS.TI$colour) + geom_line(aes(x=CHS.VS.TIonly.EnvData.elev, y=.fitted, colour=CHS.VS.TIonly.EnvData.Transect, group=CHS.VS.TIonly.EnvData.Transect, color=fit.sol.rad.60d.CHS.VS.TI$colour), size=2) + scale_colour_manual(values= c("CHS.TI"="thistle3", "CHS.VS"="mediumpurple4"))
 
 
 ##temp.laying.date
@@ -1461,7 +1461,7 @@ fit.temp.laying.date.CHS.VS.TI <- augment(temp.laying.date.fit.CHS.VS.TI)
 fit.temp.laying.date.CHS.VS.TI$colour <- gsub("CHS.TI", "thistle3", fit.temp.laying.date.CHS.VS.TI$CHS.VS.TIonly.EnvData.Transect)
 fit.temp.laying.date.CHS.VS.TI$colour <- gsub("CHS.VS", "mediumpurple4", fit.temp.laying.date.CHS.VS.TI$colour)
 
-p5.CHS.TI.VS <- ggplot(fit.temp.laying.date.CHS.VS.TI, aes(x=CHS.VS.TIonly.EnvData.elev, y=CHS.VS.TIonly.EnvData.temp.laying.date, group=CHS.VS.TIonly.EnvData.Transect)) + geom_point(color=fit.temp.laying.date.CHS.VS.TI$colour) + geom_line(aes(x=CHS.VS.TIonly.EnvData.elev, y=.fitted, colour=CHS.VS.TIonly.EnvData.Transect, group=CHS.VS.TIonly.EnvData.Transect, color=fit.temp.laying.date.CHS.VS.TI$colour), size=2) + scale_colour_manual(values= c("CHS.TI"="thistle3", "CHS.VS"="mediumpurple4"))
+p2.temp.laying.date.CHS.TI.VS <- ggplot(fit.temp.laying.date.CHS.VS.TI, aes(x=CHS.VS.TIonly.EnvData.elev, y=CHS.VS.TIonly.EnvData.temp.laying.date, group=CHS.VS.TIonly.EnvData.Transect)) + geom_point(color=fit.temp.laying.date.CHS.VS.TI$colour) + geom_line(aes(x=CHS.VS.TIonly.EnvData.elev, y=.fitted, colour=CHS.VS.TIonly.EnvData.Transect, group=CHS.VS.TIonly.EnvData.Transect, color=fit.temp.laying.date.CHS.VS.TI$colour), size=2) + scale_colour_manual(values= c("CHS.TI"="thistle3", "CHS.VS"="mediumpurple4"))
 
 
 
@@ -1477,7 +1477,7 @@ fit.pcpt.60d.CHS.VS.TI <- augment(pcpt.60d.fit.CHS.VS.TI)
 fit.pcpt.60d.CHS.VS.TI$colour <- gsub("CHS.TI", "thistle3", fit.pcpt.60d.CHS.VS.TI$CHS.VS.TIonly.EnvData.Transect)
 fit.pcpt.60d.CHS.VS.TI$colour <- gsub("CHS.VS", "mediumpurple4", fit.pcpt.60d.CHS.VS.TI$colour)
 
-p5.CHS.TI.VS <- ggplot(fit.pcpt.60d.CHS.VS.TI, aes(x=CHS.VS.TIonly.EnvData.elev, y=CHS.VS.TIonly.EnvData.pcpt.60d, group=CHS.VS.TIonly.EnvData.Transect)) + geom_point(color=fit.pcpt.60d.CHS.VS.TI$colour) + geom_line(aes(x=CHS.VS.TIonly.EnvData.elev, y=.fitted, colour=CHS.VS.TIonly.EnvData.Transect, group=CHS.VS.TIonly.EnvData.Transect, color=fit.pcpt.60d.CHS.VS.TI$colour), size=2) + scale_colour_manual(values= c("CHS.TI"="thistle3", "CHS.VS"="mediumpurple4"))
+p3.pcpt.60d.CHS.TI.VS <- ggplot(fit.pcpt.60d.CHS.VS.TI, aes(x=CHS.VS.TIonly.EnvData.elev, y=CHS.VS.TIonly.EnvData.pcpt.60d, group=CHS.VS.TIonly.EnvData.Transect)) + geom_point(color=fit.pcpt.60d.CHS.VS.TI$colour) + geom_line(aes(x=CHS.VS.TIonly.EnvData.elev, y=.fitted, colour=CHS.VS.TIonly.EnvData.Transect, group=CHS.VS.TIonly.EnvData.Transect, color=fit.pcpt.60d.CHS.VS.TI$colour), size=2) + scale_colour_manual(values= c("CHS.TI"="thistle3", "CHS.VS"="mediumpurple4"))
 
 
 
@@ -1495,7 +1495,7 @@ fit.shadow.days.CHS.VS.TI <- augment(shadow.days.fit.CHS.VS.TI)
 fit.shadow.days.CHS.VS.TI$colour <- gsub("CHS.TI", "thistle3", fit.shadow.days.CHS.VS.TI$CHS.VS.TIonly.EnvData.Transect)
 fit.shadow.days.CHS.VS.TI$colour <- gsub("CHS.VS", "mediumpurple4", fit.shadow.days.CHS.VS.TI$colour)
 
-p5.CHS.TI.VS <- ggplot(fit.shadow.days.CHS.VS.TI, aes(x=CHS.VS.TIonly.EnvData.elev, y=CHS.VS.TIonly.EnvData.shadow.days, group=CHS.VS.TIonly.EnvData.Transect)) + geom_point(color=fit.shadow.days.CHS.VS.TI$colour) + geom_line(aes(x=CHS.VS.TIonly.EnvData.elev, y=.fitted, colour=CHS.VS.TIonly.EnvData.Transect, group=CHS.VS.TIonly.EnvData.Transect, color=fit.shadow.days.CHS.VS.TI$colour), size=2) + scale_colour_manual(values= c("CHS.TI"="thistle3", "CHS.VS"="mediumpurple4"))
+p4.shadow.days.CHS.TI.VS <- ggplot(fit.shadow.days.CHS.VS.TI, aes(x=CHS.VS.TIonly.EnvData.elev, y=CHS.VS.TIonly.EnvData.shadow.days, group=CHS.VS.TIonly.EnvData.Transect)) + geom_point(color=fit.shadow.days.CHS.VS.TI$colour) + geom_line(aes(x=CHS.VS.TIonly.EnvData.elev, y=.fitted, colour=CHS.VS.TIonly.EnvData.Transect, group=CHS.VS.TIonly.EnvData.Transect, color=fit.shadow.days.CHS.VS.TI$colour), size=2) + scale_colour_manual(values= c("CHS.TI"="thistle3", "CHS.VS"="mediumpurple4"))
 
 
 
@@ -1513,7 +1513,109 @@ fit.day10cm.CHS.VS.TI <- augment(day10cm.fit.CHS.VS.TI)
 fit.day10cm.CHS.VS.TI$colour <- gsub("CHS.TI", "thistle3", fit.day10cm.CHS.VS.TI$CHS.VS.TIonly.EnvData.Transect)
 fit.day10cm.CHS.VS.TI$colour <- gsub("CHS.VS", "mediumpurple4", fit.day10cm.CHS.VS.TI$colour)
 
-p5.CHS.TI.VS <- ggplot(fit.day10cm.CHS.VS.TI, aes(x=CHS.VS.TIonly.EnvData.elev, y=CHS.VS.TIonly.EnvData.day10cm, group=CHS.VS.TIonly.EnvData.Transect)) + geom_point(color=fit.day10cm.CHS.VS.TI$colour) + geom_line(aes(x=CHS.VS.TIonly.EnvData.elev, y=.fitted, colour=CHS.VS.TIonly.EnvData.Transect, group=CHS.VS.TIonly.EnvData.Transect, color=fit.day10cm.CHS.VS.TI$colour), size=2) + scale_colour_manual(values= c("CHS.TI"="thistle3", "CHS.VS"="mediumpurple4"))
+p5.day10cm.CHS.TI.VS <- ggplot(fit.day10cm.CHS.VS.TI, aes(x=CHS.VS.TIonly.EnvData.elev, y=CHS.VS.TIonly.EnvData.day10cm, group=CHS.VS.TIonly.EnvData.Transect)) + geom_point(color=fit.day10cm.CHS.VS.TI$colour) + geom_line(aes(x=CHS.VS.TIonly.EnvData.elev, y=.fitted, colour=CHS.VS.TIonly.EnvData.Transect, group=CHS.VS.TIonly.EnvData.Transect, color=fit.day10cm.CHS.VS.TI$colour), size=2) + scale_colour_manual(values= c("CHS.TI"="thistle3", "CHS.VS"="mediumpurple4"))
 
 ```
+
+CHN.CHS.CZ
+```
+CHN.CHS.CZonly.EnvData <- subset(CHN.CHS.CZ.EnvData, CHN.CHS.CZ.EnvData$Transect!="CHall")  
+CHN.CHS.CZonly.EnvData$elev.c.squared <- CHN.CHS.CZonly.EnvData$elev.c^2
+```
+
+CHN.CHS.CZ
+```
+##sol.rad.60d
+sol.rad.60d.fit.CHN.CHS.CZ <- lm(formula = CHN.CHS.CZonly.EnvData$sol.rad.60d ~ CHN.CHS.CZonly.EnvData$elev + 
+    CHN.CHS.CZonly.EnvData$elev.c.squared + CHN.CHS.CZonly.EnvData$Transect + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c.squared)
+
+
+fit.sol.rad.60d.CHN.CHS.CZ <- augment(sol.rad.60d.fit.CHN.CHS.CZ)
+fit.sol.rad.60d.CHN.CHS.CZ$colour <- gsub("CHN", "palegreen3", fit.sol.rad.60d.CHN.CHS.CZ$CHN.CHS.CZonly.EnvData.Transect)
+fit.sol.rad.60d.CHN.CHS.CZ$colour <- gsub("CHS", "mediumpurple4", fit.sol.rad.60d.CHN.CHS.CZ$colour)
+fit.sol.rad.60d.CHN.CHS.CZ$colour <- gsub("CZ", "skyblue3", fit.sol.rad.60d.CHN.CHS.CZ$colour)
+
+p6.sol.rad.60d.CHN.CHS.CZ <- ggplot(fit.sol.rad.60d.CHN.CHS.CZ, aes(x=CHN.CHS.CZonly.EnvData.elev, y=CHN.CHS.CZonly.EnvData.sol.rad.60d, group=CHN.CHS.CZonly.EnvData.Transect)) + geom_point(color=fit.sol.rad.60d.CHN.CHS.CZ$colour) + geom_line(aes(x=CHN.CHS.CZonly.EnvData.elev, y=.fitted, colour=CHN.CHS.CZonly.EnvData.Transect, group=CHN.CHS.CZonly.EnvData.Transect, color=fit.sol.rad.60d.CHN.CHS.CZ$colour), size=2) + scale_colour_manual(values= c("CHN"="palegreen3", "CHS"="mediumpurple4", CZ="skyblue3"))
+
+
+##temp.laying.date
+temp.laying.date.fit.CHN.CHS.CZ <- lm(formula = CHN.CHS.CZonly.EnvData$temp.laying.date ~ CHN.CHS.CZonly.EnvData$elev + 
+    CHN.CHS.CZonly.EnvData$elev.c.squared + CHN.CHS.CZonly.EnvData$Transect + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c.squared)
+
+
+fit.temp.laying.date.CHN.CHS.CZ <- augment(temp.laying.date.fit.CHN.CHS.CZ)
+fit.temp.laying.date.CHN.CHS.CZ$colour <- gsub("CHN", "palegreen3", fit.temp.laying.date.CHN.CHS.CZ$CHN.CHS.CZonly.EnvData.Transect)
+fit.temp.laying.date.CHN.CHS.CZ$colour <- gsub("CHS", "mediumpurple4", fit.temp.laying.date.CHN.CHS.CZ$colour)
+fit.temp.laying.date.CHN.CHS.CZ$colour <- gsub("CZ", "skyblue3", fit.temp.laying.date.CHN.CHS.CZ$colour)
+
+
+
+p7.temp.laying.date.CHN.CHS.CZ <- ggplot(fit.temp.laying.date.CHN.CHS.CZ, aes(x=CHN.CHS.CZonly.EnvData.elev, y=CHN.CHS.CZonly.EnvData.temp.laying.date, group=CHN.CHS.CZonly.EnvData.Transect)) + geom_point(color=fit.temp.laying.date.CHN.CHS.CZ$colour) + geom_line(aes(x=CHN.CHS.CZonly.EnvData.elev, y=.fitted, colour=CHN.CHS.CZonly.EnvData.Transect, group=CHN.CHS.CZonly.EnvData.Transect, color=fit.temp.laying.date.CHN.CHS.CZ$colour), size=2) + scale_colour_manual(values= c("CHN"="palegreen3", "CHS"="mediumpurple4", CZ="skyblue3"))
+
+
+
+
+##pcpt.60d
+pcpt.60d.fit.CHN.CHS.CZ <- lm(formula = CHN.CHS.CZonly.EnvData$pcpt.60d ~ CHN.CHS.CZonly.EnvData$elev + 
+    CHN.CHS.CZonly.EnvData$elev.c.squared + CHN.CHS.CZonly.EnvData$Transect + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c.squared)
+
+
+fit.pcpt.60d.CHN.CHS.CZ <- augment(pcpt.60d.fit.CHN.CHS.CZ)
+fit.pcpt.60d.CHN.CHS.CZ$colour <- gsub("CHN", "palegreen3", fit.pcpt.60d.CHN.CHS.CZ$CHN.CHS.CZonly.EnvData.Transect)
+fit.pcpt.60d.CHN.CHS.CZ$colour <- gsub("CHS", "mediumpurple4", fit.pcpt.60d.CHN.CHS.CZ$colour)
+fit.pcpt.60d.CHN.CHS.CZ$colour <- gsub("CZ", "skyblue3", fit.pcpt.60d.CHN.CHS.CZ$colour)
+
+
+p8.pcpt.60d.CHN.CHS.CZ <- ggplot(fit.pcpt.60d.CHN.CHS.CZ, aes(x=CHN.CHS.CZonly.EnvData.elev, y=CHN.CHS.CZonly.EnvData.pcpt.60d, group=CHN.CHS.CZonly.EnvData.Transect)) + geom_point(color=fit.pcpt.60d.CHN.CHS.CZ$colour) + geom_line(aes(x=CHN.CHS.CZonly.EnvData.elev, y=.fitted, colour=CHN.CHS.CZonly.EnvData.Transect, group=CHN.CHS.CZonly.EnvData.Transect, color=fit.pcpt.60d.CHN.CHS.CZ$colour), size=2) + scale_colour_manual(values= c("CHN"="palegreen3", "CHS"="mediumpurple4", CZ="skyblue3"))
+
+
+
+
+
+
+##shadow.days
+shadow.days.fit.CHN.CHS.CZ <- lm(formula = CHN.CHS.CZonly.EnvData$shadow.days ~ CHN.CHS.CZonly.EnvData$elev + 
+    CHN.CHS.CZonly.EnvData$elev.c.squared + CHN.CHS.CZonly.EnvData$Transect + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c.squared)
+
+
+fit.shadow.days.CHN.CHS.CZ <- augment(shadow.days.fit.CHN.CHS.CZ)
+fit.shadow.days.CHN.CHS.CZ$colour <- gsub("CHN", "palegreen3", fit.shadow.days.CHN.CHS.CZ$CHN.CHS.CZonly.EnvData.Transect)
+fit.shadow.days.CHN.CHS.CZ$colour <- gsub("CHS", "mediumpurple4", fit.shadow.days.CHN.CHS.CZ$colour)
+fit.shadow.days.CHN.CHS.CZ$colour <- gsub("CZ", "skyblue3", fit.shadow.days.CHN.CHS.CZ$colour)
+
+
+p9.shadow.days.CHN.CHS.CZ <- ggplot(fit.shadow.days.CHN.CHS.CZ, aes(x=CHN.CHS.CZonly.EnvData.elev, y=CHN.CHS.CZonly.EnvData.shadow.days, group=CHN.CHS.CZonly.EnvData.Transect)) + geom_point(color=fit.shadow.days.CHN.CHS.CZ$colour) + geom_line(aes(x=CHN.CHS.CZonly.EnvData.elev, y=.fitted, colour=CHN.CHS.CZonly.EnvData.Transect, group=CHN.CHS.CZonly.EnvData.Transect, color=fit.shadow.days.CHN.CHS.CZ$colour), size=2) + scale_colour_manual(values= c("CHN"="palegreen3", "CHS"="mediumpurple4", CZ="skyblue3"))
+
+
+
+
+
+
+##day10cm
+day10cm.fit.CHN.CHS.CZ <- lm(formula = CHN.CHS.CZonly.EnvData$day10cm ~ CHN.CHS.CZonly.EnvData$elev + 
+    CHN.CHS.CZonly.EnvData$elev.c.squared + CHN.CHS.CZonly.EnvData$Transect + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c.squared)
+
+
+fit.day10cm.CHN.CHS.CZ <- augment(day10cm.fit.CHN.CHS.CZ)
+fit.day10cm.CHN.CHS.CZ$colour <- gsub("CHN", "palegreen3", fit.day10cm.CHN.CHS.CZ$CHN.CHS.CZonly.EnvData.Transect)
+fit.day10cm.CHN.CHS.CZ$colour <- gsub("CHS", "mediumpurple4", fit.day10cm.CHN.CHS.CZ$colour)
+fit.day10cm.CHN.CHS.CZ$colour <- gsub("CZ", "skyblue3", fit.day10cm.CHN.CHS.CZ$colour)
+
+
+p10.day10cm.CHN.CHS.CZ <- ggplot(fit.day10cm.CHN.CHS.CZ, aes(x=CHN.CHS.CZonly.EnvData.elev, y=CHN.CHS.CZonly.EnvData.day10cm, group=CHN.CHS.CZonly.EnvData.Transect)) + geom_point(color=fit.day10cm.CHN.CHS.CZ$colour) + geom_line(aes(x=CHN.CHS.CZonly.EnvData.elev, y=.fitted, colour=CHN.CHS.CZonly.EnvData.Transect, group=CHN.CHS.CZonly.EnvData.Transect, color=fit.day10cm.CHN.CHS.CZ$colour), size=2) + scale_colour_manual(values= c("CHN"="palegreen3", "CHS"="mediumpurple4", CZ="skyblue3"))
+
+```
+
+
+
 
