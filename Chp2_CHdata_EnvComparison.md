@@ -1520,10 +1520,9 @@ p5.day10cm.CHS.TI.VS <- ggplot(fit.day10cm.CHS.VS.TI, aes(x=CHS.VS.TIonly.EnvDat
 
 multiple plot
 ```
-pdf("CHN.CHS.CZ.envModel.pdf")
-multiplot(p6.sol.rad.60d.CHN.CHS.CZ, p7.temp.laying.date.CHN.CHS.CZ, p8.pcpt.60d.CHN.CHS.CZ, p9.shadow.days.CHN.CHS.CZ, p10.day10cm.CHN.CHS.CZ, cols=2)
+pdf("CHS.TI.VS.envModel.pdf")
+multiplot(p1.sol.rad.60d.CHS.TI.VS, p2.temp.laying.date.CHS.TI.VS, p3.pcpt.60d.CHS.TI.VS, p4.shadow.days.CHS.TI.VS, p5.day10cm.CHS.TI.VS, cols=1)
 dev.off()
-
 ```
 
 
@@ -1629,10 +1628,9 @@ p10.day10cm.CHN.CHS.CZ <- ggplot(fit.day10cm.CHN.CHS.CZ, aes(x=CHN.CHS.CZonly.En
 
 multiple plot
 ```
-pdf("CHS.TI.VS.envModel.pdf")
-multiplot(p1.sol.rad.60d.CHS.TI.VS, p2.temp.laying.date.CHS.TI.VS, p3.pcpt.60d.CHS.TI.VS, p4.shadow.days.CHS.TI.VS, p5.day10cm.CHS.TI.VS, cols=2)
+pdf("CHN.CHS.CZ.envModel.pdf")
+multiplot(p6.sol.rad.60d.CHN.CHS.CZ, p7.temp.laying.date.CHN.CHS.CZ, p8.pcpt.60d.CHN.CHS.CZ, p9.shadow.days.CHN.CHS.CZ, p10.day10cm.CHN.CHS.CZ, cols=1)
 dev.off()
-
 ```
 
 
