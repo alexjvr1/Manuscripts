@@ -1517,6 +1517,16 @@ p5.day10cm.CHS.TI.VS <- ggplot(fit.day10cm.CHS.VS.TI, aes(x=CHS.VS.TIonly.EnvDat
 
 ```
 
+
+multiple plot
+```
+pdf("CHN.CHS.CZ.envModel.pdf")
+multiplot(p6.sol.rad.60d.CHN.CHS.CZ, p7.temp.laying.date.CHN.CHS.CZ, p8.pcpt.60d.CHN.CHS.CZ, p9.shadow.days.CHN.CHS.CZ, p10.day10cm.CHN.CHS.CZ, cols=2)
+dev.off()
+
+```
+
+
 CHN.CHS.CZ
 ```
 CHN.CHS.CZonly.EnvData <- subset(CHN.CHS.CZ.EnvData, CHN.CHS.CZ.EnvData$Transect!="CHall")  
@@ -1617,5 +1627,52 @@ p10.day10cm.CHN.CHS.CZ <- ggplot(fit.day10cm.CHN.CHS.CZ, aes(x=CHN.CHS.CZonly.En
 ```
 
 
+multiple plot
+```
+pdf("CHS.TI.VS.envModel.pdf")
+multiplot(p1.sol.rad.60d.CHS.TI.VS, p2.temp.laying.date.CHS.TI.VS, p3.pcpt.60d.CHS.TI.VS, p4.shadow.days.CHS.TI.VS, p5.day10cm.CHS.TI.VS, cols=2)
+dev.off()
 
+```
+
+
+define multiplot
+```
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  library(grid)
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+
+```
 
