@@ -1486,9 +1486,8 @@ p3.pcpt.60d.CHS.TI.VS <- ggplot(fit.pcpt.60d.CHS.VS.TI, aes(x=CHS.VS.TIonly.EnvD
 
 ##shadow.days
 shadow.days.fit.CHS.VS.TI <- lm(formula = CHS.VS.TIonly.EnvData$shadow.days ~ CHS.VS.TIonly.EnvData$elev + 
-    CHS.VS.TIonly.EnvData$elev.c.squared + CHS.VS.TIonly.EnvData$Transect + 
-    CHS.VS.TIonly.EnvData$Transect:CHS.VS.TIonly.EnvData$elev + 
-    CHS.VS.TIonly.EnvData$Transect:CHS.VS.TIonly.EnvData$elev.c.squared)
+    CHS.VS.TIonly.EnvData$Transect + 
+    CHS.VS.TIonly.EnvData$Transect:CHS.VS.TIonly.EnvData$elev)
 
 
 fit.shadow.days.CHS.VS.TI <- augment(shadow.days.fit.CHS.VS.TI)
@@ -1590,9 +1589,8 @@ p8.pcpt.60d.CHN.CHS.CZ <- ggplot(fit.pcpt.60d.CHN.CHS.CZ, aes(x=CHN.CHS.CZonly.E
 
 ##shadow.days
 shadow.days.fit.CHN.CHS.CZ <- lm(formula = CHN.CHS.CZonly.EnvData$shadow.days ~ CHN.CHS.CZonly.EnvData$elev + 
-    CHN.CHS.CZonly.EnvData$elev.c.squared + CHN.CHS.CZonly.EnvData$Transect + 
-    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev + 
-    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev.c.squared)
+    CHN.CHS.CZonly.EnvData$Transect + 
+    CHN.CHS.CZonly.EnvData$Transect:CHN.CHS.CZonly.EnvData$elev)
 
 
 fit.shadow.days.CHN.CHS.CZ <- augment(shadow.days.fit.CHN.CHS.CZ)
