@@ -206,20 +206,40 @@ CHN.results <- read.table("CHN.out_fst.txt")
 CHN.results$rownumber <- 1:nrow(CHN.results)  ##add an index of the rownumbers, as these correspond to the loci in the input file. 
 
 CHN.outliers <- plot_bayescan(CHN.results, FDR=0.01) # this is an R script distributed with bayescan for plotting and identifying outliers. In this case I find 318 when FDR=0.05 and 217 at FDR=0.01
-CHN.outliers.df <- CHN.outliers$outliers
-CHN.outliers.df <- as.data.frame(CHN.outliers.df)
-colnames(CHN.outliers.df) <- "rownames"  ##the column headers need to be the same for dplyr to work
+
+CHN.pos.selection <- which(CHN.results$fst>0.2)  ## if we want only the loci that are under positive selection (this is more conservative, and should have better results in the final analysis), then we make a list of all the loci that fall above an fst threshold as seen on the plot_bayescan graph. 
+
+CHN.pos.outliers <- intersect(CHN.outliers$outliers, CHN.pos.selection) #find the subset of outliers that are under positive selection
 
 locus.names <- read.table("CHN.229.5265.plink.map") ##read in the locus names found in the map file generated vcf --plink
 locus.names$rownames <- 1:nrow(locus.names) ##index in the same way as the bayescan output
 
+CHN.pos.outliers.df <- as.data.frame(CHN.pos.outliers)
+colnames(CHN.pos.outliers.df) <- "rownames"
+
+library(dplyr)
+CHN.pos.outlier.names <- semi_join(locus.names, CHN.pos.outliers.df)
+
+CHN.pos.outlier.names <- as.data.frame(CHN.pos.outlier.names$V2)
+write.table(CHN.pos.outlier.names, "CHN.bayescan.pos.outliers.FDR0.01", quote=F, row.names=F, col.names=F)
+
+
+
+##all loci 
+#CHN.outliers.df <- CHN.outliers$outliers ##write all the outliers to file 
+#CHN.outliers.df <- as.data.frame(CHN.outliers.df)
+#colnames(CHN.outliers.df) <- "rownames"  ##the column headers need to be the same for dplyr to work
+
+#locus.names <- read.table("CHN.229.5265.plink.map") ##read in the locus names found in the map file generated vcf --plink
+#locus.names$rownames <- 1:nrow(locus.names) ##index in the same way as the bayescan output
+
 library(dplyr)
 ##join by rownames
-CHN.outlier.names <- semi_join(locus.names, CHN.outliers.df)
-CHN.outlier.names <- gsub(":", ".", CHN.outlier.names$V2 )
+#CHN.outlier.names <- semi_join(locus.names, CHN.outliers.df)
+#CHN.outlier.names <- gsub(":", ".", CHN.outlier.names$V2 )
 
-CHN.outlier.names <- as.data.frame(CHN.outlier.names)
-write.table(CHN.outlier.names, "CHN.bayescan.outliers.FDR0.05", quote=F, row.names=F, col.names=F)
+#CHN.outlier.names <- as.data.frame(CHN.outlier.names)
+#write.table(CHN.outlier.names, "CHN.bayescan.outliers.FDR0.05", quote=F, row.names=F, col.names=F)
 ```
 
 ### CHS
@@ -255,9 +275,28 @@ dev.off()
 CHS.results$rownumber <- 1:nrow(CHS.results)  ##add an index of the rownumbers, as these correspond to the loci in the input file. 
 
 CHS.outliers <- plot_bayescan(CHS.results, FDR=0.01) # this is an R script distributed with bayescan for plotting and identifying outliers. In this case I find 721 when FDR=0.05 and 528 at FDR=0.01
-CHS.outliers.df <- CHS.outliers$outliers
-CHS.outliers.df <- as.data.frame(CHS.outliers.df)
-colnames(CHS.outliers.df) <- "rownames"  ##the column headers need to be the same for dplyr to work
+
+CHS.pos.selection <- which(CHS.results$fst>0.2)  ## if we want only the loci that are under positive selection (this is more conservative, and should have better results in the final analysis), then we make a list of all the loci that fall above an fst threshold as seen on the plot_bayescan graph. 
+
+CHS.pos.outliers <- intersect(CHS.outliers$outliers, CHS.pos.selection) #find the subset of outliers that are under positive selection
+
+locus.names <- read.table("CHS.275.6339.plink.map") ##read in the locus names found in the map file generated vcf --plink
+locus.names$rownames <- 1:nrow(locus.names) ##index in the same way as the bayescan output
+
+CHS.pos.outliers.df <- as.data.frame(CHS.pos.outliers)
+colnames(CHS.pos.outliers.df) <- "rownames"
+
+library(dplyr)
+CHS.pos.outlier.names <- semi_join(locus.names, CHS.pos.outliers.df)
+
+CHS.pos.outlier.names <- as.data.frame(CHS.pos.outlier.names$V2)
+write.table(CHS.pos.outlier.names, "CHS.bayescan.pos.outliers.FDR0.01", quote=F, row.names=F, col.names=F)
+
+
+###all outliers
+CHS.outliers.df <- CHS.outliers$outliers#CHS.outliers.df <- as.data.frame(CHS.outliers.df)
+colnames(CHS.outliers.df) <- "rownames"
+##the column headers need to be the same for dplyr to work
 
 locus.names <- read.table("CHS.275.6339.plink.map") ##read in the locus names found in the map file generated vcf --plink
 locus.names$rownames <- 1:nrow(locus.names) ##index in the same way as the bayescan output
@@ -305,6 +344,29 @@ dev.off()
 CHS.TI.results$rownumber <- 1:nrow(CHS.TI.results)  ##add an index of the rownumbers, as these correspond to the loci in the input file. 
 
 CHS.TI.outliers <- plot_bayescan(CHS.TI.results, FDR=0.01) # this is an R script distributed with bayescan for plotting and identifying outliers. In this case I find 193 when FDR=0.05 and 137 at FDR=0.01
+
+CHS.TI.pos.selection <- which(CHS.TI.results$fst>0.2)  ## if we want only the loci that are under positive selection (this is more conservative, and should have better results in the final analysis), then we make a list of all the loci that fall above an fst threshold as seen on the plot_bayescan graph. 
+
+CHS.TI.pos.outliers <- intersect(CHS.TI.outliers$outliers, CHS.TI.pos.selection) #find the subset of outliers that are under positive selection
+
+locus.names <- read.table("CHS.TI.140.5692.plink.map") ##read in the locus names found in the map file generated vcf --plink
+locus.names$rownames <- 1:nrow(locus.names) ##index in the same way as the bayescan output
+
+CHS.TI.pos.outliers.df <- as.data.frame(CHS.TI.pos.outliers)
+colnames(CHS.TI.pos.outliers.df) <- "rownames"
+
+library(dplyr)
+CHS.TI.pos.outlier.names <- semi_join(locus.names, CHS.TI.pos.outliers.df)
+
+CHS.TI.pos.outlier.names <- as.data.frame(CHS.TI.pos.outlier.names$V2)
+write.table(CHS.TI.pos.outlier.names, "CHS.TI.bayescan.pos.outliers.FDR0.01", quote=F, row.names=F, col.names=F)
+
+
+
+
+
+
+###all outliers
 CHS.TI.outliers.df <- CHS.TI.outliers$outliers
 CHS.TI.outliers.df <- as.data.frame(CHS.TI.outliers.df)
 colnames(CHS.TI.outliers.df) <- "rownames"  ##the column headers need to be the same for dplyr to work
@@ -354,6 +416,26 @@ dev.off()
 CHS.VS.results$rownumber <- 1:nrow(CHS.VS.results)  ##add an index of the rownumbers, as these correspond to the loci in the input file. 
 
 CHS.VS.outliers <- plot_bayescan(CHS.VS.results, FDR=0.01) # this is an R script distributed with bayescan for plotting and identifying outliers. In this case I find 122 when FDR=0.05 and 76 at FDR=0.01
+
+CHS.VS.pos.selection <- which(CHS.VS.results$fst>0.2)  ## if we want only the loci that are under positive selection (this is more conservative, and should have better results in the final analysis), then we make a list of all the loci that fall above an fst threshold as seen on the plot_bayescan graph. 
+
+CHS.VS.pos.outliers <- intersect(CHS.VS.outliers$outliers, CHS.VS.pos.selection) #find the subset of outliers that are under positive selection
+
+locus.names <- read.table("CHS.VS.135.5835.plink.map") ##read in the locus names found in the map file generated vcf --plink
+locus.names$rownames <- 1:nrow(locus.names) ##index in the same way as the bayescan output
+
+CHS.VS.pos.outliers.df <- as.data.frame(CHS.VS.pos.outliers)
+colnames(CHS.VS.pos.outliers.df) <- "rownames"
+
+library(dplyr)
+CHS.VS.pos.outlier.names <- semi_join(locus.names, CHS.VS.pos.outliers.df)
+
+CHS.VS.pos.outlier.names <- as.data.frame(CHS.VS.pos.outlier.names$V2)
+write.table(CHS.VS.pos.outlier.names, "CHS.VS.bayescan.pos.outliers.FDR0.01", quote=F, row.names=F, col.names=F)
+
+
+
+##all outliers
 CHS.VS.outliers.df <- CHS.VS.outliers$outliers
 CHS.VS.outliers.df <- as.data.frame(CHS.VS.outliers.df)
 colnames(CHS.VS.outliers.df) <- "rownames"  ##the column headers need to be the same for dplyr to work
@@ -403,6 +485,10 @@ dev.off()
 CZ.results$rownumber <- 1:nrow(CZ.results)  ##add an index of the rownumbers, as these correspond to the loci in the input file. 
 
 CZ.outliers <- plot_bayescan(CZ.results, FDR=0.01) # this is an R script distributed with bayescan for plotting and identifying outliers. In this case I find 122 when FDR=0.05 and 76 at FDR=0.01
+
+
+
+##all outliers
 CZ.outliers.df <- CZ.outliers$outliers
 CZ.outliers.df <- as.data.frame(CZ.outliers.df)
 colnames(CZ.outliers.df) <- "rownames"  ##the column headers need to be the same for dplyr to work
