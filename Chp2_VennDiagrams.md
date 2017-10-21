@@ -1414,7 +1414,7 @@ CHN.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcad
 
 
 
-CHN.duplicated.outliers <- CHN.alloutliers[duplicated(CHN.alloutliers),]  ##select only loci occurring more than once (here 322)
+CHN.duplicated.outliers <- CHN.alloutliers[duplicated(CHN.alloutliers),]  ##select only loci occurring more than once (here 163)
 
 write.table(CHN.duplicated.outliers, "CHN.duplicated.outliers.20171020", col.names=F, row.names=F, quote=F)
 ```
