@@ -462,8 +462,16 @@ lfmm.outliers <- read.table("CHN.LFMM.alloutliers")
 pcadapt.outliers <- read.table("CHN.pcadapt.outliers")
 bayenv.outliers <- read.table("CHN.BayEnv.alloutliers")
 XtX.outliers <- read.table("CHN.XtX.100outliers")
-bayescan.outliers <- read.table("CHN.bayescan.outliers.FDR0.01")
+bayescan.outliers <- read.table("CHN.bayescan.pos.outliers.FDR0.01")
+#bayescan.outliers <- read.table("CHN.bayescan.outliers.FDR0.01")
 
+##check that the files are all in the same format
+
+head(lfmm.outliers) 
+head(XtX.outliers) 
+head(pcadapt.outliers)
+head(bayenv.outliers) 
+head(bayescan.outliers)
 
 lfmm.outliers <- as.data.frame(lfmm.outliers)
 pcadapt.outliers <- as.data.frame(pcadapt.outliers)
@@ -471,6 +479,23 @@ XtX.outliers <- as.data.frame(XtX.outliers)
 bayenv.outliers <- as.data.frame(bayenv.outliers)
 bayescan.outliers <- as.data.frame(bayescan.outliers)
 
+
+##and correct those that need changing
+
+pcadapt.outliers$V1 <- gsub(":", "\\.", pcadapt.outliers$V1)
+bayescan.outliers$V1 <- paste("X.", bayescan.outliers$V1, sep="")
+bayescan.outliers$V1 <- gsub(":", "\\.", bayescan.outliers$V1)
+
+
+colnames(lfmm.outliers) <- "loci"
+colnames(XtX.outliers) <- "loci"
+colnames(pcadapt.outliers) <- "loci"
+colnames(bayenv.outliers) <- "loci"
+colnames(bayescan.outliers) <- "loci"
+
+
+###old code to remove the X. <- I'm now keeping the X. before the locus name to make sure that the locus names don't turn to digits. It removed 0s after the "." before, and I ended up with an incorrect set of loci 
+#######################
 lfmm.outliers.new <- gsub("X\\.", "", lfmm.outliers$V1)
 lfmm.outliers <- NULL
 lfmm.outliers <- as.data.frame(lfmm.outliers.new)
@@ -487,13 +512,6 @@ pcadapt.new <- gsub("X\\.", "", pcadapt.outliers$V1)
 pcadapt.new <- as.data.frame(pcadapt.new)
 pcadapt.new <- gsub(":", "\\.", pcadapt.new$pcadapt.new)
 pcadapt.outliers <- as.data.frame(pcadapt.new)
-
-
-colnames(lfmm.outliers) <- "loci"
-colnames(XtX.outliers) <- "loci"
-colnames(pcadapt.outliers) <- "loci"
-colnames(bayenv.outliers) <- "loci"
-colnames(bayescan.outliers) <- "loci"
 
 ```
 
@@ -552,6 +570,22 @@ bayescan.outliers.names, pcadapt.outliers.names)))
 d12345 <- length(Reduce(intersect, list(bayenv.outliers.names, XtX.outliers.names, lfmm.outliers.names, 
 bayescan.outliers.names, pcadapt.outliers.names)))
 
+
+##Venn with new bayescan loci
+pdf("CHN.Venn.alloutliers_20171020.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("bayenv", "XtX", "lfmm", "bayescan", "pcadapt"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+
+
+
+##previous Venn
 pdf("CHN.Venn.alloutliers_20171007.pdf")
 draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
 n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
@@ -566,7 +600,7 @@ dev.off()
 
 ![alt_txt][CHN.Venn.allmethods]
 
-[CHN.Venn.allmethods]:https://user-images.githubusercontent.com/12142475/31176663-8c5b0aca-a90b-11e7-9f7d-25d1fbdac1d7.png
+[CHN.Venn.allmethods]:
 
 
 ##### CHS
@@ -577,8 +611,16 @@ lfmm.outliers <- read.table("CHS.LFMM.alloutliers")
 pcadapt.outliers <- read.table("CHS.pcadapt.outliers")
 bayenv.outliers <- read.table("CHS.BayEnv.alloutliers")
 XtX.outliers <- read.table("CHS.XtX.100outliers")
-bayescan.outliers <- read.table("CHS.bayescan.outliers.FDR0.01")
+bayescan.outliers <- read.table("CHS.bayescan.pos.outliers.FDR0.01")
+#bayescan.outliers <- read.table("CHS.bayescan.outliers.FDR0.01")
 
+##check that the files are all in the same format
+
+head(lfmm.outliers) 
+head(XtX.outliers) 
+head(pcadapt.outliers)
+head(bayenv.outliers) 
+head(bayescan.outliers)
 
 lfmm.outliers <- as.data.frame(lfmm.outliers)
 pcadapt.outliers <- as.data.frame(pcadapt.outliers)
@@ -586,6 +628,23 @@ XtX.outliers <- as.data.frame(XtX.outliers)
 bayenv.outliers <- as.data.frame(bayenv.outliers)
 bayescan.outliers <- as.data.frame(bayescan.outliers)
 
+
+##and correct those that need changing
+
+pcadapt.outliers$V1 <- gsub(":", "\\.", pcadapt.outliers$V1)
+bayescan.outliers$V1 <- paste("X.", bayescan.outliers$V1, sep="")
+bayescan.outliers$V1 <- gsub(":", "\\.", bayescan.outliers$V1)
+
+
+colnames(lfmm.outliers) <- "loci"
+colnames(XtX.outliers) <- "loci"
+colnames(pcadapt.outliers) <- "loci"
+colnames(bayenv.outliers) <- "loci"
+colnames(bayescan.outliers) <- "loci"
+
+
+###old code to remove the X. <- I'm now keeping the X. before the locus name to make sure that the locus names don't turn to digits. It removed 0s after the "." before, and I ended up with an incorrect set of loci 
+#######################
 lfmm.outliers.new <- gsub("X\\.", "", lfmm.outliers$V1)
 lfmm.outliers <- NULL
 lfmm.outliers <- as.data.frame(lfmm.outliers.new)
@@ -602,13 +661,6 @@ pcadapt.new <- gsub("X\\.", "", pcadapt.outliers$V1)
 pcadapt.new <- as.data.frame(pcadapt.new)
 pcadapt.new <- gsub(":", "\\.", pcadapt.new$pcadapt.new)
 pcadapt.outliers <- as.data.frame(pcadapt.new)
-
-
-colnames(lfmm.outliers) <- "loci"
-colnames(XtX.outliers) <- "loci"
-colnames(pcadapt.outliers) <- "loci"
-colnames(bayenv.outliers) <- "loci"
-colnames(bayescan.outliers) <- "loci"
 
 ```
 
@@ -667,6 +719,21 @@ bayescan.outliers.names, pcadapt.outliers.names)))
 d12345 <- length(Reduce(intersect, list(bayenv.outliers.names, XtX.outliers.names, lfmm.outliers.names, 
 bayescan.outliers.names, pcadapt.outliers.names)))
 
+###Venn with new outliers
+pdf("CHS.Venn.alloutliers_20171020.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("bayenv", "XtX", "lfmm", "bayescan", "pcadapt"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+
+
+
+####old Venn diagram
 pdf("CHS.Venn.alloutliers_20171007.pdf")
 draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
 n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
@@ -689,8 +756,16 @@ lfmm.outliers <- read.table("CZ.LFMM.alloutliers")
 pcadapt.outliers <- read.table("CZ.pcadapt.outliers")
 bayenv.outliers <- read.table("CZ.BayEnv.alloutliers")
 XtX.outliers <- read.table("CZ.XtX.100outliers")
-bayescan.outliers <- read.table("CZ.bayescan.outliers.FDR0.01")
+bayescan.outliers <- read.table("CZ.bayescan.pos.outliers.FDR0.01")
+#bayescan.outliers <- read.table("CZ.bayescan.outliers.FDR0.01")
 
+##check that the files are all in the same format
+
+head(lfmm.outliers) 
+head(XtX.outliers) 
+head(pcadapt.outliers)
+head(bayenv.outliers) 
+head(bayescan.outliers)
 
 lfmm.outliers <- as.data.frame(lfmm.outliers)
 pcadapt.outliers <- as.data.frame(pcadapt.outliers)
@@ -698,6 +773,23 @@ XtX.outliers <- as.data.frame(XtX.outliers)
 bayenv.outliers <- as.data.frame(bayenv.outliers)
 bayescan.outliers <- as.data.frame(bayescan.outliers)
 
+
+##and correct those that need changing
+
+pcadapt.outliers$V1 <- gsub(":", "\\.", pcadapt.outliers$V1)
+bayescan.outliers$V1 <- paste("X.", bayescan.outliers$V1, sep="")
+bayescan.outliers$V1 <- gsub(":", "\\.", bayescan.outliers$V1)
+
+
+colnames(lfmm.outliers) <- "loci"
+colnames(XtX.outliers) <- "loci"
+colnames(pcadapt.outliers) <- "loci"
+colnames(bayenv.outliers) <- "loci"
+colnames(bayescan.outliers) <- "loci"
+
+
+###old code to remove the X. <- I'm now keeping the X. before the locus name to make sure that the locus names don't turn to digits. It removed 0s after the "." before, and I ended up with an incorrect set of loci 
+#######################
 lfmm.outliers.new <- gsub("X\\.", "", lfmm.outliers$V1)
 lfmm.outliers <- NULL
 lfmm.outliers <- as.data.frame(lfmm.outliers.new)
@@ -714,13 +806,6 @@ pcadapt.new <- gsub("X\\.", "", pcadapt.outliers$V1)
 pcadapt.new <- as.data.frame(pcadapt.new)
 pcadapt.new <- gsub(":", "\\.", pcadapt.new$pcadapt.new)
 pcadapt.outliers <- as.data.frame(pcadapt.new)
-
-
-colnames(lfmm.outliers) <- "loci"
-colnames(XtX.outliers) <- "loci"
-colnames(pcadapt.outliers) <- "loci"
-colnames(bayenv.outliers) <- "loci"
-colnames(bayescan.outliers) <- "loci"
 
 ```
 
@@ -779,6 +864,19 @@ bayescan.outliers.names, pcadapt.outliers.names)))
 d12345 <- length(Reduce(intersect, list(bayenv.outliers.names, XtX.outliers.names, lfmm.outliers.names, 
 bayescan.outliers.names, pcadapt.outliers.names)))
 
+pdf("CZ.Venn.alloutliers_20171020.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("bayenv", "XtX", "lfmm", "bayescan", "pcadapt"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+
+
+###old figure
 pdf("CZ.Venn.alloutliers_20171007.pdf")
 draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
 n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
@@ -805,8 +903,16 @@ lfmm.outliers <- read.table("CHS.VS.LFMM.alloutliers")
 pcadapt.outliers <- read.table("CHS.VS.pcadapt.outliers")
 bayenv.outliers <- read.table("CHS.VS.BayEnv.alloutliers")
 XtX.outliers <- read.table("CHS.VS.XtX.100outliers")
-bayescan.outliers <- read.table("CHS.VS.bayescan.outliers.FDR0.01")
+bayescan.outliers <- read.table("CHS.VS.bayescan.pos.outliers.FDR0.01")
+#bayescan.outliers <- read.table("CHS.VS.bayescan.outliers.FDR0.01")
 
+##check that the files are all in the same format
+
+head(lfmm.outliers) 
+head(XtX.outliers) 
+head(pcadapt.outliers)
+head(bayenv.outliers) 
+head(bayescan.outliers)
 
 lfmm.outliers <- as.data.frame(lfmm.outliers)
 pcadapt.outliers <- as.data.frame(pcadapt.outliers)
@@ -814,6 +920,23 @@ XtX.outliers <- as.data.frame(XtX.outliers)
 bayenv.outliers <- as.data.frame(bayenv.outliers)
 bayescan.outliers <- as.data.frame(bayescan.outliers)
 
+
+##and correct those that need changing
+
+pcadapt.outliers$V1 <- gsub(":", "\\.", pcadapt.outliers$V1)
+bayescan.outliers$V1 <- paste("X.", bayescan.outliers$V1, sep="")
+bayescan.outliers$V1 <- gsub(":", "\\.", bayescan.outliers$V1)
+
+
+colnames(lfmm.outliers) <- "loci"
+colnames(XtX.outliers) <- "loci"
+colnames(pcadapt.outliers) <- "loci"
+colnames(bayenv.outliers) <- "loci"
+colnames(bayescan.outliers) <- "loci"
+
+
+###old code to remove the X. <- I'm now keeping the X. before the locus name to make sure that the locus names don't turn to digits. It removed 0s after the "." before, and I ended up with an incorrect set of loci 
+#######################
 lfmm.outliers.new <- gsub("X\\.", "", lfmm.outliers$V1)
 lfmm.outliers <- NULL
 lfmm.outliers <- as.data.frame(lfmm.outliers.new)
@@ -830,13 +953,6 @@ pcadapt.new <- gsub("X\\.", "", pcadapt.outliers$V1)
 pcadapt.new <- as.data.frame(pcadapt.new)
 pcadapt.new <- gsub(":", "\\.", pcadapt.new$pcadapt.new)
 pcadapt.outliers <- as.data.frame(pcadapt.new)
-
-
-colnames(lfmm.outliers) <- "loci"
-colnames(XtX.outliers) <- "loci"
-colnames(pcadapt.outliers) <- "loci"
-colnames(bayenv.outliers) <- "loci"
-colnames(bayescan.outliers) <- "loci"
 
 ```
 
@@ -895,6 +1011,21 @@ bayescan.outliers.names, pcadapt.outliers.names)))
 d12345 <- length(Reduce(intersect, list(bayenv.outliers.names, XtX.outliers.names, lfmm.outliers.names, 
 bayescan.outliers.names, pcadapt.outliers.names)))
 
+pdf("CHS.VS.Venn.alloutliers.20171020.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("bayenv", "XtX", "lfmm", "bayescan", "pcadapt"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+
+
+
+
+##old figure
 pdf("CHS.VS.Venn.alloutliers.20171007.pdf")
 draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
 n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
@@ -924,8 +1055,16 @@ lfmm.outliers <- read.table("CHS.TI.LFMM.alloutliers")
 pcadapt.outliers <- read.table("CHS.TI.pcadapt.outliers")
 bayenv.outliers <- read.table("CHS.TI.BayEnv.alloutliers")
 XtX.outliers <- read.table("CHS.TI.XtX.100outliers")
-bayescan.outliers <- read.table("CHS.TI.bayescan.outliers.FDR0.01")
+bayescan.outliers <- read.table("CHS.TI.bayescan.pos.outliers.FDR0.01")
+#bayescan.outliers <- read.table("CHS.TI.bayescan.outliers.FDR0.01")
 
+##check that the files are all in the same format
+
+head(lfmm.outliers) 
+head(XtX.outliers) 
+head(pcadapt.outliers)
+head(bayenv.outliers) 
+head(bayescan.outliers)
 
 lfmm.outliers <- as.data.frame(lfmm.outliers)
 pcadapt.outliers <- as.data.frame(pcadapt.outliers)
@@ -933,6 +1072,23 @@ XtX.outliers <- as.data.frame(XtX.outliers)
 bayenv.outliers <- as.data.frame(bayenv.outliers)
 bayescan.outliers <- as.data.frame(bayescan.outliers)
 
+
+##and correct those that need changing
+
+pcadapt.outliers$V1 <- gsub(":", "\\.", pcadapt.outliers$V1)
+bayescan.outliers$V1 <- paste("X.", bayescan.outliers$V1, sep="")
+bayescan.outliers$V1 <- gsub(":", "\\.", bayescan.outliers$V1)
+
+
+colnames(lfmm.outliers) <- "loci"
+colnames(XtX.outliers) <- "loci"
+colnames(pcadapt.outliers) <- "loci"
+colnames(bayenv.outliers) <- "loci"
+colnames(bayescan.outliers) <- "loci"
+
+
+###old code to remove the X. <- I'm now keeping the X. before the locus name to make sure that the locus names don't turn to digits. It removed 0s after the "." before, and I ended up with an incorrect set of loci 
+#######################
 lfmm.outliers.new <- gsub("X\\.", "", lfmm.outliers$V1)
 lfmm.outliers <- NULL
 lfmm.outliers <- as.data.frame(lfmm.outliers.new)
@@ -949,13 +1105,6 @@ pcadapt.new <- gsub("X\\.", "", pcadapt.outliers$V1)
 pcadapt.new <- as.data.frame(pcadapt.new)
 pcadapt.new <- gsub(":", "\\.", pcadapt.new$pcadapt.new)
 pcadapt.outliers <- as.data.frame(pcadapt.new)
-
-
-colnames(lfmm.outliers) <- "loci"
-colnames(XtX.outliers) <- "loci"
-colnames(pcadapt.outliers) <- "loci"
-colnames(bayenv.outliers) <- "loci"
-colnames(bayescan.outliers) <- "loci"
 
 ```
 
@@ -1014,6 +1163,21 @@ bayescan.outliers.names, pcadapt.outliers.names)))
 d12345 <- length(Reduce(intersect, list(bayenv.outliers.names, XtX.outliers.names, lfmm.outliers.names, 
 bayescan.outliers.names, pcadapt.outliers.names)))
 
+
+pdf("CHS.TI.Venn.alloutliers.20171020.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("bayenv", "XtX", "lfmm", "bayescan", "pcadapt"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+
+
+
+###old figure
 pdf("CHS.TI.Venn.alloutliers.20171007.pdf")
 draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
 n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
@@ -1041,48 +1205,27 @@ First I need to find the non-redundant set of candidate outliers for each of the
 ##### CHN
 
 ```
-CHN.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
+CHN.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "loci" column. This only works of colnames are the same (at least one column name)
 
-CHN.alloutliers <- lapply(CHN.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 2178 to 1870)
-write.table(CHN.alloutliers, "CHN.alloutliers.20171007", col.names=F, row.names=F, quote=F)
+CHN.alloutliers <- lapply(CHN.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 2160 to 1838)
+write.table(CHN.alloutliers, "CHN.alloutliers.20171020", col.names=F, row.names=F, quote=F)
 ```
 
 #### CHS
 ```
+CHS.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "loci" column. This only works of colnames are the same (at least one column name)
 
-lfmm.outliers <- as.data.frame(lfmm.outliers)
-pcadapt.outliers <- as.data.frame(pcadapt.outliers)
-XtX.outliers <- as.data.frame(XtX.outliers)
-bayenv.outliers <- as.data.frame(bayenv.outliers)
-
-colnames(lfmm.outliers) <- "loci"
-colnames(XtX.outliers) <- "loci"
-colnames(pcadapt.outliers) <- "loci"
-colnames(bayenv.outliers) <- "loci"
-
-CHS.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
-
-CHS.alloutliers <- lapply(CHS.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 4608 to 4376)
-write.table(CHS.alloutliers, "CHS.alloutliers.20171007", col.names=F, row.names=F, quote=F)
+CHS.alloutliers <- lapply(CHS.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 2812 to 2392)
+write.table(CHS.alloutliers, "CHS.alloutliers.20171020", col.names=F, row.names=F, quote=F)
 ```
 
 ##### CZ
 
 ```
-lfmm.outliers <- as.data.frame(lfmm.outliers)
-pcadapt.outliers <- as.data.frame(pcadapt.outliers)
-XtX.outliers <- as.data.frame(XtX.outliers)
-bayenv.outliers <- as.data.frame(bayenv.outliers)
-
-colnames(lfmm.outliers) <- "loci"
-colnames(XtX.outliers) <- "loci"
-colnames(pcadapt.outliers) <- "loci"
-colnames(bayenv.outliers) <- "loci"
-
 CZ.alloutliers <- rbind(lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
 
-CZ.alloutliers <- lapply(CZ.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 3090 to 3044)
-write.table(CZ.alloutliers, "CZ.alloutliers.20171007", col.names=F, row.names=F, quote=F)
+CZ.alloutliers <- lapply(CZ.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 2069 to 1994)
+write.table(CZ.alloutliers, "CZ.alloutliers.20171020", col.names=F, row.names=F, quote=F)
 ```
 
 
@@ -1094,17 +1237,17 @@ First without CHall
 
 ```
 
-CHN.outliers <- read.table("CHN/CHN.alloutliers.20171007")
+CHN.outliers <- read.table("CHN/CHN.alloutliers.20171020")
 CHN.outliers <- as.data.frame(CHN.outliers)
 colnames(CHN.outliers) <- "loci"
 CHN.outliers <- as.character(CHN.outliers$loci)
 
-CZ.outliers <- read.table("CZ/CZ.alloutliers.20171007")
+CZ.outliers <- read.table("CZ/CZ.alloutliers.20171020")
 CZ.outliers <- as.data.frame(CZ.outliers)
 colnames(CZ.outliers) <- "loci"
 CZ.outliers <- as.character(CZ.outliers$loci)
 
-CHS.outliers <- read.table("CHS/CHS.alloutliers.20171007")
+CHS.outliers <- read.table("CHS/CHS.alloutliers.20171020")
 CHS.outliers <- as.data.frame(CHS.outliers)
 colnames(CHS.outliers) <- "loci"
 CHS.outliers <- as.character(CHS.outliers$loci)
@@ -1121,7 +1264,7 @@ d23 <- length(Reduce(intersect, list(CHS.outliers, CZ.outliers)))
 d123 <- length(Reduce(intersect, list(CHN.outliers, CHS.outliers,CZ.outliers)))
 
 library(VennDiagram)
-pdf("Venn.CHN.CHS.CZ.alloutliers.20171007.pdf")
+pdf("Venn.CHN.CHS.CZ.alloutliers.20171020.pdf")
 draw.triple.venn(area1=d1, area2=d2, area3=d3, n12=d12, n13=d13, n23=d23, n123=d123, category=c("CHN", "CHS", "CZ"), lty="blank", fill=c("yellow", "orange", "skyblue1"))
 dev.off()
 
@@ -1175,8 +1318,8 @@ First I need to find the unique loci for each dataset. CHS was already done in t
 ```
 CHS.VS.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
 
-CHS.VS.alloutliers <- lapply(CHS.VS.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 3090 to 3044)
-write.table(CHS.VS.alloutliers, "CHS.VS.alloutliers.20171007", col.names=F, row.names=F, quote=F)
+CHS.VS.alloutliers <- lapply(CHS.VS.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 2961 to 2474)
+write.table(CHS.VS.alloutliers, "CHS.VS.alloutliers.20171020", col.names=F, row.names=F, quote=F)
 
 ```
 
@@ -1184,8 +1327,8 @@ write.table(CHS.VS.alloutliers, "CHS.VS.alloutliers.20171007", col.names=F, row.
 ```
 CHS.TI.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
 
-CHS.TI.alloutliers <- lapply(CHS.TI.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 3090 to 3044)
-write.table(CHS.TI.alloutliers, "CHS.TI.alloutliers.20171007", col.names=F, row.names=F, quote=F)
+CHS.TI.alloutliers <- lapply(CHS.TI.alloutliers, unique)  ##select only the unique loci (reduces the dataset from 2471 to 2135)
+write.table(CHS.TI.alloutliers, "CHS.TI.alloutliers.20171020", col.names=F, row.names=F, quote=F)
 
 ```
 
@@ -1195,15 +1338,15 @@ And then draw the Venn diagram
 library(VennDiagram)
 
 
-CHS.VS.outliers <- read.table("CHS.VS/CHS.VS.alloutliers.20171007", header=F)
+CHS.VS.outliers <- read.table("CHS.VS/CHS.VS.alloutliers.20171020", header=F)
 colnames(CHS.VS.outliers) <- "loci"
 CHS.VS.outliers <- as.character(CHS.VS.outliers$loci)
 
-CHS.outliers <- read.table("CHS/CHS.alloutliers.20171007", header=F)
+CHS.outliers <- read.table("CHS/CHS.alloutliers.20171020", header=F)
 colnames(CHS.outliers) <- "loci"
 CHS.outliers <- as.character(CHS.outliers$loci)
 
-CHS.TI.outliers <- read.table("CHS.TI/CHS.TI.alloutliers.20171007", header=F)
+CHS.TI.outliers <- read.table("CHS.TI/CHS.TI.alloutliers.20171020", header=F)
 colnames(CHS.TI.outliers) <- "loci"
 CHS.TI.outliers <- as.character(CHS.TI.outliers$loci)
 
@@ -1219,7 +1362,7 @@ d23 <- length(Reduce(intersect, list(CHS.outliers, CHS.TI.outliers)))
 d123 <- length(Reduce(intersect, list(CHS.VS.outliers, CHS.outliers,CHS.TI.outliers)))
 
 library(VennDiagram)
-pdf("Venn.CHSandVS.TI.alloutliers.20171007.pdf")
+pdf("Venn.CHSandVS.TI.alloutliers.20171020.pdf")
 draw.triple.venn(area1=d1, area2=d2, area3=d3, n12=d12, n13=d13, n23=d23, n123=d123, category=c("CHS.VS", "CHS", "CHS.TI"), lty="blank", fill=c("yellow", "orange", "skyblue1"))
 dev.off()
 
@@ -1271,47 +1414,18 @@ CHN.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcad
 
 
 
-CHN.duplicated.outliers <- CHN.alloutliers[duplicated(CHN.alloutliers),]  ##select only loci occurring more than once (here 308)
+CHN.duplicated.outliers <- CHN.alloutliers[duplicated(CHN.alloutliers),]  ##select only loci occurring more than once (here 322)
 
-write.table(CHN.duplicated.outliers, "CHN.duplicated.outliers.20171007", col.names=F, row.names=F, quote=F)
+write.table(CHN.duplicated.outliers, "CHN.duplicated.outliers.20171020", col.names=F, row.names=F, quote=F)
 ```
 
 #### CHS
 ```
+CHS.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
 
-CHS.bayenv.outliers <- read.table("CHS/CHS.bayenv.alloutliers", header=F)
-colnames(CHS.bayenv.outliers) <- "loci"
-CHS.bayenv.outliers <- as.character(CHS.bayenv.outliers$loci)
-CHS.bayenv.outliers <- as.data.frame(CHS.bayenv.outliers)
-colnames(CHS.bayenv.outliers) <- "loci"
+CHS.duplicated.outliers <- CHS.alloutliers[duplicated(CHS.alloutliers),]  ##select only loci occurring more than once (here 420)
 
-
-CHS.lfmm.outliers <- read.table("CHS/CHS.LFMM.alloutliers", header=F)
-colnames(CHS.lfmm.outliers) <- "loci"
-CHS.lfmm.outliers <- as.character(CHS.lfmm.outliers$loci)
-CHS.lfmm.outliers <- as.data.frame(CHS.lfmm.outliers)
-colnames(CHS.lfmm.outliers)  <- "loci"
-
-
-CHS.pcadapt.outliers <- read.table("CHS/CHS.pcadapt.outliers", header=F)
-colnames(CHS.pcadapt.outliers) <- "loci"
-CHS.pcadapt.outliers <- as.character(CHS.pcadapt.outliers$loci)
-CHS.pcadapt.outliers <- as.data.frame(CHS.pcadapt.outliers)
-colnames(CHS.pcadapt.outliers)  <- "loci"
-
-
-CHS.XtX.outliers <- read.table("CHS/CHS.XtX.100outliers", header=F)
-colnames(CHS.XtX.outliers) <- "loci"
-CHS.XtX.outliers <- as.character(CHS.XtX.outliers$loci)
-CHS.XtX.outliers <- as.data.frame(CHS.XtX.outliers)
-colnames(CHS.XtX.outliers)  <- "loci"
-
-
-CHS.alloutliers <- rbind(CHS.lfmm.outliers, CHS.bayenv.outliers, CHS.pcadapt.outliers, CHS.XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
-
-CHS.duplicated.outliers <- CHS.alloutliers[duplicated(CHS.alloutliers),]  ##select only loci occurring more than once (here 26)
-
-write.table(CHS.duplicated.outliers, "CHS.duplicated.outliers.20171007", col.names=F, row.names=F, quote=F)
+write.table(CHS.duplicated.outliers, "CHS.duplicated.outliers.20171020", col.names=F, row.names=F, quote=F)
 ```
 
 ##### CZ
@@ -1319,9 +1433,9 @@ write.table(CHS.duplicated.outliers, "CHS.duplicated.outliers.20171007", col.nam
 ```
 CZ.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
 
-CZ.duplicated.outliers <- CZ.alloutliers[duplicated(CZ.alloutliers),]  ##select only loci occurring more than once (here 242)
+CZ.duplicated.outliers <- CZ.alloutliers[duplicated(CZ.alloutliers),]  ##select only loci occurring more than once (here 226 from 2462)
 
-write.table(CZ.duplicated.outliers, "CZ.duplicated.outliers.20171007", col.names=F, row.names=F, quote=F)
+write.table(CZ.duplicated.outliers, "CZ.duplicated.outliers.20171020", col.names=F, row.names=F, quote=F)
 ```
 
 
@@ -1334,15 +1448,15 @@ First without CHall
 library(VennDiagram)
 
 
-CHN.duplicated.outliers <- read.table("CHN/CHN.duplicated.outliers.20171007", header=F)
+CHN.duplicated.outliers <- read.table("CHN/CHN.duplicated.outliers.20171020", header=F)
 colnames(CHN.duplicated.outliers) <- "loci"
 CHN.duplicated.outliers <- as.character(CHN.duplicated.outliers$loci)
 
-CZ.duplicated.outliers <- read.table("CZ/CZ.duplicated.outliers.20171007", header=F)
+CZ.duplicated.outliers <- read.table("CZ/CZ.duplicated.outliers.20171020", header=F)
 colnames(CZ.duplicated.outliers) <- "loci"
 CZ.duplicated.outliers <- as.character(CZ.duplicated.outliers$loci)
 
-CHS.duplicated.outliers <- read.table("CHS/CHS.duplicated.outliers.20171007", header=F)
+CHS.duplicated.outliers <- read.table("CHS/CHS.duplicated.outliers.20171020", header=F)
 colnames(CHS.duplicated.outliers) <- "loci"
 CHS.duplicated.outliers <- as.character(CHS.duplicated.outliers$loci)
 
@@ -1358,7 +1472,7 @@ d23 <- length(Reduce(intersect, list(CHS.duplicated.outliers, CZ.duplicated.outl
 d123 <- length(Reduce(intersect, list(CHN.duplicated.outliers, CHS.duplicated.outliers,CZ.duplicated.outliers)))
 
 
-pdf("Venn.CHN.CHS.CZ.duplicated.outliers.20171007.pdf")
+pdf("Venn.CHN.CHS.CZ.duplicated.outliers.20171020.pdf")
 draw.triple.venn(area1=d1, area2=d2, area3=d3, n12=d12, n13=d13, n23=d23, n123=d123, category=c("CHN", "CHS", "CZ"), lty="blank", fill=c("yellow", "orange", "skyblue1"))
 dev.off()
 
