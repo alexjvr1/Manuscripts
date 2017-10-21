@@ -1415,6 +1415,7 @@ CHN.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcad
 
 
 CHN.duplicated.outliers <- CHN.alloutliers[duplicated(CHN.alloutliers),]  ##select only loci occurring more than once (here 163)
+CHN.duplicated.outliers <- unique(CHN.duplicated.outliers)  ##158 loci
 
 write.table(CHN.duplicated.outliers, "CHN.duplicated.outliers.20171020", col.names=F, row.names=F, quote=F)
 ```
@@ -1424,6 +1425,7 @@ write.table(CHN.duplicated.outliers, "CHN.duplicated.outliers.20171020", col.nam
 CHS.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
 
 CHS.duplicated.outliers <- CHS.alloutliers[duplicated(CHS.alloutliers),]  ##select only loci occurring more than once (here 420)
+CHS.duplicated.outliers <- unique(CHS.duplicated.outliers)  ###355 loci
 
 write.table(CHS.duplicated.outliers, "CHS.duplicated.outliers.20171020", col.names=F, row.names=F, quote=F)
 ```
@@ -1434,6 +1436,7 @@ write.table(CHS.duplicated.outliers, "CHS.duplicated.outliers.20171020", col.nam
 CZ.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
 
 CZ.duplicated.outliers <- CZ.alloutliers[duplicated(CZ.alloutliers),]  ##select only loci occurring more than once (here 226 from 2462)
+CZ.duplicated.outliers <- unique(CZ.duplicated.outliers)  ###198 loci
 
 write.table(CZ.duplicated.outliers, "CZ.duplicated.outliers.20171020", col.names=F, row.names=F, quote=F)
 ```
@@ -1492,6 +1495,8 @@ First I need to find the loci that occur more than once. CHS was already done in
 CHS.VS.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
 
 CHS.VS.duplicated.outliers <- CHS.VS.alloutliers[duplicated(CHS.VS.alloutliers),]  ##select only loci occurring more than once (here 487 from 2961)
+CHS.VS.duplicated.outliers <- unique(CHS.VS.duplicated.outliers)  ##408 loci
+
 
 write.table(CHS.VS.duplicated.outliers, "CHS.VS.duplicated.outliers.20171020", col.names=F, row.names=F, quote=F)
 ```
@@ -1502,6 +1507,7 @@ write.table(CHS.VS.duplicated.outliers, "CHS.VS.duplicated.outliers.20171020", c
 CHS.TI.alloutliers <- rbind(bayescan.outliers, lfmm.outliers, bayenv.outliers, pcadapt.outliers, XtX.outliers)  ##Join all data.frames by "name" column. This only works of colnames are the same (at least one column name)
 
 CHS.TI.duplicated.outliers <- CHS.TI.alloutliers[duplicated(CHS.TI.alloutliers),]  ##select only loci occurring more than once (here 336 from 2471)
+CHS.TI.duplicated.outliers <- unique(CHS.TI.duplicated.outliers) ##260
 
 write.table(CHS.TI.duplicated.outliers, "CHS.TI.duplicated.outliers.20171020", col.names=F, row.names=F, quote=F)
 ```
