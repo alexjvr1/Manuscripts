@@ -184,26 +184,28 @@ I'm creating two input files.
 ##### 1. Adaptive loci
 ```
 
-###Change Duplicated Adaptive Loci names to vcf formate
+###Change Duplicated Adaptive Loci names to vcf format
 
 ##R
 
-CHN.AdaptiveLoci <- read.table("CHN.duplicated.outliers")
+CHN.AdaptiveLoci <- read.table("CHN.duplicated.outliers.20171020")
 head(CHN.AdaptiveLoci)
+
 CHN.AdaptiveLoci <- gsub("\\.", ":", CHN.AdaptiveLoci$V1)
+CHN.AdaptiveLoci <- gsub("X:", "", CHN.AdaptiveLoci)
 head(CHN.AdaptiveLoci)
 write.table(CHN.AdaptiveLoci, "CHN.AdaptiveLoci.names", quote=F, row.names=F, col.names=F)
 
 
 #Filter the Adaptive loci from the vcf file
 
-vcftools --vcf CHN.229.5265.recode.vcf --snps CHN.AdaptiveLoci.names --recode --recode-INFO-all --out CHN.229.247
+vcftools --vcf CHN.229.5265.recode.vcf --snps CHN.AdaptiveLoci.names --recode --recode-INFO-all --out CHN.229.158
 
 #Create a plink file from the vcf file. 
 
-vcftools --vcf CHN.229.247.recode.vcf --plink --out CHN.229.247.plink
+vcftools --vcf CHN.229.158.recode.vcf --plink --out CHN.229.158.plink
 
-plink --file CHN.229.247.plink --noweb --recode --recodeA --out CHN.229.247.plink
+plink --file CHN.229.158.plink --noweb --recode --recodeA --out CHN.229.158.plink
 
 ```
 
@@ -212,7 +214,7 @@ Find the sample names in the *nosex file, and add pop names (i.e. 3 columns) to 
 ```
 ##in R
 
-CHN.nosex <- read.table("CHN.229.247.plink.nosex", header=F)
+CHN.nosex <- read.table("CHN.229.158.plink.nosex", header=F)
 head(CHN.nosex)
 CHN.pop <- gsub("_\\d+", "", CHN.nosex$V1)
 CHN.pop
@@ -228,7 +230,7 @@ And calculate MAF with Plink
 
 ```
 
-plink --file CHN.229.247.plink --within CHN.PlinkCluster --freq --noweb --out CHN.229.247
+plink --file CHN.229.158.plink --within CHN.PlinkCluster --freq --noweb --out CHN.229.158
 
 ```
 
@@ -240,7 +242,7 @@ Import into R to reformat the output - by population and loci as columns
 
 
 
-CHN.Adaptive.MAF <- read.table("CHN.229.247.frq.strat", header=T)
+CHN.Adaptive.MAF <- read.table("CHN.229.158.frq.strat", header=T)
 head(CHN.Adaptive.MAF)
 
 CHN.Adaptive.MAF <- CHN.Adaptive.MAF[,c(3,2,6)]
@@ -256,12 +258,13 @@ head(CHN.Adaptive.MAF2)
 CHN.Adaptive.MAF3 <- dcast(CHN.Adaptive.MAF2, formula= CLST ~ SNP)
 head(CHN.Adaptive.MAF3)
 colnames(CHN.Adaptive.MAF3) <- paste("X", colnames(CHN.Adaptive.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
-write.csv(CHN.Adaptive.MAF3, file="CHN.229.247.Adaptive.MAF.csv")
+write.csv(CHN.Adaptive.MAF3, file="CHN.229.158.Adaptive.MAF.csv")
 ```
 
 
 ##### 2. Neutral loci
 
+I'm keeping the same neutral file as before, but note that I have changed the number of loci in the adaptive file. So technically this should be rerun with the new file names. 
 
 
 ```
@@ -486,22 +489,24 @@ I'm creating two input files.
 
 ##R
 
-CZ.AdaptiveLoci <- read.table("CZ.duplicated.outliers")
+CZ.AdaptiveLoci <- read.table("CZ.duplicated.outliers.20171020")
 head(CZ.AdaptiveLoci)
 CZ.AdaptiveLoci <- gsub("\\.", ":", CZ.AdaptiveLoci$V1)
+CZ.AdaptiveLoci <- gsub("X:", "", CZ.AdaptiveLoci)
+
 head(CZ.AdaptiveLoci)
 write.table(CZ.AdaptiveLoci, "CZ.AdaptiveLoci.names", quote=F, row.names=F, col.names=F)
 
 
 #Filter the Adaptive loci from the vcf file
 
-vcftools --vcf CZ.404.7288.recode.vcf --snps CZ.AdaptiveLoci.names --recode --recode-INFO-all --out CZ.404.212
+vcftools --vcf CZ.404.7288.recode.vcf --snps CZ.AdaptiveLoci.names --recode --recode-INFO-all --out CZ.404.198
 
 #Create a plink file from the vcf file. 
 
-vcftools --vcf CZ.404.212.recode.vcf --plink --out CZ.404.212.plink
+vcftools --vcf CZ.404.198.recode.vcf --plink --out CZ.404.198.plink
 
-plink --file CZ.404.212.plink --noweb --recode --recodeA --out CZ.404.212.plink
+plink --file CZ.404.198.plink --noweb --recode --recodeA --out CZ.404.198.plink
 
 ```
 
@@ -510,7 +515,7 @@ Find the sample names in the *nosex file, and add pop names (i.e. 3 columns) to 
 ```
 ##in R
 
-CZ.nosex <- read.table("CZ.404.212.plink.nosex", header=F)
+CZ.nosex <- read.table("CZ.404.198.plink.nosex", header=F)
 head(CZ.nosex)
 CZ.pop <- gsub("_\\d+", "", CZ.nosex$V1)
 CZ.pop
@@ -526,7 +531,7 @@ And calculate MAF with Plink
 
 ```
 
-plink --file CZ.404.212.plink --within CZ.PlinkCluster --freq --noweb --out CZ.404.212
+plink --file CZ.404.198.plink --within CZ.PlinkCluster --freq --noweb --out CZ.404.198
 
 ```
 
@@ -538,7 +543,7 @@ Import into R to reformat the output - by population and loci as columns
 
 
 
-CZ.Adaptive.MAF <- read.table("CZ.404.212.frq.strat", header=T)
+CZ.Adaptive.MAF <- read.table("CZ.404.198.frq.strat", header=T)
 head(CZ.Adaptive.MAF)
 
 CZ.Adaptive.MAF <- CZ.Adaptive.MAF[,c(3,2,6)]
@@ -554,7 +559,7 @@ head(CZ.Adaptive.MAF2)
 CZ.Adaptive.MAF3 <- dcast(CZ.Adaptive.MAF2, formula= CLST ~ SNP)
 head(CZ.Adaptive.MAF3)
 colnames(CZ.Adaptive.MAF3) <- paste("X", colnames(CZ.Adaptive.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
-write.csv(CZ.Adaptive.MAF3, file="CZ.404.212.Adaptive.MAF.csv")
+write.csv(CZ.Adaptive.MAF3, file="CZ.404.198.Adaptive.MAF.csv")
 ```
 
 
@@ -769,22 +774,23 @@ I'm creating two input files.
 
 ##R
 
-CHS.TI.AdaptiveLoci <- read.table("CHS.TI.duplicated.outliers")
+CHS.TI.AdaptiveLoci <- read.table("CHS.TI.duplicated.outliers.20171020")
 head(CHS.TI.AdaptiveLoci)
 CHS.TI.AdaptiveLoci <- gsub("\\.", ":", CHS.TI.AdaptiveLoci$V1)
+CHS.TI.AdaptiveLoci <- gsub("X.", "", CHS.TI.AdaptiveLoci)
 head(CHS.TI.AdaptiveLoci)
 write.table(CHS.TI.AdaptiveLoci, "CHS.TI.AdaptiveLoci.names", quote=F, row.names=F, col.names=F)
 
 
 #Filter the Adaptive loci from the vcf file
 
-vcftools --vcf CHS.TI.140.5692.recode.vcf --snps CHS.TI.AdaptiveLoci.names --recode --recode-INFO-all --out CHS.TI.140.233
+vcftools --vcf CHS.TI.140.5692.recode.vcf --snps CHS.TI.AdaptiveLoci.names --recode --recode-INFO-all --out CHS.TI.140.260
 
 #Create a plink file from the vcf file. 
 
-vcftools --vcf CHS.TI.140.233.recode.vcf --plink --out CHS.TI.140.233.plink
+vcftools --vcf CHS.TI.140.260.recode.vcf --plink --out CHS.TI.140.260.plink
 
-plink --file CHS.TI.140.233.plink --noweb --recode --recodeA --out CHS.TI.140.233.plink
+plink --file CHS.TI.140.260.plink --noweb --recode --recodeA --out CHS.TI.140.260.plink
 
 ```
 
@@ -793,7 +799,7 @@ Find the sample names in the *nosex file, and add pop names (i.e. 3 columns) to 
 ```
 ##in R
 
-CHS.TI.nosex <- read.table("CHS.TI.140.233.plink.nosex", header=F)
+CHS.TI.nosex <- read.table("CHS.TI.140.260.plink.nosex", header=F)
 head(CHS.TI.nosex)
 CHS.TI.pop <- gsub("_\\d+", "", CHS.TI.nosex$V1)
 CHS.TI.pop
@@ -809,7 +815,7 @@ And calculate MAF with Plink
 
 ```
 
-plink --file CHS.TI.140.233.plink --within CHS.TI.PlinkCluster --freq --noweb --out CHS.TI.140.233
+plink --file CHS.TI.140.260.plink --within CHS.TI.PlinkCluster --freq --noweb --out CHS.TI.140.260
 
 ```
 
@@ -821,7 +827,7 @@ Import into R to reformat the output - by population and loci as columns
 
 
 
-CHS.TI.Adaptive.MAF <- read.table("CHS.TI.140.233.frq.strat", header=T)
+CHS.TI.Adaptive.MAF <- read.table("CHS.TI.140.260.frq.strat", header=T)
 head(CHS.TI.Adaptive.MAF)
 
 CHS.TI.Adaptive.MAF <- CHS.TI.Adaptive.MAF[,c(3,2,6)]
@@ -837,7 +843,7 @@ head(CHS.TI.Adaptive.MAF2)
 CHS.TI.Adaptive.MAF3 <- dcast(CHS.TI.Adaptive.MAF2, formula= CLST ~ SNP)
 head(CHS.TI.Adaptive.MAF3)
 colnames(CHS.TI.Adaptive.MAF3) <- paste("X", colnames(CHS.TI.Adaptive.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
-write.csv(CHS.TI.Adaptive.MAF3, file="CHS.TI.140.233.Adaptive.MAF.csv")
+write.csv(CHS.TI.Adaptive.MAF3, file="CHS.TI.140.260.Adaptive.MAF.csv")
 ```
 
 
@@ -1049,22 +1055,23 @@ I'm creating two input files.
 
 ##R
 
-CHS.VS.AdaptiveLoci <- read.table("CHS.VS.duplicated.outliers")
+CHS.VS.AdaptiveLoci <- read.table("CHS.VS.duplicated.outliers.20171020")
 head(CHS.VS.AdaptiveLoci)
 CHS.VS.AdaptiveLoci <- gsub("\\.", ":", CHS.VS.AdaptiveLoci$V1)
+CHS.VS.AdaptiveLoci <- gsub("X:", "", CHS.VS.AdaptiveLoci)
 head(CHS.VS.AdaptiveLoci)
 write.table(CHS.VS.AdaptiveLoci, "CHS.VS.AdaptiveLoci.names", quote=F, row.names=F, col.names=F)
 
 
 #Filter the Adaptive loci from the vcf file
 
-vcftools --vcf CHS.VS.135.5835.recode.vcf --snps CHS.VS.AdaptiveLoci.names --recode --recode-INFO-all --out CHS.VS.135.358
+vcftools --vcf CHS.VS.135.5835.recode.vcf --snps CHS.VS.AdaptiveLoci.names --recode --recode-INFO-all --out CHS.VS.135.408
 
 #Create a plink file from the vcf file. 
 
-vcftools --vcf CHS.VS.135.358.recode.vcf --plink --out CHS.VS.135.358.plink
+vcftools --vcf CHS.VS.135.408.recode.vcf --plink --out CHS.VS.135.408.plink
 
-plink --file CHS.VS.135.358.plink --noweb --recode --recodeA --out CHS.VS.135.358.plink
+plink --file CHS.VS.135.408.plink --noweb --recode --recodeA --out CHS.VS.135.408.plink
 
 ```
 
@@ -1073,7 +1080,7 @@ Find the sample names in the *nosex file, and add pop names (i.e. 3 columns) to 
 ```
 ##in R
 
-CHS.VS.nosex <- read.table("CHS.VS.135.358.plink.nosex", header=F)
+CHS.VS.nosex <- read.table("CHS.VS.135.408.plink.nosex", header=F)
 head(CHS.VS.nosex)
 CHS.VS.pop <- gsub("_\\d+", "", CHS.VS.nosex$V1)
 CHS.VS.pop
@@ -1089,7 +1096,7 @@ And calculate MAF with Plink
 
 ```
 
-plink --file CHS.VS.135.358.plink --within CHS.VS.PlinkCluster --freq --noweb --out CHS.VS.135.358
+plink --file CHS.VS.135.408.plink --within CHS.VS.PlinkCluster --freq --noweb --out CHS.VS.135.408
 
 ```
 
@@ -1101,7 +1108,7 @@ Import into R to reformat the output - by population and loci as columns
 
 
 
-CHS.VS.Adaptive.MAF <- read.table("CHS.VS.135.358.frq.strat", header=T)
+CHS.VS.Adaptive.MAF <- read.table("CHS.VS.135.408.frq.strat", header=T)
 head(CHS.VS.Adaptive.MAF)
 
 CHS.VS.Adaptive.MAF <- CHS.VS.Adaptive.MAF[,c(3,2,6)]
@@ -1117,7 +1124,7 @@ head(CHS.VS.Adaptive.MAF2)
 CHS.VS.Adaptive.MAF3 <- dcast(CHS.VS.Adaptive.MAF2, formula= CLST ~ SNP)
 head(CHS.VS.Adaptive.MAF3)
 colnames(CHS.VS.Adaptive.MAF3) <- paste("X", colnames(CHS.VS.Adaptive.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
-write.csv(CHS.VS.Adaptive.MAF3, file="CHS.VS.135.358.Adaptive.MAF.csv")
+write.csv(CHS.VS.Adaptive.MAF3, file="CHS.VS.135.408.Adaptive.MAF.csv")
 ```
 
 
