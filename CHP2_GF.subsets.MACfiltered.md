@@ -1647,11 +1647,12 @@ gf.CHN.Neutral.SNPs <- gradientForest(cbind(envGF.CHN.Neutral, CHN.Neutral.SNPs)
 
 ###CZ
 
-gf.CZ.Neutral <- read.csv("CZ.GF.Neutral.MAF.csv", header=T)
-envGF.CZ.Neutral <- gf.CZ.Neutral[,-1]
+gf.CZ.Neutral <- read.csv("CZ.GF.NeutralLoci.Input.csv", header=T)
+envGF.CZ.Neutral <- gf.CZ.Neutral[,1:15]
 colnames(envGF.CZ.Neutral)
 
-CZ.Neutral.SNPs <- CZ.Neutral.MAF3[,grep("X.", colnames(CZ.Neutral.MAF3))]
+CZ.Neutral.SNPs <- gf.CZ.Neutral[,grep("X.", colnames(gf.CZ.Neutral))]
+CZ.Neutral.SNPs <- CZ.Neutral.SNPs[,-1]
 maxLevel <- log2(0.368*nrow(envGF.CZ.Neutral)/2)
 maxLevel
 
@@ -1661,10 +1662,11 @@ gf.CZ.Neutral.SNPs <- gradientForest(cbind(envGF.CZ.Neutral, CZ.Neutral.SNPs), p
 ###CHS.TI
 
 gf.CHS.TI.Neutral <- read.csv("CHS.TI.GF.NeutralLoci.Input.csv", header=T)
-envGF.CHS.TI.Neutral <- gf.CHS.TI.Neutral[,-1]
+envGF.CHS.TI.Neutral <- gf.CHS.TI.Neutral[,1:10]
 colnames(envGF.CHS.TI.Neutral)
 
-CHS.TI.Neutral.SNPs <- CHS.TI.Neutral.MAF3[,grep("X.", colnames(CHS.TI.Neutral.MAF3))]
+CHS.TI.Neutral.SNPs <- gf.CHS.TI.Neutral[,grep("X.", colnames(gf.CHS.TI.Neutral))]
+CHS.TI.Neutral.SNPs <- CHS.TI.Neutral.SNPs[,-1]
 maxLevel <- log2(0.368*nrow(envGF.CHS.TI.Neutral)/2)
 maxLevel
 
@@ -1674,15 +1676,18 @@ gf.CHS.TI.Neutral.SNPs <- gradientForest(cbind(envGF.CHS.TI.Neutral, CHS.TI.Neut
 ###CHS.VS
 
 gf.CHS.VS.Neutral <- read.csv("CHS.VS.GF.NeutralLoci.Input.csv", header=T)
-envGF.CHS.VS.Neutral <- gf.CHS.VS.Neutral[,-1]
+envGF.CHS.VS.Neutral <- gf.CHS.VS.Neutral[,1:9]
 colnames(envGF.CHS.VS.Neutral)
 
 CHS.VS.Neutral.SNPs <- gf.CHS.VS.Neutral[,grep("X.", colnames(gf.CHS.VS.Neutral))]
+CHS.VS.Neutral.SNPs <- CHS.VS.Neutral.SNPs[,-1]
 maxLevel <- log2(0.368*nrow(envGF.CHS.VS.Neutral)/2)
 maxLevel
 
 gf.CHS.VS.Neutral.SNPs <- gradientForest(cbind(envGF.CHS.VS.Neutral, CHS.VS.Neutral.SNPs), predictor.vars=colnames(envGF.CHS.VS.Neutral), response.vars=colnames(CHS.VS.Neutral.SNPs), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
+
+##50 warnings
 
 ###CHS
 
