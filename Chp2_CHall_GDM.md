@@ -1467,4 +1467,3 @@ plot(CHS.TI.RefLoci.gdm.Splines$x[,"day10cm"], CHS.TI.RefLoci.gdm.Splines$y[,"da
 dev.off()
 ```
 
-
