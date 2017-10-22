@@ -1462,3 +1462,66 @@ CZ.LFMM.outliers <- read.table("CZ.LFMM.alloutliers", header=F)
 colnames(CZ.LFMM.outliers) <- ("loci")
 CZ.LFMM.outliers <- as.character(CZ.LFMM.outliers$loci)
 ```
+
+
+
+##############################
+##############################
+# Assume that a fraction of loci (frac) has genomic effects drawn from a different
+# distribution (Chisq with 3 df, median z.2 = 2.38).
+# This means that some loci have truly larger effects than expected due to chance.
+
+frac <- 0.1              # fraction of loci sampled from the different distribution
+lambda.adjust <- "no"    # should we correct for bias using the genomic inflation factor?
+loci <- 10000            # nr of loci
+set.seed(2)
+
+z.2 <- rchisq(n = loci, df = 1, ncp = 0)               # generate z.2 values from the chi-sq distribution
+if(frac > 0) z.2[1:(round(frac*loci))] <- rchisq(n = round(frac*loci), df = 3, ncp = 0)
+hist(z.2, breaks = 19)
+lambda <- median(z.2) / 0.456
+par(mfrow = c(2, 1))
+p.values <- pchisq(z.2, df = 1, lower.tail = FALSE)
+hist(p.values, breaks = 19, main = "Initial distribution of p-values")
+abline(a=(loci/20), b = 0, lty = 3, col = "red")
+if(lambda.adjust == "yes") p.values = pchisq(z.2/lambda, df = 1, lower = FALSE)
+h <- hist(p.values, col = "green", main = "Distribution after lambda adjustment, if requested")$counts
+abline(a=(loci/20), b = 0, lty = 3, col = "red")
+
+
+# This is from the appendix of Francois et al. (2016, Mol. Ecol.)
+q.level = 0.1         # set the false discovery rate
+L = length(p.values)
+       # Benjamini-Hochberg algorithm
+w = which(sort(p.values) < q.level * (1:L) / L)
+candidates = order(p.values)[w]
+candidates
+adjusted.p <- p.adjust(p.values, method = "BH", n = length(p))    # this returns adjusted p-values, I think under an FDR = 0.05
+length(adjusted.p[adjusted.p < 0.05])                             # How many are still significant?
+
+
+# From Story & Tibshirani (2003, PNAS).
+# Flat part of p-value distribution indicates expected number of false positives.
+# Tuning parameter indicates the p-value beyond which the distribution appears flat. Most of the
+# p-values in this area are presumably truly null.
+tuning.parameter <- 0.5
+nr.null <- 20 * sum( h[(1+tuning.parameter*20):20] ) / length((1+tuning.parameter*20):20)
+abline(a=(nr.null/20), b = 0, lty = 3, col = "blue")
+nr.null / loci                                                          # this is the estimated proportion of loci truly null.
+0.05 * loci * (nr.null / loci) / (loci - sum( h[ (1+0.05*20):20 ] ))    # false discovery rate, pg. 9443
+#
+# Red dotted line is expected if all loci were null.
+# Blue dotted line is our estimate of the true number of null loci.
+
+
+
+for i in $(ls *.fq.trim.gz.sai.bam.sorted.bam)
+do samtools view -q 30 -b ${i} > ${i}.q30.bam
+done
+
+plot(fstall.hist, xlim=c(-0.15,1.0))
+plot(EAA.hist, xlim=c(-0.15,1.0), col=rgb(0,0,1,1/4), add=T)
+plot(Outlier.hist, xlim=c(-0.15,1.0), col=rgb(1,0,0,1/4), add=T)
+
+
+
