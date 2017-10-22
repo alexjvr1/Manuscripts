@@ -1186,3 +1186,87 @@ Write to pdf and import into Adobe illustrator to edit the images.
 
 
 
+############
+#############
+Code from one of the notebooks
+
+Trns.grid.NEUTRAL.mask <- cbind(env.trns.mask.SE.complete$ID, 
+predict(gf.NEUTRAL.model.SEtemp, env.trns.mask.SE.complete[,vec]))  ##define the Trns.grid
+PCs.NEUTRAL <- prcomp(Trns.grid.NEUTRAL.mask[,vec])   ##calculate PCs
+a1 <- PCs.NEUTRAL$x[,1]   ##assign colour
+a2 <- PCs.NEUTRAL$x[,2]
+a3 <- PCs.NEUTRAL$x[,3]
+
+nvs <- dim(PCs.NEUTRAL$rotation)[1]
+lv <- length(vec)
+vind <- rownames(PCs.NEUTRAL$rotation) %in% vec
+scal <- 20
+xrng <- range(PCs.NEUTRAL$x[,1], PCs.NEUTRAL$rotation[,1]/scal)*1.1
+yrng <- range(PCs.NEUTRAL$x[,2], PCs.NEUTRAL$rotation[,2]/scal)*1.1
+
+plot((PCs.NEUTRAL$x[,1:2]), xlim=xrng, ylim=yrng, pch=".", cex=4, col=rgb(r,g,b,max=255), asp=1)
+
+arrows(rep(0,lv), rep(0,lv), PCs.NEUTRAL$rotation[vec,1]/scal, 
+PCs.NEUTRAL$rotation[vec,2]/scal, length=0.1)   ##add arrows for all env variables
+
+text(PCs.NEUTRAL$rotation[vec,1]/scal + jit *sign(PCs.NEUTRAL$rotation[vec,
+1]), PCs.NEUTRAL$rotation[vec,2]/scal+jit*sign(PCs.NEUTRAL$rotation[vec,2]), 
+labels=vec)   ##label the arrows
+
+##for the sampling locations:
+
+NEUTRAL.Trns.site <- predict(gf.NEUTRAL.model.SEtemp)
+PCsites <- predict(PCs.NEUTRAL, NEUTRAL.Trns.site[, vec])
+
+> PCsites
+               PC1          PC2           PC3           PC4           PC5
+ [1,]  0.060915792 -0.011263055  0.0074592278 -0.0048529781  1.009606e-03
+ [2,]  0.064153852 -0.003130803  0.0056775950 -0.0004598817  1.197192e-03
+ [3,]  0.058275119 -0.008496364  0.0048235124 -0.0048495990  1.418894e-03
+ [4,]  0.014993741  0.007954388 -0.0097689320 -0.0123684209  7.103178e-04
+ [5,]  0.008043463  0.003129808 -0.0104306636 -0.0089215196  2.963193e-04
+ [6,]  0.014888719  0.007225827 -0.0095453781 -0.0110190268 -1.169056e-05
+ [7,] -0.004472003  0.009989169 -0.0045379793  0.0100325083 -1.676996e-03
+ [8,] -0.004264044  0.010920251 -0.0048521015  0.0106849330 -1.979413e-03
+ [9,] -0.003696640  0.011779877 -0.0047879752  0.0109177834 -1.755980e-03
+[10,] -0.007437736  0.018814787 -0.0005391422  0.0140316586 -1.868844e-03
+[11,] -0.011178884  0.015202306 -0.0008776371  0.0140705200 -1.579113e-03
+[12,] -0.007528816  0.018291778 -0.0005751241  0.0137010842 -1.945908e-03
+[13,] -0.020064543  0.005070986  0.0049694497 -0.0084781652  1.454736e-03
+[14,] -0.015354907  0.011452598  0.0052569741  0.0016329271  1.612022e-03
+[15,] -0.003796294  0.009527998  0.0237646832 -0.0077324617 -1.655614e-03
+
+points(PCsites[,1:2], pch=pch.SE)
+
+
+
+
+
+
+
+diff.NEUTRAL.FST.mask <- RGBdiffMap(pred.NEUTRAL.mask.complete, pred.Fst.mask.complete, mask.test$bio2, env.trns.mask.SE.complete$ID)   ##I have to make sure that the rast.mask is used - i.e. only some cells. And same with the env.trns file. 
+
+
+##Now I have to normalise the raster from 0-1.
+
+r <- diff.NEUTRAL.FST.mask[[2]]  ##get the raster layer on its own
+r.min =cellStats(r, "min")
+r.max = cellStats(r, "max")  ##determine the min and max values
+r.scale <- ((r-r.min)/(r.max-r.min))  ##rescale (0-1)
+
+##Define a colour palette that will best show the difference
+cool = rainbow(50, start=rgb2hsv(col2rgb('cyan'))[1], end=rgb2hsv(col2rgb('blue'))[1])
+warm = rainbow(50, start=rgb2hsv(col2rgb('red'))[1], end=rgb2hsv(col2rgb('yellow'))[1])
+cols = c(rev(cool), rev(warm))
+mypalette <- colorRampPalette(cols)(255)
+
+
+##plot
+plot(climate2$bio2, col="grey30, legend=F) ##Then I plot a base map in grey (make sure its the same scale as the raster file
+plot(r.scale, col=mypalette, add=T) 
+plot(SE.coords, pch=pch.SE, cex=1, add=T)
+
+
+
+
+
