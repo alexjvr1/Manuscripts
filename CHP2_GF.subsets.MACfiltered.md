@@ -1705,7 +1705,7 @@ maxLevel
 
 gf.CHS.Neutral.SNPs <- gradientForest(cbind(envGF.CHS.Neutral, CHS.Neutral.SNPs), predictor.vars=colnames(envGF.CHS.Neutral), response.vars=colnames(CHS.Neutral.SNPs), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
 
-##5 warnings
+##3 warnings
 
 ```
 
@@ -1741,19 +1741,19 @@ The R2 can be obtained from the importance of each "Species" in the gf model:  s
 ```
 ###CHS.VS
 
-perf.NEUTRAL <- importance(gf.CHS.VS.Neutral.SNPs, type="Species")
-perf.Fst <- importance(gf.CHS.VS.Adaptive.SNPs, type="Species")
+perf.NEUTRAL.CHS.VS <- importance(gf.CHS.VS.Neutral.SNPs, type="Species")
+perf.Fst.CHS.VS <- importance(gf.CHS.VS.Adaptive.SNPs, type="Species")
 
 ##mean and range
-summary(perf.NEUTRAL)
-summary(perf.Fst)
+summary(perf.NEUTRAL.CHS.VS)
+summary(perf.Fst.CHS.VS)
 
-perf.NEUT.df <- as.data.frame(perf.NEUTRAL)
-perf.Fst.df <- as.data.frame(perf.Fst)
+perf.NEUT.CHS.VS.df <- as.data.frame(perf.NEUTRAL.CHS.VS)
+perf.Fst.CHS.VS.df <- as.data.frame(perf.Fst.CHS.VS)
 
-##count the number of loci above R2 of x (here 0.25)
-length(perf.NEUT.df[which(perf.NEUT.df$perf.NEUTRAL>0.25),])
-length(perf.Fst.df[which(perf.Fst.df>0.25),])
+##count the number of loci above R2 of x (here 0.5)
+length(perf.NEUT.CHS.VS.df[which(perf.NEUT.CHS.VS.df$perf.NEUTRAL>0.5),])
+length(perf.Fst.CHS.VS.df[which(perf.Fst.CHS.VS.df>0.5),])
 
 #variable in more than 5 pops: this will be the number of loci run in the final model. Can be seen with: 
 gf.CHS.VS.Neutral.SNPs
@@ -1763,8 +1763,122 @@ gf.CHS.VS.Adaptive.SNPs
 
 ##And we can plot the frequency of R2 for each dataset: 
 par(mfrow=c(1,2))
+hist(perf.NEUT.CHS.VS.df$perf.NEUT.CHS.VS)
+hist(perf.Fst.CHS.VS.df$perf.Fst.CHS.VS)
+
+
+
+###CHS.TI
+
+perf.NEUTRAL.CHS.TI <- importance(gf.CHS.TI.Neutral.SNPs, type="Species")
+perf.Fst.CHS.TI <- importance(gf.CHS.TI.Adaptive.SNPs, type="Species")
+
+##mean and range
+summary(perf.NEUTRAL.CHS.TI)
+summary(perf.Fst.CHS.TI)
+
+perf.NEUT.CHS.TI.df <- as.data.frame(perf.NEUTRAL.CHS.TI)
+perf.Fst.CHS.TI.df <- as.data.frame(perf.Fst.CHS.TI)
+
+##count the number of loci above R2 of x (here 0.5)
+length(perf.NEUT.CHS.TI.df[which(perf.NEUT.CHS.TI.df$perf.NEUTRAL>0.5),])
+length(perf.Fst.CHS.TI.df[which(perf.Fst.CHS.TI.df>0.5),])
+
+#variable in more than 5 pops: this will be the number of loci run in the final model. Can be seen with: 
+gf.CHS.TI.Neutral.SNPs
+gf.CHS.TI.Adaptive.SNPs
+
+#How many loci were originally included?
+
+##And we can plot the frequency of R2 for each dataset: 
+par(mfrow=c(1,2))
 hist(perf.NEUT.df$perf.NEUTRAL)
 hist(perf.Fst.df$perf.Fst)
+
+###CHS
+
+perf.NEUTRAL.CHS <- importance(gf.CHS.Neutral.SNPs, type="Species")
+perf.Fst.CHS <- importance(gf.CHS.Adaptive.SNPs, type="Species")
+
+##mean and range
+summary(perf.NEUTRAL.CHS)
+summary(perf.Fst.CHS)
+
+perf.NEUT.CHS.df <- as.data.frame(perf.NEUTRAL.CHS)
+perf.Fst.CHS.df <- as.data.frame(perf.Fst.CHS)
+
+##count the number of loci above R2 of x (here 0.5)
+length(perf.NEUT.CHS.df[which(perf.NEUT.CHS.df$perf.NEUTRAL>0.5),])
+length(perf.Fst.CHS.df[which(perf.Fst.CHS.df>0.5),])
+
+#variable in more than 5 pops: this will be the number of loci run in the final model. Can be seen with: 
+gf.CHS.Neutral.SNPs
+gf.CHS.Adaptive.SNPs
+
+#How many loci were originally included?
+
+##And we can plot the frequency of R2 for each dataset: 
+par(mfrow=c(1,2))
+hist(perf.NEUT.df$perf.NEUTRAL)
+hist(perf.Fst.df$perf.Fst)
+
+
+###CZ
+
+perf.NEUTRAL.CZ <- importance(gf.CZ.Neutral.SNPs, type="Species")
+perf.Fst.CZ <- importance(gf.CZ.Adaptive.SNPs, type="Species")
+
+##mean and range
+summary(perf.NEUTRAL.CZ)
+summary(perf.Fst.CZ)
+
+perf.NEUT.CZ.df <- as.data.frame(perf.NEUTRAL.CZ)
+perf.Fst.CZ.df <- as.data.frame(perf.Fst.CZ)
+
+##count the number of loci above R2 of x (here 0.5)
+length(perf.NEUT.CZ.df[which(perf.NEUT.CZ.df$perf.NEUTRAL>0.5),])
+length(perf.Fst.CZ.df[which(perf.Fst.CZ.df>0.5),])
+
+#variable in more than 5 pops: this will be the number of loci run in the final model. Can be seen with: 
+gf.CZ.Neutral.SNPs
+gf.CZ.Adaptive.SNPs
+
+#How many loci were originally included?
+
+##And we can plot the frequency of R2 for each dataset: 
+par(mfrow=c(1,2))
+hist(perf.NEUT.df$perf.NEUTRAL)
+hist(perf.Fst.df$perf.Fst)
+
+
+###CHN
+
+perf.NEUTRAL.CHN <- importance(gf.CHN.Neutral.SNPs, type="Species")
+perf.Fst.CHN <- importance(gf.CHN.Adaptive.SNPs, type="Species")
+
+##mean and range
+summary(perf.NEUTRAL.CHN)
+summary(perf.Fst.CHN)
+
+perf.NEUT.CHN.df <- as.data.frame(perf.NEUTRAL.CHN)
+perf.Fst.CHN.df <- as.data.frame(perf.Fst.CHN)
+
+##count the number of loci above R2 of x (here 0.5)
+length(perf.NEUT.CHN.df[which(perf.NEUT.CHN.df$perf.NEUTRAL>0.5),])
+length(perf.Fst.CHN.df[which(perf.Fst.CHN.df>0.5),])
+
+#variable in more than 5 pops: this will be the number of loci run in the final model. Can be seen with: 
+gf.CHN.Neutral.SNPs
+gf.CHN.Adaptive.SNPs
+
+#How many loci were originally included?
+
+##And we can plot the frequency of R2 for each dataset: 
+par(mfrow=c(1,2))
+hist(perf.NEUT.df$perf.NEUTRAL)
+hist(perf.Fst.df$perf.Fst)
+
+
 ```
 
 
@@ -2363,5 +2477,99 @@ dev.off()
 
 [Fig3]:https://cloud.githubusercontent.com/assets/12142475/22886425/19e50622-f1fe-11e6-9b8e-8d91624e3b87.png
 
+
+
+### Best fit SNPs
+
+Find the SNPs from the Adaptive Loci dataset that contribute the most to the Cumulative importance for each Environmental Variable. 
+
+I'll then plot the CumImp of these loci vs the Neutral dataset for each of the variables. 
+
+
+
+
+```
+CU.Adapt.CHN.sol.rad.60d <- cumimp(gf.CHN.Adaptive.SNPs, "sol.rad.60d", "Species")
+
+head(CU.Adapt.CHN.sol.rad.60d)
+imp.sp.Adapt.CHN.sol.rad.60d <- sapply(CU.Adapt.CHN.sol.rad.60d, function(cu) max(cu$y))
+imp.sp.Adapt.CHN.sol.rad.60d
+imp.sp.Adapt.CHN.sol.rad.60d.df <- as.data.frame(imp.sp.Adapt.CHN.sol.rad.60d)
+imp.sp.Adapt.CHN.sol.rad.60d.df$loci <- names(imp.sp.Adapt.CHN.sol.rad.60d)
+imp.sp.Adapt.CHN.sol.rad.60d.df$isub <- 1:nrow(imp.sp.Adapt.CHN.sol.rad.60d.df)  ##index the loci
+imp.sp.Adapt.CHN.sol.rad.60d.df <- imp.sp.Adapt.CHN.sol.rad.60d.df[order(imp.sp.Adapt.CHN.sol.rad.60d.df$imp.sp.Adapt.CHN.sol.rad.60d, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHN.sol.rad.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHN.sol.rad.60d.df$imp.sp.Adapt.CHN.sol.rad.60d)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHN.sol.rad.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHN.sol.rad.60d <- na.omit(subset(imp.sp.Adapt.CHN.sol.rad.60d.df, imp.sp.Adapt.CHN.sol.rad.60d.df>0))
+length(best.Adapt.CHN.sol.rad.60d$loci)  ##get the number of loci for Table
+
+species.Adapt.CHN.sol.rad.60d.names <- best.Adapt.CHN.sol.rad.60d$loci  ## get the names
+CU.Adapt.CHN.sol.rad.60d.best <- CU.Adapt.CHN.sol.rad.60d[species.Adapt.CHN.sol.rad.60d.names]
+
+###Now I have to rerun GF using only those loci for this env variable
+
+colnames(envGF.CHN.Adaptive)
+
+CHN.AdaptiveSNPS.sol.rad.best <- CHN.AdaptiveSNPS[isub.CHN.sol.rad.60d]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHN.Adaptive)/2)
+maxLevel
+
+gf.CHN.Adaptive.SNPs.sol.rad.60d <- gradientForest(cbind(envGF.CHN.Adaptive, CHN.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHN.Adaptive), response.vars=colnames(CHN.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHN.sol.rad.60d <- cumimp(gf.CHN.Adaptive.SNPs.sol.rad.60d, "sol.rad.60d")
+isub.CHN.sol.rad.60d <- seq(1, length(CU.CHN.sol.rad.60d$x), len=pmin(500, length(CU.CHN.sol.rad.60d$x)))
+plot(CU.CHN.sol.rad.60d$x[isub.CHN.sol.rad.60d], CU.CHN.sol.rad.60d$y[isub.CHN.sol.rad.60d], type="s", ylab="Cumulative Plot", xlab="sol.rad.60d", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+
+
+
+
+###define the new CU without species info, so that we can draw a cumulative plot
+CU.Adapt.CHN.sol.rad.60d <- cumimp(gf.CHN.Adaptive.SNPs, "sol.rad.60d")
+
+cols <- rainbow(length(levels(gf.CHN.Adaptive.SNPs$res.u$spec)))
+names(cols) <- levels(gf.CHN.Adaptive.SNPs$res.u$spec)
+
+isub.CHN.sol.rad.60d <- best.Adapt.CHN.sol.rad.60d$isub  ##this is the index of all the loci to be used in the plot
+
+ymax=1.2 #set the ymax so that it's the same for the the plots to be overlaid
+plot(CU.Adapt.CHN.sol.rad.60d$x[isub.CHN.sol.rad.60d], CU.Adapt.CHN.sol.rad.60d$y[isub.CHN.sol.rad.60d], type = "s", show.overall=T, ylab = "Cumulative Importance", xlab="sol.rad.60d", ylim=c(0,0.02), xlim=c(50000, 100000), lty=3, lwd=1.5)
+par(new=T)
+plot(CU.ENV$x[isub.ENV], CU.ENV$y[isub.ENV], type = "s", ylab = "", xlab="", xlim=c(5000, 13500), ylim=c(0,0.12), lty=2, lwd=1.5, xaxt='n', yaxt='n')
+legend("topleft", leg.txt, col="black", lty=c(1,3,2), lwd=1.5, bty = "n")  ##only in the first box. bty removes border
+
+
+plot(CU.season.best$X.1080976.29, xlim=c(0,260), ylim=c(0,0.5), type="l")
+par(new=T)
+plot(CU.season.best$X.1227797.33, xlim=c(0,260), ylim=c(0,0.5), type="l")
+par(new=T)
+plot(CU.season.best$X.1310662.61, xlim=c(0,260), ylim=c(0,0.5), type="l")
+par(new=T)
+plot(CU.season.best$X.1669736.10, xlim=c(0,260), ylim=c(0,0.5), type="l")
+par(new=T)
+plot(CU.season.best$X.790027.13, xlim=c(0,260), ylim=c(0,0.5), type="l")
+par(new=T)
+plot(CU.season.best$X.1531198.75, xlim=c(0,260), ylim=c(0,0.5), type="l")
+par(new=T)
+plot(CU.season.best$X.1723931.38, xlim=c(0,260), ylim=c(0,0.5), type="l")
+par(new=T)
+plot(CU.season.best$X.469873.12, xlim=c(0,260), ylim=c(0,0.5), type="l")
+par(new=T)
+plot(CU.season.best$X.249703.61, xlim=c(0,260), ylim=c(0,0.5), type="l")
+par(new=T)
+plot(CU.season.best$X.1419042.71, xlim=c(0,260), ylim=c(0,0.5), type="l")
+
+
+
+
+```
 
 
