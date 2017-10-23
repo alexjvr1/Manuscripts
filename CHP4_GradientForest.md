@@ -3242,685 +3242,6 @@ dev.off()
 
 ## Plots
 
-
-
-
-## season length
-```
-CU.CHN.Neutral.season <- cumimp(gf.CHN.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
-CU.CHS.Neutral.season <- cumimp(gf.CHS.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
-CU.CZ.Neutral.season <- cumimp(gf.CZ.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
-
-isub.CHN.Neutral.season <- seq(1, length(CU.CHN.Neutral.season$x), len = pmin(500, length(CU.CHN.Neutral.season$x)))
-isub.CHS.Neutral.season <- seq(1, length(CU.CHS.Neutral.season$x), len = pmin(500, length(CU.CHS.Neutral.season$x)))
-isub.CZ.Neutral.season <- seq(1, length(CU.CZ.Neutral.season$x), len = pmin(500, length(CU.CZ.Neutral.season$x)))
-
-
-
-ymax=0.03 #set the ymax so that it's the same for the the plots to be overlaid
-leg.txt <- c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive")
-```
-
-##season plot
-
-```
-pdf("CHN.CHS.CZ.season.CumImp.pdf")
-
-plot(CU.CHN.Neutral.season$x[isub.CHN.Neutral.season], CU.CHN.Neutral.season$y[isub.CHN.Neutral.season], type = "s", ylab ="Cumulative Importance", xlab="days.above.6", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
-par(new=T)  ##allows you to overlay the plots
-plot(CU.CHN.season$x[isub.CHN.season], CU.CHN.season$y[isub.CHN.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="springgreen4", ylab = "", xlab="", xaxt='n', yaxt='n')
-
-par(new=T)
-plot(CU.CHS.Neutral.season$x[isub.CHS.Neutral.season], CU.CHS.Neutral.season$y[isub.CHS.Neutral.season], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
-par(new=T)
-plot(CU.CHS.season$x[isub.CHS.season], CU.CHS.season$y[isub.CHS.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
-
-par(new=T)
-plot(CU.CZ.Neutral.season$x[isub.CZ.Neutral.season], CU.CZ.Neutral.season$y[isub.CZ.Neutral.season], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
-par(new=T)
-plot(CU.CZ.season$x[isub.CZ.season], CU.CZ.season$y[isub.CZ.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
-
-
-legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1"), lty=c(1,3,1,3,1,3), lwd=1.5, bty = "n")
-
-dev.off()
-```
-
-
-
-
-
-# 4 Individual SNPs
-
-###First I need to redefine the species.cumulative.plot function that comes with gradient forest:
-I've changed the y-limit so everythings on the same axis. And I've definede the imp.var.names. 
-I've also change show.overall to FALSE so that I can see the individual SNPs
-
-getAnywhere(species.cumulative.plot)
-
-```
-species.cumulative.plot <- function (obj, imp.vars = NULL, imp.vars.names = imp.vars, leg.posn = "topleft", 
-    leg.nspecies = 10, legend = TRUE, mfrow = rev(n2mfrow(length(imp.vars) * 
-        (show.species + show.overall))), show.species = TRUE, 
-    show.overall = FALSE, mar = c(0, 2.1, 1.1, 0), omi = c(0.75, 
-        0.75, 0.1, 0.1), common.scale = F, line.ylab = 1, cex.legend = 0.75, 
-    ...) 
-{
-    if (is.null(imp.vars)) 
-        imp.vars <- imp.var.names <- c("mean.temp.60.days", "days.6.degrees", "dist")
-    par(mfrow = mfrow)
-    cols <- rainbow(length(levels(obj$res.u$spec)))
-    names(cols) <- levels(obj$res.u$spec)
-    xaxt <- if (show.overall) 
-        "n"
-    else "s"
-    if (show.species) {
-        for (varX in imp.vars) {
-            CU <- cumimp(obj, varX, "Species")
-            xlim <- range(sapply(CU, "[[", "x"))
-            ylim <- c(0,0.5)   ###I'm editing this so that I can plot on one plot
-            plot(xlim, ylim, type = "n", xlab = if (show.overall) 
-                ""
-            else imp.vars.names[imp.vars == varX], ylab = "", 
-                xaxt = xaxt, ...)
-            for (species in names(CU)) {
-                isub <- seq(1, length(CU[[species]]$x), len = pmin(500, 
-                  length(CU[[species]]$x)))
-                lines(CU[[species]]$x[isub], CU[[species]]$y[isub], 
-                  type = "s", col = cols[species])
-            }
-            no.species <- length(names(cols))
-            imp.sp <- sapply(CU, function(cu) max(cu$y))
-            best <- order(-imp.sp)[1:min(leg.nspecies, length(imp.sp))]
-            if (legend) 
-                legend(x = leg.posn, legend = names(cols)[best], 
-                  pch = rep(1, no.species)[best], col = cols[best], 
-                  bty = "n", cex = cex.legend, pt.lwd = 2)
-        }
-    }
-    if (show.overall) {
-        for (varX in imp.vars) {
-            CU <- cumimp(obj, varX)
-            ymax <- 1.2 ##max(CU$y)
-            if (varX == imp.vars[1]) 
-                ymax1 <- 1.2  ##change this from ymax 
-            isub <- seq(1, length(CU$x), len = pmin(500, length(CU$x)))
-            plot(CU$x[isub], CU$y[isub], type = "s", ylab = "", 
-                xlab = imp.vars.names[imp.vars == varX], ylim = c(0, 
-                  if (common.scale) ymax1 else ymax), ...)
-        }
-    }
-    mtext("Cumulative importance", side = 2, line = line.ylab, 
-        outer = TRUE)
-}
-
-
-```
-
-
-
-Plot of individual SNPs for a specific dataset and environmental variable
-```
-### CHN
-pdf("CHN.individual.TempSNPs.GF.pdf")
-species.cumulative.plot(gf.CHN.TempLoci.SNPs)
-dev.off()
-
-pdf("CHN.individual.SeasonSNPs.GF.pdf")
-species.cumulative.plot(gf.CHN.SeasonLoci.SNPs)
-dev.off()
-
-pdf("CHN.individual.NeutralSNPs.GF.pdf")
-species.cumulative.plot(gf.CHN.Neutral.SNPs)
-dev.off()
-
-
-
-
-### CZ
-pdf("CZ.individual.TempSNPs.GF.pdf")
-species.cumulative.plot(gf.CZ.TempLoci.SNPs)
-dev.off()
-
-pdf("CZ.individual.SeasonSNPs.GF.pdf")
-species.cumulative.plot(gf.CZ.SeasonLoci.SNPs)
-dev.off()
-
-pdf("CZ.individual.NeutralSNPs.GF.pdf")
-species.cumulative.plot(gf.CZ.Neutral.SNPs)
-dev.off()
-
-
-
-
-
-### CHS
-pdf("CHS.individual.TempSNPs.GF.pdf")
-species.cumulative.plot(gf.CHS.TempLoci.SNPs)
-dev.off()
-
-pdf("CHS.individual.SeasonSNPs.GF.pdf")
-species.cumulative.plot(gf.CHS.SeasonLoci.SNPs)
-dev.off()
-
-pdf("CHS.individual.NeutralSNPs.GF.pdf")
-species.cumulative.plot(gf.CHS.Neutral.SNPs)
-dev.off()
-
-
-
-
-
-### CHS.VS
-pdf("CHS.VS.individual.TempSNPs.GF.pdf")
-species.cumulative.plot(gf.CHS.VS.TempLoci.SNPs)
-dev.off()
-
-pdf("CHS.VS.individual.SeasonSNPs.GF.pdf")
-species.cumulative.plot(gf.CHS.VS.SeasonLoci.SNPs)
-dev.off()
-
-pdf("CHS.VS.individual.NeutralSNPs.GF.pdf")
-species.cumulative.plot(gf.CHS.VS.Neutral.SNPs)
-dev.off()
-
-
-
-
-### CHS.TI
-pdf("CHS.TI.individual.TempSNPs.GF.pdf")
-species.cumulative.plot(gf.CHS.TI.TempLoci.SNPs)
-dev.off()
-
-pdf("CHS.TI.individual.SeasonSNPs.GF.pdf")
-species.cumulative.plot(gf.CHS.TI.SeasonLoci.SNPs)
-dev.off()
-
-pdf("CHS.TI.individual.NeutralSNPs.GF.pdf")
-species.cumulative.plot(gf.CHS.TI.Neutral.SNPs)
-dev.off()
-
-
-
-##redefine the function with the new column names
-### SE
-pdf("SE.individual.TempSNPs.GF.pdf")
-species.cumulative.plot(gf.SE.TempLoci.SNPs)
-dev.off()
-
-pdf("SE.individual.SeasonSNPs.GF.pdf")
-species.cumulative.plot(gf.SE.SeasonLoci.SNPs)
-dev.off()
-
-pdf("SE.individual.NeutralSNPs.GF.pdf")
-species.cumulative.plot(gf.SE.Neutral.SNPs)
-dev.off()
-
-
-
-
-```
-![alt_txt][Fig3]
-
-[Fig3]:https://cloud.githubusercontent.com/assets/12142475/22886425/19e50622-f1fe-11e6-9b8e-8d91624e3b87.png
-
-
-# Part2: Find thresholds
-
-For this part I will run GF with all the loci and identify the loci that are most associated with 
-
-1: temp
-
-2: season. 
-
-Questions: 
-
-Is there a threshold response in any of the transects? 
-
-Is the threshold the same between transects? 
-
-
-Set up gf for each trasect using all of the loci: 
-
-This is run here: 
-
-/Users/alexjvr/2016RADAnalysis/6_CHP4.SEvsCH/GradientForest/Part2.FullModel
-
-
-### CHN
-
-```
-
-vcftools --vcf CHN.229.5265.recode.vcf --plink --out CHN.229.5265.plink
-
-plink --file CHN.229.5265.plink --recode --recodeA --noweb --out CHN.229.5265.plink
-
-##calculate MAF within each population
-
-plink --file CHN.229.5265.plink --within CHN.PlinkCluster --freq --noweb --out CHN.229.5265.plink 
-
-
-######Reformat PLINK output
-###For Gradient Forest
-###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
-
-
-
-CHN.FullModel.MAF <- read.table("CHN.229.5265.plink.frq.strat", header=T)
-head(CHN.FullModel.MAF)
-
-CHN.FullModel.MAF <- CHN.FullModel.MAF[,c(3,2,6)]
-
-library("ggplot2")
-library("reshape2")
-
-CHN.FullModel.MAF2 <- melt(CHN.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
-str(CHN.FullModel.MAF2)
-head(CHN.FullModel.MAF2)
-
-
-CHN.FullModel.MAF3 <- dcast(CHN.FullModel.MAF2, formula= CLST ~ SNP)
-head(CHN.FullModel.MAF3)
-colnames(CHN.FullModel.MAF3) <- paste("X", colnames(CHN.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
-write.csv(CHN.FullModel.MAF3, file="CHN.229.5265.FullModel.MAF.csv")
-
-```
-
-Run GF
-
-```
-library(gradientForest)
-
-gf.CHN.FullModel <- read.csv("CHN.229.5265.FullModel.MAF.csv", header=T)
-envGF.CHN.FullModel <- gf.CHN.FullModel[,2:8]
-colnames(envGF.CHN.Adaptive)
-
-CHN.FullModelSNPS <- CHN.FullModel.MAF3[,grep("X.", colnames(CHN.FullModel.MAF3))]
-CHN.FullModelSNPS <- CHN.FullModelSNPS[,-1]
-maxLevel <- log2(0.368*nrow(envGF.CHN.FullModel)/2)
-maxLevel
-
-gf.CHN.FullModel.SNPs <- gradientForest(cbind(envGF.CHN.FullModel, CHN.FullModelSNPS), predictor.vars=colnames(envGF.CHN.FullModel), response.vars=colnames(CHN.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
-
-##25 warnings (loci variable in less than 5 populations)
-
-
-```
-
-
-### CHS
-
-```
-###CHS
-
-vcftools --vcf CHS.275.6339.recode.vcf --plink --out CHS.275.6339.plink
-
-plink --file CHS.275.6339.plink --recode --recodeA --noweb --out CHS.275.6339.plink
-
-##calculate MAF within each population
-
-plink --file CHS.275.6339.plink --within CHS.PlinkCluster --freq --noweb --out CHS.275.6339.plink 
-
-
-######Reformat PLINK output
-###For Gradient Forest
-###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
-
-
-
-CHS.FullModel.MAF <- read.table("CHS.275.6339.plink.frq.strat", header=T)
-head(CHS.FullModel.MAF)
-
-CHS.FullModel.MAF <- CHS.FullModel.MAF[,c(3,2,6)]
-
-library("ggplot2")
-library("reshape2")
-
-CHS.FullModel.MAF2 <- melt(CHS.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
-str(CHS.FullModel.MAF2)
-head(CHS.FullModel.MAF2)
-
-
-CHS.FullModel.MAF3 <- dcast(CHS.FullModel.MAF2, formula= CLST ~ SNP)
-head(CHS.FullModel.MAF3)
-colnames(CHS.FullModel.MAF3) <- paste("X", colnames(CHS.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
-write.csv(CHS.FullModel.MAF3, file="CHS.275.6339.FullModel.MAF.csv")
-
-```
-
-Run GF
-
-```
-library(gradientForest)
-
-gf.CHS.FullModel <- read.csv("CHS.275.6339.FullModel.MAF.csv", header=T)
-envGF.CHS.FullModel <- gf.CHS.FullModel[,2:9]
-colnames(envGF.CHS.FullModel)
-
-CHS.FullModelSNPS <- gf.CHS.FullModel[,grep("X.", colnames(gf.CHS.FullModel))]
-CHS.FullModelSNPS <- CHS.FullModelSNPS[,-1]
-maxLevel <- log2(0.368*nrow(envGF.CHS.FullModel)/2)
-maxLevel
-
-gf.CHS.FullModel.SNPs <- gradientForest(cbind(envGF.CHS.FullModel, CHS.FullModelSNPS), predictor.vars=colnames(envGF.CHS.FullModel), response.vars=colnames(CHS.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
-
-##16 warnings (loci variable in less than 5 populations)
-
-
-```
-
-
-### CZ
-
-```
-
-vcftools --vcf CZ.404.7288.recode.vcf --plink --out CZ.404.7288.plink
-
-plink --file CZ.404.7288.plink --recode --recodeA --noweb --out CZ.404.7288.plink
-
-##calculate MAF within each population
-
-plink --file CZ.404.7288.plink --within CZ.PlinkCluster --freq --noweb --out CZ.404.7288.plink 
-
-
-######Reformat PLINK output
-###For Gradient Forest
-###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
-
-
-
-CZ.FullModel.MAF <- read.table("CZ.404.7288.plink.frq.strat", header=T)
-head(CZ.FullModel.MAF)
-
-CZ.FullModel.MAF <- CZ.FullModel.MAF[,c(3,2,6)]
-
-library("ggplot2")
-library("reshape2")
-
-CZ.FullModel.MAF2 <- melt(CZ.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
-str(CZ.FullModel.MAF2)
-head(CZ.FullModel.MAF2)
-
-
-CZ.FullModel.MAF3 <- dcast(CZ.FullModel.MAF2, formula= CLST ~ SNP)
-head(CZ.FullModel.MAF3)
-colnames(CZ.FullModel.MAF3) <- paste("X", colnames(CZ.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
-write.csv(CZ.FullModel.MAF3, file="CZ.404.7288.FullModel.MAF.csv")
-
-```
-
-Run GF
-
-```
-library(gradientForest)
-
-gf.CZ.FullModel <- read.csv("CZ.404.7288.FullModel.MAF.csv", header=T)
-envGF.CZ.FullModel <- gf.CZ.FullModel[,2:12]
-colnames(envGF.CZ.FullModel)
-
-CZ.FullModelSNPS <- gf.CZ.FullModel[,grep("X.", colnames(gf.CZ.FullModel))]
-CZ.FullModelSNPS <- CZ.FullModelSNPS[,-1]
-maxLevel <- log2(0.368*nrow(envGF.CZ.FullModel)/2)
-maxLevel
-
-gf.CZ.FullModel.SNPs <- gradientForest(cbind(envGF.CZ.FullModel, CZ.FullModelSNPS), predictor.vars=colnames(envGF.CZ.FullModel), response.vars=colnames(CZ.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
-
-##25 warnings (loci variable in less than 5 populations)
-
-
-```
-
-
-### CHS.VS
-
-```
-###CHS.VS
-
-vcftools --vcf CHS.VS.135.5835.recode.vcf --plink --out CHS.VS.135.5835.plink
-
-plink --file CHS.VS.135.5835.plink --recode --recodeA --noweb --out CHS.VS.135.5835.plink
-
-##calculate MAF within each population
-
-plink --file CHS.VS.135.5835.plink --within CHS.VS.PlinkCluster --freq --noweb --out CHS.VS.135.5835.plink 
-
-
-######Reformat PLINK output
-###For Gradient Forest
-###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
-
-
-
-CHS.VS.FullModel.MAF <- read.table("CHS.VS.135.5835.plink.frq.strat", header=T)
-head(CHS.VS.FullModel.MAF)
-
-CHS.VS.FullModel.MAF <- CHS.VS.FullModel.MAF[,c(3,2,6)]
-
-library("ggplot2")
-library("reshape2")
-
-CHS.VS.FullModel.MAF2 <- melt(CHS.VS.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
-str(CHS.VS.FullModel.MAF2)
-head(CHS.VS.FullModel.MAF2)
-
-
-CHS.VS.FullModel.MAF3 <- dcast(CHS.VS.FullModel.MAF2, formula= CLST ~ SNP)
-head(CHS.VS.FullModel.MAF3)
-colnames(CHS.VS.FullModel.MAF3) <- paste("X", colnames(CHS.VS.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
-write.csv(CHS.VS.FullModel.MAF3, file="CHS.VS.135.5835.FullModel.MAF.csv")
-
-```
-
-Run GF
-
-```
-library(gradientForest)
-
-gf.CHS.VS.FullModel <- read.csv("CHS.VS.135.5835.FullModel.MAF.csv", header=T)
-envGF.CHS.VS.FullModel <- gf.CHS.VS.FullModel[,2:8]
-colnames(envGF.CHS.VS.FullModel)
-
-CHS.VS.FullModelSNPS <- gf.CHS.VS.FullModel[,grep("X.", colnames(gf.CHS.VS.FullModel))]
-CHS.VS.FullModelSNPS <- CHS.VS.FullModelSNPS[,-1]
-maxLevel <- log2(0.368*nrow(envGF.CHS.VS.FullModel)/2)
-maxLevel
-
-gf.CHS.VS.FullModel.SNPs <- gradientForest(cbind(envGF.CHS.VS.FullModel, CHS.VS.FullModelSNPS), predictor.vars=colnames(envGF.CHS.VS.FullModel), response.vars=colnames(CHS.VS.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
-
-##50+ warnings (loci variable in less than 5 populations)
-
-
-```
-
-
-
-### CHS.TI
-```
-
-vcftools --vcf CHS.TI.140.5692.recode.vcf --plink --out CHS.TI.140.5692.plink
-
-plink --file CHS.TI.140.5692.plink --recode --recodeA --noweb --out CHS.TI.140.5692.plink
-
-##calculate MAF within each population
-
-plink --file CHS.TI.140.5692.plink --within CHS.TI.PlinkCluster --freq --noweb --out CHS.TI.140.5692.plink 
-
-
-######Reformat PLINK output
-###For Gradient Forest
-###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
-
-
-
-CHS.TI.FullModel.MAF <- read.table("CHS.TI.140.5692.plink.frq.strat", header=T)
-head(CHS.TI.FullModel.MAF)
-
-CHS.TI.FullModel.MAF <- CHS.TI.FullModel.MAF[,c(3,2,6)]
-
-library("ggplot2")
-library("reshape2")
-
-CHS.TI.FullModel.MAF2 <- melt(CHS.TI.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
-str(CHS.TI.FullModel.MAF2)
-head(CHS.TI.FullModel.MAF2)
-
-
-CHS.TI.FullModel.MAF3 <- dcast(CHS.TI.FullModel.MAF2, formula= CLST ~ SNP)
-head(CHS.TI.FullModel.MAF3)
-colnames(CHS.TI.FullModel.MAF3) <- paste("X", colnames(CHS.TI.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
-write.csv(CHS.TI.FullModel.MAF3, file="CHS.TI.140.5692.FullModel.MAF.csv")
-
-```
-
-Run GF
-
-```
-library(gradientForest)
-
-gf.CHS.TI.FullModel <- read.csv("CHS.TI.140.5692.FullModel.MAF.csv", header=T)
-envGF.CHS.TI.FullModel <- gf.CHS.TI.FullModel[,2:7]
-colnames(envGF.CHS.TI.FullModel)
-
-CHS.TI.FullModelSNPS <- gf.CHS.TI.FullModel[,grep("X.", colnames(gf.CHS.TI.FullModel))]
-CHS.TI.FullModelSNPS <- CHS.TI.FullModelSNPS[,-1]
-maxLevel <- log2(0.368*nrow(envGF.CHS.TI.FullModel)/2)
-maxLevel
-
-gf.CHS.TI.FullModel.SNPs <- gradientForest(cbind(envGF.CHS.TI.FullModel, CHS.TI.FullModelSNPS), predictor.vars=colnames(envGF.CHS.TI.FullModel), response.vars=colnames(CHS.TI.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
-
-##25 warnings (loci variable in less than 5 populations)
-
-
-```
-
-
-
-### SE
-```
-
-vcftools --vcf SE132.2027.recode.vcf --plink --out SE.132.2027.plink
-
-plink --file SE.132.2027.plink --recode --recodeA --noweb --out SE.132.2027.plink
-
-##calculate MAF within each population
-
-plink --file SE.132.2027.plink --within SE.PlinkCluster --freq --noweb --out SE.132.2027.plink 
-
-
-######Reformat PLINK output
-###For Gradient Forest
-###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
-
-
-
-SE.FullModel.MAF <- read.table("SE.132.2027.plink.frq.strat", header=T)
-head(SE.FullModel.MAF)
-
-SE.FullModel.MAF <- SE.FullModel.MAF[,c(3,2,6)]
-
-library("ggplot2")
-library("reshape2")
-
-SE.FullModel.MAF2 <- melt(SE.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
-str(SE.FullModel.MAF2)
-head(SE.FullModel.MAF2)
-
-
-SE.FullModel.MAF3 <- dcast(SE.FullModel.MAF2, formula= CLST ~ SNP)
-head(SE.FullModel.MAF3)
-colnames(SE.FullModel.MAF3) <- paste("X", colnames(SE.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
-write.csv(SE.FullModel.MAF3, file="SE.132.2027.FullModel.MAF.csv")
-
-```
-
-Run GF
-
-```
-library(gradientForest)
-
-gf.SE.FullModel <- read.csv("SE.132.2027.FullModel.MAF.csv", header=T)
-envGF.SE.FullModel <- gf.SE.FullModel[,2:7]
-colnames(envGF.SE.FullModel)
-
-SE.FullModelSNPS <- gf.SE.FullModel[,grep("X.", colnames(gf.SE.FullModel))]
-SE.FullModelSNPS <- SE.FullModelSNPS[,-1]
-maxLevel <- log2(0.368*nrow(envGF.SE.FullModel)/2)
-maxLevel
-
-gf.SE.FullModel.SNPs <- gradientForest(cbind(envGF.SE.FullModel, SE.FullModelSNPS), predictor.vars=colnames(envGF.SE.FullModel), response.vars=colnames(SE.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
-
-##50+ warnings (loci variable in less than 5 populations)
-
-
-```
-
-
-## Figure 1: R2 importance
-
-Which of the variables is the most important across all the gradients. 
-
-I'm comparing only dist, season and temp (ie. excluding MEM. And I'm rescaling R2 between 0 and 1 
-
-
-```
-R.sq.CHN.FullModel <- (rowMeans(gf.CHN.FullModel.SNPs$imp.rsq, na.rm=T))
-R.sq.CHN.FullModel <- as.data.frame(R.sq.CHN.FullModel)
-colnames(R.sq.CHN.FullModel) <- "CHN"
-
-R.sq.CHS.FullModel <- (rowMeans(gf.CHS.FullModel.SNPs$imp.rsq, na.rm=T))
-R.sq.CHS.FullModel <- as.data.frame(R.sq.CHS.FullModel)
-colnames(R.sq.CHS.FullModel) <- "CHS"
-
-R.sq.CHS.VS.FullModel <- rowMeans(gf.CHS.VS.FullModel.SNPs$imp.rsq, na.rm=T)
-R.sq.CHS.VS.FullModel <- as.data.frame(R.sq.CHS.VS.FullModel)
-colnames(R.sq.CHS.VS.FullModel) <- "CHS.VS"
-
-R.sq.CHS.TI.FullModel <- rowMeans(gf.CHS.TI.FullModel.SNPs$imp.rsq, na.rm=T)
-R.sq.CHS.TI.FullModel <- as.data.frame(R.sq.CHS.TI.FullModel)
-colnames(R.sq.CHS.TI.FullModel) <- "CHS.TI"
-
-R.sq.SE.FullModel <- rowMeans(gf.SE.FullModel.SNPs$imp.rsq, na.rm=T)
-R.sq.SE.FullModel <- as.data.frame(R.sq.SE.FullModel)
-colnames(R.sq.SE.FullModel) <- "SE"
-
-R.sq.CZ.FullModel <- rowMeans(gf.CZ.FullModel.SNPs$imp.rsq, na.rm=T)
-R.sq.CZ.FullModel <- as.data.frame(R.sq.CZ.FullModel)
-colnames(R.sq.CZ.FullModel) <- "CZ"
-
-
-R.sq.ALL <- R.sq.CHN.FullModel[1:5,]
-R.sq.ALL <- as.data.frame(R.sq.ALL)
-colnames(R.sq.ALL) <- "CHN"
-row.names(R.sq.ALL) <- c("dist", "mean.temp.60d", "days.above.6", "MEM1", "MEM2")
-R.sq.ALL$CHS <- R.sq.CHS.FullModel[1:5,]
-R.sq.ALL$CHS.VS <- R.sq.CHS.VS.FullModel[1:5,]
-R.sq.ALL$CHS.TI <- R.sq.CHS.TI.FullModel[1:5,]
-R.sq.ALL$CZ <- R.sq.CZ.FullModel[1:5,]
-R.sq.ALL$SE <- R.sq.SE.FullModel[1:5,]
-
-
-library(reshape)
-library(ggplot2)
-
-R.sq.ALL <- as.matrix(R.sq.ALL)
-
-R.sq.ALL.scale <- R.sq.ALL.scale[1:3,]   ##select only the variables of interest
-R.sq.ALL.scale <- apply(R.sq.ALL.scale, MARGIN=2, FUN=function(X) (X - min(X))/diff(range(X)))   ##rescale between 0 and 1
-R.sq.ALL.scale.melt <- melt(R.sq.ALL.scale)
-R.sq.ALL.melt
-R.sq.ALL.scale.melt <- R.sq.ALL.scale.melt[order(R.sq.ALL.scale.melt$X1),]
-R.sq.ALL.scale.melt
-
-pdf("GF.ALL.Figure1.R2_20171013.pdf")
-ggplot(R.sq.ALL.scale.melt, aes(x=X2, y=X1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
-scale_fill_gradient(name="R2") +   ##title of the legend
-theme(axis.title.x=element_blank(), axis.title.y=element_blank())
-dev.off()
-```
-
-
-So that's the overall results. But I need to find the loci that are most associated with temp and with season. 
-
 ### temp
 
 ```
@@ -4651,6 +3972,751 @@ legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","da
 
 dev.off()
 ```
+
+
+
+## season length
+```
+CU.CHN.Neutral.season <- cumimp(gf.CHN.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.CHS.Neutral.season <- cumimp(gf.CHS.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.CZ.Neutral.season <- cumimp(gf.CZ.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+
+isub.CHN.Neutral.season <- seq(1, length(CU.CHN.Neutral.season$x), len = pmin(500, length(CU.CHN.Neutral.season$x)))
+isub.CHS.Neutral.season <- seq(1, length(CU.CHS.Neutral.season$x), len = pmin(500, length(CU.CHS.Neutral.season$x)))
+isub.CZ.Neutral.season <- seq(1, length(CU.CZ.Neutral.season$x), len = pmin(500, length(CU.CZ.Neutral.season$x)))
+
+
+
+ymax=0.03 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive")
+```
+
+##season plot
+
+```
+pdf("CHN.CHS.CZ.season.CumImp.pdf")
+
+plot(CU.CHN.Neutral.season$x[isub.CHN.Neutral.season], CU.CHN.Neutral.season$y[isub.CHN.Neutral.season], type = "s", ylab ="Cumulative Importance", xlab="days.above.6", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHN.season$x[isub.CHN.season], CU.CHN.season$y[isub.CHN.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="springgreen4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.Neutral.season$x[isub.CHS.Neutral.season], CU.CHS.Neutral.season$y[isub.CHS.Neutral.season], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.season$x[isub.CHS.season], CU.CHS.season$y[isub.CHS.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CZ.Neutral.season$x[isub.CZ.Neutral.season], CU.CZ.Neutral.season$y[isub.CZ.Neutral.season], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CZ.season$x[isub.CZ.season], CU.CZ.season$y[isub.CZ.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+
+legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1"), lty=c(1,3,1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
+### Plot3
+
+###temp
+```
+CU.CHS.TI.Neutral.mean.temp.60d <- cumimp(gf.CHS.TI.Neutral.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.CHS.VS.Neutral.mean.temp.60d <- cumimp(gf.CHS.VS.Neutral.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+
+isub.CHS.TI.Neutral.mean.temp.60d <- seq(1, length(CU.CHS.TI.Neutral.mean.temp.60d$x), len = pmin(500, length(CU.CHS.TI.Neutral.mean.temp.60d$x)))
+isub.CHS.VS.Neutral.mean.temp.60d <- seq(1, length(CU.CHS.VS.Neutral.mean.temp.60d$x), len = pmin(500, length(CU.CHS.VS.Neutral.mean.temp.60d$x)))
+```
+
+plot
+```
+ymax=0.05
+leg.txt <- c("CHS.TI Reference", "CHS.TI Adaptive",  "CHS.VS Reference", "CHS.VS Adaptive")
+
+pdf("CHS.TI.VS.mean.temp.60d.CumImp.pdf")
+
+plot(CU.CHS.TI.Neutral.mean.temp.60d$x[isub.CHS.TI.Neutral.mean.temp.60d], CU.CHS.TI.Neutral.mean.temp.60d$y[isub.CHS.TI.Neutral.mean.temp.60d], type = "s", ylab ="Cumulative Importance", xlab="mean.temp.60d", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid1")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHS.TI.temp$x[isub.CHS.TI.temp], CU.CHS.TI.temp$y[isub.CHS.TI.temp], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.VS.Neutral.mean.temp.60d$x[isub.CHS.VS.Neutral.mean.temp.60d], CU.CHS.VS.Neutral.mean.temp.60d$y[isub.CHS.VS.Neutral.mean.temp.60d], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.VS.temp$x[isub.CHS.VS.temp], CU.CHS.VS.temp$y[isub.CHS.VS.temp], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+legend("topleft", leg.txt, col=c("darkorchid1","darkorchid1","darkorchid4","darkorchid4"), lty=c(1,3,1,3), lwd=1.5, bty = "n")
+dev.off()
+```
+
+###season
+```
+CU.CHS.TI.Neutral.season <- cumimp(gf.CHS.TI.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.CHS.VS.Neutral.season <- cumimp(gf.CHS.VS.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+
+isub.CHS.TI.Neutral.season <- seq(1, length(CU.CHS.TI.Neutral.season$x), len = pmin(500, length(CU.CHS.TI.Neutral.season$x)))
+isub.CHS.VS.Neutral.season <- seq(1, length(CU.CHS.VS.Neutral.season$x), len = pmin(500, length(CU.CHS.VS.Neutral.season$x)))
+```
+
+###plot
+```
+ymax=0.1 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHS.TI Reference", "CHS.TI Adaptive",  "CHS.VS Reference", "CHS.VS Adaptive")
+
+pdf("CHS.TI.VS.season.CumImp.pdf")
+
+plot(CU.CHS.TI.Neutral.season$x[isub.CHS.TI.Neutral.season], CU.CHS.TI.Neutral.season$y[isub.CHS.TI.Neutral.season], type = "s", ylab ="Cumulative Importance", xlab="days.above.6", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid1")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHS.TI.season$x[isub.CHS.TI.season], CU.CHS.TI.season$y[isub.CHS.TI.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.VS.Neutral.season$x[isub.CHS.VS.Neutral.season], CU.CHS.VS.Neutral.season$y[isub.CHS.VS.Neutral.season], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.VS.season$x[isub.CHS.VS.season], CU.CHS.VS.season$y[isub.CHS.VS.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+legend("topleft", leg.txt, col=c("darkorchid1","darkorchid1","darkorchid4","darkorchid4"), lty=c(1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
+
+
+
+
+# 4 Individual SNPs
+
+###First I need to redefine the species.cumulative.plot function that comes with gradient forest:
+I've changed the y-limit so everythings on the same axis. And I've definede the imp.var.names. 
+I've also change show.overall to FALSE so that I can see the individual SNPs
+
+getAnywhere(species.cumulative.plot)
+
+```
+species.cumulative.plot <- function (obj, imp.vars = NULL, imp.vars.names = imp.vars, leg.posn = "topleft", 
+    leg.nspecies = 10, legend = TRUE, mfrow = rev(n2mfrow(length(imp.vars) * 
+        (show.species + show.overall))), show.species = TRUE, 
+    show.overall = FALSE, mar = c(0, 2.1, 1.1, 0), omi = c(0.75, 
+        0.75, 0.1, 0.1), common.scale = F, line.ylab = 1, cex.legend = 0.75, 
+    ...) 
+{
+    if (is.null(imp.vars)) 
+        imp.vars <- imp.var.names <- c("mean.temp.60.days", "days.6.degrees", "dist")
+    par(mfrow = mfrow)
+    cols <- rainbow(length(levels(obj$res.u$spec)))
+    names(cols) <- levels(obj$res.u$spec)
+    xaxt <- if (show.overall) 
+        "n"
+    else "s"
+    if (show.species) {
+        for (varX in imp.vars) {
+            CU <- cumimp(obj, varX, "Species")
+            xlim <- range(sapply(CU, "[[", "x"))
+            ylim <- c(0,0.5)   ###I'm editing this so that I can plot on one plot
+            plot(xlim, ylim, type = "n", xlab = if (show.overall) 
+                ""
+            else imp.vars.names[imp.vars == varX], ylab = "", 
+                xaxt = xaxt, ...)
+            for (species in names(CU)) {
+                isub <- seq(1, length(CU[[species]]$x), len = pmin(500, 
+                  length(CU[[species]]$x)))
+                lines(CU[[species]]$x[isub], CU[[species]]$y[isub], 
+                  type = "s", col = cols[species])
+            }
+            no.species <- length(names(cols))
+            imp.sp <- sapply(CU, function(cu) max(cu$y))
+            best <- order(-imp.sp)[1:min(leg.nspecies, length(imp.sp))]
+            if (legend) 
+                legend(x = leg.posn, legend = names(cols)[best], 
+                  pch = rep(1, no.species)[best], col = cols[best], 
+                  bty = "n", cex = cex.legend, pt.lwd = 2)
+        }
+    }
+    if (show.overall) {
+        for (varX in imp.vars) {
+            CU <- cumimp(obj, varX)
+            ymax <- 1.2 ##max(CU$y)
+            if (varX == imp.vars[1]) 
+                ymax1 <- 1.2  ##change this from ymax 
+            isub <- seq(1, length(CU$x), len = pmin(500, length(CU$x)))
+            plot(CU$x[isub], CU$y[isub], type = "s", ylab = "", 
+                xlab = imp.vars.names[imp.vars == varX], ylim = c(0, 
+                  if (common.scale) ymax1 else ymax), ...)
+        }
+    }
+    mtext("Cumulative importance", side = 2, line = line.ylab, 
+        outer = TRUE)
+}
+
+
+```
+
+
+
+Plot of individual SNPs for a specific dataset and environmental variable
+```
+### CHN
+pdf("CHN.individual.TempSNPs.GF.pdf")
+species.cumulative.plot(gf.CHN.TempLoci.SNPs)
+dev.off()
+
+pdf("CHN.individual.SeasonSNPs.GF.pdf")
+species.cumulative.plot(gf.CHN.SeasonLoci.SNPs)
+dev.off()
+
+pdf("CHN.individual.NeutralSNPs.GF.pdf")
+species.cumulative.plot(gf.CHN.Neutral.SNPs)
+dev.off()
+
+
+
+
+### CZ
+pdf("CZ.individual.TempSNPs.GF.pdf")
+species.cumulative.plot(gf.CZ.TempLoci.SNPs)
+dev.off()
+
+pdf("CZ.individual.SeasonSNPs.GF.pdf")
+species.cumulative.plot(gf.CZ.SeasonLoci.SNPs)
+dev.off()
+
+pdf("CZ.individual.NeutralSNPs.GF.pdf")
+species.cumulative.plot(gf.CZ.Neutral.SNPs)
+dev.off()
+
+
+
+
+
+### CHS
+pdf("CHS.individual.TempSNPs.GF.pdf")
+species.cumulative.plot(gf.CHS.TempLoci.SNPs)
+dev.off()
+
+pdf("CHS.individual.SeasonSNPs.GF.pdf")
+species.cumulative.plot(gf.CHS.SeasonLoci.SNPs)
+dev.off()
+
+pdf("CHS.individual.NeutralSNPs.GF.pdf")
+species.cumulative.plot(gf.CHS.Neutral.SNPs)
+dev.off()
+
+
+
+
+
+### CHS.VS
+pdf("CHS.VS.individual.TempSNPs.GF.pdf")
+species.cumulative.plot(gf.CHS.VS.TempLoci.SNPs)
+dev.off()
+
+pdf("CHS.VS.individual.SeasonSNPs.GF.pdf")
+species.cumulative.plot(gf.CHS.VS.SeasonLoci.SNPs)
+dev.off()
+
+pdf("CHS.VS.individual.NeutralSNPs.GF.pdf")
+species.cumulative.plot(gf.CHS.VS.Neutral.SNPs)
+dev.off()
+
+
+
+
+### CHS.TI
+pdf("CHS.TI.individual.TempSNPs.GF.pdf")
+species.cumulative.plot(gf.CHS.TI.TempLoci.SNPs)
+dev.off()
+
+pdf("CHS.TI.individual.SeasonSNPs.GF.pdf")
+species.cumulative.plot(gf.CHS.TI.SeasonLoci.SNPs)
+dev.off()
+
+pdf("CHS.TI.individual.NeutralSNPs.GF.pdf")
+species.cumulative.plot(gf.CHS.TI.Neutral.SNPs)
+dev.off()
+
+
+
+##redefine the function with the new column names
+### SE
+pdf("SE.individual.TempSNPs.GF.pdf")
+species.cumulative.plot(gf.SE.TempLoci.SNPs)
+dev.off()
+
+pdf("SE.individual.SeasonSNPs.GF.pdf")
+species.cumulative.plot(gf.SE.SeasonLoci.SNPs)
+dev.off()
+
+pdf("SE.individual.NeutralSNPs.GF.pdf")
+species.cumulative.plot(gf.SE.Neutral.SNPs)
+dev.off()
+
+
+
+
+```
+![alt_txt][Fig3]
+
+[Fig3]:https://cloud.githubusercontent.com/assets/12142475/22886425/19e50622-f1fe-11e6-9b8e-8d91624e3b87.png
+
+
+# Part2: Find thresholds
+
+For this part I will run GF with all the loci and identify the loci that are most associated with 
+
+1: temp
+
+2: season. 
+
+Questions: 
+
+Is there a threshold response in any of the transects? 
+
+Is the threshold the same between transects? 
+
+
+Set up gf for each trasect using all of the loci: 
+
+This is run here: 
+
+/Users/alexjvr/2016RADAnalysis/6_CHP4.SEvsCH/GradientForest/Part2.FullModel
+
+
+### CHN
+
+```
+
+vcftools --vcf CHN.229.5265.recode.vcf --plink --out CHN.229.5265.plink
+
+plink --file CHN.229.5265.plink --recode --recodeA --noweb --out CHN.229.5265.plink
+
+##calculate MAF within each population
+
+plink --file CHN.229.5265.plink --within CHN.PlinkCluster --freq --noweb --out CHN.229.5265.plink 
+
+
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CHN.FullModel.MAF <- read.table("CHN.229.5265.plink.frq.strat", header=T)
+head(CHN.FullModel.MAF)
+
+CHN.FullModel.MAF <- CHN.FullModel.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CHN.FullModel.MAF2 <- melt(CHN.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHN.FullModel.MAF2)
+head(CHN.FullModel.MAF2)
+
+
+CHN.FullModel.MAF3 <- dcast(CHN.FullModel.MAF2, formula= CLST ~ SNP)
+head(CHN.FullModel.MAF3)
+colnames(CHN.FullModel.MAF3) <- paste("X", colnames(CHN.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CHN.FullModel.MAF3, file="CHN.229.5265.FullModel.MAF.csv")
+
+```
+
+Run GF
+
+```
+library(gradientForest)
+
+gf.CHN.FullModel <- read.csv("CHN.229.5265.FullModel.MAF.csv", header=T)
+envGF.CHN.FullModel <- gf.CHN.FullModel[,2:8]
+colnames(envGF.CHN.Adaptive)
+
+CHN.FullModelSNPS <- CHN.FullModel.MAF3[,grep("X.", colnames(CHN.FullModel.MAF3))]
+CHN.FullModelSNPS <- CHN.FullModelSNPS[,-1]
+maxLevel <- log2(0.368*nrow(envGF.CHN.FullModel)/2)
+maxLevel
+
+gf.CHN.FullModel.SNPs <- gradientForest(cbind(envGF.CHN.FullModel, CHN.FullModelSNPS), predictor.vars=colnames(envGF.CHN.FullModel), response.vars=colnames(CHN.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##25 warnings (loci variable in less than 5 populations)
+
+
+```
+
+
+### CHS
+
+```
+###CHS
+
+vcftools --vcf CHS.275.6339.recode.vcf --plink --out CHS.275.6339.plink
+
+plink --file CHS.275.6339.plink --recode --recodeA --noweb --out CHS.275.6339.plink
+
+##calculate MAF within each population
+
+plink --file CHS.275.6339.plink --within CHS.PlinkCluster --freq --noweb --out CHS.275.6339.plink 
+
+
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CHS.FullModel.MAF <- read.table("CHS.275.6339.plink.frq.strat", header=T)
+head(CHS.FullModel.MAF)
+
+CHS.FullModel.MAF <- CHS.FullModel.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CHS.FullModel.MAF2 <- melt(CHS.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHS.FullModel.MAF2)
+head(CHS.FullModel.MAF2)
+
+
+CHS.FullModel.MAF3 <- dcast(CHS.FullModel.MAF2, formula= CLST ~ SNP)
+head(CHS.FullModel.MAF3)
+colnames(CHS.FullModel.MAF3) <- paste("X", colnames(CHS.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CHS.FullModel.MAF3, file="CHS.275.6339.FullModel.MAF.csv")
+
+```
+
+Run GF
+
+```
+library(gradientForest)
+
+gf.CHS.FullModel <- read.csv("CHS.275.6339.FullModel.MAF.csv", header=T)
+envGF.CHS.FullModel <- gf.CHS.FullModel[,2:9]
+colnames(envGF.CHS.FullModel)
+
+CHS.FullModelSNPS <- gf.CHS.FullModel[,grep("X.", colnames(gf.CHS.FullModel))]
+CHS.FullModelSNPS <- CHS.FullModelSNPS[,-1]
+maxLevel <- log2(0.368*nrow(envGF.CHS.FullModel)/2)
+maxLevel
+
+gf.CHS.FullModel.SNPs <- gradientForest(cbind(envGF.CHS.FullModel, CHS.FullModelSNPS), predictor.vars=colnames(envGF.CHS.FullModel), response.vars=colnames(CHS.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##16 warnings (loci variable in less than 5 populations)
+
+
+```
+
+
+### CZ
+
+```
+
+vcftools --vcf CZ.404.7288.recode.vcf --plink --out CZ.404.7288.plink
+
+plink --file CZ.404.7288.plink --recode --recodeA --noweb --out CZ.404.7288.plink
+
+##calculate MAF within each population
+
+plink --file CZ.404.7288.plink --within CZ.PlinkCluster --freq --noweb --out CZ.404.7288.plink 
+
+
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CZ.FullModel.MAF <- read.table("CZ.404.7288.plink.frq.strat", header=T)
+head(CZ.FullModel.MAF)
+
+CZ.FullModel.MAF <- CZ.FullModel.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CZ.FullModel.MAF2 <- melt(CZ.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CZ.FullModel.MAF2)
+head(CZ.FullModel.MAF2)
+
+
+CZ.FullModel.MAF3 <- dcast(CZ.FullModel.MAF2, formula= CLST ~ SNP)
+head(CZ.FullModel.MAF3)
+colnames(CZ.FullModel.MAF3) <- paste("X", colnames(CZ.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CZ.FullModel.MAF3, file="CZ.404.7288.FullModel.MAF.csv")
+
+```
+
+Run GF
+
+```
+library(gradientForest)
+
+gf.CZ.FullModel <- read.csv("CZ.404.7288.FullModel.MAF.csv", header=T)
+envGF.CZ.FullModel <- gf.CZ.FullModel[,2:12]
+colnames(envGF.CZ.FullModel)
+
+CZ.FullModelSNPS <- gf.CZ.FullModel[,grep("X.", colnames(gf.CZ.FullModel))]
+CZ.FullModelSNPS <- CZ.FullModelSNPS[,-1]
+maxLevel <- log2(0.368*nrow(envGF.CZ.FullModel)/2)
+maxLevel
+
+gf.CZ.FullModel.SNPs <- gradientForest(cbind(envGF.CZ.FullModel, CZ.FullModelSNPS), predictor.vars=colnames(envGF.CZ.FullModel), response.vars=colnames(CZ.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##25 warnings (loci variable in less than 5 populations)
+
+
+```
+
+
+### CHS.VS
+
+```
+###CHS.VS
+
+vcftools --vcf CHS.VS.135.5835.recode.vcf --plink --out CHS.VS.135.5835.plink
+
+plink --file CHS.VS.135.5835.plink --recode --recodeA --noweb --out CHS.VS.135.5835.plink
+
+##calculate MAF within each population
+
+plink --file CHS.VS.135.5835.plink --within CHS.VS.PlinkCluster --freq --noweb --out CHS.VS.135.5835.plink 
+
+
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CHS.VS.FullModel.MAF <- read.table("CHS.VS.135.5835.plink.frq.strat", header=T)
+head(CHS.VS.FullModel.MAF)
+
+CHS.VS.FullModel.MAF <- CHS.VS.FullModel.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CHS.VS.FullModel.MAF2 <- melt(CHS.VS.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHS.VS.FullModel.MAF2)
+head(CHS.VS.FullModel.MAF2)
+
+
+CHS.VS.FullModel.MAF3 <- dcast(CHS.VS.FullModel.MAF2, formula= CLST ~ SNP)
+head(CHS.VS.FullModel.MAF3)
+colnames(CHS.VS.FullModel.MAF3) <- paste("X", colnames(CHS.VS.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CHS.VS.FullModel.MAF3, file="CHS.VS.135.5835.FullModel.MAF.csv")
+
+```
+
+Run GF
+
+```
+library(gradientForest)
+
+gf.CHS.VS.FullModel <- read.csv("CHS.VS.135.5835.FullModel.MAF.csv", header=T)
+envGF.CHS.VS.FullModel <- gf.CHS.VS.FullModel[,2:8]
+colnames(envGF.CHS.VS.FullModel)
+
+CHS.VS.FullModelSNPS <- gf.CHS.VS.FullModel[,grep("X.", colnames(gf.CHS.VS.FullModel))]
+CHS.VS.FullModelSNPS <- CHS.VS.FullModelSNPS[,-1]
+maxLevel <- log2(0.368*nrow(envGF.CHS.VS.FullModel)/2)
+maxLevel
+
+gf.CHS.VS.FullModel.SNPs <- gradientForest(cbind(envGF.CHS.VS.FullModel, CHS.VS.FullModelSNPS), predictor.vars=colnames(envGF.CHS.VS.FullModel), response.vars=colnames(CHS.VS.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##50+ warnings (loci variable in less than 5 populations)
+
+
+```
+
+
+
+### CHS.TI
+```
+
+vcftools --vcf CHS.TI.140.5692.recode.vcf --plink --out CHS.TI.140.5692.plink
+
+plink --file CHS.TI.140.5692.plink --recode --recodeA --noweb --out CHS.TI.140.5692.plink
+
+##calculate MAF within each population
+
+plink --file CHS.TI.140.5692.plink --within CHS.TI.PlinkCluster --freq --noweb --out CHS.TI.140.5692.plink 
+
+
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+CHS.TI.FullModel.MAF <- read.table("CHS.TI.140.5692.plink.frq.strat", header=T)
+head(CHS.TI.FullModel.MAF)
+
+CHS.TI.FullModel.MAF <- CHS.TI.FullModel.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+CHS.TI.FullModel.MAF2 <- melt(CHS.TI.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(CHS.TI.FullModel.MAF2)
+head(CHS.TI.FullModel.MAF2)
+
+
+CHS.TI.FullModel.MAF3 <- dcast(CHS.TI.FullModel.MAF2, formula= CLST ~ SNP)
+head(CHS.TI.FullModel.MAF3)
+colnames(CHS.TI.FullModel.MAF3) <- paste("X", colnames(CHS.TI.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(CHS.TI.FullModel.MAF3, file="CHS.TI.140.5692.FullModel.MAF.csv")
+
+```
+
+Run GF
+
+```
+library(gradientForest)
+
+gf.CHS.TI.FullModel <- read.csv("CHS.TI.140.5692.FullModel.MAF.csv", header=T)
+envGF.CHS.TI.FullModel <- gf.CHS.TI.FullModel[,2:7]
+colnames(envGF.CHS.TI.FullModel)
+
+CHS.TI.FullModelSNPS <- gf.CHS.TI.FullModel[,grep("X.", colnames(gf.CHS.TI.FullModel))]
+CHS.TI.FullModelSNPS <- CHS.TI.FullModelSNPS[,-1]
+maxLevel <- log2(0.368*nrow(envGF.CHS.TI.FullModel)/2)
+maxLevel
+
+gf.CHS.TI.FullModel.SNPs <- gradientForest(cbind(envGF.CHS.TI.FullModel, CHS.TI.FullModelSNPS), predictor.vars=colnames(envGF.CHS.TI.FullModel), response.vars=colnames(CHS.TI.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##25 warnings (loci variable in less than 5 populations)
+
+
+```
+
+
+
+### SE
+```
+
+vcftools --vcf SE132.2027.recode.vcf --plink --out SE.132.2027.plink
+
+plink --file SE.132.2027.plink --recode --recodeA --noweb --out SE.132.2027.plink
+
+##calculate MAF within each population
+
+plink --file SE.132.2027.plink --within SE.PlinkCluster --freq --noweb --out SE.132.2027.plink 
+
+
+######Reformat PLINK output
+###For Gradient Forest
+###MAF for each locus -> melt and reformat rows as pops, and columns as loci. 
+
+
+
+SE.FullModel.MAF <- read.table("SE.132.2027.plink.frq.strat", header=T)
+head(SE.FullModel.MAF)
+
+SE.FullModel.MAF <- SE.FullModel.MAF[,c(3,2,6)]
+
+library("ggplot2")
+library("reshape2")
+
+SE.FullModel.MAF2 <- melt(SE.FullModel.MAF, id.vars = c("CLST", "SNP"), variable_name = c("MAF"))
+str(SE.FullModel.MAF2)
+head(SE.FullModel.MAF2)
+
+
+SE.FullModel.MAF3 <- dcast(SE.FullModel.MAF2, formula= CLST ~ SNP)
+head(SE.FullModel.MAF3)
+colnames(SE.FullModel.MAF3) <- paste("X", colnames(SE.FullModel.MAF3), sep=".")  ##Change colnames, so that excel doesn't change the SNP names
+write.csv(SE.FullModel.MAF3, file="SE.132.2027.FullModel.MAF.csv")
+
+```
+
+Run GF
+
+```
+library(gradientForest)
+
+gf.SE.FullModel <- read.csv("SE.132.2027.FullModel.MAF.csv", header=T)
+envGF.SE.FullModel <- gf.SE.FullModel[,2:7]
+colnames(envGF.SE.FullModel)
+
+SE.FullModelSNPS <- gf.SE.FullModel[,grep("X.", colnames(gf.SE.FullModel))]
+SE.FullModelSNPS <- SE.FullModelSNPS[,-1]
+maxLevel <- log2(0.368*nrow(envGF.SE.FullModel)/2)
+maxLevel
+
+gf.SE.FullModel.SNPs <- gradientForest(cbind(envGF.SE.FullModel, SE.FullModelSNPS), predictor.vars=colnames(envGF.SE.FullModel), response.vars=colnames(SE.FullModelSNPS), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+##50+ warnings (loci variable in less than 5 populations)
+
+
+```
+
+
+## Figure 1: R2 importance
+
+Which of the variables is the most important across all the gradients. 
+
+I'm comparing only dist, season and temp (ie. excluding MEM. And I'm rescaling R2 between 0 and 1 
+
+
+```
+R.sq.CHN.FullModel <- (rowMeans(gf.CHN.FullModel.SNPs$imp.rsq, na.rm=T))
+R.sq.CHN.FullModel <- as.data.frame(R.sq.CHN.FullModel)
+colnames(R.sq.CHN.FullModel) <- "CHN"
+
+R.sq.CHS.FullModel <- (rowMeans(gf.CHS.FullModel.SNPs$imp.rsq, na.rm=T))
+R.sq.CHS.FullModel <- as.data.frame(R.sq.CHS.FullModel)
+colnames(R.sq.CHS.FullModel) <- "CHS"
+
+R.sq.CHS.VS.FullModel <- rowMeans(gf.CHS.VS.FullModel.SNPs$imp.rsq, na.rm=T)
+R.sq.CHS.VS.FullModel <- as.data.frame(R.sq.CHS.VS.FullModel)
+colnames(R.sq.CHS.VS.FullModel) <- "CHS.VS"
+
+R.sq.CHS.TI.FullModel <- rowMeans(gf.CHS.TI.FullModel.SNPs$imp.rsq, na.rm=T)
+R.sq.CHS.TI.FullModel <- as.data.frame(R.sq.CHS.TI.FullModel)
+colnames(R.sq.CHS.TI.FullModel) <- "CHS.TI"
+
+R.sq.SE.FullModel <- rowMeans(gf.SE.FullModel.SNPs$imp.rsq, na.rm=T)
+R.sq.SE.FullModel <- as.data.frame(R.sq.SE.FullModel)
+colnames(R.sq.SE.FullModel) <- "SE"
+
+R.sq.CZ.FullModel <- rowMeans(gf.CZ.FullModel.SNPs$imp.rsq, na.rm=T)
+R.sq.CZ.FullModel <- as.data.frame(R.sq.CZ.FullModel)
+colnames(R.sq.CZ.FullModel) <- "CZ"
+
+
+R.sq.ALL <- R.sq.CHN.FullModel[1:5,]
+R.sq.ALL <- as.data.frame(R.sq.ALL)
+colnames(R.sq.ALL) <- "CHN"
+row.names(R.sq.ALL) <- c("dist", "mean.temp.60d", "days.above.6", "MEM1", "MEM2")
+R.sq.ALL$CHS <- R.sq.CHS.FullModel[1:5,]
+R.sq.ALL$CHS.VS <- R.sq.CHS.VS.FullModel[1:5,]
+R.sq.ALL$CHS.TI <- R.sq.CHS.TI.FullModel[1:5,]
+R.sq.ALL$CZ <- R.sq.CZ.FullModel[1:5,]
+R.sq.ALL$SE <- R.sq.SE.FullModel[1:5,]
+
+
+library(reshape)
+library(ggplot2)
+
+R.sq.ALL <- as.matrix(R.sq.ALL)
+
+R.sq.ALL.scale <- R.sq.ALL.scale[1:3,]   ##select only the variables of interest
+R.sq.ALL.scale <- apply(R.sq.ALL.scale, MARGIN=2, FUN=function(X) (X - min(X))/diff(range(X)))   ##rescale between 0 and 1
+R.sq.ALL.scale.melt <- melt(R.sq.ALL.scale)
+R.sq.ALL.melt
+R.sq.ALL.scale.melt <- R.sq.ALL.scale.melt[order(R.sq.ALL.scale.melt$X1),]
+R.sq.ALL.scale.melt
+
+pdf("GF.ALL.Figure1.R2_20171013.pdf")
+ggplot(R.sq.ALL.scale.melt, aes(x=X2, y=X1, fill=value)) + geom_tile() + coord_equal() +   ##specify x and y variable, coord_equal changes it to squares
+scale_fill_gradient(name="R2") +   ##title of the legend
+theme(axis.title.x=element_blank(), axis.title.y=element_blank())
+dev.off()
+```
+
+
+So that's the overall results. But I need to find the loci that are most associated with temp and with season. 
+
+
+## Plots
+
+
+
 
 
 
