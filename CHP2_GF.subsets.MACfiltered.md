@@ -2506,10 +2506,14 @@ imp.sp.Adapt.CHN.sol.rad.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHN.sol.rad.60d.df
 
 hist(imp.sp.Adapt.CHN.sol.rad.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+sum(imp.sp.Adapt.CHN.sol.rad.60d.df$imp.sp.Adapt.CHN.sol.rad.60d)  ##total importance
 
-best.Adapt.CHN.sol.rad.60d <- na.omit(subset(imp.sp.Adapt.CHN.sol.rad.60d.df, imp.sp.Adapt.CHN.sol.rad.60d.df>0))
+[1] 0.4920573
+
+best.Adapt.CHN.sol.rad.60d <- na.omit(subset(imp.sp.Adapt.CHN.sol.rad.60d.df, cumsum<(0.8*(max(imp.sp.Adapt.CHN.sol.rad.60d.df$cumsum)))))
 length(best.Adapt.CHN.sol.rad.60d$loci)  ##get the number of loci for Table
+
 
 species.Adapt.CHN.sol.rad.60d.names <- best.Adapt.CHN.sol.rad.60d$loci  ## get the names
 CU.Adapt.CHN.sol.rad.60d.best <- CU.Adapt.CHN.sol.rad.60d[species.Adapt.CHN.sol.rad.60d.names]
@@ -2530,7 +2534,7 @@ gf.CHN.Adaptive.SNPs.sol.rad.60d <- gradientForest(cbind(envGF.CHN.Adaptive, CHN
 
 CU.CHN.sol.rad.60d <- cumimp(gf.CHN.Adaptive.SNPs.sol.rad.60d, "sol.rad.60d")
 isub.CHN.sol.rad.60d <- seq(1, length(CU.CHN.sol.rad.60d$x), len=pmin(500, length(CU.CHN.sol.rad.60d$x)))
-plot(CU.CHN.sol.rad.60d$x[isub.CHN.sol.rad.60d], CU.CHN.sol.rad.60d$y[isub.CHN.sol.rad.60d], type="s", ylab="Cumulative Plot", xlab="sol.rad.60d", ylim=c(0,0.12), lty=1, lwd=1.5)
+plot(CU.CHN.sol.rad.60d$x[isub.CHN.sol.rad.60d], CU.CHN.sol.rad.60d$y[isub.CHN.sol.rad.60d], type="s", ylab="Cumulative Plot", xlab="sol.rad.60d", ylim=c(0,ymax), lty=1, lwd=1.5)
 ```
 
 
@@ -2552,10 +2556,15 @@ imp.sp.Adapt.CHS.sol.rad.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHS.sol.rad.60d.df
 
 hist(imp.sp.Adapt.CHS.sol.rad.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.sol.rad.60d.df$imp.sp.Adapt.CHS.sol.rad.60d)
+sum(imp.sp.Adapt.CHS.sol.rad.60d.df$imp.sp.Adapt.CHS.sol.rad.60d)  ##total importance
 
-best.Adapt.CHS.sol.rad.60d <- na.omit(subset(imp.sp.Adapt.CHS.sol.rad.60d.df, imp.sp.Adapt.CHS.sol.rad.60d.df>0))
+[1] 2.033249
+
+best.Adapt.CHS.sol.rad.60d <- na.omit(subset(imp.sp.Adapt.CHS.sol.rad.60d.df, cumsum<(0.8*(max(imp.sp.Adapt.CHS.sol.rad.60d.df$cumsum)))))
 length(best.Adapt.CHS.sol.rad.60d$loci)  ##get the number of loci for Table
+
 
 species.Adapt.CHS.sol.rad.60d.names <- best.Adapt.CHS.sol.rad.60d$loci  ## get the names
 CU.Adapt.CHS.sol.rad.60d.best <- CU.Adapt.CHS.sol.rad.60d[species.Adapt.CHS.sol.rad.60d.names]
@@ -2596,9 +2605,13 @@ imp.sp.Adapt.CHS.TI.sol.rad.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHS.TI.sol.rad.
 
 hist(imp.sp.Adapt.CHS.TI.sol.rad.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.TI.sol.rad.60d.df$imp.sp.Adapt.CHS.TI.sol.rad.60d)
+sum(imp.sp.Adapt.CHS.TI.sol.rad.60d.df$imp.sp.Adapt.CHS.TI.sol.rad.60d)  ##total importance
 
-best.Adapt.CHS.TI.sol.rad.60d <- na.omit(subset(imp.sp.Adapt.CHS.TI.sol.rad.60d.df, imp.sp.Adapt.CHS.TI.sol.rad.60d.df>0))
+[1] 0.9556467
+
+best.Adapt.CHS.TI.sol.rad.60d <- na.omit(subset(imp.sp.Adapt.CHS.TI.sol.rad.60d.df, cumsum<(0.8*(max(imp.sp.Adapt.CHS.TI.sol.rad.60d.df$cumsum)))))
 length(best.Adapt.CHS.TI.sol.rad.60d$loci)  ##get the number of loci for Table
 
 species.Adapt.CHS.TI.sol.rad.60d.names <- best.Adapt.CHS.TI.sol.rad.60d$loci  ## get the names
@@ -2641,9 +2654,13 @@ imp.sp.Adapt.CHS.VS.sol.rad.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHS.VS.sol.rad.
 
 hist(imp.sp.Adapt.CHS.VS.sol.rad.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.VS.sol.rad.60d.df$imp.sp.Adapt.CHS.VS.sol.rad.60d)
+sum(imp.sp.Adapt.CHS.VS.sol.rad.60d.df$imp.sp.Adapt.CHS.VS.sol.rad.60d)  ##total importance
 
-best.Adapt.CHS.VS.sol.rad.60d <- na.omit(subset(imp.sp.Adapt.CHS.VS.sol.rad.60d.df, imp.sp.Adapt.CHS.VS.sol.rad.60d.df>0))
+[1] 0.8708014
+
+best.Adapt.CHS.VS.sol.rad.60d <- na.omit(subset(imp.sp.Adapt.CHS.VS.sol.rad.60d.df, cumsum<(0.8*0.8708014)))
 length(best.Adapt.CHS.VS.sol.rad.60d$loci)  ##get the number of loci for Table
 
 species.Adapt.CHS.VS.sol.rad.60d.names <- best.Adapt.CHS.VS.sol.rad.60d$loci  ## get the names
@@ -2685,10 +2702,16 @@ imp.sp.Adapt.CZ.sol.rad.60d.df$cumsum <- cumsum(imp.sp.Adapt.CZ.sol.rad.60d.df$i
 
 hist(imp.sp.Adapt.CZ.sol.rad.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CZ.sol.rad.60d.df$imp.sp.Adapt.CZ.sol.rad.60d)
+sum(imp.sp.Adapt.CZ.sol.rad.60d.df$imp.sp.Adapt.CZ.sol.rad.60d)  ##total importance
 
-best.Adapt.CZ.sol.rad.60d <- na.omit(subset(imp.sp.Adapt.CZ.sol.rad.60d.df, imp.sp.Adapt.CZ.sol.rad.60d.df>0))
+[1] 0.2995476
+
+best.Adapt.CZ.sol.rad.60d <- na.omit(subset(imp.sp.Adapt.CZ.sol.rad.60d.df, cumsum<(0.8*(max(imp.sp.Adapt.CZ.sol.rad.60d.df$cumsum)))))
 length(best.Adapt.CZ.sol.rad.60d$loci)  ##get the number of loci for Table
+
+
 
 species.Adapt.CZ.sol.rad.60d.names <- best.Adapt.CZ.sol.rad.60d$loci  ## get the names
 CU.Adapt.CZ.sol.rad.60d.best <- CU.Adapt.CZ.sol.rad.60d[species.Adapt.CZ.sol.rad.60d.names]
@@ -2733,10 +2756,16 @@ imp.sp.Adapt.CHN.temp.laying.date.df$cumsum <- cumsum(imp.sp.Adapt.CHN.temp.layi
 
 hist(imp.sp.Adapt.CHN.temp.laying.date.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHN.temp.laying.date.df$imp.sp.Adapt.CHN.temp.laying.date)
+sum(imp.sp.Adapt.CHN.temp.laying.date.df$imp.sp.Adapt.CHN.temp.laying.date)  ##total importance
 
-best.Adapt.CHN.temp.laying.date <- na.omit(subset(imp.sp.Adapt.CHN.temp.laying.date.df, imp.sp.Adapt.CHN.temp.laying.date.df>0))
+[1] 0.4194664
+
+best.Adapt.CHN.temp.laying.date <- na.omit(subset(imp.sp.Adapt.CHN.temp.laying.date.df, cumsum<(0.8*(max(imp.sp.Adapt.CHN.temp.laying.date.df$cumsum)))))
 length(best.Adapt.CHN.temp.laying.date$loci)  ##get the number of loci for Table
+
+
 
 species.Adapt.CHN.temp.laying.date.names <- best.Adapt.CHN.temp.laying.date$loci  ## get the names
 CU.Adapt.CHN.temp.laying.date.best <- CU.Adapt.CHN.temp.laying.date[species.Adapt.CHN.temp.laying.date.names]
@@ -2779,10 +2808,15 @@ imp.sp.Adapt.CHS.temp.laying.date.df$cumsum <- cumsum(imp.sp.Adapt.CHS.temp.layi
 
 hist(imp.sp.Adapt.CHS.temp.laying.date.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.temp.laying.date.df$imp.sp.Adapt.CHS.temp.laying.date)
+sum(imp.sp.Adapt.CHS.temp.laying.date.df$imp.sp.Adapt.CHS.temp.laying.date)  ##total importance
 
-best.Adapt.CHS.temp.laying.date <- na.omit(subset(imp.sp.Adapt.CHS.temp.laying.date.df, imp.sp.Adapt.CHS.temp.laying.date.df>0))
+[1] 2.17853
+
+best.Adapt.CHS.temp.laying.date <- na.omit(subset(imp.sp.Adapt.CHS.temp.laying.date.df, cumsum<(0.8*(max(imp.sp.Adapt.CHS.temp.laying.date.df$cumsum)))))
 length(best.Adapt.CHS.temp.laying.date$loci)  ##get the number of loci for Table
+
 
 species.Adapt.CHS.temp.laying.date.names <- best.Adapt.CHS.temp.laying.date$loci  ## get the names
 CU.Adapt.CHS.temp.laying.date.best <- CU.Adapt.CHS.temp.laying.date[species.Adapt.CHS.temp.laying.date.names]
@@ -2823,10 +2857,15 @@ imp.sp.Adapt.CHS.TI.temp.laying.date.df$cumsum <- cumsum(imp.sp.Adapt.CHS.TI.tem
 
 hist(imp.sp.Adapt.CHS.TI.temp.laying.date.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.TI.temp.laying.date.df$imp.sp.Adapt.CHS.TI.temp.laying.date)
+sum(imp.sp.Adapt.CHS.TI.temp.laying.date.df$imp.sp.Adapt.CHS.TI.temp.laying.date)  ##total importance
 
-best.Adapt.CHS.TI.temp.laying.date <- na.omit(subset(imp.sp.Adapt.CHS.TI.temp.laying.date.df, imp.sp.Adapt.CHS.TI.temp.laying.date.df>0))
+[1] 1.793438
+
+best.Adapt.CHS.TI.temp.laying.date <- na.omit(subset(imp.sp.Adapt.CHS.TI.temp.laying.date.df, cumsum<(0.8*(max(imp.sp.Adapt.CHS.TI.temp.laying.date.df$cumsum)))))
 length(best.Adapt.CHS.TI.temp.laying.date$loci)  ##get the number of loci for Table
+
 
 species.Adapt.CHS.TI.temp.laying.date.names <- best.Adapt.CHS.TI.temp.laying.date$loci  ## get the names
 CU.Adapt.CHS.TI.temp.laying.date.best <- CU.Adapt.CHS.TI.temp.laying.date[species.Adapt.CHS.TI.temp.laying.date.names]
@@ -2868,10 +2907,17 @@ imp.sp.Adapt.CHS.VS.temp.laying.date.df$cumsum <- cumsum(imp.sp.Adapt.CHS.VS.tem
 
 hist(imp.sp.Adapt.CHS.VS.temp.laying.date.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.VS.temp.laying.date.df$imp.sp.Adapt.CHS.VS.temp.laying.date)
+sum(imp.sp.Adapt.CHS.VS.temp.laying.date.df$imp.sp.Adapt.CHS.VS.temp.laying.date)  ##total importance
 
-best.Adapt.CHS.VS.temp.laying.date <- na.omit(subset(imp.sp.Adapt.CHS.VS.temp.laying.date.df, imp.sp.Adapt.CHS.VS.temp.laying.date.df>0))
+[1] 3.1306167
+
+best.Adapt.CHS.VS.temp.laying.date <- na.omit(subset(imp.sp.Adapt.CHS.VS.temp.laying.date.df, cumsum<(0.8*3.1306167)))
 length(best.Adapt.CHS.VS.temp.laying.date$loci)  ##get the number of loci for Table
+
+
+
 
 species.Adapt.CHS.VS.temp.laying.date.names <- best.Adapt.CHS.VS.temp.laying.date$loci  ## get the names
 CU.Adapt.CHS.VS.temp.laying.date.best <- CU.Adapt.CHS.VS.temp.laying.date[species.Adapt.CHS.VS.temp.laying.date.names]
@@ -2912,10 +2958,16 @@ imp.sp.Adapt.CZ.temp.laying.date.df$cumsum <- cumsum(imp.sp.Adapt.CZ.temp.laying
 
 hist(imp.sp.Adapt.CZ.temp.laying.date.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CZ.temp.laying.date.df$imp.sp.Adapt.CZ.temp.laying.date)
+sum(imp.sp.Adapt.CZ.temp.laying.date.df$imp.sp.Adapt.CZ.temp.laying.date)  ##total importance
 
-best.Adapt.CZ.temp.laying.date <- na.omit(subset(imp.sp.Adapt.CZ.temp.laying.date.df, imp.sp.Adapt.CZ.temp.laying.date.df>0))
+[1] 0.7113922
+
+best.Adapt.CZ.temp.laying.date <- na.omit(subset(imp.sp.Adapt.CZ.temp.laying.date.df, cumsum<(0.8*(max(imp.sp.Adapt.CZ.temp.laying.date.df$cumsum)))))
 length(best.Adapt.CZ.temp.laying.date$loci)  ##get the number of loci for Table
+
+
 
 species.Adapt.CZ.temp.laying.date.names <- best.Adapt.CZ.temp.laying.date$loci  ## get the names
 CU.Adapt.CZ.temp.laying.date.best <- CU.Adapt.CZ.temp.laying.date[species.Adapt.CZ.temp.laying.date.names]
@@ -2959,10 +3011,16 @@ imp.sp.Adapt.CHN.pcpt.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHN.pcpt.60d.df$imp.s
 
 hist(imp.sp.Adapt.CHN.pcpt.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHN.pcpt.60d.df$imp.sp.Adapt.CHN.pcpt.60d)
+sum(imp.sp.Adapt.CHN.pcpt.60d.df$imp.sp.Adapt.CHN.pcpt.60d)  ##total importance
 
-best.Adapt.CHN.pcpt.60d <- na.omit(subset(imp.sp.Adapt.CHN.pcpt.60d.df, imp.sp.Adapt.CHN.pcpt.60d.df>0))
+[1] 1.582124
+
+best.Adapt.CHN.pcpt.60d <- na.omit(subset(imp.sp.Adapt.CHN.pcpt.60d.df, cumsum<(0.8*(max(imp.sp.Adapt.CHN.pcpt.60d.df$cumsum)))))
 length(best.Adapt.CHN.pcpt.60d$loci)  ##get the number of loci for Table
+
+
 
 species.Adapt.CHN.pcpt.60d.names <- best.Adapt.CHN.pcpt.60d$loci  ## get the names
 CU.Adapt.CHN.pcpt.60d.best <- CU.Adapt.CHN.pcpt.60d[species.Adapt.CHN.pcpt.60d.names]
@@ -3005,10 +3063,15 @@ imp.sp.Adapt.CHS.pcpt.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHS.pcpt.60d.df$imp.s
 
 hist(imp.sp.Adapt.CHS.pcpt.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.pcpt.60d.df$imp.sp.Adapt.CHS.pcpt.60d)
+sum(imp.sp.Adapt.CHS.pcpt.60d.df$imp.sp.Adapt.CHS.pcpt.60d)  ##total importance
 
-best.Adapt.CHS.pcpt.60d <- na.omit(subset(imp.sp.Adapt.CHS.pcpt.60d.df, imp.sp.Adapt.CHS.pcpt.60d.df>0))
+[1] 20.95527
+
+best.Adapt.CHS.pcpt.60d <- na.omit(subset(imp.sp.Adapt.CHS.pcpt.60d.df, cumsum<(0.8*(max(imp.sp.Adapt.CHS.pcpt.60d.df$cumsum)))))
 length(best.Adapt.CHS.pcpt.60d$loci)  ##get the number of loci for Table
+
 
 species.Adapt.CHS.pcpt.60d.names <- best.Adapt.CHS.pcpt.60d$loci  ## get the names
 CU.Adapt.CHS.pcpt.60d.best <- CU.Adapt.CHS.pcpt.60d[species.Adapt.CHS.pcpt.60d.names]
@@ -3049,10 +3112,16 @@ imp.sp.Adapt.CHS.TI.pcpt.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHS.TI.pcpt.60d.df
 
 hist(imp.sp.Adapt.CHS.TI.pcpt.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.TI.pcpt.60d.df$imp.sp.Adapt.CHS.TI.pcpt.60d)
+sum(imp.sp.Adapt.CHS.TI.pcpt.60d.df$imp.sp.Adapt.CHS.TI.pcpt.60d)  ##total importance
 
-best.Adapt.CHS.TI.pcpt.60d <- na.omit(subset(imp.sp.Adapt.CHS.TI.pcpt.60d.df, imp.sp.Adapt.CHS.TI.pcpt.60d.df>0))
+[1] 0.6289516
+
+best.Adapt.CHS.TI.pcpt.60d <- na.omit(subset(imp.sp.Adapt.CHS.TI.pcpt.60d.df, cumsum<(0.8*(max(imp.sp.Adapt.CHS.TI.pcpt.60d.df$cumsum)))))
 length(best.Adapt.CHS.TI.pcpt.60d$loci)  ##get the number of loci for Table
+
+
 
 species.Adapt.CHS.TI.pcpt.60d.names <- best.Adapt.CHS.TI.pcpt.60d$loci  ## get the names
 CU.Adapt.CHS.TI.pcpt.60d.best <- CU.Adapt.CHS.TI.pcpt.60d[species.Adapt.CHS.TI.pcpt.60d.names]
@@ -3094,10 +3163,16 @@ imp.sp.Adapt.CHS.VS.pcpt.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHS.VS.pcpt.60d.df
 
 hist(imp.sp.Adapt.CHS.VS.pcpt.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.VS.pcpt.60d.df$imp.sp.Adapt.CHS.VS.pcpt.60d)
+sum(imp.sp.Adapt.CHS.VS.pcpt.60d.df$imp.sp.Adapt.CHS.VS.pcpt.60d)  ##total importance
 
-best.Adapt.CHS.VS.pcpt.60d <- na.omit(subset(imp.sp.Adapt.CHS.VS.pcpt.60d.df, imp.sp.Adapt.CHS.VS.pcpt.60d.df>0))
+[1] 0.6289516
+
+best.Adapt.CHS.VS.pcpt.60d <- na.omit(subset(imp.sp.Adapt.CHS.VS.pcpt.60d.df, cumsum<(0.8*4.1135619)))
 length(best.Adapt.CHS.VS.pcpt.60d$loci)  ##get the number of loci for Table
+
+
 
 species.Adapt.CHS.VS.pcpt.60d.names <- best.Adapt.CHS.VS.pcpt.60d$loci  ## get the names
 CU.Adapt.CHS.VS.pcpt.60d.best <- CU.Adapt.CHS.VS.pcpt.60d[species.Adapt.CHS.VS.pcpt.60d.names]
@@ -3138,10 +3213,15 @@ imp.sp.Adapt.CZ.pcpt.60d.df$cumsum <- cumsum(imp.sp.Adapt.CZ.pcpt.60d.df$imp.sp.
 
 hist(imp.sp.Adapt.CZ.pcpt.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CZ.pcpt.60d.df$imp.sp.Adapt.CZ.pcpt.60d)
+sum(imp.sp.Adapt.CZ.pcpt.60d.df$imp.sp.Adapt.CZ.pcpt.60d)  ##total importance
 
-best.Adapt.CZ.pcpt.60d <- na.omit(subset(imp.sp.Adapt.CZ.pcpt.60d.df, imp.sp.Adapt.CZ.pcpt.60d.df>0))
+[1] 1.148912
+
+best.Adapt.CZ.pcpt.60d <- na.omit(subset(imp.sp.Adapt.CZ.pcpt.60d.df, cumsum<(0.8*(max(imp.sp.Adapt.CZ.pcpt.60d.df$cumsum)))))
 length(best.Adapt.CZ.pcpt.60d$loci)  ##get the number of loci for Table
+
 
 species.Adapt.CZ.pcpt.60d.names <- best.Adapt.CZ.pcpt.60d$loci  ## get the names
 CU.Adapt.CZ.pcpt.60d.best <- CU.Adapt.CZ.pcpt.60d[species.Adapt.CZ.pcpt.60d.names]
@@ -3186,9 +3266,13 @@ imp.sp.Adapt.CHN.shadow.days.df$cumsum <- cumsum(imp.sp.Adapt.CHN.shadow.days.df
 
 hist(imp.sp.Adapt.CHN.shadow.days.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHN.shadow.days.df$imp.sp.Adapt.CHN.shadow.days)
+sum(imp.sp.Adapt.CHN.shadow.days.df$imp.sp.Adapt.CHN.shadow.days)  ##total importance
 
-best.Adapt.CHN.shadow.days <- na.omit(subset(imp.sp.Adapt.CHN.shadow.days.df, imp.sp.Adapt.CHN.shadow.days.df>0))
+[1] 0.4569205
+
+best.Adapt.CHN.shadow.days <- na.omit(subset(imp.sp.Adapt.CHN.shadow.days.df, cumsum<(0.8*(max(imp.sp.Adapt.CHN.shadow.days.df$cumsum)))))
 length(best.Adapt.CHN.shadow.days$loci)  ##get the number of loci for Table
 
 species.Adapt.CHN.shadow.days.names <- best.Adapt.CHN.shadow.days$loci  ## get the names
@@ -3232,10 +3316,16 @@ imp.sp.Adapt.CHS.shadow.days.df$cumsum <- cumsum(imp.sp.Adapt.CHS.shadow.days.df
 
 hist(imp.sp.Adapt.CHS.shadow.days.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.shadow.days.df$imp.sp.Adapt.CHS.shadow.days)
+sum(imp.sp.Adapt.CHS.shadow.days.df$imp.sp.Adapt.CHS.shadow.days)  ##total importance
 
-best.Adapt.CHS.shadow.days <- na.omit(subset(imp.sp.Adapt.CHS.shadow.days.df, imp.sp.Adapt.CHS.shadow.days.df>0))
+[1] 2.116739
+
+best.Adapt.CHS.shadow.days <- na.omit(subset(imp.sp.Adapt.CHS.shadow.days.df, cumsum<(0.8*(max(imp.sp.Adapt.CHS.shadow.days.df$cumsum)))))
 length(best.Adapt.CHS.shadow.days$loci)  ##get the number of loci for Table
+
+
 
 species.Adapt.CHS.shadow.days.names <- best.Adapt.CHS.shadow.days$loci  ## get the names
 CU.Adapt.CHS.shadow.days.best <- CU.Adapt.CHS.shadow.days[species.Adapt.CHS.shadow.days.names]
@@ -3276,10 +3366,15 @@ imp.sp.Adapt.CHS.TI.shadow.days.df$cumsum <- cumsum(imp.sp.Adapt.CHS.TI.shadow.d
 
 hist(imp.sp.Adapt.CHS.TI.shadow.days.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.TI.shadow.days.df$imp.sp.Adapt.CHS.TI.shadow.days)
+sum(imp.sp.Adapt.CHS.TI.shadow.days.df$imp.sp.Adapt.CHS.shadow.days)  ##total importance
 
-best.Adapt.CHS.TI.shadow.days <- na.omit(subset(imp.sp.Adapt.CHS.TI.shadow.days.df, imp.sp.Adapt.CHS.TI.shadow.days.df>0))
+[1] 1.7639637
+
+best.Adapt.CHS.TI.shadow.days <- na.omit(subset(imp.sp.Adapt.CHS.TI.shadow.days.df, cumsum<(0.8*(max(imp.sp.Adapt.CHS.TI.shadow.days.df$cumsum)))))
 length(best.Adapt.CHS.TI.shadow.days$loci)  ##get the number of loci for Table
+
 
 species.Adapt.CHS.TI.shadow.days.names <- best.Adapt.CHS.TI.shadow.days$loci  ## get the names
 CU.Adapt.CHS.TI.shadow.days.best <- CU.Adapt.CHS.TI.shadow.days[species.Adapt.CHS.TI.shadow.days.names]
@@ -3321,10 +3416,17 @@ imp.sp.Adapt.CHS.VS.shadow.days.df$cumsum <- cumsum(imp.sp.Adapt.CHS.VS.shadow.d
 
 hist(imp.sp.Adapt.CHS.VS.shadow.days.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.VS.shadow.days.df$imp.sp.Adapt.CHS.VS.shadow.days)
+sum(imp.sp.Adapt.CHS.VS.shadow.days.df$imp.sp.Adapt.CHS.shadow.days)  ##total importance
 
-best.Adapt.CHS.VS.shadow.days <- na.omit(subset(imp.sp.Adapt.CHS.VS.shadow.days.df, imp.sp.Adapt.CHS.VS.shadow.days.df>0))
-length(best.Adapt.CHS.VS.shadow.days$loci)  ##get the number of loci for Table
+[1] 0
+
+best.Adapt.CHS.VS.shadow.days <- na.omit(subset(imp.sp.Adapt.CHS.VS.shadow.days.df, cumsum<(0.8*(max(imp.sp.Adapt.CHS.VS.shadow.days.df$cumsum)))))
+length(best.Adapt.CHS.VS.shadow.days$loci)  ##get the number of loci for Table  
+
+### Since this is 0, I can’t run the gf model for CHS.VS
+
 
 species.Adapt.CHS.VS.shadow.days.names <- best.Adapt.CHS.VS.shadow.days$loci  ## get the names
 CU.Adapt.CHS.VS.shadow.days.best <- CU.Adapt.CHS.VS.shadow.days[species.Adapt.CHS.VS.shadow.days.names]
@@ -3367,10 +3469,15 @@ imp.sp.Adapt.CZ.shadow.days.df$cumsum <- cumsum(imp.sp.Adapt.CZ.shadow.days.df$i
 
 hist(imp.sp.Adapt.CZ.shadow.days.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CZ.shadow.days.df$imp.sp.Adapt.CZ.shadow.days)
+sum(imp.sp.Adapt.CZ.shadow.days.df$imp.sp.Adapt.CZ.shadow.days)  ##total importance
 
-best.Adapt.CZ.shadow.days <- na.omit(subset(imp.sp.Adapt.CZ.shadow.days.df, imp.sp.Adapt.CZ.shadow.days.df>0))
+[1] 0.185879
+
+best.Adapt.CZ.shadow.days <- na.omit(subset(imp.sp.Adapt.CZ.shadow.days.df, cumsum<(0.8*(max(imp.sp.Adapt.CZ.shadow.days.df$cumsum)))))
 length(best.Adapt.CZ.shadow.days$loci)  ##get the number of loci for Table
+
 
 species.Adapt.CZ.shadow.days.names <- best.Adapt.CZ.shadow.days$loci  ## get the names
 CU.Adapt.CZ.shadow.days.best <- CU.Adapt.CZ.shadow.days[species.Adapt.CZ.shadow.days.names]
@@ -3415,10 +3522,16 @@ imp.sp.Adapt.CHN.day10cm.df$cumsum <- cumsum(imp.sp.Adapt.CHN.day10cm.df$imp.sp.
 
 hist(imp.sp.Adapt.CHN.day10cm.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHN.day10cm.df$imp.sp.Adapt.CHN.day10cm)
+sum(imp.sp.Adapt.CHN.day10cm.df$imp.sp.Adapt.CHN.day10cm)  ##total importance
 
-best.Adapt.CHN.day10cm <- na.omit(subset(imp.sp.Adapt.CHN.day10cm.df, imp.sp.Adapt.CHN.day10cm.df>0))
+[1] 0.8263859
+
+best.Adapt.CHN.day10cm <- na.omit(subset(imp.sp.Adapt.CHN.day10cm.df, cumsum<(0.8*(max(imp.sp.Adapt.CHN.day10cm.df$cumsum)))))
 length(best.Adapt.CHN.day10cm$loci)  ##get the number of loci for Table
+
+
 
 species.Adapt.CHN.day10cm.names <- best.Adapt.CHN.day10cm$loci  ## get the names
 CU.Adapt.CHN.day10cm.best <- CU.Adapt.CHN.day10cm[species.Adapt.CHN.day10cm.names]
@@ -3461,10 +3574,16 @@ imp.sp.Adapt.CHS.day10cm.df$cumsum <- cumsum(imp.sp.Adapt.CHS.day10cm.df$imp.sp.
 
 hist(imp.sp.Adapt.CHS.day10cm.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.day10cm.df$imp.sp.Adapt.CHS.day10cm)
+sum(imp.sp.Adapt.CHS.day10cm.df$imp.sp.Adapt.CHS.day10cm)  ##total importance
 
-best.Adapt.CHS.day10cm <- na.omit(subset(imp.sp.Adapt.CHS.day10cm.df, imp.sp.Adapt.CHS.day10cm.df>0))
+[1] 1.412608
+
+best.Adapt.CHS.day10cm <- na.omit(subset(imp.sp.Adapt.CHS.day10cm.df, cumsum<(0.8*(max(imp.sp.Adapt.CHS.day10cm.df$cumsum)))))
 length(best.Adapt.CHS.day10cm$loci)  ##get the number of loci for Table
+
+
 
 species.Adapt.CHS.day10cm.names <- best.Adapt.CHS.day10cm$loci  ## get the names
 CU.Adapt.CHS.day10cm.best <- CU.Adapt.CHS.day10cm[species.Adapt.CHS.day10cm.names]
@@ -3505,10 +3624,15 @@ imp.sp.Adapt.CHS.TI.day10cm.df$cumsum <- cumsum(imp.sp.Adapt.CHS.TI.day10cm.df$i
 
 hist(imp.sp.Adapt.CHS.TI.day10cm.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.TI.day10cm.df$imp.sp.Adapt.CHS.TI.day10cm)
+sum(imp.sp.Adapt.CHS.TI.day10cm.df$imp.sp.Adapt.CHS.TI.day10cm)  ##total importance
 
-best.Adapt.CHS.TI.day10cm <- na.omit(subset(imp.sp.Adapt.CHS.TI.day10cm.df, imp.sp.Adapt.CHS.TI.day10cm.df>0))
+[1] 1.429653
+
+best.Adapt.CHS.TI.day10cm <- na.omit(subset(imp.sp.Adapt.CHS.TI.day10cm.df, cumsum<(0.8*(max(imp.sp.Adapt.CHS.TI.day10cm.df$cumsum)))))
 length(best.Adapt.CHS.TI.day10cm$loci)  ##get the number of loci for Table
+
 
 species.Adapt.CHS.TI.day10cm.names <- best.Adapt.CHS.TI.day10cm$loci  ## get the names
 CU.Adapt.CHS.TI.day10cm.best <- CU.Adapt.CHS.TI.day10cm[species.Adapt.CHS.TI.day10cm.names]
@@ -3550,10 +3674,16 @@ imp.sp.Adapt.CHS.VS.day10cm.df$cumsum <- cumsum(imp.sp.Adapt.CHS.VS.day10cm.df$i
 
 hist(imp.sp.Adapt.CHS.VS.day10cm.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.VS.day10cm.df$imp.sp.Adapt.CHS.VS.day10cm)
+sum(imp.sp.Adapt.CHS.VS.day10cm.df$imp.sp.Adapt.CHS.VS.day10cm)  ##total importance
 
-best.Adapt.CHS.VS.day10cm <- na.omit(subset(imp.sp.Adapt.CHS.VS.day10cm.df, imp.sp.Adapt.CHS.VS.day10cm.df>0))
+[1] 2.0809410
+
+best.Adapt.CHS.VS.day10cm <- na.omit(subset(imp.sp.Adapt.CHS.VS.day10cm.df, cumsum<(0.8*2.0809410)))
 length(best.Adapt.CHS.VS.day10cm$loci)  ##get the number of loci for Table
+
+
 
 species.Adapt.CHS.VS.day10cm.names <- best.Adapt.CHS.VS.day10cm$loci  ## get the names
 CU.Adapt.CHS.VS.day10cm.best <- CU.Adapt.CHS.VS.day10cm[species.Adapt.CHS.VS.day10cm.names]
@@ -3596,10 +3726,15 @@ imp.sp.Adapt.CZ.day10cm.df$cumsum <- cumsum(imp.sp.Adapt.CZ.day10cm.df$imp.sp.Ad
 
 hist(imp.sp.Adapt.CZ.day10cm.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CZ.day10cm.df$imp.sp.Adapt.CZ.day10cm)
+sum(imp.sp.Adapt.CZ.day10cm.df$imp.sp.Adapt.CZ.day10cm)  ##total importance
 
-best.Adapt.CZ.day10cm <- na.omit(subset(imp.sp.Adapt.CZ.day10cm.df, imp.sp.Adapt.CZ.day10cm.df>0))
+[1] 5.605093
+
+best.Adapt.CZ.day10cm <- na.omit(subset(imp.sp.Adapt.CZ.day10cm.df, cumsum<(0.8*(max(imp.sp.Adapt.CZ.day10cm.df$cumsum)))))
 length(best.Adapt.CZ.day10cm$loci)  ##get the number of loci for Table
+
 
 species.Adapt.CZ.day10cm.names <- best.Adapt.CZ.day10cm$loci  ## get the names
 CU.Adapt.CZ.day10cm.best <- CU.Adapt.CZ.day10cm[species.Adapt.CZ.day10cm.names]
