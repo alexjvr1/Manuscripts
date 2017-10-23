@@ -3268,9 +3268,12 @@ pdf("CHN.temp.hist.cumsum.pdf")
 hist(imp.sp.Adapt.CHN.temp.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 dev.off()
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+sum(imp.sp.Adapt.CHN.temp.df$imp.sp.Adapt.CHN.temp)  ##total importance
 
-best.Adapt.CHN.temp <- na.omit(subset(imp.sp.Adapt.CHN.temp.df, imp.sp.Adapt.CHN.temp.df>0))
+[1] 0.4632881
+
+best.Adapt.CHN.temp <- na.omit(subset(imp.sp.Adapt.CHN.temp.df, cumsum<(0.8*(max(imp.sp.Adapt.CHN.temp.df$cumsum)))))
 length(best.Adapt.CHN.temp$loci)  ##get the number of loci for Table
 
 species.Adapt.CHN.temp.names <- best.Adapt.CHN.temp$loci  ## get the names
@@ -3295,6 +3298,8 @@ isub.CHN.temp <- seq(1, length(CU.CHN.temp$x), len=pmin(500, length(CU.CHN.temp$
 plot(CU.CHN.temp$x[isub.CHN.temp], CU.CHN.temp$y[isub.CHN.temp], type="s", ylab="Cumulative Plot", xlab="mean.temp.60d", ylim=c(0,0.12), lty=1, lwd=1.5)
 ```
 
+
+
 CHS
 ```
 CU.Adapt.CHS.temp <- cumimp(gf.CHS.TempLoci.SNPs, "mean.temp.60d", "Species")
@@ -3314,9 +3319,13 @@ pdf("CHS.temp.hist.cumsum.pdf")
 hist(imp.sp.Adapt.CHS.temp.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 dev.off()
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.temp.df$imp.sp.Adapt.CHS.temp)
+sum(imp.sp.Adapt.CHS.temp.df$imp.sp.Adapt.CHS.temp)  ##total importance
 
-best.Adapt.CHS.temp <- na.omit(subset(imp.sp.Adapt.CHS.temp.df, imp.sp.Adapt.CHS.temp.df>0))
+[1] 1.65433722
+
+best.Adapt.CHS.temp <- na.omit(subset(imp.sp.Adapt.CHS.temp.df, cumsum<(0.8*(max(imp.sp.Adapt.CHS.temp.df$cumsum)))))
 length(best.Adapt.CHS.temp$loci)  ##get the number of loci for Table
 
 species.Adapt.CHS.temp.names <- best.Adapt.CHS.temp$loci  ## get the names
@@ -3360,9 +3369,13 @@ pdf("CHS.VS.temp.hist.cumsum.pdf")
 hist(imp.sp.Adapt.CHS.VS.temp.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 dev.off()
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.VS.temp.df$imp.sp.Adapt.CHS.VS.temp)
+sum(imp.sp.Adapt.CHS.VS.temp.df$imp.sp.Adapt.CHS.VS.temp)  ##total importance
 
-best.Adapt.CHS.VS.temp <- na.omit(subset(imp.sp.Adapt.CHS.VS.temp.df, imp.sp.Adapt.CHS.VS.temp.df>0))
+[1] 1.1944131
+
+best.Adapt.CHS.VS.temp <- na.omit(subset(imp.sp.Adapt.CHS.VS.temp.df, cumsum<(0.8*1.1944131 )))
 length(best.Adapt.CHS.VS.temp$loci)  ##get the number of loci for Table
 
 species.Adapt.CHS.VS.temp.names <- best.Adapt.CHS.VS.temp$loci  ## get the names
@@ -3406,10 +3419,15 @@ pdf("CHS.TI.temp.hist.cumsum.pdf")
 hist(imp.sp.Adapt.CHS.TI.temp.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 dev.off()
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.TI.temp.df$imp.sp.Adapt.CHS.TI.temp)
+sum(imp.sp.Adapt.CHS.TI.temp.df$imp.sp.Adapt.CHS.TI.temp)  ##total importance
 
-best.Adapt.CHS.TI.temp <- na.omit(subset(imp.sp.Adapt.CHS.TI.temp.df, imp.sp.Adapt.CHS.TI.temp.df>0))
+[1] 1.402666
+
+best.Adapt.CHS.TI.temp <- na.omit(subset(imp.sp.Adapt.CHS.TI.temp.df, cumsum<(0.8*(max(imp.sp.Adapt.CHS.TI.temp.df$cumsum)))))
 length(best.Adapt.CHS.TI.temp$loci)  ##get the number of loci for Table
+
 
 species.Adapt.CHS.TI.temp.names <- best.Adapt.CHS.TI.temp$loci  ## get the names
 CU.Adapt.CHS.TI.temp.best <- CU.Adapt.CHS.TI.temp[species.Adapt.CHS.TI.temp.names]
@@ -3452,9 +3470,13 @@ pdf("CZ.temp.hist.cumsum.pdf")
 hist(imp.sp.Adapt.CZ.temp.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 dev.off()
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CZ.temp.df$imp.sp.Adapt.CZ.temp)
+sum(imp.sp.Adapt.CZ.temp.df$imp.sp.Adapt.CZ.temp)  ##total importance
 
-best.Adapt.CZ.temp <- na.omit(subset(imp.sp.Adapt.CZ.temp.df, imp.sp.Adapt.CZ.temp.df>0))
+[1] 0.7168565
+
+best.Adapt.CZ.temp <- na.omit(subset(imp.sp.Adapt.CZ.temp.df, cumsum<(0.8*(max(imp.sp.Adapt.CZ.temp.df$cumsum)))))
 length(best.Adapt.CZ.temp$loci)  ##get the number of loci for Table
 
 species.Adapt.CZ.temp.names <- best.Adapt.CZ.temp$loci  ## get the names
@@ -3498,10 +3520,15 @@ pdf("SE.temp.hist.cumsum.pdf")
 hist(imp.sp.Adapt.SE.temp.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 dev.off()
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.SE.temp.df$imp.sp.Adapt.SE.temp)
+sum(imp.sp.Adapt.SE.temp.df$imp.sp.Adapt.SE.temp)  ##total importance
 
-best.Adapt.SE.temp <- na.omit(subset(imp.sp.Adapt.SE.temp.df, imp.sp.Adapt.SE.temp.df>0))
+[1] 6.871819
+
+best.Adapt.SE.temp <- na.omit(subset(imp.sp.Adapt.SE.temp.df, cumsum<(0.8*(max(imp.sp.Adapt.SE.temp.df$cumsum)))))
 length(best.Adapt.SE.temp$loci)  ##get the number of loci for Table
+
 
 species.Adapt.SE.temp.names <- best.Adapt.SE.temp$loci  ## get the names
 CU.Adapt.SE.temp.best <- CU.Adapt.SE.temp[species.Adapt.SE.temp.names]
@@ -3554,10 +3581,15 @@ pdf("CHN.season.hist.cumsum.pdf")
 hist(imp.sp.Adapt.CHN.season.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 dev.off()
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHN.season.df$imp.sp.Adapt.CHN.season)
+sum(imp.sp.Adapt.CHN.season.df$imp.sp.Adapt.CHN.season)  ##total importance
 
-best.Adapt.CHN.season <- na.omit(subset(imp.sp.Adapt.CHN.season.df, imp.sp.Adapt.CHN.season.df>0))
+[1] 1.878387
+
+best.Adapt.CHN.season <- na.omit(subset(imp.sp.Adapt.CHN.season.df, cumsum<(0.8*(max(imp.sp.Adapt.CHN.season.df$cumsum)))))
 length(best.Adapt.CHN.season$loci)  ##get the number of loci for Table
+
 
 species.Adapt.CHN.season.names <- best.Adapt.CHN.season$loci  ## get the names
 CU.Adapt.CHN.season.best <- CU.Adapt.CHN.season[species.Adapt.CHN.season.names]
@@ -3600,9 +3632,13 @@ pdf("CHS.season.hist.cumsum.pdf")
 hist(imp.sp.Adapt.CHS.season.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 dev.off()
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.season.df$imp.sp.Adapt.CHS.season)
+sum(imp.sp.Adapt.CHS.season.df$imp.sp.Adapt.CHS.season)  ##total importance
 
-best.Adapt.CHS.season <- na.omit(subset(imp.sp.Adapt.CHS.season.df, imp.sp.Adapt.CHS.season.df>0))
+[1] 0.6655101
+
+best.Adapt.CHS.season <- na.omit(subset(imp.sp.Adapt.CHS.season.df, cumsum<(0.8*(max(imp.sp.Adapt.CHS.season.df$cumsum)))))
 length(best.Adapt.CHS.season$loci)  ##get the number of loci for Table
 
 species.Adapt.CHS.season.names <- best.Adapt.CHS.season$loci  ## get the names
@@ -3646,10 +3682,15 @@ pdf("CHS.VS.season.hist.cumsum.pdf")
 hist(imp.sp.Adapt.CHS.VS.season.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 dev.off()
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.VS.season.df$imp.sp.Adapt.CHS.VS.season)
+sum(imp.sp.Adapt.CHS.VS.season.df$imp.sp.Adapt.CHS.VS.season)  ##total importance
 
-best.Adapt.CHS.VS.season <- na.omit(subset(imp.sp.Adapt.CHS.VS.season.df, imp.sp.Adapt.CHS.VS.season.df>0))
+[1] 0.73285197
+
+best.Adapt.CHS.VS.season <- na.omit(subset(imp.sp.Adapt.CHS.VS.season.df, cumsum<(0.8*0.73285197)))
 length(best.Adapt.CHS.VS.season$loci)  ##get the number of loci for Table
+
 
 species.Adapt.CHS.VS.season.names <- best.Adapt.CHS.VS.season$loci  ## get the names
 CU.Adapt.CHS.VS.season.best <- CU.Adapt.CHS.VS.season[species.Adapt.CHS.VS.season.names]
@@ -3692,10 +3733,15 @@ pdf("CHS.TI.season.hist.cumsum.pdf")
 hist(imp.sp.Adapt.CHS.TI.season.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 dev.off()
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CHS.TI.season.df$imp.sp.Adapt.CHS.TI.season)
+sum(imp.sp.Adapt.CHS.TI.season.df$imp.sp.Adapt.CHS.TI.season)  ##total importance
 
-best.Adapt.CHS.TI.season <- na.omit(subset(imp.sp.Adapt.CHS.TI.season.df, imp.sp.Adapt.CHS.TI.season.df>0))
+[1] 0.6577396
+
+best.Adapt.CHS.TI.season <- na.omit(subset(imp.sp.Adapt.CHS.TI.season.df, cumsum<(0.8*0.6577396)))
 length(best.Adapt.CHS.TI.season$loci)  ##get the number of loci for Table
+
 
 species.Adapt.CHS.TI.season.names <- best.Adapt.CHS.TI.season$loci  ## get the names
 CU.Adapt.CHS.TI.season.best <- CU.Adapt.CHS.TI.season[species.Adapt.CHS.TI.season.names]
@@ -3738,9 +3784,13 @@ pdf("CZ.season.hist.cumsum.pdf")
 hist(imp.sp.Adapt.CZ.season.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 dev.off()
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.CZ.season.df$imp.sp.Adapt.CZ.season)
+sum(imp.sp.Adapt.CZ.season.df$imp.sp.Adapt.CZ.season)  ##total importance
 
-best.Adapt.CZ.season <- na.omit(subset(imp.sp.Adapt.CZ.season.df, imp.sp.Adapt.CZ.season.df>0))
+[1] 1.925847
+
+best.Adapt.CZ.season <- na.omit(subset(imp.sp.Adapt.CZ.season.df, cumsum<(0.8*(max(imp.sp.Adapt.CZ.season.df$cumsum)))))
 length(best.Adapt.CZ.season$loci)  ##get the number of loci for Table
 
 species.Adapt.CZ.season.names <- best.Adapt.CZ.season$loci  ## get the names
@@ -3784,10 +3834,15 @@ pdf("SE.season.hist.cumsum.pdf")
 hist(imp.sp.Adapt.SE.season.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
 dev.off()
 
-##Select only the loci that contribute to the cumulative importance. 
+##draw histogram of importance. And select only loci that contribute to 80% of the cumulative importance. 
+hist(imp.sp.Adapt.SE.season.df$imp.sp.Adapt.SE.season)
+sum(imp.sp.Adapt.SE.season.df$imp.sp.Adapt.SE.season)  ##total importance
 
-best.Adapt.SE.season <- na.omit(subset(imp.sp.Adapt.SE.season.df, imp.sp.Adapt.SE.season.df>0))
+[1] 10.50022
+
+best.Adapt.SE.season <- na.omit(subset(imp.sp.Adapt.SE.season.df, cumsum<(0.8*(max(imp.sp.Adapt.SE.season.df$cumsum)))))
 length(best.Adapt.SE.season$loci)  ##get the number of loci for Table
+
 
 species.Adapt.SE.season.names <- best.Adapt.SE.season$loci  ## get the names
 CU.Adapt.SE.season.best <- CU.Adapt.SE.season[species.Adapt.SE.season.names]
@@ -3810,6 +3865,7 @@ CU.SE.season <- cumimp(gf.SE.SNPs.best.season, "days.6.degrees")
 isub.SE.season <- seq(1, length(CU.SE.season$x), len=pmin(500, length(CU.SE.season$x)))
 plot(CU.SE.season$x[isub.SE.season], CU.SE.season$y[isub.SE.season], type="s", ylab="Cumulative Plot", xlab="days.above.6", ylim=c(0,ymax), lty=1, lwd=1.5)
 ```
+
 
 
 
@@ -3848,7 +3904,7 @@ leg.txt <- c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "
 ##mean.temp.60d plot
 
 ```
-ymax=0.10
+ymax=0.2
 leg.txt=c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive", "SE Reference", "SE Adaptive")
 
 
@@ -3871,8 +3927,7 @@ plot(CU.CZ.temp$x[isub.CZ.temp], CU.CZ.temp$y[isub.CZ.temp], type="s", ylim=c(0,
 par(new=T)
 plot(CU.SE.Neutral.mean.temp.60d$x[isub.SE.Neutral.mean.temp.60d], CU.SE.Neutral.mean.temp.60d$y[isub.SE.Neutral.mean.temp.60d], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="steelblue3", ylab = "", xlab="", xaxt='n', yaxt='n')
 par(new=T)
-plot(CU.SE.temp$x[isub.SE.temp], CU.CZ.temp$y[isub.SE.temp], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="steelblue3", ylab = "", xlab="", xaxt='n', yaxt='n')
-
+plot(CU.SE.temp$x[isub.SE.temp], CU.SE.temp$y[isub.SE.temp], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="steelblue3", ylab = "", xlab="", xaxt='n', yaxt='n')
 
 legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1", "steelblue3", "steelblue3"), lty=c(1,3,1,3,1,3,1,3), lwd=1.5, bty = "n")
 
@@ -3894,7 +3949,7 @@ isub.CZ.Neutral.season <- seq(1, length(CU.CZ.Neutral.season$x), len = pmin(500,
 isub.SE.Neutral.season <- seq(1, length(CU.SE.Neutral.season$x), len = pmin(500, length(CU.SE.Neutral.season$x)))
 
 
-ymax=0.15 #set the ymax so that it's the same for the the plots to be overlaid
+ymax=0.25 #set the ymax so that it's the same for the the plots to be overlaid
 leg.txt <- c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive", "SE Reference", "SE Adaptive")
 ```
 
@@ -3920,7 +3975,7 @@ plot(CU.CZ.season$x[isub.CZ.season], CU.CZ.season$y[isub.CZ.season], type="s", y
 par(new=T)
 plot(CU.SE.Neutral.season$x[isub.SE.Neutral.season], CU.SE.Neutral.season$y[isub.SE.Neutral.season], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="steelblue3", ylab = "", xlab="", xaxt='n', yaxt='n')
 par(new=T)
-plot(CU.SE.season$x[isub.SE.season], CU.CZ.season$y[isub.SE.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="steelblue3", ylab = "", xlab="", xaxt='n', yaxt='n')
+plot(CU.SE.season$x[isub.SE.season], CU.SE.season$y[isub.SE.season], type="s", col="steelblue3", ylab = "", xlab="", xaxt='n', yaxt='n', ylim=c(0,ymax), lty=3, lwd=1.5)
 
 
 legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1", "steelblue3", "steelblue3"), lty=c(1,3,1,3,1,3,1,3), lwd=1.5, bty = "n")
@@ -4029,7 +4084,7 @@ isub.CHS.VS.Neutral.mean.temp.60d <- seq(1, length(CU.CHS.VS.Neutral.mean.temp.6
 
 plot
 ```
-ymax=0.05
+ymax=0.08
 leg.txt <- c("CHS.TI Reference", "CHS.TI Adaptive",  "CHS.VS Reference", "CHS.VS Adaptive")
 
 pdf("CHS.TI.VS.mean.temp.60d.CumImp.pdf")
@@ -4058,7 +4113,7 @@ isub.CHS.VS.Neutral.season <- seq(1, length(CU.CHS.VS.Neutral.season$x), len = p
 
 ###plot
 ```
-ymax=0.1 #set the ymax so that it's the same for the the plots to be overlaid
+ymax=0.08 #set the ymax so that it's the same for the the plots to be overlaid
 leg.txt <- c("CHS.TI Reference", "CHS.TI Adaptive",  "CHS.VS Reference", "CHS.VS Adaptive")
 
 pdf("CHS.TI.VS.season.CumImp.pdf")
@@ -4076,7 +4131,6 @@ legend("topleft", leg.txt, col=c("darkorchid1","darkorchid1","darkorchid4","dark
 
 dev.off()
 ```
-
 
 
 
