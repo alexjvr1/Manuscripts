@@ -4450,7 +4450,202 @@ And then I'll plot temp chosen loci vs Neutral loci from the gf.x.Neutral.SNPs m
 
 Combined plot1: CHS/CHN/CZ/SE
 
-Combined plot2: CHS.VS & CHS.TI
+Combined plot2: CHS/CHN/CZ
+
+Combined plot3: CHS.VS & CHS.TI
+
+
+## Plot1: CHS/CHN/CZ/SE
+
+## mean temp during development
+```
+CU.CHN.Neutral.mean.temp.60d <- cumimp(gf.CHN.Neutral.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.CHS.Neutral.mean.temp.60d <- cumimp(gf.CHS.Neutral.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.CZ.Neutral.mean.temp.60d <- cumimp(gf.CZ.Neutral.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.SE.Neutral.mean.temp.60d <- cumimp(gf.SE.Neutral.SNPs, "mean.temp.60.days") ##find the cumulative importance for each gf.model output
+
+
+isub.CHN.Neutral.mean.temp.60d <- seq(1, length(CU.CHN.Neutral.mean.temp.60d$x), len = pmin(500, length(CU.CHN.Neutral.mean.temp.60d$x)))
+isub.CHS.Neutral.mean.temp.60d <- seq(1, length(CU.CHS.Neutral.mean.temp.60d$x), len = pmin(500, length(CU.CHS.Neutral.mean.temp.60d$x)))
+isub.CZ.Neutral.mean.temp.60d <- seq(1, length(CU.CZ.Neutral.mean.temp.60d$x), len = pmin(500, length(CU.CZ.Neutral.mean.temp.60d$x)))
+isub.SE.Neutral.mean.temp.60d <- seq(1, length(CU.SE.Neutral.mean.temp.60d$x), len = pmin(500, length(CU.SE.Neutral.mean.temp.60d$x)))
+
+
+ymax=0.15 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive", "SE Reference", "SE Adaptive")
+```
+
+##mean.temp.60d plot
+
+```
+ymax=0.10
+leg.txt=c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive", "SE Reference", "SE Adaptive")
+
+
+pdf("CHN.CHS.CZ.SE.mean.temp.60d.CumImp.pdf")
+
+plot(CU.CHN.Neutral.mean.temp.60d$x[isub.CHN.Neutral.mean.temp.60d], CU.CHN.Neutral.mean.temp.60d$y[isub.CHN.Neutral.mean.temp.60d], type = "s", ylab ="Cumulative Importance", xlab="mean.temp.60d", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHN.temp$x[isub.CHN.temp], CU.CHN.temp$y[isub.CHN.temp], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="springgreen4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.Neutral.mean.temp.60d$x[isub.CHS.Neutral.mean.temp.60d], CU.CHS.Neutral.mean.temp.60d$y[isub.CHS.Neutral.mean.temp.60d], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.temp$x[isub.CHS.temp], CU.CHS.temp$y[isub.CHS.temp], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CZ.Neutral.mean.temp.60d$x[isub.CZ.Neutral.mean.temp.60d], CU.CZ.Neutral.mean.temp.60d$y[isub.CZ.Neutral.mean.temp.60d], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CZ.temp$x[isub.CZ.temp], CU.CZ.temp$y[isub.CZ.temp], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.SE.Neutral.mean.temp.60d$x[isub.SE.Neutral.mean.temp.60d], CU.SE.Neutral.mean.temp.60d$y[isub.SE.Neutral.mean.temp.60d], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="steelblue3", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.SE.temp$x[isub.SE.temp], CU.CZ.temp$y[isub.SE.temp], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="steelblue3", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+
+legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1", "steelblue3", "steelblue3"), lty=c(1,3,1,3,1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
+
+
+## season length
+```
+CU.CHN.Neutral.season <- cumimp(gf.CHN.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.CHS.Neutral.season <- cumimp(gf.CHS.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.CZ.Neutral.season <- cumimp(gf.CZ.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.SE.Neutral.season <- cumimp(gf.SE.Neutral.SNPs, "days.6.degrees") ##find the cumulative importance for each gf.model output
+
+isub.CHN.Neutral.season <- seq(1, length(CU.CHN.Neutral.season$x), len = pmin(500, length(CU.CHN.Neutral.season$x)))
+isub.CHS.Neutral.season <- seq(1, length(CU.CHS.Neutral.season$x), len = pmin(500, length(CU.CHS.Neutral.season$x)))
+isub.CZ.Neutral.season <- seq(1, length(CU.CZ.Neutral.season$x), len = pmin(500, length(CU.CZ.Neutral.season$x)))
+isub.SE.Neutral.season <- seq(1, length(CU.SE.Neutral.season$x), len = pmin(500, length(CU.SE.Neutral.season$x)))
+
+
+ymax=0.15 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive", "SE Reference", "SE Adaptive")
+```
+
+##season plot
+
+```
+pdf("CHN.CHS.CZ.SE.season.CumImp.pdf")
+
+plot(CU.CHN.Neutral.season$x[isub.CHN.Neutral.season], CU.CHN.Neutral.season$y[isub.CHN.Neutral.season], type = "s", ylab ="Cumulative Importance", xlab="days.above.6", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHN.season$x[isub.CHN.season], CU.CHN.season$y[isub.CHN.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="springgreen4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.Neutral.season$x[isub.CHS.Neutral.season], CU.CHS.Neutral.season$y[isub.CHS.Neutral.season], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.season$x[isub.CHS.season], CU.CHS.season$y[isub.CHS.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CZ.Neutral.season$x[isub.CZ.Neutral.season], CU.CZ.Neutral.season$y[isub.CZ.Neutral.season], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CZ.season$x[isub.CZ.season], CU.CZ.season$y[isub.CZ.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.SE.Neutral.season$x[isub.SE.Neutral.season], CU.SE.Neutral.season$y[isub.SE.Neutral.season], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="steelblue3", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.SE.season$x[isub.SE.season], CU.CZ.season$y[isub.SE.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="steelblue3", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+
+legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1", "steelblue3", "steelblue3"), lty=c(1,3,1,3,1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
+
+## Plot2: CHS/CHN/CZ
+
+## mean temp during development
+```
+CU.CHN.Neutral.mean.temp.60d <- cumimp(gf.CHN.Neutral.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.CHS.Neutral.mean.temp.60d <- cumimp(gf.CHS.Neutral.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+CU.CZ.Neutral.mean.temp.60d <- cumimp(gf.CZ.Neutral.SNPs, "mean.temp.60d") ##find the cumulative importance for each gf.model output
+
+isub.CHN.Neutral.mean.temp.60d <- seq(1, length(CU.CHN.Neutral.mean.temp.60d$x), len = pmin(500, length(CU.CHN.Neutral.mean.temp.60d$x)))
+isub.CHS.Neutral.mean.temp.60d <- seq(1, length(CU.CHS.Neutral.mean.temp.60d$x), len = pmin(500, length(CU.CHS.Neutral.mean.temp.60d$x)))
+isub.CZ.Neutral.mean.temp.60d <- seq(1, length(CU.CZ.Neutral.mean.temp.60d$x), len = pmin(500, length(CU.CZ.Neutral.mean.temp.60d$x)))
+
+ymax=0.02 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive", "SE Reference", "SE Adaptive")
+```
+
+##mean.temp.60d plot
+
+```
+ymax=0.03
+leg.txt=c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive")
+
+
+pdf("CHN.CHS.CZ.mean.temp.60d.CumImp.pdf")
+
+plot(CU.CHN.Neutral.mean.temp.60d$x[isub.CHN.Neutral.mean.temp.60d], CU.CHN.Neutral.mean.temp.60d$y[isub.CHN.Neutral.mean.temp.60d], type = "s", ylab ="Cumulative Importance", xlab="mean.temp.60d", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHN.temp$x[isub.CHN.temp], CU.CHN.temp$y[isub.CHN.temp], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="springgreen4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.Neutral.mean.temp.60d$x[isub.CHS.Neutral.mean.temp.60d], CU.CHS.Neutral.mean.temp.60d$y[isub.CHS.Neutral.mean.temp.60d], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.temp$x[isub.CHS.temp], CU.CHS.temp$y[isub.CHS.temp], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CZ.Neutral.mean.temp.60d$x[isub.CZ.Neutral.mean.temp.60d], CU.CZ.Neutral.mean.temp.60d$y[isub.CZ.Neutral.mean.temp.60d], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CZ.temp$x[isub.CZ.temp], CU.CZ.temp$y[isub.CZ.temp], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1"), lty=c(1,3,1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
+
+
+## season length
+```
+CU.CHN.Neutral.season <- cumimp(gf.CHN.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.CHS.Neutral.season <- cumimp(gf.CHS.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.CZ.Neutral.season <- cumimp(gf.CZ.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+
+isub.CHN.Neutral.season <- seq(1, length(CU.CHN.Neutral.season$x), len = pmin(500, length(CU.CHN.Neutral.season$x)))
+isub.CHS.Neutral.season <- seq(1, length(CU.CHS.Neutral.season$x), len = pmin(500, length(CU.CHS.Neutral.season$x)))
+isub.CZ.Neutral.season <- seq(1, length(CU.CZ.Neutral.season$x), len = pmin(500, length(CU.CZ.Neutral.season$x)))
+
+
+
+ymax=0.03 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive")
+```
+
+##season plot
+
+```
+pdf("CHN.CHS.CZ.season.CumImp.pdf")
+
+plot(CU.CHN.Neutral.season$x[isub.CHN.Neutral.season], CU.CHN.Neutral.season$y[isub.CHN.Neutral.season], type = "s", ylab ="Cumulative Importance", xlab="days.above.6", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHN.season$x[isub.CHN.season], CU.CHN.season$y[isub.CHN.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="springgreen4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.Neutral.season$x[isub.CHS.Neutral.season], CU.CHS.Neutral.season$y[isub.CHS.Neutral.season], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.season$x[isub.CHS.season], CU.CHS.season$y[isub.CHS.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CZ.Neutral.season$x[isub.CZ.Neutral.season], CU.CZ.Neutral.season$y[isub.CZ.Neutral.season], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CZ.season$x[isub.CZ.season], CU.CZ.season$y[isub.CZ.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+
+legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1"), lty=c(1,3,1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
 
 
 
