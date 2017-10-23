@@ -3240,6 +3240,51 @@ dev.off()
 
 
 
+## Plots
+
+
+
+
+## season length
+```
+CU.CHN.Neutral.season <- cumimp(gf.CHN.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.CHS.Neutral.season <- cumimp(gf.CHS.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+CU.CZ.Neutral.season <- cumimp(gf.CZ.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
+
+isub.CHN.Neutral.season <- seq(1, length(CU.CHN.Neutral.season$x), len = pmin(500, length(CU.CHN.Neutral.season$x)))
+isub.CHS.Neutral.season <- seq(1, length(CU.CHS.Neutral.season$x), len = pmin(500, length(CU.CHS.Neutral.season$x)))
+isub.CZ.Neutral.season <- seq(1, length(CU.CZ.Neutral.season$x), len = pmin(500, length(CU.CZ.Neutral.season$x)))
+
+
+
+ymax=0.03 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive")
+```
+
+##season plot
+
+```
+pdf("CHN.CHS.CZ.season.CumImp.pdf")
+
+plot(CU.CHN.Neutral.season$x[isub.CHN.Neutral.season], CU.CHN.Neutral.season$y[isub.CHN.Neutral.season], type = "s", ylab ="Cumulative Importance", xlab="days.above.6", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHN.season$x[isub.CHN.season], CU.CHN.season$y[isub.CHN.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="springgreen4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.Neutral.season$x[isub.CHS.Neutral.season], CU.CHS.Neutral.season$y[isub.CHS.Neutral.season], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.season$x[isub.CHS.season], CU.CHS.season$y[isub.CHS.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CZ.Neutral.season$x[isub.CZ.Neutral.season], CU.CZ.Neutral.season$y[isub.CZ.Neutral.season], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CZ.season$x[isub.CZ.season], CU.CZ.season$y[isub.CZ.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+
+legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1"), lty=c(1,3,1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
 
 
 
@@ -3436,6 +3481,10 @@ Is the threshold the same between transects?
 
 
 Set up gf for each trasect using all of the loci: 
+
+This is run here: 
+
+/Users/alexjvr/2016RADAnalysis/6_CHP4.SEvsCH/GradientForest/Part2.FullModel
 
 
 ### CHN
@@ -4597,49 +4646,6 @@ par(new=T)
 plot(CU.CZ.Neutral.mean.temp.60d$x[isub.CZ.Neutral.mean.temp.60d], CU.CZ.Neutral.mean.temp.60d$y[isub.CZ.Neutral.mean.temp.60d], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
 par(new=T)
 plot(CU.CZ.temp$x[isub.CZ.temp], CU.CZ.temp$y[isub.CZ.temp], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
-
-legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1"), lty=c(1,3,1,3,1,3), lwd=1.5, bty = "n")
-
-dev.off()
-```
-
-
-
-## season length
-```
-CU.CHN.Neutral.season <- cumimp(gf.CHN.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
-CU.CHS.Neutral.season <- cumimp(gf.CHS.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
-CU.CZ.Neutral.season <- cumimp(gf.CZ.Neutral.SNPs, "days.above.6") ##find the cumulative importance for each gf.model output
-
-isub.CHN.Neutral.season <- seq(1, length(CU.CHN.Neutral.season$x), len = pmin(500, length(CU.CHN.Neutral.season$x)))
-isub.CHS.Neutral.season <- seq(1, length(CU.CHS.Neutral.season$x), len = pmin(500, length(CU.CHS.Neutral.season$x)))
-isub.CZ.Neutral.season <- seq(1, length(CU.CZ.Neutral.season$x), len = pmin(500, length(CU.CZ.Neutral.season$x)))
-
-
-
-ymax=0.03 #set the ymax so that it's the same for the the plots to be overlaid
-leg.txt <- c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive")
-```
-
-##season plot
-
-```
-pdf("CHN.CHS.CZ.season.CumImp.pdf")
-
-plot(CU.CHN.Neutral.season$x[isub.CHN.Neutral.season], CU.CHN.Neutral.season$y[isub.CHN.Neutral.season], type = "s", ylab ="Cumulative Importance", xlab="days.above.6", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
-par(new=T)  ##allows you to overlay the plots
-plot(CU.CHN.season$x[isub.CHN.season], CU.CHN.season$y[isub.CHN.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="springgreen4", ylab = "", xlab="", xaxt='n', yaxt='n')
-
-par(new=T)
-plot(CU.CHS.Neutral.season$x[isub.CHS.Neutral.season], CU.CHS.Neutral.season$y[isub.CHS.Neutral.season], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
-par(new=T)
-plot(CU.CHS.season$x[isub.CHS.season], CU.CHS.season$y[isub.CHS.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
-
-par(new=T)
-plot(CU.CZ.Neutral.season$x[isub.CZ.Neutral.season], CU.CZ.Neutral.season$y[isub.CZ.Neutral.season], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
-par(new=T)
-plot(CU.CZ.season$x[isub.CZ.season], CU.CZ.season$y[isub.CZ.season], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
-
 
 legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1"), lty=c(1,3,1,3,1,3), lwd=1.5, bty = "n")
 
