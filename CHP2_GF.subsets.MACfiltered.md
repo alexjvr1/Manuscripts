@@ -3628,6 +3628,366 @@ plot(CU.CZ.day10cm$x[isub.CZ.day10cm], CU.CZ.day10cm$y[isub.CZ.day10cm], type="s
 
 
 
+## CumImp Plot
+
+All the gf models were run before, and the Cumulative importance calculated. Now I have to plot each variable for the two geographic regions
+
+1) CHS/CHN/CZ
+
+2) CHS.TI & CHS.VS
+
+
+### CHS/CHN/CZ
+
+
+### sol.rad.60d
+```
+CU.CHN.Neutral.sol.rad.60d <- cumimp(gf.CHN.Neutral.SNPs, "sol.rad.60d") ##find the cumulative importance for each gf.model output
+CU.CHS.Neutral.sol.rad.60d <- cumimp(gf.CHS.Neutral.SNPs, "sol.rad.60d") ##find the cumulative importance for each gf.model output
+CU.CZ.Neutral.sol.rad.60d <- cumimp(gf.CZ.Neutral.SNPs, "sol.rad.60d") ##find the cumulative importance for each gf.model output
+
+
+isub.CHN.Neutral.sol.rad.60d <- seq(1, length(CU.CHN.Neutral.sol.rad.60d$x), len = pmin(500, length(CU.CHN.Neutral.sol.rad.60d$x)))
+isub.CHS.Neutral.sol.rad.60d <- seq(1, length(CU.CHS.Neutral.sol.rad.60d$x), len = pmin(500, length(CU.CHS.Neutral.sol.rad.60d$x)))
+isub.CZ.Neutral.sol.rad.60d <- seq(1, length(CU.CZ.Neutral.sol.rad.60d$x), len = pmin(500, length(CU.CZ.Neutral.sol.rad.60d$x)))
+
+ymax=0.15 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive")
+
+##sol.rad.60d plot
+
+pdf("CHN.CHS.CZ.sol.rad.60d.CumImp.pdf")
+
+plot(CU.CHN.Neutral.sol.rad.60d$x[isub.CHN.Neutral.sol.rad.60d], CU.CHN.Neutral.sol.rad.60d$y[isub.CHN.Neutral.sol.rad.60d], type = "s", ylab ="Cumulative Importance", xlab="sol.rad.60d", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHN.sol.rad.60d$x[isub.CHN.sol.rad.60d], CU.CHN.sol.rad.60d$y[isub.CHN.sol.rad.60d], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="springgreen4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.Neutral.sol.rad.60d$x[isub.CHS.Neutral.sol.rad.60d], CU.CHS.Neutral.sol.rad.60d$y[isub.CHS.Neutral.sol.rad.60d], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.sol.rad.60d$x[isub.CHS.sol.rad.60d], CU.CHS.sol.rad.60d$y[isub.CHS.sol.rad.60d], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CZ.Neutral.sol.rad.60d$x[isub.CZ.Neutral.sol.rad.60d], CU.CZ.Neutral.sol.rad.60d$y[isub.CZ.Neutral.sol.rad.60d], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CZ.sol.rad.60d$x[isub.CZ.sol.rad.60d], CU.CZ.sol.rad.60d$y[isub.CZ.sol.rad.60d], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1"), lty=c(1,3,1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
+
+
+### temp.laying.date
+```
+CU.CHN.Neutral.temp.laying.date <- cumimp(gf.CHN.Neutral.SNPs, "temp.laying.date") ##find the cumulative importance for each gf.model output
+CU.CHS.Neutral.temp.laying.date <- cumimp(gf.CHS.Neutral.SNPs, "temp.laying.date") ##find the cumulative importance for each gf.model output
+CU.CZ.Neutral.temp.laying.date <- cumimp(gf.CZ.Neutral.SNPs, "temp.laying.date") ##find the cumulative importance for each gf.model output
+
+
+isub.CHN.Neutral.temp.laying.date <- seq(1, length(CU.CHN.Neutral.temp.laying.date$x), len = pmin(500, length(CU.CHN.Neutral.temp.laying.date$x)))
+isub.CHS.Neutral.temp.laying.date <- seq(1, length(CU.CHS.Neutral.temp.laying.date$x), len = pmin(500, length(CU.CHS.Neutral.temp.laying.date$x)))
+isub.CZ.Neutral.temp.laying.date <- seq(1, length(CU.CZ.Neutral.temp.laying.date$x), len = pmin(500, length(CU.CZ.Neutral.temp.laying.date$x)))
+
+ymax=0.15 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive")
+
+##temp.laying.date plot
+
+pdf("CHN.CHS.CZ.temp.laying.date.CumImp.pdf")
+
+plot(CU.CHN.Neutral.temp.laying.date$x[isub.CHN.Neutral.temp.laying.date], CU.CHN.Neutral.temp.laying.date$y[isub.CHN.Neutral.temp.laying.date], type = "s", ylab ="Cumulative Importance", xlab="temp.laying.date", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHN.temp.laying.date$x[isub.CHN.temp.laying.date], CU.CHN.temp.laying.date$y[isub.CHN.temp.laying.date], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="springgreen4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.Neutral.temp.laying.date$x[isub.CHS.Neutral.temp.laying.date], CU.CHS.Neutral.temp.laying.date$y[isub.CHS.Neutral.temp.laying.date], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.temp.laying.date$x[isub.CHS.temp.laying.date], CU.CHS.temp.laying.date$y[isub.CHS.temp.laying.date], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CZ.Neutral.temp.laying.date$x[isub.CZ.Neutral.temp.laying.date], CU.CZ.Neutral.temp.laying.date$y[isub.CZ.Neutral.temp.laying.date], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CZ.temp.laying.date$x[isub.CZ.temp.laying.date], CU.CZ.temp.laying.date$y[isub.CZ.temp.laying.date], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1"), lty=c(1,3,1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
+
+### pcpt.60d
+```
+CU.CHN.Neutral.pcpt.60d <- cumimp(gf.CHN.Neutral.SNPs, "pcpt.60d") ##find the cumulative importance for each gf.model output
+CU.CHS.Neutral.pcpt.60d <- cumimp(gf.CHS.Neutral.SNPs, "pcpt.60d") ##find the cumulative importance for each gf.model output
+CU.CZ.Neutral.pcpt.60d <- cumimp(gf.CZ.Neutral.SNPs, "pcpt.60d") ##find the cumulative importance for each gf.model output
+
+
+isub.CHN.Neutral.pcpt.60d <- seq(1, length(CU.CHN.Neutral.pcpt.60d$x), len = pmin(500, length(CU.CHN.Neutral.pcpt.60d$x)))
+isub.CHS.Neutral.pcpt.60d <- seq(1, length(CU.CHS.Neutral.pcpt.60d$x), len = pmin(500, length(CU.CHS.Neutral.pcpt.60d$x)))
+isub.CZ.Neutral.pcpt.60d <- seq(1, length(CU.CZ.Neutral.pcpt.60d$x), len = pmin(500, length(CU.CZ.Neutral.pcpt.60d$x)))
+
+ymax=0.15 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive")
+
+##pcpt.60d plot
+
+pdf("CHN.CHS.CZ.pcpt.60d.CumImp.pdf")
+
+plot(CU.CHN.Neutral.pcpt.60d$x[isub.CHN.Neutral.pcpt.60d], CU.CHN.Neutral.pcpt.60d$y[isub.CHN.Neutral.pcpt.60d], type = "s", ylab ="Cumulative Importance", xlab="pcpt.60d", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHN.pcpt.60d$x[isub.CHN.pcpt.60d], CU.CHN.pcpt.60d$y[isub.CHN.pcpt.60d], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="springgreen4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.Neutral.pcpt.60d$x[isub.CHS.Neutral.pcpt.60d], CU.CHS.Neutral.pcpt.60d$y[isub.CHS.Neutral.pcpt.60d], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.pcpt.60d$x[isub.CHS.pcpt.60d], CU.CHS.pcpt.60d$y[isub.CHS.pcpt.60d], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CZ.Neutral.pcpt.60d$x[isub.CZ.Neutral.pcpt.60d], CU.CZ.Neutral.pcpt.60d$y[isub.CZ.Neutral.pcpt.60d], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CZ.pcpt.60d$x[isub.CZ.pcpt.60d], CU.CZ.pcpt.60d$y[isub.CZ.pcpt.60d], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1"), lty=c(1,3,1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
+
+### shadow.days
+```
+CU.CHN.Neutral.shadow.days <- cumimp(gf.CHN.Neutral.SNPs, "shadow.days") ##find the cumulative importance for each gf.model output
+CU.CHS.Neutral.shadow.days <- cumimp(gf.CHS.Neutral.SNPs, "shadow.days") ##find the cumulative importance for each gf.model output
+CU.CZ.Neutral.shadow.days <- cumimp(gf.CZ.Neutral.SNPs, "shadow.days") ##find the cumulative importance for each gf.model output
+
+
+isub.CHN.Neutral.shadow.days <- seq(1, length(CU.CHN.Neutral.shadow.days$x), len = pmin(500, length(CU.CHN.Neutral.shadow.days$x)))
+isub.CHS.Neutral.shadow.days <- seq(1, length(CU.CHS.Neutral.shadow.days$x), len = pmin(500, length(CU.CHS.Neutral.shadow.days$x)))
+isub.CZ.Neutral.shadow.days <- seq(1, length(CU.CZ.Neutral.shadow.days$x), len = pmin(500, length(CU.CZ.Neutral.shadow.days$x)))
+
+ymax=0.15 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive")
+
+##shadow.days plot
+
+pdf("CHN.CHS.CZ.shadow.days.CumImp.pdf")
+
+plot(CU.CHN.Neutral.shadow.days$x[isub.CHN.Neutral.shadow.days], CU.CHN.Neutral.shadow.days$y[isub.CHN.Neutral.shadow.days], type = "s", ylab ="Cumulative Importance", xlab="shadow.days", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHN.shadow.days$x[isub.CHN.shadow.days], CU.CHN.shadow.days$y[isub.CHN.shadow.days], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="springgreen4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.Neutral.shadow.days$x[isub.CHS.Neutral.shadow.days], CU.CHS.Neutral.shadow.days$y[isub.CHS.Neutral.shadow.days], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.shadow.days$x[isub.CHS.shadow.days], CU.CHS.shadow.days$y[isub.CHS.shadow.days], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CZ.Neutral.shadow.days$x[isub.CZ.Neutral.shadow.days], CU.CZ.Neutral.shadow.days$y[isub.CZ.Neutral.shadow.days], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CZ.shadow.days$x[isub.CZ.shadow.days], CU.CZ.shadow.days$y[isub.CZ.shadow.days], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1"), lty=c(1,3,1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
+### day10cm
+```
+CU.CHN.Neutral.day10cm <- cumimp(gf.CHN.Neutral.SNPs, "day10cm") ##find the cumulative importance for each gf.model output
+CU.CHS.Neutral.day10cm <- cumimp(gf.CHS.Neutral.SNPs, "day10cm") ##find the cumulative importance for each gf.model output
+CU.CZ.Neutral.day10cm <- cumimp(gf.CZ.Neutral.SNPs, "day10cm") ##find the cumulative importance for each gf.model output
+
+
+isub.CHN.Neutral.day10cm <- seq(1, length(CU.CHN.Neutral.day10cm$x), len = pmin(500, length(CU.CHN.Neutral.day10cm$x)))
+isub.CHS.Neutral.day10cm <- seq(1, length(CU.CHS.Neutral.day10cm$x), len = pmin(500, length(CU.CHS.Neutral.day10cm$x)))
+isub.CZ.Neutral.day10cm <- seq(1, length(CU.CZ.Neutral.day10cm$x), len = pmin(500, length(CU.CZ.Neutral.day10cm$x)))
+
+ymax=0.15 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHN Reference", "CHN Adaptive", "CHS Reference", "CHS Adaptive", "CZ Reference", "CZ Adaptive")
+
+##day10cm plot
+
+pdf("CHN.CHS.CZ.day10cm.CumImp.pdf")
+
+plot(CU.CHN.Neutral.day10cm$x[isub.CHN.Neutral.day10cm], CU.CHN.Neutral.day10cm$y[isub.CHN.Neutral.day10cm], type = "s", ylab ="Cumulative Importance", xlab="day10cm", ylim=c(0,ymax), lty=1, lwd=1.5, col="springgreen4")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHN.day10cm$x[isub.CHN.day10cm], CU.CHN.day10cm$y[isub.CHN.day10cm], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="springgreen4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.Neutral.day10cm$x[isub.CHS.Neutral.day10cm], CU.CHS.Neutral.day10cm$y[isub.CHS.Neutral.day10cm], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.day10cm$x[isub.CHS.day10cm], CU.CHS.day10cm$y[isub.CHS.day10cm], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CZ.Neutral.day10cm$x[isub.CZ.Neutral.day10cm], CU.CZ.Neutral.day10cm$y[isub.CZ.Neutral.day10cm], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CZ.day10cm$x[isub.CZ.day10cm], CU.CZ.day10cm$y[isub.CZ.day10cm], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkgoldenrod1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+legend("topleft", leg.txt, col=c("springgreen4","springgreen4","darkorchid4","darkorchid4", "darkgoldenrod1","darkgoldenrod1"), lty=c(1,3,1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
+
+## CHS.TI & CHS.VS
+
+### sol.rad.60d
+```
+CU.CHS.TI.Neutral.sol.rad.60d <- cumimp(gf.CHS.TI.Neutral.SNPs, "sol.rad.60d") ##find the cumulative importance for each gf.model output
+CU.CHS.VS.Neutral.sol.rad.60d <- cumimp(gf.CHS.VS.Neutral.SNPs, "sol.rad.60d") ##find the cumulative importance for each gf.model output
+
+isub.CHS.TI.Neutral.sol.rad.60d <- seq(1, length(CU.CHS.TI.Neutral.sol.rad.60d$x), len = pmin(500, length(CU.CHS.TI.Neutral.sol.rad.60d$x)))
+isub.CHS.VS.Neutral.sol.rad.60d <- seq(1, length(CU.CHS.VS.Neutral.sol.rad.60d$x), len = pmin(500, length(CU.CHS.VS.Neutral.sol.rad.60d$x)))
+
+ymax=0.10 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHS.VS.TI Reference", "CHS.VS.TI Adaptive", "CHS.VS Reference", "CHS.VS Adaptive")
+
+##sol.rad.60d plot
+
+pdf("CHS.VS.TI.sol.rad.60d.CumImp.pdf")
+
+plot(CU.CHS.TI.Neutral.sol.rad.60d$x[isub.CHS.TI.Neutral.sol.rad.60d], CU.CHS.TI.Neutral.sol.rad.60d$y[isub.CHS.TI.Neutral.sol.rad.60d], type = "s", ylab ="Cumulative Importance", xlab="sol.rad.60d", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid1")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHS.TI.sol.rad.60d$x[isub.CHS.TI.sol.rad.60d], CU.CHS.TI.sol.rad.60d$y[isub.CHS.TI.sol.rad.60d], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.VS.Neutral.sol.rad.60d$x[isub.CHS.VS.Neutral.sol.rad.60d], CU.CHS.VS.Neutral.sol.rad.60d$y[isub.CHS.VS.Neutral.sol.rad.60d], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.VS.sol.rad.60d$x[isub.CHS.VS.sol.rad.60d], CU.CHS.VS.sol.rad.60d$y[isub.CHS.VS.sol.rad.60d], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+legend("topleft", leg.txt, col=c("darkorchid1","darkorchid1","darkorchid4","darkorchid4"), lty=c(1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
+
+
+### temp.laying.date
+```
+CU.CHS.TI.Neutral.temp.laying.date <- cumimp(gf.CHS.TI.Neutral.SNPs, "temp.laying.date") ##find the cumulative importance for each gf.model output
+CU.CHS.VS.Neutral.temp.laying.date <- cumimp(gf.CHS.VS.Neutral.SNPs, "temp.laying.date") ##find the cumulative importance for each gf.model output
+
+
+isub.CHS.TI.Neutral.temp.laying.date <- seq(1, length(CU.CHS.TI.Neutral.temp.laying.date$x), len = pmin(500, length(CU.CHS.TI.Neutral.temp.laying.date$x)))
+isub.CHS.VS.Neutral.temp.laying.date <- seq(1, length(CU.CHS.VS.Neutral.temp.laying.date$x), len = pmin(500, length(CU.CHS.VS.Neutral.temp.laying.date$x)))
+
+ymax=0.10 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHS.VS.TI Reference", "CHS.VS.TI Adaptive", "CHS.VS Reference", "CHS.VS Adaptive")
+
+##temp.laying.date plot
+
+pdf("CHS.VS.TI.temp.laying.date.CumImp.pdf")
+
+plot(CU.CHS.TI.Neutral.temp.laying.date$x[isub.CHS.TI.Neutral.temp.laying.date], CU.CHS.TI.Neutral.temp.laying.date$y[isub.CHS.TI.Neutral.temp.laying.date], type = "s", ylab ="Cumulative Importance", xlab="temp.laying.date", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid1")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHS.TI.temp.laying.date$x[isub.CHS.TI.temp.laying.date], CU.CHS.TI.temp.laying.date$y[isub.CHS.TI.temp.laying.date], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.VS.Neutral.temp.laying.date$x[isub.CHS.VS.Neutral.temp.laying.date], CU.CHS.VS.Neutral.temp.laying.date$y[isub.CHS.VS.Neutral.temp.laying.date], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.VS.temp.laying.date$x[isub.CHS.VS.temp.laying.date], CU.CHS.VS.temp.laying.date$y[isub.CHS.VS.temp.laying.date], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+
+legend("topleft", leg.txt, col=c("darkorchid1","darkorchid1","darkorchid4","darkorchid4"), lty=c(1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
+
+### pcpt.60d
+```
+CU.CHS.TI.Neutral.pcpt.60d <- cumimp(gf.CHS.TI.Neutral.SNPs, "pcpt.60d") ##find the cumulative importance for each gf.model output
+CU.CHS.VS.Neutral.pcpt.60d <- cumimp(gf.CHS.VS.Neutral.SNPs, "pcpt.60d") ##find the cumulative importance for each gf.model output
+
+
+isub.CHS.TI.Neutral.pcpt.60d <- seq(1, length(CU.CHS.TI.Neutral.pcpt.60d$x), len = pmin(500, length(CU.CHS.TI.Neutral.pcpt.60d$x)))
+isub.CHS.VS.Neutral.pcpt.60d <- seq(1, length(CU.CHS.VS.Neutral.pcpt.60d$x), len = pmin(500, length(CU.CHS.VS.Neutral.pcpt.60d$x)))
+
+ymax=0.10 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHS.VS.TI Reference", "CHS.VS.TI Adaptive", "CHS.VS Reference", "CHS.VS Adaptive")
+
+##pcpt.60d plot
+
+pdf("CHS.VS.TI.pcpt.60d.CumImp.pdf")
+
+plot(CU.CHS.TI.Neutral.pcpt.60d$x[isub.CHS.TI.Neutral.pcpt.60d], CU.CHS.TI.Neutral.pcpt.60d$y[isub.CHS.TI.Neutral.pcpt.60d], type = "s", ylab ="Cumulative Importance", xlab="pcpt.60d", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid1")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHS.TI.pcpt.60d$x[isub.CHS.TI.pcpt.60d], CU.CHS.TI.pcpt.60d$y[isub.CHS.TI.pcpt.60d], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.VS.Neutral.pcpt.60d$x[isub.CHS.VS.Neutral.pcpt.60d], CU.CHS.VS.Neutral.pcpt.60d$y[isub.CHS.VS.Neutral.pcpt.60d], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.VS.pcpt.60d$x[isub.CHS.VS.pcpt.60d], CU.CHS.VS.pcpt.60d$y[isub.CHS.VS.pcpt.60d], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+legend("topleft", leg.txt, col=c("darkorchid1","darkorchid1","darkorchid4","darkorchid4"), lty=c(1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
+
+### shadow.days
+```
+CU.CHS.TI.Neutral.shadow.days <- cumimp(gf.CHS.TI.Neutral.SNPs, "shadow.days") ##find the cumulative importance for each gf.model output
+CU.CHS.VS.Neutral.shadow.days <- cumimp(gf.CHS.VS.Neutral.SNPs, "shadow.days") ##find the cumulative importance for each gf.model output
+CU.CHS.VS.Adaptive.shadow.days <- cumimp(gf.CHS.VS.Adaptive.SNPs, "shadow.days") ## There’s no model for CHS.VS since there were no loci
+
+isub.CHS.TI.Neutral.shadow.days <- seq(1, length(CU.CHS.TI.Neutral.shadow.days$x), len = pmin(500, length(CU.CHS.TI.Neutral.shadow.days$x)))
+isub.CHS.VS.Neutral.shadow.days <- seq(1, length(CU.CHS.VS.Neutral.shadow.days$x), len = pmin(500, length(CU.CHS.VS.Neutral.shadow.days$x)))
+isub.CHS.VS.Adaptive.shadow.days <- seq(1, length(CU.CHS.VS.Adaptive.shadow.days$x), len=pmin(500,length(CU.CHS.VS.Adaptive.shadow.days$x)))
+
+ymax=0.10 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHS.VS.TI Reference", "CHS.VS.TI Adaptive", "CHS.VS Reference", "CHS.VS Adaptive")
+
+##shadow.days plot
+
+pdf("CHS.VS.TI.shadow.days.CumImp.pdf")
+
+plot(CU.CHS.TI.Neutral.shadow.days$x[isub.CHS.TI.Neutral.shadow.days], CU.CHS.TI.Neutral.shadow.days$y[isub.CHS.TI.Neutral.shadow.days], type = "s", ylab ="Cumulative Importance", xlab="shadow.days", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid1")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHS.TI.shadow.days$x[isub.CHS.TI.shadow.days], CU.CHS.TI.shadow.days$y[isub.CHS.TI.shadow.days], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.VS.Neutral.shadow.days$x[isub.CHS.VS.Neutral.shadow.days], CU.CHS.VS.Neutral.shadow.days$y[isub.CHS.VS.Neutral.shadow.days], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.VS.Adaptive.shadow.days$x[isub.CHS.VS.Adaptive.shadow.days], CU.CHS.VS.Adaptive.shadow.days$y[isub.CHS.VS.Adaptive.shadow.days], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+legend("topleft", leg.txt, col=c("darkorchid1","darkorchid1","darkorchid4","darkorchid4"), lty=c(1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
+### day10cm
+```
+CU.CHS.TI.Neutral.day10cm <- cumimp(gf.CHS.TI.Neutral.SNPs, "day10cm") ##find the cumulative importance for each gf.model output
+CU.CHS.VS.Neutral.day10cm <- cumimp(gf.CHS.VS.Neutral.SNPs, "day10cm") ##find the cumulative importance for each gf.model output
+
+isub.CHS.TI.Neutral.day10cm <- seq(1, length(CU.CHS.TI.Neutral.day10cm$x), len = pmin(500, length(CU.CHS.TI.Neutral.day10cm$x)))
+isub.CHS.VS.Neutral.day10cm <- seq(1, length(CU.CHS.VS.Neutral.day10cm$x), len = pmin(500, length(CU.CHS.VS.Neutral.day10cm$x)))
+
+ymax=0.10 #set the ymax so that it's the same for the the plots to be overlaid
+leg.txt <- c("CHS.VS.TI Reference", "CHS.VS.TI Adaptive", "CHS.VS Reference", "CHS.VS Adaptive")
+
+##day10cm plot
+
+pdf("CHS.VS.TI.day10cm.CumImp.pdf")
+
+plot(CU.CHS.TI.Neutral.day10cm$x[isub.CHS.TI.Neutral.day10cm], CU.CHS.TI.Neutral.day10cm$y[isub.CHS.TI.Neutral.day10cm], type = "s", ylab ="Cumulative Importance", xlab="day10cm", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid1")
+par(new=T)  ##allows you to overlay the plots
+plot(CU.CHS.TI.day10cm$x[isub.CHS.TI.day10cm], CU.CHS.TI.day10cm$y[isub.CHS.TI.day10cm], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid1", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+par(new=T)
+plot(CU.CHS.VS.Neutral.day10cm$x[isub.CHS.VS.Neutral.day10cm], CU.CHS.VS.Neutral.day10cm$y[isub.CHS.VS.Neutral.day10cm], type = "s", ylim=c(0,ymax), lty=1, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+par(new=T)
+plot(CU.CHS.VS.day10cm$x[isub.CHS.VS.day10cm], CU.CHS.VS.day10cm$y[isub.CHS.VS.day10cm], type="s", ylim=c(0,ymax), lty=3, lwd=1.5, col="darkorchid4", ylab = "", xlab="", xaxt='n', yaxt='n')
+
+legend("topleft", leg.txt, col=c("darkorchid1","darkorchid1","darkorchid4","darkorchid4"), lty=c(1,3,1,3), lwd=1.5, bty = "n")
+
+dev.off()
+```
+
+
+
 
 
 
