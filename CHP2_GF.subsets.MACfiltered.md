@@ -2487,7 +2487,9 @@ I'll then plot the CumImp of these loci vs the Neutral dataset for each of the v
 
 
 
+### sol.rad.60d
 
+#### CHN
 ```
 CU.Adapt.CHN.sol.rad.60d <- cumimp(gf.CHN.Adaptive.SNPs, "sol.rad.60d", "Species")
 
@@ -2512,8 +2514,11 @@ length(best.Adapt.CHN.sol.rad.60d$loci)  ##get the number of loci for Table
 species.Adapt.CHN.sol.rad.60d.names <- best.Adapt.CHN.sol.rad.60d$loci  ## get the names
 CU.Adapt.CHN.sol.rad.60d.best <- CU.Adapt.CHN.sol.rad.60d[species.Adapt.CHN.sol.rad.60d.names]
 
-###Now I have to rerun GF using only those loci for this env variable
+isub.CHN.sol.rad.60d <- best.Adapt.CHN.sol.rad.60d$isub
+```
 
+###Now I have to rerun GF using only those loci for this env variable
+```
 colnames(envGF.CHN.Adaptive)
 
 CHN.AdaptiveSNPS.sol.rad.best <- CHN.AdaptiveSNPS[isub.CHN.sol.rad.60d]  ##select only those snps
@@ -2530,8 +2535,1111 @@ plot(CU.CHN.sol.rad.60d$x[isub.CHN.sol.rad.60d], CU.CHN.sol.rad.60d$y[isub.CHN.s
 
 
 
+#### CHS
+```
+CU.Adapt.CHS.sol.rad.60d <- cumimp(gf.CHS.Adaptive.SNPs, "sol.rad.60d", "Species")
+
+head(CU.Adapt.CHS.sol.rad.60d)
+imp.sp.Adapt.CHS.sol.rad.60d <- sapply(CU.Adapt.CHS.sol.rad.60d, function(cu) max(cu$y))
+imp.sp.Adapt.CHS.sol.rad.60d
+imp.sp.Adapt.CHS.sol.rad.60d.df <- as.data.frame(imp.sp.Adapt.CHS.sol.rad.60d)
+imp.sp.Adapt.CHS.sol.rad.60d.df$loci <- names(imp.sp.Adapt.CHS.sol.rad.60d)
+imp.sp.Adapt.CHS.sol.rad.60d.df$isub <- 1:nrow(imp.sp.Adapt.CHS.sol.rad.60d.df)  ##index the loci
+imp.sp.Adapt.CHS.sol.rad.60d.df <- imp.sp.Adapt.CHS.sol.rad.60d.df[order(imp.sp.Adapt.CHS.sol.rad.60d.df$imp.sp.Adapt.CHS.sol.rad.60d, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHS.sol.rad.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHS.sol.rad.60d.df$imp.sp.Adapt.CHS.sol.rad.60d)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHS.sol.rad.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHS.sol.rad.60d <- na.omit(subset(imp.sp.Adapt.CHS.sol.rad.60d.df, imp.sp.Adapt.CHS.sol.rad.60d.df>0))
+length(best.Adapt.CHS.sol.rad.60d$loci)  ##get the number of loci for Table
+
+species.Adapt.CHS.sol.rad.60d.names <- best.Adapt.CHS.sol.rad.60d$loci  ## get the names
+CU.Adapt.CHS.sol.rad.60d.best <- CU.Adapt.CHS.sol.rad.60d[species.Adapt.CHS.sol.rad.60d.names]
+
+isub.CHS.sol.rad.60d <- best.Adapt.CHS.sol.rad.60d$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHS.Adaptive)
+
+CHS.AdaptiveSNPS.sol.rad.best <- CHS.AdaptiveSNPS[isub.CHS.sol.rad.60d]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHS.Adaptive)/2)
+maxLevel
+
+gf.CHS.Adaptive.SNPs.sol.rad.60d <- gradientForest(cbind(envGF.CHS.Adaptive, CHS.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHS.Adaptive), response.vars=colnames(CHS.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHS.sol.rad.60d <- cumimp(gf.CHS.Adaptive.SNPs.sol.rad.60d, "sol.rad.60d")
+isub.CHS.sol.rad.60d <- seq(1, length(CU.CHS.sol.rad.60d$x), len=pmin(500, length(CU.CHS.sol.rad.60d$x)))
+plot(CU.CHS.sol.rad.60d$x[isub.CHS.sol.rad.60d], CU.CHS.sol.rad.60d$y[isub.CHS.sol.rad.60d], type="s", ylab="Cumulative Plot", xlab="sol.rad.60d", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+#### CHS.TI
+```
+CU.Adapt.CHS.TI.sol.rad.60d <- cumimp(gf.CHS.TI.Adaptive.SNPs, "sol.rad.60d", "Species")
+
+head(CU.Adapt.CHS.TI.sol.rad.60d)
+imp.sp.Adapt.CHS.TI.sol.rad.60d <- sapply(CU.Adapt.CHS.TI.sol.rad.60d, function(cu) max(cu$y))
+imp.sp.Adapt.CHS.TI.sol.rad.60d
+imp.sp.Adapt.CHS.TI.sol.rad.60d.df <- as.data.frame(imp.sp.Adapt.CHS.TI.sol.rad.60d)
+imp.sp.Adapt.CHS.TI.sol.rad.60d.df$loci <- names(imp.sp.Adapt.CHS.TI.sol.rad.60d)
+imp.sp.Adapt.CHS.TI.sol.rad.60d.df$isub <- 1:nrow(imp.sp.Adapt.CHS.TI.sol.rad.60d.df)  ##index the loci
+imp.sp.Adapt.CHS.TI.sol.rad.60d.df <- imp.sp.Adapt.CHS.TI.sol.rad.60d.df[order(imp.sp.Adapt.CHS.TI.sol.rad.60d.df$imp.sp.Adapt.CHS.TI.sol.rad.60d, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHS.TI.sol.rad.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHS.TI.sol.rad.60d.df$imp.sp.Adapt.CHS.TI.sol.rad.60d)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHS.TI.sol.rad.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHS.TI.sol.rad.60d <- na.omit(subset(imp.sp.Adapt.CHS.TI.sol.rad.60d.df, imp.sp.Adapt.CHS.TI.sol.rad.60d.df>0))
+length(best.Adapt.CHS.TI.sol.rad.60d$loci)  ##get the number of loci for Table
+
+species.Adapt.CHS.TI.sol.rad.60d.names <- best.Adapt.CHS.TI.sol.rad.60d$loci  ## get the names
+CU.Adapt.CHS.TI.sol.rad.60d.best <- CU.Adapt.CHS.TI.sol.rad.60d[species.Adapt.CHS.TI.sol.rad.60d.names]
+
+isub.CHS.TI.sol.rad.60d <- best.Adapt.CHS.TI.sol.rad.60d$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHS.TI.Adaptive)
+
+CHS.TI.AdaptiveSNPS.sol.rad.best <- CHS.TI.AdaptiveSNPS[isub.CHS.TI.sol.rad.60d]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHS.TI.Adaptive)/2)
+maxLevel
+
+gf.CHS.TI.Adaptive.SNPs.sol.rad.60d <- gradientForest(cbind(envGF.CHS.TI.Adaptive, CHS.TI.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHS.TI.Adaptive), response.vars=colnames(CHS.TI.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHS.TI.sol.rad.60d <- cumimp(gf.CHS.TI.Adaptive.SNPs.sol.rad.60d, "sol.rad.60d")
+isub.CHS.TI.sol.rad.60d <- seq(1, length(CU.CHS.TI.sol.rad.60d$x), len=pmin(500, length(CU.CHS.TI.sol.rad.60d$x)))
+plot(CU.CHS.TI.sol.rad.60d$x[isub.CHS.TI.sol.rad.60d], CU.CHS.TI.sol.rad.60d$y[isub.CHS.TI.sol.rad.60d], type="s", ylab="Cumulative Plot", xlab="sol.rad.60d", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
 
 
+#### CHS.VS
+```
+CU.Adapt.CHS.VS.sol.rad.60d <- cumimp(gf.CHS.VS.Adaptive.SNPs, "sol.rad.60d", "Species")
+
+head(CU.Adapt.CHS.VS.sol.rad.60d)
+imp.sp.Adapt.CHS.VS.sol.rad.60d <- sapply(CU.Adapt.CHS.VS.sol.rad.60d, function(cu) max(cu$y))
+imp.sp.Adapt.CHS.VS.sol.rad.60d
+imp.sp.Adapt.CHS.VS.sol.rad.60d.df <- as.data.frame(imp.sp.Adapt.CHS.VS.sol.rad.60d)
+imp.sp.Adapt.CHS.VS.sol.rad.60d.df$loci <- names(imp.sp.Adapt.CHS.VS.sol.rad.60d)
+imp.sp.Adapt.CHS.VS.sol.rad.60d.df$isub <- 1:nrow(imp.sp.Adapt.CHS.VS.sol.rad.60d.df)  ##index the loci
+imp.sp.Adapt.CHS.VS.sol.rad.60d.df <- imp.sp.Adapt.CHS.VS.sol.rad.60d.df[order(imp.sp.Adapt.CHS.VS.sol.rad.60d.df$imp.sp.Adapt.CHS.VS.sol.rad.60d, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHS.VS.sol.rad.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHS.VS.sol.rad.60d.df$imp.sp.Adapt.CHS.VS.sol.rad.60d)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHS.VS.sol.rad.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHS.VS.sol.rad.60d <- na.omit(subset(imp.sp.Adapt.CHS.VS.sol.rad.60d.df, imp.sp.Adapt.CHS.VS.sol.rad.60d.df>0))
+length(best.Adapt.CHS.VS.sol.rad.60d$loci)  ##get the number of loci for Table
+
+species.Adapt.CHS.VS.sol.rad.60d.names <- best.Adapt.CHS.VS.sol.rad.60d$loci  ## get the names
+CU.Adapt.CHS.VS.sol.rad.60d.best <- CU.Adapt.CHS.VS.sol.rad.60d[species.Adapt.CHS.VS.sol.rad.60d.names]
+
+isub.CHS.VS.sol.rad.60d <- best.Adapt.CHS.VS.sol.rad.60d$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHS.VS.Adaptive)
+
+CHS.VS.AdaptiveSNPS.sol.rad.best <- CHS.VS.AdaptiveSNPS[isub.CHS.VS.sol.rad.60d]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHS.VS.Adaptive)/2)
+maxLevel
+
+gf.CHS.VS.Adaptive.SNPs.sol.rad.60d <- gradientForest(cbind(envGF.CHS.VS.Adaptive, CHS.VS.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHS.VS.Adaptive), response.vars=colnames(CHS.VS.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHS.VS.sol.rad.60d <- cumimp(gf.CHS.VS.Adaptive.SNPs.sol.rad.60d, "sol.rad.60d")
+isub.CHS.VS.sol.rad.60d <- seq(1, length(CU.CHS.VS.sol.rad.60d$x), len=pmin(500, length(CU.CHS.VS.sol.rad.60d$x)))
+plot(CU.CHS.VS.sol.rad.60d$x[isub.CHS.VS.sol.rad.60d], CU.CHS.VS.sol.rad.60d$y[isub.CHS.VS.sol.rad.60d], type="s", ylab="Cumulative Plot", xlab="sol.rad.60d", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+#### CZ
+```
+CU.Adapt.CZ.sol.rad.60d <- cumimp(gf.CZ.Adaptive.SNPs, "sol.rad.60d", "Species")
+
+head(CU.Adapt.CZ.sol.rad.60d)
+imp.sp.Adapt.CZ.sol.rad.60d <- sapply(CU.Adapt.CZ.sol.rad.60d, function(cu) max(cu$y))
+imp.sp.Adapt.CZ.sol.rad.60d
+imp.sp.Adapt.CZ.sol.rad.60d.df <- as.data.frame(imp.sp.Adapt.CZ.sol.rad.60d)
+imp.sp.Adapt.CZ.sol.rad.60d.df$loci <- names(imp.sp.Adapt.CZ.sol.rad.60d)
+imp.sp.Adapt.CZ.sol.rad.60d.df$isub <- 1:nrow(imp.sp.Adapt.CZ.sol.rad.60d.df)  ##index the loci
+imp.sp.Adapt.CZ.sol.rad.60d.df <- imp.sp.Adapt.CZ.sol.rad.60d.df[order(imp.sp.Adapt.CZ.sol.rad.60d.df$imp.sp.Adapt.CZ.sol.rad.60d, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CZ.sol.rad.60d.df$cumsum <- cumsum(imp.sp.Adapt.CZ.sol.rad.60d.df$imp.sp.Adapt.CZ.sol.rad.60d)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CZ.sol.rad.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CZ.sol.rad.60d <- na.omit(subset(imp.sp.Adapt.CZ.sol.rad.60d.df, imp.sp.Adapt.CZ.sol.rad.60d.df>0))
+length(best.Adapt.CZ.sol.rad.60d$loci)  ##get the number of loci for Table
+
+species.Adapt.CZ.sol.rad.60d.names <- best.Adapt.CZ.sol.rad.60d$loci  ## get the names
+CU.Adapt.CZ.sol.rad.60d.best <- CU.Adapt.CZ.sol.rad.60d[species.Adapt.CZ.sol.rad.60d.names]
+
+isub.CZ.sol.rad.60d <- best.Adapt.CZ.sol.rad.60d$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CZ.Adaptive)
+
+CZ.AdaptiveSNPS.sol.rad.best <- CZ.AdaptiveSNPS[isub.CZ.sol.rad.60d]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CZ.Adaptive)/2)
+maxLevel
+
+gf.CZ.Adaptive.SNPs.sol.rad.60d <- gradientForest(cbind(envGF.CZ.Adaptive, CZ.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CZ.Adaptive), response.vars=colnames(CZ.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CZ.sol.rad.60d <- cumimp(gf.CZ.Adaptive.SNPs.sol.rad.60d, "sol.rad.60d")
+isub.CZ.sol.rad.60d <- seq(1, length(CU.CZ.sol.rad.60d$x), len=pmin(500, length(CU.CZ.sol.rad.60d$x)))
+plot(CU.CZ.sol.rad.60d$x[isub.CZ.sol.rad.60d], CU.CZ.sol.rad.60d$y[isub.CZ.sol.rad.60d], type="s", ylab="Cumulative Plot", xlab="sol.rad.60d", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+
+
+### temp.laying.date
+
+#### CHN
+```
+CU.Adapt.CHN.temp.laying.date <- cumimp(gf.CHN.Adaptive.SNPs, "temp.laying.date", "Species")
+
+head(CU.Adapt.CHN.temp.laying.date)
+imp.sp.Adapt.CHN.temp.laying.date <- sapply(CU.Adapt.CHN.temp.laying.date, function(cu) max(cu$y))
+imp.sp.Adapt.CHN.temp.laying.date
+imp.sp.Adapt.CHN.temp.laying.date.df <- as.data.frame(imp.sp.Adapt.CHN.temp.laying.date)
+imp.sp.Adapt.CHN.temp.laying.date.df$loci <- names(imp.sp.Adapt.CHN.temp.laying.date)
+imp.sp.Adapt.CHN.temp.laying.date.df$isub <- 1:nrow(imp.sp.Adapt.CHN.temp.laying.date.df)  ##index the loci
+imp.sp.Adapt.CHN.temp.laying.date.df <- imp.sp.Adapt.CHN.temp.laying.date.df[order(imp.sp.Adapt.CHN.temp.laying.date.df$imp.sp.Adapt.CHN.temp.laying.date, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHN.temp.laying.date.df$cumsum <- cumsum(imp.sp.Adapt.CHN.temp.laying.date.df$imp.sp.Adapt.CHN.temp.laying.date)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHN.temp.laying.date.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHN.temp.laying.date <- na.omit(subset(imp.sp.Adapt.CHN.temp.laying.date.df, imp.sp.Adapt.CHN.temp.laying.date.df>0))
+length(best.Adapt.CHN.temp.laying.date$loci)  ##get the number of loci for Table
+
+species.Adapt.CHN.temp.laying.date.names <- best.Adapt.CHN.temp.laying.date$loci  ## get the names
+CU.Adapt.CHN.temp.laying.date.best <- CU.Adapt.CHN.temp.laying.date[species.Adapt.CHN.temp.laying.date.names]
+
+isub.CHN.temp.laying.date <- best.Adapt.CHN.temp.laying.date$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHN.Adaptive)
+
+CHN.AdaptiveSNPS.sol.rad.best <- CHN.AdaptiveSNPS[isub.CHN.temp.laying.date]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHN.Adaptive)/2)
+maxLevel
+
+gf.CHN.Adaptive.SNPs.temp.laying.date <- gradientForest(cbind(envGF.CHN.Adaptive, CHN.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHN.Adaptive), response.vars=colnames(CHN.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHN.temp.laying.date <- cumimp(gf.CHN.Adaptive.SNPs.temp.laying.date, "temp.laying.date")
+isub.CHN.temp.laying.date <- seq(1, length(CU.CHN.temp.laying.date$x), len=pmin(500, length(CU.CHN.temp.laying.date$x)))
+plot(CU.CHN.temp.laying.date$x[isub.CHN.temp.laying.date], CU.CHN.temp.laying.date$y[isub.CHN.temp.laying.date], type="s", ylab="Cumulative Plot", xlab="temp.laying.date", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+
+
+#### CHS
+```
+CU.Adapt.CHS.temp.laying.date <- cumimp(gf.CHS.Adaptive.SNPs, "temp.laying.date", "Species")
+
+head(CU.Adapt.CHS.temp.laying.date)
+imp.sp.Adapt.CHS.temp.laying.date <- sapply(CU.Adapt.CHS.temp.laying.date, function(cu) max(cu$y))
+imp.sp.Adapt.CHS.temp.laying.date
+imp.sp.Adapt.CHS.temp.laying.date.df <- as.data.frame(imp.sp.Adapt.CHS.temp.laying.date)
+imp.sp.Adapt.CHS.temp.laying.date.df$loci <- names(imp.sp.Adapt.CHS.temp.laying.date)
+imp.sp.Adapt.CHS.temp.laying.date.df$isub <- 1:nrow(imp.sp.Adapt.CHS.temp.laying.date.df)  ##index the loci
+imp.sp.Adapt.CHS.temp.laying.date.df <- imp.sp.Adapt.CHS.temp.laying.date.df[order(imp.sp.Adapt.CHS.temp.laying.date.df$imp.sp.Adapt.CHS.temp.laying.date, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHS.temp.laying.date.df$cumsum <- cumsum(imp.sp.Adapt.CHS.temp.laying.date.df$imp.sp.Adapt.CHS.temp.laying.date)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHS.temp.laying.date.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHS.temp.laying.date <- na.omit(subset(imp.sp.Adapt.CHS.temp.laying.date.df, imp.sp.Adapt.CHS.temp.laying.date.df>0))
+length(best.Adapt.CHS.temp.laying.date$loci)  ##get the number of loci for Table
+
+species.Adapt.CHS.temp.laying.date.names <- best.Adapt.CHS.temp.laying.date$loci  ## get the names
+CU.Adapt.CHS.temp.laying.date.best <- CU.Adapt.CHS.temp.laying.date[species.Adapt.CHS.temp.laying.date.names]
+
+isub.CHS.temp.laying.date <- best.Adapt.CHS.temp.laying.date$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHS.Adaptive)
+
+CHS.AdaptiveSNPS.sol.rad.best <- CHS.AdaptiveSNPS[isub.CHS.temp.laying.date]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHS.Adaptive)/2)
+maxLevel
+
+gf.CHS.Adaptive.SNPs.temp.laying.date <- gradientForest(cbind(envGF.CHS.Adaptive, CHS.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHS.Adaptive), response.vars=colnames(CHS.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHS.temp.laying.date <- cumimp(gf.CHS.Adaptive.SNPs.temp.laying.date, "temp.laying.date")
+isub.CHS.temp.laying.date <- seq(1, length(CU.CHS.temp.laying.date$x), len=pmin(500, length(CU.CHS.temp.laying.date$x)))
+plot(CU.CHS.temp.laying.date$x[isub.CHS.temp.laying.date], CU.CHS.temp.laying.date$y[isub.CHS.temp.laying.date], type="s", ylab="Cumulative Plot", xlab="temp.laying.date", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+#### CHS.TI
+```
+CU.Adapt.CHS.TI.temp.laying.date <- cumimp(gf.CHS.TI.Adaptive.SNPs, "temp.laying.date", "Species")
+
+head(CU.Adapt.CHS.TI.temp.laying.date)
+imp.sp.Adapt.CHS.TI.temp.laying.date <- sapply(CU.Adapt.CHS.TI.temp.laying.date, function(cu) max(cu$y))
+imp.sp.Adapt.CHS.TI.temp.laying.date
+imp.sp.Adapt.CHS.TI.temp.laying.date.df <- as.data.frame(imp.sp.Adapt.CHS.TI.temp.laying.date)
+imp.sp.Adapt.CHS.TI.temp.laying.date.df$loci <- names(imp.sp.Adapt.CHS.TI.temp.laying.date)
+imp.sp.Adapt.CHS.TI.temp.laying.date.df$isub <- 1:nrow(imp.sp.Adapt.CHS.TI.temp.laying.date.df)  ##index the loci
+imp.sp.Adapt.CHS.TI.temp.laying.date.df <- imp.sp.Adapt.CHS.TI.temp.laying.date.df[order(imp.sp.Adapt.CHS.TI.temp.laying.date.df$imp.sp.Adapt.CHS.TI.temp.laying.date, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHS.TI.temp.laying.date.df$cumsum <- cumsum(imp.sp.Adapt.CHS.TI.temp.laying.date.df$imp.sp.Adapt.CHS.TI.temp.laying.date)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHS.TI.temp.laying.date.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHS.TI.temp.laying.date <- na.omit(subset(imp.sp.Adapt.CHS.TI.temp.laying.date.df, imp.sp.Adapt.CHS.TI.temp.laying.date.df>0))
+length(best.Adapt.CHS.TI.temp.laying.date$loci)  ##get the number of loci for Table
+
+species.Adapt.CHS.TI.temp.laying.date.names <- best.Adapt.CHS.TI.temp.laying.date$loci  ## get the names
+CU.Adapt.CHS.TI.temp.laying.date.best <- CU.Adapt.CHS.TI.temp.laying.date[species.Adapt.CHS.TI.temp.laying.date.names]
+
+isub.CHS.TI.temp.laying.date <- best.Adapt.CHS.TI.temp.laying.date$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHS.TI.Adaptive)
+
+CHS.TI.AdaptiveSNPS.sol.rad.best <- CHS.TI.AdaptiveSNPS[isub.CHS.TI.temp.laying.date]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHS.TI.Adaptive)/2)
+maxLevel
+
+gf.CHS.TI.Adaptive.SNPs.temp.laying.date <- gradientForest(cbind(envGF.CHS.TI.Adaptive, CHS.TI.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHS.TI.Adaptive), response.vars=colnames(CHS.TI.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHS.TI.temp.laying.date <- cumimp(gf.CHS.TI.Adaptive.SNPs.temp.laying.date, "temp.laying.date")
+isub.CHS.TI.temp.laying.date <- seq(1, length(CU.CHS.TI.temp.laying.date$x), len=pmin(500, length(CU.CHS.TI.temp.laying.date$x)))
+plot(CU.CHS.TI.temp.laying.date$x[isub.CHS.TI.temp.laying.date], CU.CHS.TI.temp.laying.date$y[isub.CHS.TI.temp.laying.date], type="s", ylab="Cumulative Plot", xlab="temp.laying.date", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+
+#### CHS.VS
+```
+CU.Adapt.CHS.VS.temp.laying.date <- cumimp(gf.CHS.VS.Adaptive.SNPs, "temp.laying.date", "Species")
+
+head(CU.Adapt.CHS.VS.temp.laying.date)
+imp.sp.Adapt.CHS.VS.temp.laying.date <- sapply(CU.Adapt.CHS.VS.temp.laying.date, function(cu) max(cu$y))
+imp.sp.Adapt.CHS.VS.temp.laying.date
+imp.sp.Adapt.CHS.VS.temp.laying.date.df <- as.data.frame(imp.sp.Adapt.CHS.VS.temp.laying.date)
+imp.sp.Adapt.CHS.VS.temp.laying.date.df$loci <- names(imp.sp.Adapt.CHS.VS.temp.laying.date)
+imp.sp.Adapt.CHS.VS.temp.laying.date.df$isub <- 1:nrow(imp.sp.Adapt.CHS.VS.temp.laying.date.df)  ##index the loci
+imp.sp.Adapt.CHS.VS.temp.laying.date.df <- imp.sp.Adapt.CHS.VS.temp.laying.date.df[order(imp.sp.Adapt.CHS.VS.temp.laying.date.df$imp.sp.Adapt.CHS.VS.temp.laying.date, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHS.VS.temp.laying.date.df$cumsum <- cumsum(imp.sp.Adapt.CHS.VS.temp.laying.date.df$imp.sp.Adapt.CHS.VS.temp.laying.date)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHS.VS.temp.laying.date.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHS.VS.temp.laying.date <- na.omit(subset(imp.sp.Adapt.CHS.VS.temp.laying.date.df, imp.sp.Adapt.CHS.VS.temp.laying.date.df>0))
+length(best.Adapt.CHS.VS.temp.laying.date$loci)  ##get the number of loci for Table
+
+species.Adapt.CHS.VS.temp.laying.date.names <- best.Adapt.CHS.VS.temp.laying.date$loci  ## get the names
+CU.Adapt.CHS.VS.temp.laying.date.best <- CU.Adapt.CHS.VS.temp.laying.date[species.Adapt.CHS.VS.temp.laying.date.names]
+
+isub.CHS.VS.temp.laying.date <- best.Adapt.CHS.VS.temp.laying.date$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHS.VS.Adaptive)
+
+CHS.VS.AdaptiveSNPS.sol.rad.best <- CHS.VS.AdaptiveSNPS[isub.CHS.VS.temp.laying.date]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHS.VS.Adaptive)/2)
+maxLevel
+
+gf.CHS.VS.Adaptive.SNPs.temp.laying.date <- gradientForest(cbind(envGF.CHS.VS.Adaptive, CHS.VS.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHS.VS.Adaptive), response.vars=colnames(CHS.VS.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHS.VS.temp.laying.date <- cumimp(gf.CHS.VS.Adaptive.SNPs.temp.laying.date, "temp.laying.date")
+isub.CHS.VS.temp.laying.date <- seq(1, length(CU.CHS.VS.temp.laying.date$x), len=pmin(500, length(CU.CHS.VS.temp.laying.date$x)))
+plot(CU.CHS.VS.temp.laying.date$x[isub.CHS.VS.temp.laying.date], CU.CHS.VS.temp.laying.date$y[isub.CHS.VS.temp.laying.date], type="s", ylab="Cumulative Plot", xlab="temp.laying.date", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+#### CZ
+```
+CU.Adapt.CZ.temp.laying.date <- cumimp(gf.CZ.Adaptive.SNPs, "temp.laying.date", "Species")
+
+head(CU.Adapt.CZ.temp.laying.date)
+imp.sp.Adapt.CZ.temp.laying.date <- sapply(CU.Adapt.CZ.temp.laying.date, function(cu) max(cu$y))
+imp.sp.Adapt.CZ.temp.laying.date
+imp.sp.Adapt.CZ.temp.laying.date.df <- as.data.frame(imp.sp.Adapt.CZ.temp.laying.date)
+imp.sp.Adapt.CZ.temp.laying.date.df$loci <- names(imp.sp.Adapt.CZ.temp.laying.date)
+imp.sp.Adapt.CZ.temp.laying.date.df$isub <- 1:nrow(imp.sp.Adapt.CZ.temp.laying.date.df)  ##index the loci
+imp.sp.Adapt.CZ.temp.laying.date.df <- imp.sp.Adapt.CZ.temp.laying.date.df[order(imp.sp.Adapt.CZ.temp.laying.date.df$imp.sp.Adapt.CZ.temp.laying.date, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CZ.temp.laying.date.df$cumsum <- cumsum(imp.sp.Adapt.CZ.temp.laying.date.df$imp.sp.Adapt.CZ.temp.laying.date)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CZ.temp.laying.date.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CZ.temp.laying.date <- na.omit(subset(imp.sp.Adapt.CZ.temp.laying.date.df, imp.sp.Adapt.CZ.temp.laying.date.df>0))
+length(best.Adapt.CZ.temp.laying.date$loci)  ##get the number of loci for Table
+
+species.Adapt.CZ.temp.laying.date.names <- best.Adapt.CZ.temp.laying.date$loci  ## get the names
+CU.Adapt.CZ.temp.laying.date.best <- CU.Adapt.CZ.temp.laying.date[species.Adapt.CZ.temp.laying.date.names]
+
+isub.CZ.temp.laying.date <- best.Adapt.CZ.temp.laying.date$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CZ.Adaptive)
+
+CZ.AdaptiveSNPS.sol.rad.best <- CZ.AdaptiveSNPS[isub.CZ.temp.laying.date]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CZ.Adaptive)/2)
+maxLevel
+
+gf.CZ.Adaptive.SNPs.temp.laying.date <- gradientForest(cbind(envGF.CZ.Adaptive, CZ.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CZ.Adaptive), response.vars=colnames(CZ.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CZ.temp.laying.date <- cumimp(gf.CZ.Adaptive.SNPs.temp.laying.date, "temp.laying.date")
+isub.CZ.temp.laying.date <- seq(1, length(CU.CZ.temp.laying.date$x), len=pmin(500, length(CU.CZ.temp.laying.date$x)))
+plot(CU.CZ.temp.laying.date$x[isub.CZ.temp.laying.date], CU.CZ.temp.laying.date$y[isub.CZ.temp.laying.date], type="s", ylab="Cumulative Plot", xlab="temp.laying.date", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+
+### pcpt.60d
+
+#### CHN
+```
+CU.Adapt.CHN.pcpt.60d <- cumimp(gf.CHN.Adaptive.SNPs, "pcpt.60d", "Species")
+
+head(CU.Adapt.CHN.pcpt.60d)
+imp.sp.Adapt.CHN.pcpt.60d <- sapply(CU.Adapt.CHN.pcpt.60d, function(cu) max(cu$y))
+imp.sp.Adapt.CHN.pcpt.60d
+imp.sp.Adapt.CHN.pcpt.60d.df <- as.data.frame(imp.sp.Adapt.CHN.pcpt.60d)
+imp.sp.Adapt.CHN.pcpt.60d.df$loci <- names(imp.sp.Adapt.CHN.pcpt.60d)
+imp.sp.Adapt.CHN.pcpt.60d.df$isub <- 1:nrow(imp.sp.Adapt.CHN.pcpt.60d.df)  ##index the loci
+imp.sp.Adapt.CHN.pcpt.60d.df <- imp.sp.Adapt.CHN.pcpt.60d.df[order(imp.sp.Adapt.CHN.pcpt.60d.df$imp.sp.Adapt.CHN.pcpt.60d, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHN.pcpt.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHN.pcpt.60d.df$imp.sp.Adapt.CHN.pcpt.60d)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHN.pcpt.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHN.pcpt.60d <- na.omit(subset(imp.sp.Adapt.CHN.pcpt.60d.df, imp.sp.Adapt.CHN.pcpt.60d.df>0))
+length(best.Adapt.CHN.pcpt.60d$loci)  ##get the number of loci for Table
+
+species.Adapt.CHN.pcpt.60d.names <- best.Adapt.CHN.pcpt.60d$loci  ## get the names
+CU.Adapt.CHN.pcpt.60d.best <- CU.Adapt.CHN.pcpt.60d[species.Adapt.CHN.pcpt.60d.names]
+
+isub.CHN.pcpt.60d <- best.Adapt.CHN.pcpt.60d$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHN.Adaptive)
+
+CHN.AdaptiveSNPS.sol.rad.best <- CHN.AdaptiveSNPS[isub.CHN.pcpt.60d]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHN.Adaptive)/2)
+maxLevel
+
+gf.CHN.Adaptive.SNPs.pcpt.60d <- gradientForest(cbind(envGF.CHN.Adaptive, CHN.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHN.Adaptive), response.vars=colnames(CHN.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHN.pcpt.60d <- cumimp(gf.CHN.Adaptive.SNPs.pcpt.60d, "pcpt.60d")
+isub.CHN.pcpt.60d <- seq(1, length(CU.CHN.pcpt.60d$x), len=pmin(500, length(CU.CHN.pcpt.60d$x)))
+plot(CU.CHN.pcpt.60d$x[isub.CHN.pcpt.60d], CU.CHN.pcpt.60d$y[isub.CHN.pcpt.60d], type="s", ylab="Cumulative Plot", xlab="pcpt.60d", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+
+
+#### CHS
+```
+CU.Adapt.CHS.pcpt.60d <- cumimp(gf.CHS.Adaptive.SNPs, "pcpt.60d", "Species")
+
+head(CU.Adapt.CHS.pcpt.60d)
+imp.sp.Adapt.CHS.pcpt.60d <- sapply(CU.Adapt.CHS.pcpt.60d, function(cu) max(cu$y))
+imp.sp.Adapt.CHS.pcpt.60d
+imp.sp.Adapt.CHS.pcpt.60d.df <- as.data.frame(imp.sp.Adapt.CHS.pcpt.60d)
+imp.sp.Adapt.CHS.pcpt.60d.df$loci <- names(imp.sp.Adapt.CHS.pcpt.60d)
+imp.sp.Adapt.CHS.pcpt.60d.df$isub <- 1:nrow(imp.sp.Adapt.CHS.pcpt.60d.df)  ##index the loci
+imp.sp.Adapt.CHS.pcpt.60d.df <- imp.sp.Adapt.CHS.pcpt.60d.df[order(imp.sp.Adapt.CHS.pcpt.60d.df$imp.sp.Adapt.CHS.pcpt.60d, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHS.pcpt.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHS.pcpt.60d.df$imp.sp.Adapt.CHS.pcpt.60d)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHS.pcpt.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHS.pcpt.60d <- na.omit(subset(imp.sp.Adapt.CHS.pcpt.60d.df, imp.sp.Adapt.CHS.pcpt.60d.df>0))
+length(best.Adapt.CHS.pcpt.60d$loci)  ##get the number of loci for Table
+
+species.Adapt.CHS.pcpt.60d.names <- best.Adapt.CHS.pcpt.60d$loci  ## get the names
+CU.Adapt.CHS.pcpt.60d.best <- CU.Adapt.CHS.pcpt.60d[species.Adapt.CHS.pcpt.60d.names]
+
+isub.CHS.pcpt.60d <- best.Adapt.CHS.pcpt.60d$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHS.Adaptive)
+
+CHS.AdaptiveSNPS.sol.rad.best <- CHS.AdaptiveSNPS[isub.CHS.pcpt.60d]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHS.Adaptive)/2)
+maxLevel
+
+gf.CHS.Adaptive.SNPs.pcpt.60d <- gradientForest(cbind(envGF.CHS.Adaptive, CHS.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHS.Adaptive), response.vars=colnames(CHS.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHS.pcpt.60d <- cumimp(gf.CHS.Adaptive.SNPs.pcpt.60d, "pcpt.60d")
+isub.CHS.pcpt.60d <- seq(1, length(CU.CHS.pcpt.60d$x), len=pmin(500, length(CU.CHS.pcpt.60d$x)))
+plot(CU.CHS.pcpt.60d$x[isub.CHS.pcpt.60d], CU.CHS.pcpt.60d$y[isub.CHS.pcpt.60d], type="s", ylab="Cumulative Plot", xlab="pcpt.60d", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+#### CHS.TI
+```
+CU.Adapt.CHS.TI.pcpt.60d <- cumimp(gf.CHS.TI.Adaptive.SNPs, "pcpt.60d", "Species")
+
+head(CU.Adapt.CHS.TI.pcpt.60d)
+imp.sp.Adapt.CHS.TI.pcpt.60d <- sapply(CU.Adapt.CHS.TI.pcpt.60d, function(cu) max(cu$y))
+imp.sp.Adapt.CHS.TI.pcpt.60d
+imp.sp.Adapt.CHS.TI.pcpt.60d.df <- as.data.frame(imp.sp.Adapt.CHS.TI.pcpt.60d)
+imp.sp.Adapt.CHS.TI.pcpt.60d.df$loci <- names(imp.sp.Adapt.CHS.TI.pcpt.60d)
+imp.sp.Adapt.CHS.TI.pcpt.60d.df$isub <- 1:nrow(imp.sp.Adapt.CHS.TI.pcpt.60d.df)  ##index the loci
+imp.sp.Adapt.CHS.TI.pcpt.60d.df <- imp.sp.Adapt.CHS.TI.pcpt.60d.df[order(imp.sp.Adapt.CHS.TI.pcpt.60d.df$imp.sp.Adapt.CHS.TI.pcpt.60d, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHS.TI.pcpt.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHS.TI.pcpt.60d.df$imp.sp.Adapt.CHS.TI.pcpt.60d)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHS.TI.pcpt.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHS.TI.pcpt.60d <- na.omit(subset(imp.sp.Adapt.CHS.TI.pcpt.60d.df, imp.sp.Adapt.CHS.TI.pcpt.60d.df>0))
+length(best.Adapt.CHS.TI.pcpt.60d$loci)  ##get the number of loci for Table
+
+species.Adapt.CHS.TI.pcpt.60d.names <- best.Adapt.CHS.TI.pcpt.60d$loci  ## get the names
+CU.Adapt.CHS.TI.pcpt.60d.best <- CU.Adapt.CHS.TI.pcpt.60d[species.Adapt.CHS.TI.pcpt.60d.names]
+
+isub.CHS.TI.pcpt.60d <- best.Adapt.CHS.TI.pcpt.60d$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHS.TI.Adaptive)
+
+CHS.TI.AdaptiveSNPS.sol.rad.best <- CHS.TI.AdaptiveSNPS[isub.CHS.TI.pcpt.60d]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHS.TI.Adaptive)/2)
+maxLevel
+
+gf.CHS.TI.Adaptive.SNPs.pcpt.60d <- gradientForest(cbind(envGF.CHS.TI.Adaptive, CHS.TI.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHS.TI.Adaptive), response.vars=colnames(CHS.TI.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHS.TI.pcpt.60d <- cumimp(gf.CHS.TI.Adaptive.SNPs.pcpt.60d, "pcpt.60d")
+isub.CHS.TI.pcpt.60d <- seq(1, length(CU.CHS.TI.pcpt.60d$x), len=pmin(500, length(CU.CHS.TI.pcpt.60d$x)))
+plot(CU.CHS.TI.pcpt.60d$x[isub.CHS.TI.pcpt.60d], CU.CHS.TI.pcpt.60d$y[isub.CHS.TI.pcpt.60d], type="s", ylab="Cumulative Plot", xlab="pcpt.60d", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+
+#### CHS.VS
+```
+CU.Adapt.CHS.VS.pcpt.60d <- cumimp(gf.CHS.VS.Adaptive.SNPs, "pcpt.60d", "Species")
+
+head(CU.Adapt.CHS.VS.pcpt.60d)
+imp.sp.Adapt.CHS.VS.pcpt.60d <- sapply(CU.Adapt.CHS.VS.pcpt.60d, function(cu) max(cu$y))
+imp.sp.Adapt.CHS.VS.pcpt.60d
+imp.sp.Adapt.CHS.VS.pcpt.60d.df <- as.data.frame(imp.sp.Adapt.CHS.VS.pcpt.60d)
+imp.sp.Adapt.CHS.VS.pcpt.60d.df$loci <- names(imp.sp.Adapt.CHS.VS.pcpt.60d)
+imp.sp.Adapt.CHS.VS.pcpt.60d.df$isub <- 1:nrow(imp.sp.Adapt.CHS.VS.pcpt.60d.df)  ##index the loci
+imp.sp.Adapt.CHS.VS.pcpt.60d.df <- imp.sp.Adapt.CHS.VS.pcpt.60d.df[order(imp.sp.Adapt.CHS.VS.pcpt.60d.df$imp.sp.Adapt.CHS.VS.pcpt.60d, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHS.VS.pcpt.60d.df$cumsum <- cumsum(imp.sp.Adapt.CHS.VS.pcpt.60d.df$imp.sp.Adapt.CHS.VS.pcpt.60d)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHS.VS.pcpt.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHS.VS.pcpt.60d <- na.omit(subset(imp.sp.Adapt.CHS.VS.pcpt.60d.df, imp.sp.Adapt.CHS.VS.pcpt.60d.df>0))
+length(best.Adapt.CHS.VS.pcpt.60d$loci)  ##get the number of loci for Table
+
+species.Adapt.CHS.VS.pcpt.60d.names <- best.Adapt.CHS.VS.pcpt.60d$loci  ## get the names
+CU.Adapt.CHS.VS.pcpt.60d.best <- CU.Adapt.CHS.VS.pcpt.60d[species.Adapt.CHS.VS.pcpt.60d.names]
+
+isub.CHS.VS.pcpt.60d <- best.Adapt.CHS.VS.pcpt.60d$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHS.VS.Adaptive)
+
+CHS.VS.AdaptiveSNPS.sol.rad.best <- CHS.VS.AdaptiveSNPS[isub.CHS.VS.pcpt.60d]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHS.VS.Adaptive)/2)
+maxLevel
+
+gf.CHS.VS.Adaptive.SNPs.pcpt.60d <- gradientForest(cbind(envGF.CHS.VS.Adaptive, CHS.VS.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHS.VS.Adaptive), response.vars=colnames(CHS.VS.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHS.VS.pcpt.60d <- cumimp(gf.CHS.VS.Adaptive.SNPs.pcpt.60d, "pcpt.60d")
+isub.CHS.VS.pcpt.60d <- seq(1, length(CU.CHS.VS.pcpt.60d$x), len=pmin(500, length(CU.CHS.VS.pcpt.60d$x)))
+plot(CU.CHS.VS.pcpt.60d$x[isub.CHS.VS.pcpt.60d], CU.CHS.VS.pcpt.60d$y[isub.CHS.VS.pcpt.60d], type="s", ylab="Cumulative Plot", xlab="pcpt.60d", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+#### CZ
+```
+CU.Adapt.CZ.pcpt.60d <- cumimp(gf.CZ.Adaptive.SNPs, "pcpt.60d", "Species")
+
+head(CU.Adapt.CZ.pcpt.60d)
+imp.sp.Adapt.CZ.pcpt.60d <- sapply(CU.Adapt.CZ.pcpt.60d, function(cu) max(cu$y))
+imp.sp.Adapt.CZ.pcpt.60d
+imp.sp.Adapt.CZ.pcpt.60d.df <- as.data.frame(imp.sp.Adapt.CZ.pcpt.60d)
+imp.sp.Adapt.CZ.pcpt.60d.df$loci <- names(imp.sp.Adapt.CZ.pcpt.60d)
+imp.sp.Adapt.CZ.pcpt.60d.df$isub <- 1:nrow(imp.sp.Adapt.CZ.pcpt.60d.df)  ##index the loci
+imp.sp.Adapt.CZ.pcpt.60d.df <- imp.sp.Adapt.CZ.pcpt.60d.df[order(imp.sp.Adapt.CZ.pcpt.60d.df$imp.sp.Adapt.CZ.pcpt.60d, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CZ.pcpt.60d.df$cumsum <- cumsum(imp.sp.Adapt.CZ.pcpt.60d.df$imp.sp.Adapt.CZ.pcpt.60d)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CZ.pcpt.60d.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CZ.pcpt.60d <- na.omit(subset(imp.sp.Adapt.CZ.pcpt.60d.df, imp.sp.Adapt.CZ.pcpt.60d.df>0))
+length(best.Adapt.CZ.pcpt.60d$loci)  ##get the number of loci for Table
+
+species.Adapt.CZ.pcpt.60d.names <- best.Adapt.CZ.pcpt.60d$loci  ## get the names
+CU.Adapt.CZ.pcpt.60d.best <- CU.Adapt.CZ.pcpt.60d[species.Adapt.CZ.pcpt.60d.names]
+
+isub.CZ.pcpt.60d <- best.Adapt.CZ.pcpt.60d$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CZ.Adaptive)
+
+CZ.AdaptiveSNPS.sol.rad.best <- CZ.AdaptiveSNPS[isub.CZ.pcpt.60d]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CZ.Adaptive)/2)
+maxLevel
+
+gf.CZ.Adaptive.SNPs.pcpt.60d <- gradientForest(cbind(envGF.CZ.Adaptive, CZ.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CZ.Adaptive), response.vars=colnames(CZ.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CZ.pcpt.60d <- cumimp(gf.CZ.Adaptive.SNPs.pcpt.60d, "pcpt.60d")
+isub.CZ.pcpt.60d <- seq(1, length(CU.CZ.pcpt.60d$x), len=pmin(500, length(CU.CZ.pcpt.60d$x)))
+plot(CU.CZ.pcpt.60d$x[isub.CZ.pcpt.60d], CU.CZ.pcpt.60d$y[isub.CZ.pcpt.60d], type="s", ylab="Cumulative Plot", xlab="pcpt.60d", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+
+
+### shadow.days
+
+#### CHN
+```
+CU.Adapt.CHN.shadow.days <- cumimp(gf.CHN.Adaptive.SNPs, "shadow.days", "Species")
+
+head(CU.Adapt.CHN.shadow.days)
+imp.sp.Adapt.CHN.shadow.days <- sapply(CU.Adapt.CHN.shadow.days, function(cu) max(cu$y))
+imp.sp.Adapt.CHN.shadow.days
+imp.sp.Adapt.CHN.shadow.days.df <- as.data.frame(imp.sp.Adapt.CHN.shadow.days)
+imp.sp.Adapt.CHN.shadow.days.df$loci <- names(imp.sp.Adapt.CHN.shadow.days)
+imp.sp.Adapt.CHN.shadow.days.df$isub <- 1:nrow(imp.sp.Adapt.CHN.shadow.days.df)  ##index the loci
+imp.sp.Adapt.CHN.shadow.days.df <- imp.sp.Adapt.CHN.shadow.days.df[order(imp.sp.Adapt.CHN.shadow.days.df$imp.sp.Adapt.CHN.shadow.days, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHN.shadow.days.df$cumsum <- cumsum(imp.sp.Adapt.CHN.shadow.days.df$imp.sp.Adapt.CHN.shadow.days)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHN.shadow.days.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHN.shadow.days <- na.omit(subset(imp.sp.Adapt.CHN.shadow.days.df, imp.sp.Adapt.CHN.shadow.days.df>0))
+length(best.Adapt.CHN.shadow.days$loci)  ##get the number of loci for Table
+
+species.Adapt.CHN.shadow.days.names <- best.Adapt.CHN.shadow.days$loci  ## get the names
+CU.Adapt.CHN.shadow.days.best <- CU.Adapt.CHN.shadow.days[species.Adapt.CHN.shadow.days.names]
+
+isub.CHN.shadow.days <- best.Adapt.CHN.shadow.days$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHN.Adaptive)
+
+CHN.AdaptiveSNPS.sol.rad.best <- CHN.AdaptiveSNPS[isub.CHN.shadow.days]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHN.Adaptive)/2)
+maxLevel
+
+gf.CHN.Adaptive.SNPs.shadow.days <- gradientForest(cbind(envGF.CHN.Adaptive, CHN.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHN.Adaptive), response.vars=colnames(CHN.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHN.shadow.days <- cumimp(gf.CHN.Adaptive.SNPs.shadow.days, "shadow.days")
+isub.CHN.shadow.days <- seq(1, length(CU.CHN.shadow.days$x), len=pmin(500, length(CU.CHN.shadow.days$x)))
+plot(CU.CHN.shadow.days$x[isub.CHN.shadow.days], CU.CHN.shadow.days$y[isub.CHN.shadow.days], type="s", ylab="Cumulative Plot", xlab="shadow.days", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+
+
+#### CHS
+```
+CU.Adapt.CHS.shadow.days <- cumimp(gf.CHS.Adaptive.SNPs, "shadow.days", "Species")
+
+head(CU.Adapt.CHS.shadow.days)
+imp.sp.Adapt.CHS.shadow.days <- sapply(CU.Adapt.CHS.shadow.days, function(cu) max(cu$y))
+imp.sp.Adapt.CHS.shadow.days
+imp.sp.Adapt.CHS.shadow.days.df <- as.data.frame(imp.sp.Adapt.CHS.shadow.days)
+imp.sp.Adapt.CHS.shadow.days.df$loci <- names(imp.sp.Adapt.CHS.shadow.days)
+imp.sp.Adapt.CHS.shadow.days.df$isub <- 1:nrow(imp.sp.Adapt.CHS.shadow.days.df)  ##index the loci
+imp.sp.Adapt.CHS.shadow.days.df <- imp.sp.Adapt.CHS.shadow.days.df[order(imp.sp.Adapt.CHS.shadow.days.df$imp.sp.Adapt.CHS.shadow.days, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHS.shadow.days.df$cumsum <- cumsum(imp.sp.Adapt.CHS.shadow.days.df$imp.sp.Adapt.CHS.shadow.days)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHS.shadow.days.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHS.shadow.days <- na.omit(subset(imp.sp.Adapt.CHS.shadow.days.df, imp.sp.Adapt.CHS.shadow.days.df>0))
+length(best.Adapt.CHS.shadow.days$loci)  ##get the number of loci for Table
+
+species.Adapt.CHS.shadow.days.names <- best.Adapt.CHS.shadow.days$loci  ## get the names
+CU.Adapt.CHS.shadow.days.best <- CU.Adapt.CHS.shadow.days[species.Adapt.CHS.shadow.days.names]
+
+isub.CHS.shadow.days <- best.Adapt.CHS.shadow.days$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHS.Adaptive)
+
+CHS.AdaptiveSNPS.sol.rad.best <- CHS.AdaptiveSNPS[isub.CHS.shadow.days]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHS.Adaptive)/2)
+maxLevel
+
+gf.CHS.Adaptive.SNPs.shadow.days <- gradientForest(cbind(envGF.CHS.Adaptive, CHS.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHS.Adaptive), response.vars=colnames(CHS.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHS.shadow.days <- cumimp(gf.CHS.Adaptive.SNPs.shadow.days, "shadow.days")
+isub.CHS.shadow.days <- seq(1, length(CU.CHS.shadow.days$x), len=pmin(500, length(CU.CHS.shadow.days$x)))
+plot(CU.CHS.shadow.days$x[isub.CHS.shadow.days], CU.CHS.shadow.days$y[isub.CHS.shadow.days], type="s", ylab="Cumulative Plot", xlab="shadow.days", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+#### CHS.TI
+```
+CU.Adapt.CHS.TI.shadow.days <- cumimp(gf.CHS.TI.Adaptive.SNPs, "shadow.days", "Species")
+
+head(CU.Adapt.CHS.TI.shadow.days)
+imp.sp.Adapt.CHS.TI.shadow.days <- sapply(CU.Adapt.CHS.TI.shadow.days, function(cu) max(cu$y))
+imp.sp.Adapt.CHS.TI.shadow.days
+imp.sp.Adapt.CHS.TI.shadow.days.df <- as.data.frame(imp.sp.Adapt.CHS.TI.shadow.days)
+imp.sp.Adapt.CHS.TI.shadow.days.df$loci <- names(imp.sp.Adapt.CHS.TI.shadow.days)
+imp.sp.Adapt.CHS.TI.shadow.days.df$isub <- 1:nrow(imp.sp.Adapt.CHS.TI.shadow.days.df)  ##index the loci
+imp.sp.Adapt.CHS.TI.shadow.days.df <- imp.sp.Adapt.CHS.TI.shadow.days.df[order(imp.sp.Adapt.CHS.TI.shadow.days.df$imp.sp.Adapt.CHS.TI.shadow.days, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHS.TI.shadow.days.df$cumsum <- cumsum(imp.sp.Adapt.CHS.TI.shadow.days.df$imp.sp.Adapt.CHS.TI.shadow.days)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHS.TI.shadow.days.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHS.TI.shadow.days <- na.omit(subset(imp.sp.Adapt.CHS.TI.shadow.days.df, imp.sp.Adapt.CHS.TI.shadow.days.df>0))
+length(best.Adapt.CHS.TI.shadow.days$loci)  ##get the number of loci for Table
+
+species.Adapt.CHS.TI.shadow.days.names <- best.Adapt.CHS.TI.shadow.days$loci  ## get the names
+CU.Adapt.CHS.TI.shadow.days.best <- CU.Adapt.CHS.TI.shadow.days[species.Adapt.CHS.TI.shadow.days.names]
+
+isub.CHS.TI.shadow.days <- best.Adapt.CHS.TI.shadow.days$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHS.TI.Adaptive)
+
+CHS.TI.AdaptiveSNPS.sol.rad.best <- CHS.TI.AdaptiveSNPS[isub.CHS.TI.shadow.days]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHS.TI.Adaptive)/2)
+maxLevel
+
+gf.CHS.TI.Adaptive.SNPs.shadow.days <- gradientForest(cbind(envGF.CHS.TI.Adaptive, CHS.TI.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHS.TI.Adaptive), response.vars=colnames(CHS.TI.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHS.TI.shadow.days <- cumimp(gf.CHS.TI.Adaptive.SNPs.shadow.days, "shadow.days")
+isub.CHS.TI.shadow.days <- seq(1, length(CU.CHS.TI.shadow.days$x), len=pmin(500, length(CU.CHS.TI.shadow.days$x)))
+plot(CU.CHS.TI.shadow.days$x[isub.CHS.TI.shadow.days], CU.CHS.TI.shadow.days$y[isub.CHS.TI.shadow.days], type="s", ylab="Cumulative Plot", xlab="shadow.days", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+
+#### CHS.VS
+```
+CU.Adapt.CHS.VS.shadow.days <- cumimp(gf.CHS.VS.Adaptive.SNPs, "shadow.days", "Species")
+
+head(CU.Adapt.CHS.VS.shadow.days)
+imp.sp.Adapt.CHS.VS.shadow.days <- sapply(CU.Adapt.CHS.VS.shadow.days, function(cu) max(cu$y))
+imp.sp.Adapt.CHS.VS.shadow.days
+imp.sp.Adapt.CHS.VS.shadow.days.df <- as.data.frame(imp.sp.Adapt.CHS.VS.shadow.days)
+imp.sp.Adapt.CHS.VS.shadow.days.df$loci <- names(imp.sp.Adapt.CHS.VS.shadow.days)
+imp.sp.Adapt.CHS.VS.shadow.days.df$isub <- 1:nrow(imp.sp.Adapt.CHS.VS.shadow.days.df)  ##index the loci
+imp.sp.Adapt.CHS.VS.shadow.days.df <- imp.sp.Adapt.CHS.VS.shadow.days.df[order(imp.sp.Adapt.CHS.VS.shadow.days.df$imp.sp.Adapt.CHS.VS.shadow.days, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHS.VS.shadow.days.df$cumsum <- cumsum(imp.sp.Adapt.CHS.VS.shadow.days.df$imp.sp.Adapt.CHS.VS.shadow.days)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHS.VS.shadow.days.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHS.VS.shadow.days <- na.omit(subset(imp.sp.Adapt.CHS.VS.shadow.days.df, imp.sp.Adapt.CHS.VS.shadow.days.df>0))
+length(best.Adapt.CHS.VS.shadow.days$loci)  ##get the number of loci for Table
+
+species.Adapt.CHS.VS.shadow.days.names <- best.Adapt.CHS.VS.shadow.days$loci  ## get the names
+CU.Adapt.CHS.VS.shadow.days.best <- CU.Adapt.CHS.VS.shadow.days[species.Adapt.CHS.VS.shadow.days.names]
+
+isub.CHS.VS.shadow.days <- best.Adapt.CHS.VS.shadow.days$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+
+##here We’ll use the full Adaptive model, since no loci are left/important
+```
+colnames(envGF.CHS.VS.Adaptive)
+
+CHS.VS.AdaptiveSNPS.sol.rad.best <- CHS.VS.AdaptiveSNPS[isub.CHS.VS.shadow.days]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHS.VS.Adaptive)/2)
+maxLevel
+
+gf.CHS.VS.Adaptive.SNPs.shadow.days <- gradientForest(cbind(envGF.CHS.VS.Adaptive, CHS.VS.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHS.VS.Adaptive), response.vars=colnames(CHS.VS.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHS.VS.shadow.days <- cumimp(gf.CHS.VS.Adaptive.SNPs.shadow.days, "shadow.days")
+isub.CHS.VS.shadow.days <- seq(1, length(CU.CHS.VS.shadow.days$x), len=pmin(500, length(CU.CHS.VS.shadow.days$x)))
+plot(CU.CHS.VS.shadow.days$x[isub.CHS.VS.shadow.days], CU.CHS.VS.shadow.days$y[isub.CHS.VS.shadow.days], type="s", ylab="Cumulative Plot", xlab="shadow.days", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+#### CZ
+```
+CU.Adapt.CZ.shadow.days <- cumimp(gf.CZ.Adaptive.SNPs, "shadow.days", "Species")
+
+head(CU.Adapt.CZ.shadow.days)
+imp.sp.Adapt.CZ.shadow.days <- sapply(CU.Adapt.CZ.shadow.days, function(cu) max(cu$y))
+imp.sp.Adapt.CZ.shadow.days
+imp.sp.Adapt.CZ.shadow.days.df <- as.data.frame(imp.sp.Adapt.CZ.shadow.days)
+imp.sp.Adapt.CZ.shadow.days.df$loci <- names(imp.sp.Adapt.CZ.shadow.days)
+imp.sp.Adapt.CZ.shadow.days.df$isub <- 1:nrow(imp.sp.Adapt.CZ.shadow.days.df)  ##index the loci
+imp.sp.Adapt.CZ.shadow.days.df <- imp.sp.Adapt.CZ.shadow.days.df[order(imp.sp.Adapt.CZ.shadow.days.df$imp.sp.Adapt.CZ.shadow.days, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CZ.shadow.days.df$cumsum <- cumsum(imp.sp.Adapt.CZ.shadow.days.df$imp.sp.Adapt.CZ.shadow.days)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CZ.shadow.days.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CZ.shadow.days <- na.omit(subset(imp.sp.Adapt.CZ.shadow.days.df, imp.sp.Adapt.CZ.shadow.days.df>0))
+length(best.Adapt.CZ.shadow.days$loci)  ##get the number of loci for Table
+
+species.Adapt.CZ.shadow.days.names <- best.Adapt.CZ.shadow.days$loci  ## get the names
+CU.Adapt.CZ.shadow.days.best <- CU.Adapt.CZ.shadow.days[species.Adapt.CZ.shadow.days.names]
+
+isub.CZ.shadow.days <- best.Adapt.CZ.shadow.days$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CZ.Adaptive)
+
+CZ.AdaptiveSNPS.sol.rad.best <- CZ.AdaptiveSNPS[isub.CZ.shadow.days]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CZ.Adaptive)/2)
+maxLevel
+
+gf.CZ.Adaptive.SNPs.shadow.days <- gradientForest(cbind(envGF.CZ.Adaptive, CZ.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CZ.Adaptive), response.vars=colnames(CZ.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CZ.shadow.days <- cumimp(gf.CZ.Adaptive.SNPs.shadow.days, "shadow.days")
+isub.CZ.shadow.days <- seq(1, length(CU.CZ.shadow.days$x), len=pmin(500, length(CU.CZ.shadow.days$x)))
+plot(CU.CZ.shadow.days$x[isub.CZ.shadow.days], CU.CZ.shadow.days$y[isub.CZ.shadow.days], type="s", ylab="Cumulative Plot", xlab="shadow.days", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+
+
+### day10cm
+
+#### CHN
+```
+CU.Adapt.CHN.day10cm <- cumimp(gf.CHN.Adaptive.SNPs, "day10cm", "Species")
+
+head(CU.Adapt.CHN.day10cm)
+imp.sp.Adapt.CHN.day10cm <- sapply(CU.Adapt.CHN.day10cm, function(cu) max(cu$y))
+imp.sp.Adapt.CHN.day10cm
+imp.sp.Adapt.CHN.day10cm.df <- as.data.frame(imp.sp.Adapt.CHN.day10cm)
+imp.sp.Adapt.CHN.day10cm.df$loci <- names(imp.sp.Adapt.CHN.day10cm)
+imp.sp.Adapt.CHN.day10cm.df$isub <- 1:nrow(imp.sp.Adapt.CHN.day10cm.df)  ##index the loci
+imp.sp.Adapt.CHN.day10cm.df <- imp.sp.Adapt.CHN.day10cm.df[order(imp.sp.Adapt.CHN.day10cm.df$imp.sp.Adapt.CHN.day10cm, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHN.day10cm.df$cumsum <- cumsum(imp.sp.Adapt.CHN.day10cm.df$imp.sp.Adapt.CHN.day10cm)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHN.day10cm.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHN.day10cm <- na.omit(subset(imp.sp.Adapt.CHN.day10cm.df, imp.sp.Adapt.CHN.day10cm.df>0))
+length(best.Adapt.CHN.day10cm$loci)  ##get the number of loci for Table
+
+species.Adapt.CHN.day10cm.names <- best.Adapt.CHN.day10cm$loci  ## get the names
+CU.Adapt.CHN.day10cm.best <- CU.Adapt.CHN.day10cm[species.Adapt.CHN.day10cm.names]
+
+isub.CHN.day10cm <- best.Adapt.CHN.day10cm$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHN.Adaptive)
+
+CHN.AdaptiveSNPS.sol.rad.best <- CHN.AdaptiveSNPS[isub.CHN.day10cm]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHN.Adaptive)/2)
+maxLevel
+
+gf.CHN.Adaptive.SNPs.day10cm <- gradientForest(cbind(envGF.CHN.Adaptive, CHN.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHN.Adaptive), response.vars=colnames(CHN.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHN.day10cm <- cumimp(gf.CHN.Adaptive.SNPs.day10cm, "day10cm")
+isub.CHN.day10cm <- seq(1, length(CU.CHN.day10cm$x), len=pmin(500, length(CU.CHN.day10cm$x)))
+plot(CU.CHN.day10cm$x[isub.CHN.day10cm], CU.CHN.day10cm$y[isub.CHN.day10cm], type="s", ylab="Cumulative Plot", xlab="day10cm", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+
+
+#### CHS
+```
+CU.Adapt.CHS.day10cm <- cumimp(gf.CHS.Adaptive.SNPs, "day10cm", "Species")
+
+head(CU.Adapt.CHS.day10cm)
+imp.sp.Adapt.CHS.day10cm <- sapply(CU.Adapt.CHS.day10cm, function(cu) max(cu$y))
+imp.sp.Adapt.CHS.day10cm
+imp.sp.Adapt.CHS.day10cm.df <- as.data.frame(imp.sp.Adapt.CHS.day10cm)
+imp.sp.Adapt.CHS.day10cm.df$loci <- names(imp.sp.Adapt.CHS.day10cm)
+imp.sp.Adapt.CHS.day10cm.df$isub <- 1:nrow(imp.sp.Adapt.CHS.day10cm.df)  ##index the loci
+imp.sp.Adapt.CHS.day10cm.df <- imp.sp.Adapt.CHS.day10cm.df[order(imp.sp.Adapt.CHS.day10cm.df$imp.sp.Adapt.CHS.day10cm, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHS.day10cm.df$cumsum <- cumsum(imp.sp.Adapt.CHS.day10cm.df$imp.sp.Adapt.CHS.day10cm)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHS.day10cm.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHS.day10cm <- na.omit(subset(imp.sp.Adapt.CHS.day10cm.df, imp.sp.Adapt.CHS.day10cm.df>0))
+length(best.Adapt.CHS.day10cm$loci)  ##get the number of loci for Table
+
+species.Adapt.CHS.day10cm.names <- best.Adapt.CHS.day10cm$loci  ## get the names
+CU.Adapt.CHS.day10cm.best <- CU.Adapt.CHS.day10cm[species.Adapt.CHS.day10cm.names]
+
+isub.CHS.day10cm <- best.Adapt.CHS.day10cm$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHS.Adaptive)
+
+CHS.AdaptiveSNPS.sol.rad.best <- CHS.AdaptiveSNPS[isub.CHS.day10cm]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHS.Adaptive)/2)
+maxLevel
+
+gf.CHS.Adaptive.SNPs.day10cm <- gradientForest(cbind(envGF.CHS.Adaptive, CHS.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHS.Adaptive), response.vars=colnames(CHS.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHS.day10cm <- cumimp(gf.CHS.Adaptive.SNPs.day10cm, "day10cm")
+isub.CHS.day10cm <- seq(1, length(CU.CHS.day10cm$x), len=pmin(500, length(CU.CHS.day10cm$x)))
+plot(CU.CHS.day10cm$x[isub.CHS.day10cm], CU.CHS.day10cm$y[isub.CHS.day10cm], type="s", ylab="Cumulative Plot", xlab="day10cm", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+#### CHS.TI
+```
+CU.Adapt.CHS.TI.day10cm <- cumimp(gf.CHS.TI.Adaptive.SNPs, "day10cm", "Species")
+
+head(CU.Adapt.CHS.TI.day10cm)
+imp.sp.Adapt.CHS.TI.day10cm <- sapply(CU.Adapt.CHS.TI.day10cm, function(cu) max(cu$y))
+imp.sp.Adapt.CHS.TI.day10cm
+imp.sp.Adapt.CHS.TI.day10cm.df <- as.data.frame(imp.sp.Adapt.CHS.TI.day10cm)
+imp.sp.Adapt.CHS.TI.day10cm.df$loci <- names(imp.sp.Adapt.CHS.TI.day10cm)
+imp.sp.Adapt.CHS.TI.day10cm.df$isub <- 1:nrow(imp.sp.Adapt.CHS.TI.day10cm.df)  ##index the loci
+imp.sp.Adapt.CHS.TI.day10cm.df <- imp.sp.Adapt.CHS.TI.day10cm.df[order(imp.sp.Adapt.CHS.TI.day10cm.df$imp.sp.Adapt.CHS.TI.day10cm, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHS.TI.day10cm.df$cumsum <- cumsum(imp.sp.Adapt.CHS.TI.day10cm.df$imp.sp.Adapt.CHS.TI.day10cm)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHS.TI.day10cm.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHS.TI.day10cm <- na.omit(subset(imp.sp.Adapt.CHS.TI.day10cm.df, imp.sp.Adapt.CHS.TI.day10cm.df>0))
+length(best.Adapt.CHS.TI.day10cm$loci)  ##get the number of loci for Table
+
+species.Adapt.CHS.TI.day10cm.names <- best.Adapt.CHS.TI.day10cm$loci  ## get the names
+CU.Adapt.CHS.TI.day10cm.best <- CU.Adapt.CHS.TI.day10cm[species.Adapt.CHS.TI.day10cm.names]
+
+isub.CHS.TI.day10cm <- best.Adapt.CHS.TI.day10cm$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CHS.TI.Adaptive)
+
+CHS.TI.AdaptiveSNPS.sol.rad.best <- CHS.TI.AdaptiveSNPS[isub.CHS.TI.day10cm]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHS.TI.Adaptive)/2)
+maxLevel
+
+gf.CHS.TI.Adaptive.SNPs.day10cm <- gradientForest(cbind(envGF.CHS.TI.Adaptive, CHS.TI.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHS.TI.Adaptive), response.vars=colnames(CHS.TI.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHS.TI.day10cm <- cumimp(gf.CHS.TI.Adaptive.SNPs.day10cm, "day10cm")
+isub.CHS.TI.day10cm <- seq(1, length(CU.CHS.TI.day10cm$x), len=pmin(500, length(CU.CHS.TI.day10cm$x)))
+plot(CU.CHS.TI.day10cm$x[isub.CHS.TI.day10cm], CU.CHS.TI.day10cm$y[isub.CHS.TI.day10cm], type="s", ylab="Cumulative Plot", xlab="day10cm", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+
+#### CHS.VS
+```
+CU.Adapt.CHS.VS.day10cm <- cumimp(gf.CHS.VS.Adaptive.SNPs, "day10cm", "Species")
+
+head(CU.Adapt.CHS.VS.day10cm)
+imp.sp.Adapt.CHS.VS.day10cm <- sapply(CU.Adapt.CHS.VS.day10cm, function(cu) max(cu$y))
+imp.sp.Adapt.CHS.VS.day10cm
+imp.sp.Adapt.CHS.VS.day10cm.df <- as.data.frame(imp.sp.Adapt.CHS.VS.day10cm)
+imp.sp.Adapt.CHS.VS.day10cm.df$loci <- names(imp.sp.Adapt.CHS.VS.day10cm)
+imp.sp.Adapt.CHS.VS.day10cm.df$isub <- 1:nrow(imp.sp.Adapt.CHS.VS.day10cm.df)  ##index the loci
+imp.sp.Adapt.CHS.VS.day10cm.df <- imp.sp.Adapt.CHS.VS.day10cm.df[order(imp.sp.Adapt.CHS.VS.day10cm.df$imp.sp.Adapt.CHS.VS.day10cm, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CHS.VS.day10cm.df$cumsum <- cumsum(imp.sp.Adapt.CHS.VS.day10cm.df$imp.sp.Adapt.CHS.VS.day10cm)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CHS.VS.day10cm.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CHS.VS.day10cm <- na.omit(subset(imp.sp.Adapt.CHS.VS.day10cm.df, imp.sp.Adapt.CHS.VS.day10cm.df>0))
+length(best.Adapt.CHS.VS.day10cm$loci)  ##get the number of loci for Table
+
+species.Adapt.CHS.VS.day10cm.names <- best.Adapt.CHS.VS.day10cm$loci  ## get the names
+CU.Adapt.CHS.VS.day10cm.best <- CU.Adapt.CHS.VS.day10cm[species.Adapt.CHS.VS.day10cm.names]
+
+isub.CHS.VS.day10cm <- best.Adapt.CHS.VS.day10cm$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+
+##here We’ll use the full Adaptive model, since no loci are left/important
+```
+colnames(envGF.CHS.VS.Adaptive)
+
+CHS.VS.AdaptiveSNPS.sol.rad.best <- CHS.VS.AdaptiveSNPS[isub.CHS.VS.day10cm]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CHS.VS.Adaptive)/2)
+maxLevel
+
+gf.CHS.VS.Adaptive.SNPs.day10cm <- gradientForest(cbind(envGF.CHS.VS.Adaptive, CHS.VS.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CHS.VS.Adaptive), response.vars=colnames(CHS.VS.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CHS.VS.day10cm <- cumimp(gf.CHS.VS.Adaptive.SNPs.day10cm, "day10cm")
+isub.CHS.VS.day10cm <- seq(1, length(CU.CHS.VS.day10cm$x), len=pmin(500, length(CU.CHS.VS.day10cm$x)))
+plot(CU.CHS.VS.day10cm$x[isub.CHS.VS.day10cm], CU.CHS.VS.day10cm$y[isub.CHS.VS.day10cm], type="s", ylab="Cumulative Plot", xlab="day10cm", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+#### CZ
+```
+CU.Adapt.CZ.day10cm <- cumimp(gf.CZ.Adaptive.SNPs, "day10cm", "Species")
+
+head(CU.Adapt.CZ.day10cm)
+imp.sp.Adapt.CZ.day10cm <- sapply(CU.Adapt.CZ.day10cm, function(cu) max(cu$y))
+imp.sp.Adapt.CZ.day10cm
+imp.sp.Adapt.CZ.day10cm.df <- as.data.frame(imp.sp.Adapt.CZ.day10cm)
+imp.sp.Adapt.CZ.day10cm.df$loci <- names(imp.sp.Adapt.CZ.day10cm)
+imp.sp.Adapt.CZ.day10cm.df$isub <- 1:nrow(imp.sp.Adapt.CZ.day10cm.df)  ##index the loci
+imp.sp.Adapt.CZ.day10cm.df <- imp.sp.Adapt.CZ.day10cm.df[order(imp.sp.Adapt.CZ.day10cm.df$imp.sp.Adapt.CZ.day10cm, decreasing=T),]  ##order
+
+library(data.table)
+imp.sp.Adapt.CZ.day10cm.df$cumsum <- cumsum(imp.sp.Adapt.CZ.day10cm.df$imp.sp.Adapt.CZ.day10cm)  ##add a column that is the cumulative sum of all the loci
+
+hist(imp.sp.Adapt.CZ.day10cm.df$cumsum, breaks=69)  ##figure of the cumulative importance over all the loci
+
+##Select only the loci that contribute to the cumulative importance. 
+
+best.Adapt.CZ.day10cm <- na.omit(subset(imp.sp.Adapt.CZ.day10cm.df, imp.sp.Adapt.CZ.day10cm.df>0))
+length(best.Adapt.CZ.day10cm$loci)  ##get the number of loci for Table
+
+species.Adapt.CZ.day10cm.names <- best.Adapt.CZ.day10cm$loci  ## get the names
+CU.Adapt.CZ.day10cm.best <- CU.Adapt.CZ.day10cm[species.Adapt.CZ.day10cm.names]
+
+isub.CZ.day10cm <- best.Adapt.CZ.day10cm$isub
+```
+
+###Now I have to rerun GF using only those loci for this env variable
+```
+colnames(envGF.CZ.Adaptive)
+
+CZ.AdaptiveSNPS.sol.rad.best <- CZ.AdaptiveSNPS[isub.CZ.day10cm]  ##select only those snps
+
+maxLevel <- log2(0.368*nrow(envGF.CZ.Adaptive)/2)
+maxLevel
+
+gf.CZ.Adaptive.SNPs.day10cm <- gradientForest(cbind(envGF.CZ.Adaptive, CZ.AdaptiveSNPS.sol.rad.best), predictor.vars=colnames(envGF.CZ.Adaptive), response.vars=colnames(CZ.AdaptiveSNPS.sol.rad.best), ntree=2000, nbin =1001,maxLevel=maxLevel, trace=T, corr.threshold=0.5)
+
+CU.CZ.day10cm <- cumimp(gf.CZ.Adaptive.SNPs.day10cm, "day10cm")
+isub.CZ.day10cm <- seq(1, length(CU.CZ.day10cm$x), len=pmin(500, length(CU.CZ.day10cm$x)))
+plot(CU.CZ.day10cm$x[isub.CZ.day10cm], CU.CZ.day10cm$y[isub.CZ.day10cm], type="s", ylab="Cumulative Plot", xlab="day10cm", ylim=c(0,0.12), lty=1, lwd=1.5)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
 ###define the new CU without species info, so that we can draw a cumulative plot
 CU.Adapt.CHN.sol.rad.60d <- cumimp(gf.CHN.Adaptive.SNPs, "sol.rad.60d")
 
@@ -2567,9 +3675,9 @@ plot(CU.season.best$X.249703.61, xlim=c(0,260), ylim=c(0,0.5), type="l")
 par(new=T)
 plot(CU.season.best$X.1419042.71, xlim=c(0,260), ylim=c(0,0.5), type="l")
 
-
-
-
 ```
+
+
+
 
 
