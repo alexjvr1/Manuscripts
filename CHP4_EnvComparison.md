@@ -1,7 +1,7 @@
 # Env Comparison
 
 
-##SE
+## SE
 ```
 ###Season
 
@@ -21,6 +21,10 @@ fit.SE.season.linearmodel <- augment(SE.season.linearmodel)
 p1.SE.season.linearmodel <- ggplot(fit.SE.season.linearmodel, aes(x=SE.variables.Lat, y=SE.variables.days.6.degrees)) + geom_point(color="steelblue3") + geom_line(aes(x=SE.variables.Lat, y=.fitted), size=2)
 
 
+pdf("SE.Season.Env.model.pdf")
+p1.SE.season.linearmodel
+dev.off()
+
 ###Mean Temp
 
 SE.variables <- read.csv("SE.Derived.EnvData_20171009.csv", header=T)
@@ -36,8 +40,12 @@ Anova(SE.temp.linearmodel)
 
 fit.SE.temp.linearmodel <- augment(SE.temp.linearmodel)
 
+
 p1.SE.temp.linearmodel <- ggplot(fit.SE.temp.linearmodel, aes(x=SE.variables.Lat, y=SE.variables.mean.temp.60.days)) + geom_point(color="steelblue3") + geom_line(aes(x=SE.variables.Lat, y=.fitted), size=2)
 
+pdf("SE.Temp.Env.model.pdf")
+p1.SE.temp.linearmodel
+dev.off()
 ```
 
 
@@ -61,9 +69,13 @@ fit.Temp.CHS.VS.TI$colour <- gsub("CHS.TI", "thistle3", fit.Temp.CHS.VS.TI$CHS.V
 fit.Temp.CHS.VS.TI$colour <- gsub("CHS.VS", "mediumpurple4", fit.Temp.CHS.VS.TI$colour)
 fit.Temp.CHS.VS.TI$elev <- CHS.VS.TIonly.EnvData$elev
 
+
 p1.mean.temp.60d.CHS.TI.VS <- ggplot(fit.Temp.CHS.VS.TI, aes(x=elev, y=CHS.VS.TIonly.EnvData.mean.temp.60d, group=CHS.VS.TIonly.EnvData.Transect)) + geom_point(color=fit.Temp.CHS.VS.TI$colour) + geom_line(aes(x=elev, y=.fitted, group=CHS.VS.TIonly.EnvData.Transect, colour=CHS.VS.TIonly.EnvData.Transect,
 color=fit.Temp.CHS.VS.TI$colour), size=2) + scale_colour_manual(values= c("CHS.TI"="thistle3", "CHS.VS"="mediumpurple4"))
 
+pdf("CHS.TI.VS.Temp.Env.model.pdf")
+p1.mean.temp.60d.CHS.TI.VS
+dev.off()
 
 ##Season
 Season.fit.CHS.VS.TI <- lm(formula = CHS.VS.TIonly.EnvData$days.above.6 ~ CHS.VS.TIonly.EnvData$elev.c + 
@@ -80,6 +92,10 @@ fit.Season.CHS.VS.TI$elev <- CHS.VS.TIonly.EnvData$elev
 p2.Season.CHS.TI.VS <- ggplot(fit.Season.CHS.VS.TI, aes(x=elev, y=CHS.VS.TIonly.EnvData.days.above.6, group=CHS.VS.TIonly.EnvData.Transect)) + geom_point(color=fit.Season.CHS.VS.TI$colour) + geom_line(aes(x=elev, y=.fitted, group=CHS.VS.TIonly.EnvData.Transect, colour=CHS.VS.TIonly.EnvData.Transect,
 color=fit.Season.CHS.VS.TI$colour), size=2) + scale_colour_manual(values= c("CHS.TI"="thistle3", "CHS.VS"="mediumpurple4"))
 
+
+pdf("CHS.TI.VS.Season.Env.model.pdf")
+p2.Season.CHS.TI.VS
+dev.off()
 ```
 
 
@@ -111,6 +127,10 @@ fit.Temp.CHall$elev <- CH.EnvData$elev
 p1.Temp.CHall <- ggplot(fit.Temp.CHall, aes(x=elev, y=CH.EnvData.mean.temp.60d, group=CH.EnvData.Transect2)) + geom_point(color=fit.Temp.CHall$colour) + geom_line(aes(x=elev, y=.fitted, group=CH.EnvData.Transect2, colour=CH.EnvData.Transect2,
 color=fit.Temp.CHall$colour), size=2) + scale_colour_manual(values= c("CHN"="palegreen3", "CHS"="mediumpurple4", CZ="skyblue3"))
 
+pdf("CHall.Temp.Env.model.pdf")
+p1.Temp.CHall
+dev.off()
+
 
 ##Season
 Season.fit.CHall <- lm(formula = CH.EnvData$days.above.6 ~ CH.EnvData$elev.c + 
@@ -128,5 +148,7 @@ fit.Season.CHall$elev <- CH.EnvData$elev
 p2.Season.CHall <- ggplot(fit.Season.CHall, aes(x=elev, y=CH.EnvData.days.above.6, group=CH.EnvData.Transect2)) + geom_point(color=fit.Season.CHall$colour) + geom_line(aes(x=elev, y=.fitted, group=CH.EnvData.Transect2, colour=CH.EnvData.Transect2,
 color=fit.Season.CHall$colour), size=2) + scale_colour_manual(values= c("CHN"="palegreen3", "CHS"="mediumpurple4", CZ="skyblue3"))
 
-
+pdf("CHall.Season.Env.model.pdf")
+p2.Season.CHall
+dev.off()
 ```
