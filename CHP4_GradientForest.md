@@ -2369,13 +2369,13 @@ R.sq.Neutral <- (rowMeans(gf.CHN.Neutral.SNPs$imp.rsq, na.rm=T))
 R.sq.Neutral <- as.data.frame(R.sq.Neutral)
 
 ##we're only interested in the first 7 variables
-R.sq.CHN.EnvVariables <- R.sq.CHN.TempLoci[1:7,]  #get the first 8 rows from the Adaptive dataset
+R.sq.CHN.EnvVariables <- R.sq.CHN.TempLoci[1:5,]  #get the first 8 rows from the Adaptive dataset
 R.sq.CHN.EnvVariables <- as.data.frame(R.sq.CHN.EnvVariables)
 colnames(R.sq.CHN.EnvVariables) <- "TempLoci"
 row.names(R.sq.CHN.EnvVariables) <- c("dist", "mean.temp", "season.length", "MEM1", "MEM2", "MEM3", "MEM4")
 
-R.sq.CHN.EnvVariables$SeasonLoci <- R.sq.CHN.SeasonLoci[1:7,] 
-R.sq.CHN.EnvVariables$Neutral <- R.sq.Neutral[1:7,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
+R.sq.CHN.EnvVariables$SeasonLoci <- R.sq.CHN.SeasonLoci[1:5,] 
+R.sq.CHN.EnvVariables$Neutral <- R.sq.Neutral[1:5,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
 
 R.sq.CHN.EnvVariables <- as.matrix(R.sq.CHN.EnvVariables)  ##turn into matrix for heatmap
 R.sq.CHN.all.melt <- melt(R.sq.CHN.EnvVariables)  ##melt for ggplot heatmap
@@ -2412,13 +2412,13 @@ R.sq.Neutral <- (rowMeans(gf.CHS.Neutral.SNPs$imp.rsq, na.rm=T))
 R.sq.Neutral <- as.data.frame(R.sq.Neutral)
 
 ##we're only interested in the first 8 variables
-R.sq.CHS.EnvVariables <- R.sq.CHS.TempLoci[1:8,]  #get the first 8 rows from the Adaptive dataset
+R.sq.CHS.EnvVariables <- R.sq.CHS.TempLoci[1:5,]  #get the first 8 rows from the Adaptive dataset
 R.sq.CHS.EnvVariables <- as.data.frame(R.sq.CHS.EnvVariables)
 colnames(R.sq.CHS.EnvVariables) <- "TempLoci"
 row.names(R.sq.CHS.EnvVariables) <- c("dist", "mean.temp", "season.length", "MEM1", "MEM2", "MEM3", "MEM4", "MEM5")
 
-R.sq.CHS.EnvVariables$SeasonLoci <- R.sq.CHS.SeasonLoci[1:8,] 
-R.sq.CHS.EnvVariables$Neutral <- R.sq.Neutral[1:8,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
+R.sq.CHS.EnvVariables$SeasonLoci <- R.sq.CHS.SeasonLoci[1:5,] 
+R.sq.CHS.EnvVariables$Neutral <- R.sq.Neutral[1:5,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
 
 R.sq.CHS.EnvVariables <- as.matrix(R.sq.CHS.EnvVariables)  ##turn into matrix for heatmap
 R.sq.CHS.all.melt <- melt(R.sq.CHS.EnvVariables)  ##melt for ggplot heatmap
@@ -2455,13 +2455,13 @@ R.sq.Neutral <- (rowMeans(gf.CZ.Neutral.SNPs$imp.rsq, na.rm=T))
 R.sq.Neutral <- as.data.frame(R.sq.Neutral)
 
 ##we're only interested in the first 11 variables
-R.sq.CZ.EnvVariables <- R.sq.CZ.TempLoci[1:11,]  #get the first 8 rows from the Adaptive dataset
+R.sq.CZ.EnvVariables <- R.sq.CZ.TempLoci[1:5,]  #get the first 8 rows from the Adaptive dataset
 R.sq.CZ.EnvVariables <- as.data.frame(R.sq.CZ.EnvVariables)
 colnames(R.sq.CZ.EnvVariables) <- "TempLoci"
 row.names(R.sq.CZ.EnvVariables) <- c("dist", "mean.temp", "season.length", "MEM1", "MEM2", "MEM3", "MEM4", "MEM5", "MEM6", "MEM7", "MEM8")
 
-R.sq.CZ.EnvVariables$SeasonLoci <- R.sq.CZ.SeasonLoci[1:11,] 
-R.sq.CZ.EnvVariables$Neutral <- R.sq.Neutral[1:11,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
+R.sq.CZ.EnvVariables$SeasonLoci <- R.sq.CZ.SeasonLoci[1:5,] 
+R.sq.CZ.EnvVariables$Neutral <- R.sq.Neutral[1:5,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
 
 R.sq.CZ.EnvVariables <- as.matrix(R.sq.CZ.EnvVariables)  ##turn into matrix for heatmap
 R.sq.CZ.all.melt <- melt(R.sq.CZ.EnvVariables)  ##melt for ggplot heatmap
@@ -2542,13 +2542,13 @@ R.sq.Neutral <- (rowMeans(gf.CHS.TI.Neutral.SNPs$imp.rsq, na.rm=T))
 R.sq.Neutral <- as.data.frame(R.sq.Neutral)
 
 ##we're only interested in the first 6 variables
-R.sq.CHS.TI.EnvVariables <- R.sq.CHS.TI.TempLoci[1:6,]  #get the first 8 rows from the Adaptive dataset
+R.sq.CHS.TI.EnvVariables <- R.sq.CHS.TI.TempLoci[1:5,]  #get the first 8 rows from the Adaptive dataset
 R.sq.CHS.TI.EnvVariables <- as.data.frame(R.sq.CHS.TI.EnvVariables)
 colnames(R.sq.CHS.TI.EnvVariables) <- "TempLoci"
 row.names(R.sq.CHS.TI.EnvVariables) <- c("dist", "mean.temp", "season.length", "MEM1", "MEM2", "MEM3")
 
-R.sq.CHS.TI.EnvVariables$SeasonLoci <- R.sq.CHS.TI.SeasonLoci[1:6,] 
-R.sq.CHS.TI.EnvVariables$Neutral <- R.sq.Neutral[1:6,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
+R.sq.CHS.TI.EnvVariables$SeasonLoci <- R.sq.CHS.TI.SeasonLoci[1:5,] 
+R.sq.CHS.TI.EnvVariables$Neutral <- R.sq.Neutral[1:5,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
 
 R.sq.CHS.TI.EnvVariables <- as.matrix(R.sq.CHS.TI.EnvVariables)  ##turn into matrix for heatmap
 R.sq.CHS.TI.all.melt <- melt(R.sq.CHS.TI.EnvVariables)  ##melt for ggplot heatmap
@@ -2585,13 +2585,13 @@ R.sq.Neutral <- (rowMeans(gf.SE.Neutral.SNPs$imp.rsq, na.rm=T))
 R.sq.Neutral <- as.data.frame(R.sq.Neutral)
 
 ##we're only interested in the first 6 variables
-R.sq.SE.EnvVariables <- R.sq.SE.TempLoci[1:6,]  #get the first 8 rows from the Adaptive dataset
+R.sq.SE.EnvVariables <- R.sq.SE.TempLoci[1:5,]  #get the first 8 rows from the Adaptive dataset
 R.sq.SE.EnvVariables <- as.data.frame(R.sq.SE.EnvVariables)
 colnames(R.sq.SE.EnvVariables) <- "TempLoci"
 row.names(R.sq.SE.EnvVariables) <- c("dist", "mean.temp", "season.length", "MEM1", "MEM2", "MEM3")
 
-R.sq.SE.EnvVariables$SeasonLoci <- R.sq.SE.SeasonLoci[1:6,] 
-R.sq.SE.EnvVariables$Neutral <- R.sq.Neutral[1:6,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
+R.sq.SE.EnvVariables$SeasonLoci <- R.sq.SE.SeasonLoci[1:5,] 
+R.sq.SE.EnvVariables$Neutral <- R.sq.Neutral[1:5,] ##add the first 8 rows from the Neutral dataset. Make sure the order is the same in both. 
 
 R.sq.SE.EnvVariables <- as.matrix(R.sq.SE.EnvVariables)  ##turn into matrix for heatmap
 R.sq.SE.all.melt <- melt(R.sq.SE.EnvVariables)  ##melt for ggplot heatmap
