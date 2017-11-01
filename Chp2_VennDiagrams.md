@@ -3559,7 +3559,7 @@ CHS.VS.sol.rad.60d.BestLoci <- best.Adapt.CHS.VS.sol.rad.60d$loci
 CHS.VS.temp.laying.date.BestLoci <- best.Adapt.CHS.VS.temp.laying.date$loci
 CHS.VS.pcpt.60d.BestLoci <- best.Adapt.CHS.VS.pcpt.60d$loci
 CHS.VS.shadow.days.BestLoci <- NULL
-CHS.VS.day10cm.BestLoci <- best.Adapt.CHS.VS.day10cm$lociCHS.VS
+CHS.VS.day10cm.BestLoci <- best.Adapt.CHS.VS.day10cm$loci
 
 
 length(c(CHS.VS.sol.rad.60d.BestLoci, CHS.VS.temp.laying.date.BestLoci, CHS.VS.pcpt.60d.BestLoci, CHS.VS.shadow.days.BestLoci, CHS.VS.day10cm.BestLoci))
