@@ -28,6 +28,9 @@ I'm showing:
 
 6. Overlap between all candidate loci identified by 2+ methods for CHS, CHS.TI, CHS.VS
 
+7. Overlap in BestLoci (from GF) for each variable (ie. shared adaptive variation)
+
+8. Overlap of BestLoci within a region (i.e. pleiotropy)
 
 
 ### 1.1 Venn Diagram for loci within LFMM
@@ -2937,3 +2940,697 @@ draw.triple.venn(area1=d1, area2=d2, area3=d3, n12=d12, n13=d13, n23=d23, n123=d
 dev.off()
 
 ```
+
+
+# 7: Overlap of BestLoci (GF) per variable
+
+Shows the shared adaptive variation from the top loci identified using GF (i.e. BestLoci = contributes to 80% of R2 for that variable in that transect)
+
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GradientForest/Oct2017
+
+
+### sol.rad.60d
+```
+CZ.sol.rad.60d <- best.Adapt.CZ.sol.rad.60d$loci
+CHS.sol.rad.60d <- best.Adapt.CHS.sol.rad.60d$loci
+CHN.sol.rad.60d <- best.Adapt.CHN.sol.rad.60d$loci
+CHS.TI.sol.rad.60d <- best.Adapt.CHS.TI.sol.rad.60d$loci
+CHS.VS.sol.rad.60d <- best.Adapt.CHS.VS.sol.rad.60d$loci
+
+d1 <- length(CZ.sol.rad.60d)
+d2 <- length(CHS.sol.rad.60d)
+d3 <- length(CHN.sol.rad.60d)
+d4 <- length(CHS.TI.sol.rad.60d)
+d5 <- length(CHS.VS.sol.rad.60d)
+
+
+d12 <- length(Reduce(intersect, list(CZ.sol.rad.60d, CHS.sol.rad.60d)))
+d13 <- length(Reduce(intersect, list(CZ.sol.rad.60d, CHN.sol.rad.60d)))
+d14 <- length(Reduce(intersect, list(CZ.sol.rad.60d, CHS.TI.sol.rad.60d)))
+d15 <- length(Reduce(intersect, list(CZ.sol.rad.60d, CHS.VS.sol.rad.60d)))
+d23 <- length(Reduce(intersect, list(CHS.sol.rad.60d, CHN.sol.rad.60d)))
+d24 <- length(Reduce(intersect, list(CHS.sol.rad.60d, CHS.TI.sol.rad.60d)))
+d25 <- length(Reduce(intersect, list(CHS.sol.rad.60d, CHS.VS.sol.rad.60d)))
+d34 <- length(Reduce(intersect, list(CHN.sol.rad.60d, CHS.TI.sol.rad.60d)))
+d35 <- length(Reduce(intersect, list(CHN.sol.rad.60d, CHS.VS.sol.rad.60d)))
+d45 <- length(Reduce(intersect, list(CHS.TI.sol.rad.60d, CHS.VS.sol.rad.60d)))
+
+d123 <- length(Reduce(intersect, list(CZ.sol.rad.60d, CHS.sol.rad.60d,CHN.sol.rad.60d)))
+d124 <- length(Reduce(intersect, list(CZ.sol.rad.60d, CHS.sol.rad.60d,CHS.TI.sol.rad.60d)))
+d125 <- length(Reduce(intersect, list(CZ.sol.rad.60d, CHS.sol.rad.60d,CHS.VS.sol.rad.60d)))
+d234 <- length(Reduce(intersect, list(CHS.sol.rad.60d, CHN.sol.rad.60d,CHS.TI.sol.rad.60d)))
+d134 <- length(Reduce(intersect, list(CZ.sol.rad.60d, CHN.sol.rad.60d,CHS.TI.sol.rad.60d)))
+d135 <- length(Reduce(intersect, list(CZ.sol.rad.60d, CHN.sol.rad.60d,CHS.VS.sol.rad.60d)))
+d145 <- length(Reduce(intersect, list(CZ.sol.rad.60d, CHS.TI.sol.rad.60d,CHS.VS.sol.rad.60d)))
+d235 <- length(Reduce(intersect, list(CHS.sol.rad.60d, CHN.sol.rad.60d,CHS.VS.sol.rad.60d)))
+d245 <- length(Reduce(intersect, list(CHS.sol.rad.60d, CHS.TI.sol.rad.60d,CHS.VS.sol.rad.60d)))
+d345 <- length(Reduce(intersect, list(CHN.sol.rad.60d, CHS.TI.sol.rad.60d,CHS.VS.sol.rad.60d)))
+
+
+d1234 <- length(Reduce(intersect, list(CHS.sol.rad.60d, CHN.sol.rad.60d,
+CHS.TI.sol.rad.60d, CZ.sol.rad.60d)))
+d1235 <- length(Reduce(intersect, list(CHS.sol.rad.60d, CHN.sol.rad.60d,
+CHS.VS.sol.rad.60d, CZ.sol.rad.60d)))
+
+d2345 <- length(Reduce(intersect, list(CHS.sol.rad.60d, CHN.sol.rad.60d,
+CHS.TI.sol.rad.60d, CHS.VS.sol.rad.60d)))
+d1245 <- length(Reduce(intersect, list(CHS.sol.rad.60d, CZ.sol.rad.60d,
+CHS.TI.sol.rad.60d, CHS.VS.sol.rad.60d)))
+d1345 <- length(Reduce(intersect, list(CHN.sol.rad.60d, CZ.sol.rad.60d,
+CHS.TI.sol.rad.60d, CHS.VS.sol.rad.60d)))
+d12345 <- length(Reduce(intersect, list(CZ.sol.rad.60d, CHS.sol.rad.60d, CHN.sol.rad.60d, 
+CHS.TI.sol.rad.60d, CHS.VS.sol.rad.60d)))
+
+#library(VennDiagram)
+
+pdf("Venn.bestLoci.sol.rad.60d.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("CZ", "CHS", "CHN", "CHS.TI", "CHS.VS"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+
+
+
+```
+
+
+### pcpt.60d
+```
+CZ.pcpt.60d <- best.Adapt.CZ.pcpt.60d$loci
+CHS.pcpt.60d <- best.Adapt.CHS.pcpt.60d$loci
+CHN.pcpt.60d <- best.Adapt.CHN.pcpt.60d$loci
+CHS.TI.pcpt.60d <- best.Adapt.CHS.TI.pcpt.60d$loci
+CHS.VS.pcpt.60d <- best.Adapt.CHS.VS.pcpt.60d$loci
+
+d1 <- length(CZ.pcpt.60d)
+d2 <- length(CHS.pcpt.60d)
+d3 <- length(CHN.pcpt.60d)
+d4 <- length(CHS.TI.pcpt.60d)
+d5 <- length(CHS.VS.pcpt.60d)
+
+
+d12 <- length(Reduce(intersect, list(CZ.pcpt.60d, CHS.pcpt.60d)))
+d13 <- length(Reduce(intersect, list(CZ.pcpt.60d, CHN.pcpt.60d)))
+d14 <- length(Reduce(intersect, list(CZ.pcpt.60d, CHS.TI.pcpt.60d)))
+d15 <- length(Reduce(intersect, list(CZ.pcpt.60d, CHS.VS.pcpt.60d)))
+d23 <- length(Reduce(intersect, list(CHS.pcpt.60d, CHN.pcpt.60d)))
+d24 <- length(Reduce(intersect, list(CHS.pcpt.60d, CHS.TI.pcpt.60d)))
+d25 <- length(Reduce(intersect, list(CHS.pcpt.60d, CHS.VS.pcpt.60d)))
+d34 <- length(Reduce(intersect, list(CHN.pcpt.60d, CHS.TI.pcpt.60d)))
+d35 <- length(Reduce(intersect, list(CHN.pcpt.60d, CHS.VS.pcpt.60d)))
+d45 <- length(Reduce(intersect, list(CHS.TI.pcpt.60d, CHS.VS.pcpt.60d)))
+
+d123 <- length(Reduce(intersect, list(CZ.pcpt.60d, CHS.pcpt.60d,CHN.pcpt.60d)))
+d124 <- length(Reduce(intersect, list(CZ.pcpt.60d, CHS.pcpt.60d,CHS.TI.pcpt.60d)))
+d125 <- length(Reduce(intersect, list(CZ.pcpt.60d, CHS.pcpt.60d,CHS.VS.pcpt.60d)))
+d234 <- length(Reduce(intersect, list(CHS.pcpt.60d, CHN.pcpt.60d,CHS.TI.pcpt.60d)))
+d134 <- length(Reduce(intersect, list(CZ.pcpt.60d, CHN.pcpt.60d,CHS.TI.pcpt.60d)))
+d135 <- length(Reduce(intersect, list(CZ.pcpt.60d, CHN.pcpt.60d,CHS.VS.pcpt.60d)))
+d145 <- length(Reduce(intersect, list(CZ.pcpt.60d, CHS.TI.pcpt.60d,CHS.VS.pcpt.60d)))
+d235 <- length(Reduce(intersect, list(CHS.pcpt.60d, CHN.pcpt.60d,CHS.VS.pcpt.60d)))
+d245 <- length(Reduce(intersect, list(CHS.pcpt.60d, CHS.TI.pcpt.60d,CHS.VS.pcpt.60d)))
+d345 <- length(Reduce(intersect, list(CHN.pcpt.60d, CHS.TI.pcpt.60d,CHS.VS.pcpt.60d)))
+
+
+d1234 <- length(Reduce(intersect, list(CHS.pcpt.60d, CHN.pcpt.60d,
+CHS.TI.pcpt.60d, CZ.pcpt.60d)))
+d1235 <- length(Reduce(intersect, list(CHS.pcpt.60d, CHN.pcpt.60d,
+CHS.VS.pcpt.60d, CZ.pcpt.60d)))
+
+d2345 <- length(Reduce(intersect, list(CHS.pcpt.60d, CHN.pcpt.60d,
+CHS.TI.pcpt.60d, CHS.VS.pcpt.60d)))
+d1245 <- length(Reduce(intersect, list(CHS.pcpt.60d, CZ.pcpt.60d,
+CHS.TI.pcpt.60d, CHS.VS.pcpt.60d)))
+d1345 <- length(Reduce(intersect, list(CHN.pcpt.60d, CZ.pcpt.60d,
+CHS.TI.pcpt.60d, CHS.VS.pcpt.60d)))
+d12345 <- length(Reduce(intersect, list(CZ.pcpt.60d, CHS.pcpt.60d, CHN.pcpt.60d, 
+CHS.TI.pcpt.60d, CHS.VS.pcpt.60d)))
+
+#library(VennDiagram)
+
+pdf("Venn.bestLoci.pcpt.60d.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("CZ", "CHS", "CHN", "CHS.TI", "CHS.VS"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+
+
+
+```
+
+
+### shadow.days
+```
+CZ.shadow.days <- best.Adapt.CZ.shadow.days$loci
+CHS.shadow.days <- best.Adapt.CHS.shadow.days$loci
+CHN.shadow.days <- best.Adapt.CHN.shadow.days$loci
+CHS.TI.shadow.days <- best.Adapt.CHS.TI.shadow.days$loci
+CHS.VS.shadow.days <- NULL
+
+d1 <- length(CZ.shadow.days)
+d2 <- length(CHS.shadow.days)
+d3 <- length(CHN.shadow.days)
+d4 <- length(CHS.TI.shadow.days)
+d5 <- length(CHS.VS.shadow.days)
+
+
+d12 <- length(Reduce(intersect, list(CZ.shadow.days, CHS.shadow.days)))
+d13 <- length(Reduce(intersect, list(CZ.shadow.days, CHN.shadow.days)))
+d14 <- length(Reduce(intersect, list(CZ.shadow.days, CHS.TI.shadow.days)))
+d15 <- length(Reduce(intersect, list(CZ.shadow.days, CHS.VS.shadow.days)))
+d23 <- length(Reduce(intersect, list(CHS.shadow.days, CHN.shadow.days)))
+d24 <- length(Reduce(intersect, list(CHS.shadow.days, CHS.TI.shadow.days)))
+d25 <- length(Reduce(intersect, list(CHS.shadow.days, CHS.VS.shadow.days)))
+d34 <- length(Reduce(intersect, list(CHN.shadow.days, CHS.TI.shadow.days)))
+d35 <- length(Reduce(intersect, list(CHN.shadow.days, CHS.VS.shadow.days)))
+d45 <- length(Reduce(intersect, list(CHS.TI.shadow.days, CHS.VS.shadow.days)))
+
+d123 <- length(Reduce(intersect, list(CZ.shadow.days, CHS.shadow.days,CHN.shadow.days)))
+d124 <- length(Reduce(intersect, list(CZ.shadow.days, CHS.shadow.days,CHS.TI.shadow.days)))
+d125 <- length(Reduce(intersect, list(CZ.shadow.days, CHS.shadow.days,CHS.VS.shadow.days)))
+d234 <- length(Reduce(intersect, list(CHS.shadow.days, CHN.shadow.days,CHS.TI.shadow.days)))
+d134 <- length(Reduce(intersect, list(CZ.shadow.days, CHN.shadow.days,CHS.TI.shadow.days)))
+d135 <- length(Reduce(intersect, list(CZ.shadow.days, CHN.shadow.days,CHS.VS.shadow.days)))
+d145 <- length(Reduce(intersect, list(CZ.shadow.days, CHS.TI.shadow.days,CHS.VS.shadow.days)))
+d235 <- length(Reduce(intersect, list(CHS.shadow.days, CHN.shadow.days,CHS.VS.shadow.days)))
+d245 <- length(Reduce(intersect, list(CHS.shadow.days, CHS.TI.shadow.days,CHS.VS.shadow.days)))
+d345 <- length(Reduce(intersect, list(CHN.shadow.days, CHS.TI.shadow.days,CHS.VS.shadow.days)))
+
+
+d1234 <- length(Reduce(intersect, list(CHS.shadow.days, CHN.shadow.days,
+CHS.TI.shadow.days, CZ.shadow.days)))
+d1235 <- length(Reduce(intersect, list(CHS.shadow.days, CHN.shadow.days,
+CHS.VS.shadow.days, CZ.shadow.days)))
+
+d2345 <- length(Reduce(intersect, list(CHS.shadow.days, CHN.shadow.days,
+CHS.TI.shadow.days, CHS.VS.shadow.days)))
+d1245 <- length(Reduce(intersect, list(CHS.shadow.days, CZ.shadow.days,
+CHS.TI.shadow.days, CHS.VS.shadow.days)))
+d1345 <- length(Reduce(intersect, list(CHN.shadow.days, CZ.shadow.days,
+CHS.TI.shadow.days, CHS.VS.shadow.days)))
+d12345 <- length(Reduce(intersect, list(CZ.shadow.days, CHS.shadow.days, CHN.shadow.days, 
+CHS.TI.shadow.days, CHS.VS.shadow.days)))
+
+#library(VennDiagram)
+
+pdf("Venn.bestLoci.shadow.days.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("CZ", "CHS", "CHN", "CHS.TI", "CHS.VS"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+
+
+
+```
+
+
+### day10cm
+```
+CZ.day10cm <- best.Adapt.CZ.day10cm$loci
+CHS.day10cm <- best.Adapt.CHS.day10cm$loci
+CHN.day10cm <- best.Adapt.CHN.day10cm$loci
+CHS.TI.day10cm <- best.Adapt.CHS.TI.day10cm$loci
+CHS.VS.day10cm <- best.Adapt.CHS.VS.day10cm$loci
+
+d1 <- length(CZ.day10cm)
+d2 <- length(CHS.day10cm)
+d3 <- length(CHN.day10cm)
+d4 <- length(CHS.TI.day10cm)
+d5 <- length(CHS.VS.day10cm)
+
+
+d12 <- length(Reduce(intersect, list(CZ.day10cm, CHS.day10cm)))
+d13 <- length(Reduce(intersect, list(CZ.day10cm, CHN.day10cm)))
+d14 <- length(Reduce(intersect, list(CZ.day10cm, CHS.TI.day10cm)))
+d15 <- length(Reduce(intersect, list(CZ.day10cm, CHS.VS.day10cm)))
+d23 <- length(Reduce(intersect, list(CHS.day10cm, CHN.day10cm)))
+d24 <- length(Reduce(intersect, list(CHS.day10cm, CHS.TI.day10cm)))
+d25 <- length(Reduce(intersect, list(CHS.day10cm, CHS.VS.day10cm)))
+d34 <- length(Reduce(intersect, list(CHN.day10cm, CHS.TI.day10cm)))
+d35 <- length(Reduce(intersect, list(CHN.day10cm, CHS.VS.day10cm)))
+d45 <- length(Reduce(intersect, list(CHS.TI.day10cm, CHS.VS.day10cm)))
+
+d123 <- length(Reduce(intersect, list(CZ.day10cm, CHS.day10cm,CHN.day10cm)))
+d124 <- length(Reduce(intersect, list(CZ.day10cm, CHS.day10cm,CHS.TI.day10cm)))
+d125 <- length(Reduce(intersect, list(CZ.day10cm, CHS.day10cm,CHS.VS.day10cm)))
+d234 <- length(Reduce(intersect, list(CHS.day10cm, CHN.day10cm,CHS.TI.day10cm)))
+d134 <- length(Reduce(intersect, list(CZ.day10cm, CHN.day10cm,CHS.TI.day10cm)))
+d135 <- length(Reduce(intersect, list(CZ.day10cm, CHN.day10cm,CHS.VS.day10cm)))
+d145 <- length(Reduce(intersect, list(CZ.day10cm, CHS.TI.day10cm,CHS.VS.day10cm)))
+d235 <- length(Reduce(intersect, list(CHS.day10cm, CHN.day10cm,CHS.VS.day10cm)))
+d245 <- length(Reduce(intersect, list(CHS.day10cm, CHS.TI.day10cm,CHS.VS.day10cm)))
+d345 <- length(Reduce(intersect, list(CHN.day10cm, CHS.TI.day10cm,CHS.VS.day10cm)))
+
+
+d1234 <- length(Reduce(intersect, list(CHS.day10cm, CHN.day10cm,
+CHS.TI.day10cm, CZ.day10cm)))
+d1235 <- length(Reduce(intersect, list(CHS.day10cm, CHN.day10cm,
+CHS.VS.day10cm, CZ.day10cm)))
+
+d2345 <- length(Reduce(intersect, list(CHS.day10cm, CHN.day10cm,
+CHS.TI.day10cm, CHS.VS.day10cm)))
+d1245 <- length(Reduce(intersect, list(CHS.day10cm, CZ.day10cm,
+CHS.TI.day10cm, CHS.VS.day10cm)))
+d1345 <- length(Reduce(intersect, list(CHN.day10cm, CZ.day10cm,
+CHS.TI.day10cm, CHS.VS.day10cm)))
+d12345 <- length(Reduce(intersect, list(CZ.day10cm, CHS.day10cm, CHN.day10cm, 
+CHS.TI.day10cm, CHS.VS.day10cm)))
+
+#library(VennDiagram)
+
+pdf("Venn.bestLoci.day10cm.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("CZ", "CHS", "CHN", "CHS.TI", "CHS.VS"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+
+
+
+```
+
+# 8: Pleitropy in bestLoci per transect
+
+BestLoci that were found to be associated with multiple environmental variables. 
+
+### CHN.BestLoci
+
+Count the number of loci used more than once (total-unique)
+```
+CHN.sol.rad.60d.BestLoci <- best.Adapt.CHN.sol.rad.60d$loci
+CHN.temp.laying.date.BestLoci <- best.Adapt.CHN.temp.laying.date$loci
+CHN.pcpt.60d.BestLoci <- best.Adapt.CHN.pcpt.60d$loci
+CHN.shadow.days.BestLoci <- best.Adapt.CHN.shadow.days$loci
+CHN.day10cm.BestLoci <- best.Adapt.CHN.day10cm$loci
+
+length(c(CHN.sol.rad.60d.BestLoci, CHN.temp.laying.date.BestLoci, CHN.pcpt.60d.BestLoci, CHN.shadow.days.BestLoci, CHN.day10cm.BestLoci))
+
+length(unique(c(CHN.sol.rad.60d.BestLoci, CHN.temp.laying.date.BestLoci, CHN.pcpt.60d.BestLoci, CHN.shadow.days.BestLoci, CHN.day10cm.BestLoci)))
+```
+
+
+then plot
+```
+d1 <- length(CHN.sol.rad.60d.BestLoci)
+d2 <- length(CHN.temp.laying.date.BestLoci)
+d3 <- length(CHN.pcpt.60d.BestLoci)
+d4 <- length(CHN.shadow.days.BestLoci)
+d5 <- length(CHN.day10cm.BestLoci)
+
+
+d12 <- length(Reduce(intersect, list(CHN.sol.rad.60d.BestLoci, CHN.temp.laying.date.BestLoci)))
+d13 <- length(Reduce(intersect, list(CHN.sol.rad.60d.BestLoci, CHN.pcpt.60d.BestLoci)))
+d14 <- length(Reduce(intersect, list(CHN.sol.rad.60d.BestLoci, CHN.shadow.days.BestLoci)))
+d15 <- length(Reduce(intersect, list(CHN.sol.rad.60d.BestLoci, CHN.day10cm.BestLoci)))
+d23 <- length(Reduce(intersect, list(CHN.temp.laying.date.BestLoci, CHN.pcpt.60d.BestLoci)))
+d24 <- length(Reduce(intersect, list(CHN.temp.laying.date.BestLoci, CHN.shadow.days.BestLoci)))
+d25 <- length(Reduce(intersect, list(CHN.temp.laying.date.BestLoci, CHN.day10cm.BestLoci)))
+d34 <- length(Reduce(intersect, list(CHN.pcpt.60d.BestLoci, CHN.shadow.days.BestLoci)))
+d35 <- length(Reduce(intersect, list(CHN.pcpt.60d.BestLoci, CHN.day10cm.BestLoci)))
+d45 <- length(Reduce(intersect, list(CHN.shadow.days.BestLoci, CHN.day10cm.BestLoci)))
+
+d123 <- length(Reduce(intersect, list(CHN.sol.rad.60d.BestLoci, CHN.temp.laying.date.BestLoci,CHN.pcpt.60d.BestLoci)))
+d124 <- length(Reduce(intersect, list(CHN.sol.rad.60d.BestLoci, CHN.temp.laying.date.BestLoci,CHN.shadow.days.BestLoci)))
+d125 <- length(Reduce(intersect, list(CHN.sol.rad.60d.BestLoci, CHN.temp.laying.date.BestLoci,CHN.day10cm.BestLoci)))
+d234 <- length(Reduce(intersect, list(CHN.temp.laying.date.BestLoci, CHN.pcpt.60d.BestLoci,CHN.shadow.days.BestLoci)))
+d134 <- length(Reduce(intersect, list(CHN.sol.rad.60d.BestLoci, CHN.pcpt.60d.BestLoci,CHN.shadow.days.BestLoci)))
+d135 <- length(Reduce(intersect, list(CHN.sol.rad.60d.BestLoci, CHN.pcpt.60d.BestLoci,CHN.day10cm.BestLoci)))
+d145 <- length(Reduce(intersect, list(CHN.sol.rad.60d.BestLoci, CHN.shadow.days.BestLoci,CHN.day10cm.BestLoci)))
+d235 <- length(Reduce(intersect, list(CHN.temp.laying.date.BestLoci, CHN.pcpt.60d.BestLoci,CHN.day10cm.BestLoci)))
+d245 <- length(Reduce(intersect, list(CHN.temp.laying.date.BestLoci, CHN.shadow.days.BestLoci,CHN.day10cm.BestLoci)))
+d345 <- length(Reduce(intersect, list(CHN.pcpt.60d.BestLoci, CHN.shadow.days.BestLoci,CHN.day10cm.BestLoci)))
+
+
+d1234 <- length(Reduce(intersect, list(CHN.temp.laying.date.BestLoci, CHN.pcpt.60d.BestLoci,
+CHN.shadow.days.BestLoci, CHN.sol.rad.60d.BestLoci)))
+d1235 <- length(Reduce(intersect, list(CHN.temp.laying.date.BestLoci, CHN.pcpt.60d.BestLoci,
+CHN.day10cm.BestLoci, CHN.sol.rad.60d.BestLoci)))
+
+d2345 <- length(Reduce(intersect, list(CHN.temp.laying.date.BestLoci, CHN.pcpt.60d.BestLoci,
+CHN.shadow.days.BestLoci, CHN.day10cm.BestLoci)))
+d1245 <- length(Reduce(intersect, list(CHN.temp.laying.date.BestLoci, CHN.sol.rad.60d.BestLoci,
+CHN.shadow.days.BestLoci, CHN.day10cm.BestLoci)))
+d1345 <- length(Reduce(intersect, list(CHN.pcpt.60d.BestLoci, CHN.sol.rad.60d.BestLoci,
+CHN.shadow.days.BestLoci, CHN.day10cm.BestLoci)))
+d12345 <- length(Reduce(intersect, list(CHN.sol.rad.60d.BestLoci, CHN.temp.laying.date.BestLoci, CHN.pcpt.60d.BestLoci, 
+CHN.shadow.days.BestLoci, CHN.day10cm.BestLoci)))
+
+#library(VennDiagram)
+
+pdf("Venn.bestLoci.CHN.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+```
+
+
+### CHS.BestLoci
+
+Count the number of loci used more than once (total-unique)
+```
+CHS.sol.rad.60d.BestLoci <- best.Adapt.CHS.sol.rad.60d$loci
+CHS.temp.laying.date.BestLoci <- best.Adapt.CHS.temp.laying.date$loci
+CHS.pcpt.60d.BestLoci <- best.Adapt.CHS.pcpt.60d$loci
+CHS.shadow.days.BestLoci <- best.Adapt.CHS.shadow.days$loci
+CHS.day10cm.BestLoci <- best.Adapt.CHS.day10cm$loci
+
+
+length(c(CHS.sol.rad.60d.BestLoci, CHS.temp.laying.date.BestLoci, CHS.pcpt.60d.BestLoci, CHS.shadow.days.BestLoci, CHS.day10cm.BestLoci))
+
+length(unique(c(CHS.sol.rad.60d.BestLoci, CHS.temp.laying.date.BestLoci, CHS.pcpt.60d.BestLoci, CHS.shadow.days.BestLoci, CHS.day10cm.BestLoci)))
+```
+
+
+then plot
+```
+d1 <- length(CHS.sol.rad.60d.BestLoci)
+d2 <- length(CHS.temp.laying.date.BestLoci)
+d3 <- length(CHS.pcpt.60d.BestLoci)
+d4 <- length(CHS.shadow.days.BestLoci)
+d5 <- length(CHS.day10cm.BestLoci)
+
+
+d12 <- length(Reduce(intersect, list(CHS.sol.rad.60d.BestLoci, CHS.temp.laying.date.BestLoci)))
+d13 <- length(Reduce(intersect, list(CHS.sol.rad.60d.BestLoci, CHS.pcpt.60d.BestLoci)))
+d14 <- length(Reduce(intersect, list(CHS.sol.rad.60d.BestLoci, CHS.shadow.days.BestLoci)))
+d15 <- length(Reduce(intersect, list(CHS.sol.rad.60d.BestLoci, CHS.day10cm.BestLoci)))
+d23 <- length(Reduce(intersect, list(CHS.temp.laying.date.BestLoci, CHS.pcpt.60d.BestLoci)))
+d24 <- length(Reduce(intersect, list(CHS.temp.laying.date.BestLoci, CHS.shadow.days.BestLoci)))
+d25 <- length(Reduce(intersect, list(CHS.temp.laying.date.BestLoci, CHS.day10cm.BestLoci)))
+d34 <- length(Reduce(intersect, list(CHS.pcpt.60d.BestLoci, CHS.shadow.days.BestLoci)))
+d35 <- length(Reduce(intersect, list(CHS.pcpt.60d.BestLoci, CHS.day10cm.BestLoci)))
+d45 <- length(Reduce(intersect, list(CHS.shadow.days.BestLoci, CHS.day10cm.BestLoci)))
+
+d123 <- length(Reduce(intersect, list(CHS.sol.rad.60d.BestLoci, CHS.temp.laying.date.BestLoci,CHS.pcpt.60d.BestLoci)))
+d124 <- length(Reduce(intersect, list(CHS.sol.rad.60d.BestLoci, CHS.temp.laying.date.BestLoci,CHS.shadow.days.BestLoci)))
+d125 <- length(Reduce(intersect, list(CHS.sol.rad.60d.BestLoci, CHS.temp.laying.date.BestLoci,CHS.day10cm.BestLoci)))
+d234 <- length(Reduce(intersect, list(CHS.temp.laying.date.BestLoci, CHS.pcpt.60d.BestLoci,CHS.shadow.days.BestLoci)))
+d134 <- length(Reduce(intersect, list(CHS.sol.rad.60d.BestLoci, CHS.pcpt.60d.BestLoci,CHS.shadow.days.BestLoci)))
+d135 <- length(Reduce(intersect, list(CHS.sol.rad.60d.BestLoci, CHS.pcpt.60d.BestLoci,CHS.day10cm.BestLoci)))
+d145 <- length(Reduce(intersect, list(CHS.sol.rad.60d.BestLoci, CHS.shadow.days.BestLoci,CHS.day10cm.BestLoci)))
+d235 <- length(Reduce(intersect, list(CHS.temp.laying.date.BestLoci, CHS.pcpt.60d.BestLoci,CHS.day10cm.BestLoci)))
+d245 <- length(Reduce(intersect, list(CHS.temp.laying.date.BestLoci, CHS.shadow.days.BestLoci,CHS.day10cm.BestLoci)))
+d345 <- length(Reduce(intersect, list(CHS.pcpt.60d.BestLoci, CHS.shadow.days.BestLoci,CHS.day10cm.BestLoci)))
+
+
+d1234 <- length(Reduce(intersect, list(CHS.temp.laying.date.BestLoci, CHS.pcpt.60d.BestLoci,
+CHS.shadow.days.BestLoci, CHS.sol.rad.60d.BestLoci)))
+d1235 <- length(Reduce(intersect, list(CHS.temp.laying.date.BestLoci, CHS.pcpt.60d.BestLoci,
+CHS.day10cm.BestLoci, CHS.sol.rad.60d.BestLoci)))
+
+d2345 <- length(Reduce(intersect, list(CHS.temp.laying.date.BestLoci, CHS.pcpt.60d.BestLoci,
+CHS.shadow.days.BestLoci, CHS.day10cm.BestLoci)))
+d1245 <- length(Reduce(intersect, list(CHS.temp.laying.date.BestLoci, CHS.sol.rad.60d.BestLoci,
+CHS.shadow.days.BestLoci, CHS.day10cm.BestLoci)))
+d1345 <- length(Reduce(intersect, list(CHS.pcpt.60d.BestLoci, CHS.sol.rad.60d.BestLoci,
+CHS.shadow.days.BestLoci, CHS.day10cm.BestLoci)))
+d12345 <- length(Reduce(intersect, list(CHS.sol.rad.60d.BestLoci, CHS.temp.laying.date.BestLoci, CHS.pcpt.60d.BestLoci, 
+CHS.shadow.days.BestLoci, CHS.day10cm.BestLoci)))
+
+#library(VennDiagram)
+
+pdf("Venn.bestLoci.CHS.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+
+
+
+```
+
+
+
+### CZ.BestLoci
+
+Count the number of loci used more than once (total-unique)
+```
+CZ.sol.rad.60d.BestLoci <- best.Adapt.CZ.sol.rad.60d$loci
+CZ.temp.laying.date.BestLoci <- best.Adapt.CZ.temp.laying.date$loci
+CZ.pcpt.60d.BestLoci <- best.Adapt.CZ.pcpt.60d$loci
+CZ.shadow.days.BestLoci <- best.Adapt.CZ.shadow.days$loci
+CZ.day10cm.BestLoci <- best.Adapt.CZ.day10cm$loci
+
+
+length(c(CZ.sol.rad.60d.BestLoci, CZ.temp.laying.date.BestLoci, CZ.pcpt.60d.BestLoci, CZ.shadow.days.BestLoci, CZ.day10cm.BestLoci))
+
+length(unique(c(CZ.sol.rad.60d.BestLoci, CZ.temp.laying.date.BestLoci, CZ.pcpt.60d.BestLoci, CZ.shadow.days.BestLoci, CZ.day10cm.BestLoci)))
+```
+
+
+then plot
+```
+d1 <- length(CZ.sol.rad.60d.BestLoci)
+d2 <- length(CZ.temp.laying.date.BestLoci)
+d3 <- length(CZ.pcpt.60d.BestLoci)
+d4 <- length(CZ.shadow.days.BestLoci)
+d5 <- length(CZ.day10cm.BestLoci)
+
+
+d12 <- length(Reduce(intersect, list(CZ.sol.rad.60d.BestLoci, CZ.temp.laying.date.BestLoci)))
+d13 <- length(Reduce(intersect, list(CZ.sol.rad.60d.BestLoci, CZ.pcpt.60d.BestLoci)))
+d14 <- length(Reduce(intersect, list(CZ.sol.rad.60d.BestLoci, CZ.shadow.days.BestLoci)))
+d15 <- length(Reduce(intersect, list(CZ.sol.rad.60d.BestLoci, CZ.day10cm.BestLoci)))
+d23 <- length(Reduce(intersect, list(CZ.temp.laying.date.BestLoci, CZ.pcpt.60d.BestLoci)))
+d24 <- length(Reduce(intersect, list(CZ.temp.laying.date.BestLoci, CZ.shadow.days.BestLoci)))
+d25 <- length(Reduce(intersect, list(CZ.temp.laying.date.BestLoci, CZ.day10cm.BestLoci)))
+d34 <- length(Reduce(intersect, list(CZ.pcpt.60d.BestLoci, CZ.shadow.days.BestLoci)))
+d35 <- length(Reduce(intersect, list(CZ.pcpt.60d.BestLoci, CZ.day10cm.BestLoci)))
+d45 <- length(Reduce(intersect, list(CZ.shadow.days.BestLoci, CZ.day10cm.BestLoci)))
+
+d123 <- length(Reduce(intersect, list(CZ.sol.rad.60d.BestLoci, CZ.temp.laying.date.BestLoci,CZ.pcpt.60d.BestLoci)))
+d124 <- length(Reduce(intersect, list(CZ.sol.rad.60d.BestLoci, CZ.temp.laying.date.BestLoci,CZ.shadow.days.BestLoci)))
+d125 <- length(Reduce(intersect, list(CZ.sol.rad.60d.BestLoci, CZ.temp.laying.date.BestLoci,CZ.day10cm.BestLoci)))
+d234 <- length(Reduce(intersect, list(CZ.temp.laying.date.BestLoci, CZ.pcpt.60d.BestLoci,CZ.shadow.days.BestLoci)))
+d134 <- length(Reduce(intersect, list(CZ.sol.rad.60d.BestLoci, CZ.pcpt.60d.BestLoci,CZ.shadow.days.BestLoci)))
+d135 <- length(Reduce(intersect, list(CZ.sol.rad.60d.BestLoci, CZ.pcpt.60d.BestLoci,CZ.day10cm.BestLoci)))
+d145 <- length(Reduce(intersect, list(CZ.sol.rad.60d.BestLoci, CZ.shadow.days.BestLoci,CZ.day10cm.BestLoci)))
+d235 <- length(Reduce(intersect, list(CZ.temp.laying.date.BestLoci, CZ.pcpt.60d.BestLoci,CZ.day10cm.BestLoci)))
+d245 <- length(Reduce(intersect, list(CZ.temp.laying.date.BestLoci, CZ.shadow.days.BestLoci,CZ.day10cm.BestLoci)))
+d345 <- length(Reduce(intersect, list(CZ.pcpt.60d.BestLoci, CZ.shadow.days.BestLoci,CZ.day10cm.BestLoci)))
+
+
+d1234 <- length(Reduce(intersect, list(CZ.temp.laying.date.BestLoci, CZ.pcpt.60d.BestLoci,
+CZ.shadow.days.BestLoci, CZ.sol.rad.60d.BestLoci)))
+d1235 <- length(Reduce(intersect, list(CZ.temp.laying.date.BestLoci, CZ.pcpt.60d.BestLoci,
+CZ.day10cm.BestLoci, CZ.sol.rad.60d.BestLoci)))
+
+d2345 <- length(Reduce(intersect, list(CZ.temp.laying.date.BestLoci, CZ.pcpt.60d.BestLoci,
+CZ.shadow.days.BestLoci, CZ.day10cm.BestLoci)))
+d1245 <- length(Reduce(intersect, list(CZ.temp.laying.date.BestLoci, CZ.sol.rad.60d.BestLoci,
+CZ.shadow.days.BestLoci, CZ.day10cm.BestLoci)))
+d1345 <- length(Reduce(intersect, list(CZ.pcpt.60d.BestLoci, CZ.sol.rad.60d.BestLoci,
+CZ.shadow.days.BestLoci, CZ.day10cm.BestLoci)))
+d12345 <- length(Reduce(intersect, list(CZ.sol.rad.60d.BestLoci, CZ.temp.laying.date.BestLoci, CZ.pcpt.60d.BestLoci, 
+CZ.shadow.days.BestLoci, CZ.day10cm.BestLoci)))
+
+#library(VennDiagram)
+
+pdf("Venn.bestLoci.CZ.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+
+
+
+```
+
+### CHS.TI.BestLoci
+
+Count the number of loci used more than once (total-unique)
+```
+CHS.TI.sol.rad.60d.BestLoci <- best.Adapt.CHS.TI.sol.rad.60d$loci
+CHS.TI.temp.laying.date.BestLoci <- best.Adapt.CHS.TI.temp.laying.date$loci
+CHS.TI.pcpt.60d.BestLoci <- best.Adapt.CHS.TI.pcpt.60d$loci
+CHS.TI.shadow.days.BestLoci <- best.Adapt.CHS.TI.shadow.days$loci
+CHS.TI.day10cm.BestLoci <- best.Adapt.CHS.TI.day10cm$loci
+
+
+length(c(CHS.TI.sol.rad.60d.BestLoci, CHS.TI.temp.laying.date.BestLoci, CHS.TI.pcpt.60d.BestLoci, CHS.TI.shadow.days.BestLoci, CHS.TI.day10cm.BestLoci))
+
+length(unique(c(CHS.TI.sol.rad.60d.BestLoci, CHS.TI.temp.laying.date.BestLoci, CHS.TI.pcpt.60d.BestLoci, CHS.TI.shadow.days.BestLoci, CHS.TI.day10cm.BestLoci)))
+```
+
+
+then plot
+```
+d1 <- length(CHS.TI.sol.rad.60d.BestLoci)
+d2 <- length(CHS.TI.temp.laying.date.BestLoci)
+d3 <- length(CHS.TI.pcpt.60d.BestLoci)
+d4 <- length(CHS.TI.shadow.days.BestLoci)
+d5 <- length(CHS.TI.day10cm.BestLoci)
+
+
+d12 <- length(Reduce(intersect, list(CHS.TI.sol.rad.60d.BestLoci, CHS.TI.temp.laying.date.BestLoci)))
+d13 <- length(Reduce(intersect, list(CHS.TI.sol.rad.60d.BestLoci, CHS.TI.pcpt.60d.BestLoci)))
+d14 <- length(Reduce(intersect, list(CHS.TI.sol.rad.60d.BestLoci, CHS.TI.shadow.days.BestLoci)))
+d15 <- length(Reduce(intersect, list(CHS.TI.sol.rad.60d.BestLoci, CHS.TI.day10cm.BestLoci)))
+d23 <- length(Reduce(intersect, list(CHS.TI.temp.laying.date.BestLoci, CHS.TI.pcpt.60d.BestLoci)))
+d24 <- length(Reduce(intersect, list(CHS.TI.temp.laying.date.BestLoci, CHS.TI.shadow.days.BestLoci)))
+d25 <- length(Reduce(intersect, list(CHS.TI.temp.laying.date.BestLoci, CHS.TI.day10cm.BestLoci)))
+d34 <- length(Reduce(intersect, list(CHS.TI.pcpt.60d.BestLoci, CHS.TI.shadow.days.BestLoci)))
+d35 <- length(Reduce(intersect, list(CHS.TI.pcpt.60d.BestLoci, CHS.TI.day10cm.BestLoci)))
+d45 <- length(Reduce(intersect, list(CHS.TI.shadow.days.BestLoci, CHS.TI.day10cm.BestLoci)))
+
+d123 <- length(Reduce(intersect, list(CHS.TI.sol.rad.60d.BestLoci, CHS.TI.temp.laying.date.BestLoci,CHS.TI.pcpt.60d.BestLoci)))
+d124 <- length(Reduce(intersect, list(CHS.TI.sol.rad.60d.BestLoci, CHS.TI.temp.laying.date.BestLoci,CHS.TI.shadow.days.BestLoci)))
+d125 <- length(Reduce(intersect, list(CHS.TI.sol.rad.60d.BestLoci, CHS.TI.temp.laying.date.BestLoci,CHS.TI.day10cm.BestLoci)))
+d234 <- length(Reduce(intersect, list(CHS.TI.temp.laying.date.BestLoci, CHS.TI.pcpt.60d.BestLoci,CHS.TI.shadow.days.BestLoci)))
+d134 <- length(Reduce(intersect, list(CHS.TI.sol.rad.60d.BestLoci, CHS.TI.pcpt.60d.BestLoci,CHS.TI.shadow.days.BestLoci)))
+d135 <- length(Reduce(intersect, list(CHS.TI.sol.rad.60d.BestLoci, CHS.TI.pcpt.60d.BestLoci,CHS.TI.day10cm.BestLoci)))
+d145 <- length(Reduce(intersect, list(CHS.TI.sol.rad.60d.BestLoci, CHS.TI.shadow.days.BestLoci,CHS.TI.day10cm.BestLoci)))
+d235 <- length(Reduce(intersect, list(CHS.TI.temp.laying.date.BestLoci, CHS.TI.pcpt.60d.BestLoci,CHS.TI.day10cm.BestLoci)))
+d245 <- length(Reduce(intersect, list(CHS.TI.temp.laying.date.BestLoci, CHS.TI.shadow.days.BestLoci,CHS.TI.day10cm.BestLoci)))
+d345 <- length(Reduce(intersect, list(CHS.TI.pcpt.60d.BestLoci, CHS.TI.shadow.days.BestLoci,CHS.TI.day10cm.BestLoci)))
+
+
+d1234 <- length(Reduce(intersect, list(CHS.TI.temp.laying.date.BestLoci, CHS.TI.pcpt.60d.BestLoci,
+CHS.TI.shadow.days.BestLoci, CHS.TI.sol.rad.60d.BestLoci)))
+d1235 <- length(Reduce(intersect, list(CHS.TI.temp.laying.date.BestLoci, CHS.TI.pcpt.60d.BestLoci,
+CHS.TI.day10cm.BestLoci, CHS.TI.sol.rad.60d.BestLoci)))
+
+d2345 <- length(Reduce(intersect, list(CHS.TI.temp.laying.date.BestLoci, CHS.TI.pcpt.60d.BestLoci,
+CHS.TI.shadow.days.BestLoci, CHS.TI.day10cm.BestLoci)))
+d1245 <- length(Reduce(intersect, list(CHS.TI.temp.laying.date.BestLoci, CHS.TI.sol.rad.60d.BestLoci,
+CHS.TI.shadow.days.BestLoci, CHS.TI.day10cm.BestLoci)))
+d1345 <- length(Reduce(intersect, list(CHS.TI.pcpt.60d.BestLoci, CHS.TI.sol.rad.60d.BestLoci,
+CHS.TI.shadow.days.BestLoci, CHS.TI.day10cm.BestLoci)))
+d12345 <- length(Reduce(intersect, list(CHS.TI.sol.rad.60d.BestLoci, CHS.TI.temp.laying.date.BestLoci, CHS.TI.pcpt.60d.BestLoci, 
+CHS.TI.shadow.days.BestLoci, CHS.TI.day10cm.BestLoci)))
+
+#library(VennDiagram)
+
+pdf("Venn.bestLoci.CHS.TI.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+
+
+
+```
+
+### CHS.VS.BestLoci
+
+Count the number of loci used more than once (total-unique)
+```
+CHS.VS.sol.rad.60d.BestLoci <- best.Adapt.CHS.VS.sol.rad.60d$loci
+CHS.VS.temp.laying.date.BestLoci <- best.Adapt.CHS.VS.temp.laying.date$loci
+CHS.VS.pcpt.60d.BestLoci <- best.Adapt.CHS.VS.pcpt.60d$loci
+CHS.VS.shadow.days.BestLoci <- NULL
+CHS.VS.day10cm.BestLoci <- best.Adapt.CHS.VS.day10cm$lociCHS.VS
+
+
+length(c(CHS.VS.sol.rad.60d.BestLoci, CHS.VS.temp.laying.date.BestLoci, CHS.VS.pcpt.60d.BestLoci, CHS.VS.shadow.days.BestLoci, CHS.VS.day10cm.BestLoci))
+
+length(unique(c(CHS.VS.sol.rad.60d.BestLoci, CHS.VS.temp.laying.date.BestLoci, CHS.VS.pcpt.60d.BestLoci, CHS.VS.shadow.days.BestLoci, CHS.VS.day10cm.BestLoci)))
+```
+
+
+then plot
+```
+d1 <- length(CHS.VS.sol.rad.60d.BestLoci)
+d2 <- length(CHS.VS.temp.laying.date.BestLoci)
+d3 <- length(CHS.VS.pcpt.60d.BestLoci)
+d4 <- length(CHS.VS.shadow.days.BestLoci)
+d5 <- length(CHS.VS.day10cm.BestLoci)
+
+
+d12 <- length(Reduce(intersect, list(CHS.VS.sol.rad.60d.BestLoci, CHS.VS.temp.laying.date.BestLoci)))
+d13 <- length(Reduce(intersect, list(CHS.VS.sol.rad.60d.BestLoci, CHS.VS.pcpt.60d.BestLoci)))
+d14 <- length(Reduce(intersect, list(CHS.VS.sol.rad.60d.BestLoci, CHS.VS.shadow.days.BestLoci)))
+d15 <- length(Reduce(intersect, list(CHS.VS.sol.rad.60d.BestLoci, CHS.VS.day10cm.BestLoci)))
+d23 <- length(Reduce(intersect, list(CHS.VS.temp.laying.date.BestLoci, CHS.VS.pcpt.60d.BestLoci)))
+d24 <- length(Reduce(intersect, list(CHS.VS.temp.laying.date.BestLoci, CHS.VS.shadow.days.BestLoci)))
+d25 <- length(Reduce(intersect, list(CHS.VS.temp.laying.date.BestLoci, CHS.VS.day10cm.BestLoci)))
+d34 <- length(Reduce(intersect, list(CHS.VS.pcpt.60d.BestLoci, CHS.VS.shadow.days.BestLoci)))
+d35 <- length(Reduce(intersect, list(CHS.VS.pcpt.60d.BestLoci, CHS.VS.day10cm.BestLoci)))
+d45 <- length(Reduce(intersect, list(CHS.VS.shadow.days.BestLoci, CHS.VS.day10cm.BestLoci)))
+
+d123 <- length(Reduce(intersect, list(CHS.VS.sol.rad.60d.BestLoci, CHS.VS.temp.laying.date.BestLoci,CHS.VS.pcpt.60d.BestLoci)))
+d124 <- length(Reduce(intersect, list(CHS.VS.sol.rad.60d.BestLoci, CHS.VS.temp.laying.date.BestLoci,CHS.VS.shadow.days.BestLoci)))
+d125 <- length(Reduce(intersect, list(CHS.VS.sol.rad.60d.BestLoci, CHS.VS.temp.laying.date.BestLoci,CHS.VS.day10cm.BestLoci)))
+d234 <- length(Reduce(intersect, list(CHS.VS.temp.laying.date.BestLoci, CHS.VS.pcpt.60d.BestLoci,CHS.VS.shadow.days.BestLoci)))
+d134 <- length(Reduce(intersect, list(CHS.VS.sol.rad.60d.BestLoci, CHS.VS.pcpt.60d.BestLoci,CHS.VS.shadow.days.BestLoci)))
+d135 <- length(Reduce(intersect, list(CHS.VS.sol.rad.60d.BestLoci, CHS.VS.pcpt.60d.BestLoci,CHS.VS.day10cm.BestLoci)))
+d145 <- length(Reduce(intersect, list(CHS.VS.sol.rad.60d.BestLoci, CHS.VS.shadow.days.BestLoci,CHS.VS.day10cm.BestLoci)))
+d235 <- length(Reduce(intersect, list(CHS.VS.temp.laying.date.BestLoci, CHS.VS.pcpt.60d.BestLoci,CHS.VS.day10cm.BestLoci)))
+d245 <- length(Reduce(intersect, list(CHS.VS.temp.laying.date.BestLoci, CHS.VS.shadow.days.BestLoci,CHS.VS.day10cm.BestLoci)))
+d345 <- length(Reduce(intersect, list(CHS.VS.pcpt.60d.BestLoci, CHS.VS.shadow.days.BestLoci,CHS.VS.day10cm.BestLoci)))
+
+
+d1234 <- length(Reduce(intersect, list(CHS.VS.temp.laying.date.BestLoci, CHS.VS.pcpt.60d.BestLoci,
+CHS.VS.shadow.days.BestLoci, CHS.VS.sol.rad.60d.BestLoci)))
+d1235 <- length(Reduce(intersect, list(CHS.VS.temp.laying.date.BestLoci, CHS.VS.pcpt.60d.BestLoci,
+CHS.VS.day10cm.BestLoci, CHS.VS.sol.rad.60d.BestLoci)))
+
+d2345 <- length(Reduce(intersect, list(CHS.VS.temp.laying.date.BestLoci, CHS.VS.pcpt.60d.BestLoci,
+CHS.VS.shadow.days.BestLoci, CHS.VS.day10cm.BestLoci)))
+d1245 <- length(Reduce(intersect, list(CHS.VS.temp.laying.date.BestLoci, CHS.VS.sol.rad.60d.BestLoci,
+CHS.VS.shadow.days.BestLoci, CHS.VS.day10cm.BestLoci)))
+d1345 <- length(Reduce(intersect, list(CHS.VS.pcpt.60d.BestLoci, CHS.VS.sol.rad.60d.BestLoci,
+CHS.VS.shadow.days.BestLoci, CHS.VS.day10cm.BestLoci)))
+d12345 <- length(Reduce(intersect, list(CHS.VS.sol.rad.60d.BestLoci, CHS.VS.temp.laying.date.BestLoci, CHS.VS.pcpt.60d.BestLoci, 
+CHS.VS.shadow.days.BestLoci, CHS.VS.day10cm.BestLoci)))
+
+#library(VennDiagram)
+
+pdf("Venn.bestLoci.CHS.VS.pdf")
+draw.quintuple.venn(area1=d1, area2=d2, area3=d3, area4=d4, area5=d5,
+n12=d12, n13=d13, n14=d14, n15=d15, n23=d23, n24=d24, n25=d25, n34=d34, n35=d35, n45=d45,
+n123=d123, n124=d124, n125=d125, n134=d134, n135=d135, n145=d145, n234=d234, n235=d235, n245=d245, n345=d345,
+n1234=d1234, n1235=d1235, n1245=d1245, n1345=d1345, n2345=d2345, n12345=d12345, 
+category=c("sol.rad.60d", "temp.laying.date", "pcpt.60d", "shadow.days", "day10cm"),
+lty="blank", 
+fill=c("yellow", "orange", "skyblue1", "skyblue3", "blue")
+)
+dev.off()
+
+
+
+```
+
+
+
+
