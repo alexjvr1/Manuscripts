@@ -1,5 +1,10 @@
 # Gradient Forest CHall
 
+There's a nice tutorial with some slightly different code here: 
+http://www.mountainmanmaier.com/software/pop_genom/#gradient-forest-modeling
+
+He also plots the MEM's so we can see what this structure actually represents. 
+
 ### Datasets:
 
 2 Datasets for each regions: Neutral, Potential Adaptive Loci (identified by at least 2 programs)
