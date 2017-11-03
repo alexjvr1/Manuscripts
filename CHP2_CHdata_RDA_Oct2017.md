@@ -425,12 +425,12 @@ CZ.pcnm.scores <- pcnm(CZ.dxy, CZ.th)  ##calculate pcnm
 test.scores(CZ.pcnm.scores, CZ.listw, nsim=999)  ##and select only positive pcnm
 
           stat  pval
-1   0.95580479 0.001
-2   0.93050370 0.001
-3   0.91257634 0.001
-4   0.64966475 0.001
-5   0.25237401 0.041
-6   0.34391370 0.011
+1   0.95580479 0.001*
+2   0.93050370 0.001*
+3   0.91257634 0.001*
+4   0.64966475 0.001*
+5   0.25237401 0.041*
+6   0.34391370 0.011*
 7  -0.14166137 0.803
 8   0.08943395 0.248
 9  -0.11566399 0.709
@@ -440,21 +440,22 @@ test.scores(CZ.pcnm.scores, CZ.listw, nsim=999)  ##and select only positive pcnm
 13  0.16821893 0.104
 14 -0.03065197 0.508
 15 -0.63822650 0.999
-16  0.34012456 0.005
+16  0.34012456 0.005*
 17 -0.52370184 0.998
 18 -0.60240388 0.999
 19 -0.67917757 0.999
 20 -0.53936405 0.998
 21 -0.50854789 0.997
 
-#6 significant PCNM eigenfunctions with positive correlations.
+#7 significant PCNM eigenfunctions with positive correlations.
 
-write.table (CHN.pcnm.scores$vectors[,1], "CHN.scores_PCNM1.txt") 
-write.table (CHN.pcnm.scores$vectors[,2], "CHN.scores_PCNM2.txt") 
-write.table (CHN.pcnm.scores$vectors[,3], "CHN.scores_PCNM3.txt") 
-write.table (CHN.pcnm.scores$vectors[,4], "CHN.scores_PCNM4.txt") 
-write.table (CHN.pcnm.scores$vectors[,5], "CHN.scores_PCNM5.txt") 
-write.table (CHN.pcnm.scores$vectors[,6], "CHN.scores_PCNM6.txt") 
+write.table (CZ.pcnm.scores$vectors[,1], "CZ.scores_PCNM1.txt") 
+write.table (CZ.pcnm.scores$vectors[,2], "CZ.scores_PCNM2.txt") 
+write.table (CZ.pcnm.scores$vectors[,3], "CZ.scores_PCNM3.txt") 
+write.table (CZ.pcnm.scores$vectors[,4], "CZ.scores_PCNM4.txt") 
+write.table (CZ.pcnm.scores$vectors[,5], "CZ.scores_PCNM5.txt") 
+write.table (CZ.pcnm.scores$vectors[,6], "CZ.scores_PCNM6.txt") 
+write.table (CZ.pcnm.scores$vectors[,16], "CZ.scores_PCNM7.txt") 
 
 ```
 
@@ -677,7 +678,7 @@ write.table (CHS.VS.pcnm.scores$vectors[,4], "CHS.VS.scores_PCNM4.txt")
 library(spacemakeR)
 
 
-env.data.CHall <- rbind(env.data.CHN, env.data.CHS, env.data.CZ)
+env.data.CHall <- read.csv("Env.CHall.data.csv", header=T)
 head(env.data.CHall)
 #extract x and y
 CHall.xy <- env.data.CHall[, c("long","lat")]
@@ -697,13 +698,13 @@ lines(CHall.xy[CHall.wh1[1,],1],CHall.xy[CHall.wh1[1,],2],lwd=2)
 title(main="Maximum distance of the minimum spanning tree in bold")
 #thershold distance
 CHall.th 
-#[1] 42437.1
+#[1] 37752.95
 CHall.nb1
 Neighbour list object:
-Number of regions: 80 
-Number of nonzero links: 158 
-Percentage nonzero weights: 2.46875 
-Average number of links: 1.975 
+Number of regions: 81 
+Number of nonzero links: 160 
+Percentage nonzero weights: 2.438653 
+Average number of links: 1.975309 
 
 #install.packages("spdep")
 library(spdep)
@@ -720,51 +721,53 @@ CHall.pcnm.scores <- pcnm(CHall.dxy, CHall.th)  ##calculate pcnm
 test.scores(CHall.pcnm.scores, CHall.listw, nsim=999)  ##and select only positive pcnm
 
            stat  pval
-1   0.978870662 0.001*
-2   0.979201633 0.001*
-3   0.933694805 0.001*
-4   0.917753544 0.001*
-5   0.852246427 0.001*
-6   0.900881326 0.001*
-7   0.834207732 0.001*
-8   0.856667583 0.001*
-9   0.848587547 0.001*
-10  0.645406423 0.001*
-11  0.525168074 0.001*
-12  0.166315768 0.043*
-13  0.223339042 0.026*
-14  0.014088782 0.406
-15  0.036135417 0.355
-16  0.009042856 0.410
-17 -0.167323668 0.916
-18 -0.279342795 0.994
-19 -0.351123899 0.999
-20 -0.394090816 0.999
-21 -0.132939121 0.896
-22 -0.007220108 0.502
-23  0.061296277 0.253
-24 -0.406238925 0.999
-25 -0.069283508 0.731
-26 -0.097663284 0.787
-27 -0.269447987 0.992
-28 -0.272271122 0.989
-29 -0.456094441 0.999
-30  0.176203280 0.029*
-31  0.009238961 0.252
-32 -0.060031799 0.948
-33 -0.059769523 0.763
-34  0.384102665 0.001*
-35 -0.075602831 0.825
-36 -0.001538547 0.621
-37 -0.019890990 0.740
-38 -0.831325686 0.999
-39 -0.774231556 0.999
-40 -0.215617762 0.968
-41 -0.676525471 0.999
-42 -0.265577634 0.982
-43 -0.717997084 0.999
-44 -0.428119796 0.997
-45 -0.086623617 0.931
+1   0.974630699 0.001*
+2   0.983738764 0.001*
+3   0.949606366 0.001*
+4   0.935105256 0.001*
+5   0.906896859 0.001*
+6   0.894147516 0.001*
+7   0.846225903 0.001*
+8   0.891306648 0.001*
+9   0.882729874 0.001*
+10  0.533860219 0.001*
+11  0.538148576 0.001*
+12  0.220223091 0.022*
+13  0.423930713 0.001*
+14  0.265709642 0.008*
+15 -0.190681120 0.936
+16  0.045389272 0.310
+17  0.119311054 0.110
+18 -0.127488357 0.846
+19 -0.173360967 0.938
+20  0.038654599 0.336
+21 -0.203487906 0.944
+22 -0.158747679 0.897
+23 -0.152646178 0.897
+24 -0.266431324 0.998
+25 -0.233618576 0.971
+26 -0.420386320 0.999
+27 -0.577584506 0.999
+28 -0.123987718 0.837
+29 -0.002309396 0.475
+30 -0.234212862 0.965
+31  0.058511897 0.245
+32 -0.086798543 0.766
+33 -0.321461715 0.995
+34 -0.014731474 0.548
+35 -0.059465574 0.949
+36  0.096276663 0.056
+37  0.026761631 0.225
+38  0.034995430 0.227
+39  0.218481211 0.025*
+40 -0.495926269 0.982
+41 -0.790173630 0.999
+42 -0.771856198 0.999
+43 -0.115110901 0.835
+44 -0.377614344 0.988
+45 -0.230270723 0.971
+46 -0.414777341 0.979
+47 -0.489151801 0.999
 
 #4 significant PCNM eigenfunctions with positive correlations.
 
@@ -781,8 +784,8 @@ write.table (CHall.pcnm.scores$vectors[,10], "CHall.scores_PCNM10.txt")
 write.table (CHall.pcnm.scores$vectors[,11], "CHall.scores_PCNM11.txt") 
 write.table (CHall.pcnm.scores$vectors[,12], "CHall.scores_PCNM12.txt") 
 write.table (CHall.pcnm.scores$vectors[,13], "CHall.scores_PCNM13.txt") 
-write.table (CHall.pcnm.scores$vectors[,30], "CHall.scores_PCNM14.txt") 
-write.table (CHall.pcnm.scores$vectors[,34], "CHall.scores_PCNM15.txt") 
+write.table (CHall.pcnm.scores$vectors[,14], "CHall.scores_PCNM14.txt") 
+write.table (CHall.pcnm.scores$vectors[,39], "CHall.scores_PCNM15.txt") 
 ```
 
 
@@ -827,8 +830,8 @@ library(vegan)
 
 CHallData <- read.csv("CH932.MAF.csv", header=T)
 CHallData <- CHallData[complete.cases(CHallData),]
-GenData <- CHallData[,10:ncol(CHallData)]
-Climate.Data <- CHallData[,3:9]
+GenData <- CHallData[,25:ncol(CHallData)]
+Climate.Data <- CHallData[,3:24]
 names(Climate.Data)
 ```
 
@@ -837,37 +840,42 @@ names(Climate.Data)
 ##1. Run Full RDA model to determine how much of the variation is explainable by the expanatory variables we have
 ##H0: climate data does not affect genotype
 
-RDA.CH932full <- rda(GenData ~ lat + long +shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, Climate.Data) ##runs in 20s.
+RDA.CH932full <- rda(GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM7 + PCNM8 + PCNM9 +PCNM10 + PCNM11 + PCNM12 +PCNM13 + PCNM14 +PCNM15 +shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, Climate.Data) ##runs in 20s.
 
 RDA.CH932full
 
-Call: rda(formula = GenData ~ lat + long + shadow.days + sol.rad.60d +
-pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
+Call: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 +
+PCNM6 + PCNM7 + PCNM8 + PCNM9 + PCNM10 + PCNM11 + PCNM12 + PCNM13 +
+PCNM14 + PCNM15 + shadow.days + sol.rad.60d + pcpt.60d + day10cm +
+temp.laying.date, data = Climate.Data)
 
                Inertia Proportion Rank
 Total         430.9929     1.0000     
-Constrained   172.3605     0.3999    7
-Unconstrained 258.6324     0.6001   73
+Constrained   252.3716     0.5856   20
+Unconstrained 178.6213     0.4144   60
 Inertia is variance 
 
 Eigenvalues for constrained axes:
-  RDA1   RDA2   RDA3   RDA4   RDA5   RDA6   RDA7 
-119.98  29.47   9.03   4.53   3.89   2.82   2.64 
+  RDA1   RDA2   RDA3   RDA4   RDA5   RDA6   RDA7   RDA8   RDA9  RDA10  RDA11 
+140.68  31.49  16.74   9.59   6.49   5.04   4.48   4.10   3.94   3.64   3.40 
+ RDA12  RDA13  RDA14  RDA15  RDA16  RDA17  RDA18  RDA19  RDA20 
+  3.15   3.04   2.81   2.69   2.48   2.37   2.22   2.18   1.85 
 
 Eigenvalues for unconstrained axes:
-  PC1   PC2   PC3   PC4   PC5   PC6   PC7   PC8 
-53.74 14.48  9.28  6.87  6.52   6.28  5.71  5.26 
-(Showed only 8 of all 73 unconstrained eigenvalues)
+   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8 
+27.993  7.082  6.254  6.160  5.794  5.109  4.940  4.287 
+(Showed only 8 of all 60 unconstrained eigenvalues)
+
 
 ##calculate proportion explained (R2)
 
 RsquareAdj(RDA.CH932full)
 
 $r.squared
-[1] 0.3999149
+[1] 0.5855586
 
 $adj.r.squared
-[1] 0.3423725
+[1] 0.4474114
 
 
 
@@ -893,11 +901,254 @@ dev.off()
 ```
 
 
+Select the factors that optimise the model
+```
+library(vegan)
+
+ordistep(RDA.CH932full)
+
+Start: GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM7 +      PCNM8 + PCNM9 + PCNM10 + PCNM11 + PCNM12 + PCNM13 + PCNM14 +      PCNM15 + shadow.days + sol.rad.60d + pcpt.60d + day10cm +      temp.laying.date 
+
+                   Df    AIC       F Pr(>F)   
+- PCNM12            1 460.03  0.7689  0.495   
+- day10cm           1 460.25  0.9346  0.445   
+- PCNM14            1 460.54  1.1532  0.295   
+- PCNM13            1 460.42  1.0614  0.275   
+- PCNM15            1 460.58  1.1789  0.260   
+- PCNM11            1 460.54  1.1493  0.250   
+- shadow.days       1 460.44  1.0762  0.245   
+- temp.laying.date  1 460.71  1.2808  0.205   
+- PCNM7             1 461.07  1.5524  0.100 . 
+- PCNM6             1 461.48  1.8615  0.090 . 
+- sol.rad.60d       1 461.22  1.6689  0.070 . 
+- pcpt.60d          1 461.73  2.0531  0.050 * 
+- PCNM3             1 462.16  2.3842  0.050 * 
+- PCNM10            1 462.49  2.6386  0.025 * 
+- PCNM9             1 464.31  4.0678  0.010 **
+- PCNM5             1 464.45  4.1728  0.010 **
+- PCNM8             1 468.86  7.7638  0.005 **
+- PCNM2             1 469.59  8.3804  0.005 **
+- PCNM1             1 470.07  8.7890  0.005 **
+- PCNM4             1 478.95 16.7527  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM7 +      PCNM8 + PCNM9 + PCNM10 + PCNM11 + PCNM13 + PCNM14 + PCNM15 +      shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date 
+
+                   Df    AIC       F Pr(>F)   
+- day10cm           1 459.27  0.9378  0.400   
+- PCNM13            1 459.43  1.0597  0.285   
+- shadow.days       1 459.45  1.0801  0.275   
+- PCNM11            1 459.55  1.1502  0.235   
+- PCNM14            1 459.54  1.1440  0.215   
+- PCNM15            1 459.59  1.1832  0.195   
+- temp.laying.date  1 459.73  1.2924  0.180   
+- PCNM7             1 460.08  1.5602  0.160   
+- sol.rad.60d       1 460.29  1.7279  0.105   
+- PCNM6             1 460.49  1.8772  0.080 . 
+- PCNM3             1 461.16  2.4049  0.055 . 
+- pcpt.60d          1 460.79  2.1097  0.030 * 
+- PCNM10            1 461.51  2.6752  0.020 * 
+- PCNM9             1 463.29  4.0879  0.005 **
+- PCNM5             1 463.44  4.2115  0.005 **
+- PCNM8             1 467.81  7.8231  0.005 **
+- PCNM2             1 468.67  8.5628  0.005 **
+- PCNM1             1 468.99  8.8400  0.005 **
+- PCNM4             1 477.85 16.9084  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM7 +      PCNM8 + PCNM9 + PCNM10 + PCNM11 + PCNM13 + PCNM14 + PCNM15 +      shadow.days + sol.rad.60d + pcpt.60d + temp.laying.date 
+
+                   Df    AIC       F Pr(>F)   
+- PCNM13            1 458.65  1.0684  0.340   
+- PCNM14            1 458.75  1.1454  0.290   
+- PCNM15            1 458.78  1.1710  0.245   
+- temp.laying.date  1 458.93  1.2883  0.195   
+- PCNM7             1 459.28  1.5566  0.125   
+- sol.rad.60d       1 459.82  1.9881  0.095 . 
+- PCNM6             1 460.09  2.1960  0.060 . 
+- pcpt.60d          1 460.26  2.3346  0.045 * 
+- PCNM10            1 460.71  2.6929  0.015 * 
+- PCNM3             1 461.03  2.9457  0.015 * 
+- PCNM5             1 462.59  4.2084  0.010 **
+- PCNM9             1 462.42  4.0758  0.005 **
+- PCNM1             1 468.28  9.0326  0.005 **
+- PCNM2             1 469.72 10.3063  0.005 **
+- PCNM8             1 471.66 12.0591  0.005 **
+- PCNM4             1 476.76 16.8692  0.005 **
+- shadow.days       1 481.60 21.7217  0.005 **
+- PCNM11            1 486.10 26.5103  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM7 +      PCNM8 + PCNM9 + PCNM10 + PCNM11 + PCNM14 + PCNM15 + shadow.days +      sol.rad.60d + pcpt.60d + temp.laying.date 
+
+                   Df    AIC       F Pr(>F)   
+- shadow.days       1 457.88  0.9604  0.430   
+- PCNM11            1 458.08  1.1195  0.285   
+- PCNM15            1 458.14  1.1700  0.255   
+- PCNM14            1 458.11  1.1435  0.235   
+- temp.laying.date  1 458.32  1.3100  0.205   
+- PCNM7             1 458.61  1.5451  0.110   
+- sol.rad.60d       1 459.32  2.1134  0.095 . 
+- PCNM6             1 459.44  2.2103  0.055 . 
+- pcpt.60d          1 459.64  2.3706  0.045 * 
+- PCNM10            1 460.03  2.6836  0.015 * 
+- PCNM3             1 460.36  2.9483  0.015 * 
+- PCNM9             1 461.72  4.0645  0.005 **
+- PCNM5             1 461.88  4.2028  0.005 **
+- PCNM1             1 467.49  9.0193  0.005 **
+- PCNM2             1 468.94 10.3195  0.005 **
+- PCNM8             1 470.81 12.0323  0.005 **
+- PCNM4             1 475.92 16.9201  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM7 +      PCNM8 + PCNM9 + PCNM10 + PCNM11 + PCNM14 + PCNM15 + sol.rad.60d +      pcpt.60d + temp.laying.date 
+
+                   Df    AIC       F Pr(>F)   
+- PCNM14            1 457.33  1.1581  0.280   
+- PCNM11            1 457.30  1.1358  0.270   
+- PCNM15            1 457.39  1.2082  0.250   
+- temp.laying.date  1 457.49  1.2839  0.175   
+- PCNM7             1 457.77  1.5157  0.145   
+- PCNM6             1 458.95  2.4764  0.060 . 
+- PCNM10            1 459.16  2.6443  0.030 * 
+- sol.rad.60d       1 459.17  2.6556  0.020 * 
+- PCNM3             1 459.57  2.9878  0.020 * 
+- pcpt.60d          1 459.12  2.6130  0.010 **
+- PCNM9             1 460.79  4.0049  0.010 **
+- PCNM5             1 461.06  4.2283  0.010 **
+- PCNM1             1 466.57  9.0334  0.005 **
+- PCNM2             1 468.03 10.3608  0.005 **
+- PCNM8             1 469.74 11.9436  0.005 **
+- PCNM4             1 476.50 18.5536  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM7 +      PCNM8 + PCNM9 + PCNM10 + PCNM11 + PCNM15 + sol.rad.60d +      pcpt.60d + temp.laying.date 
+
+                   Df    AIC       F Pr(>F)   
+- PCNM15            1 456.81  1.1983  0.270   
+- PCNM11            1 456.75  1.1528  0.235   
+- temp.laying.date  1 456.92  1.2915  0.185   
+- PCNM7             1 457.18  1.4999  0.120   
+- PCNM6             1 458.44  2.5426  0.025 * 
+- PCNM10            1 458.55  2.6351  0.025 * 
+- PCNM3             1 458.90  2.9286  0.020 * 
+- sol.rad.60d       1 458.96  2.9757  0.020 * 
+- pcpt.60d          1 458.98  2.9954  0.015 * 
+- PCNM9             1 460.16  3.9906  0.005 **
+- PCNM5             1 460.61  4.3744  0.005 **
+- PCNM1             1 465.86  9.0197  0.005 **
+- PCNM2             1 468.19 11.1889  0.005 **
+- PCNM8             1 469.21 12.1541  0.005 **
+- PCNM4             1 475.76 18.6467  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM7 +      PCNM8 + PCNM9 + PCNM10 + PCNM11 + sol.rad.60d + pcpt.60d +      temp.laying.date 
+
+                   Df    AIC       F Pr(>F)   
+- PCNM11            1 456.22  1.1591  0.280   
+- temp.laying.date  1 456.39  1.2990  0.200   
+- PCNM7             1 456.62  1.4917  0.185   
+- PCNM3             1 458.31  2.9179  0.030 * 
+- PCNM6             1 457.86  2.5371  0.025 * 
+- sol.rad.60d       1 458.39  2.9789  0.020 * 
+- PCNM9             1 459.54  3.9692  0.015 * 
+- pcpt.60d          1 458.48  3.0570  0.010 **
+- PCNM5             1 460.01  4.3731  0.010 **
+- PCNM1             1 465.16  8.9973  0.005 **
+- PCNM2             1 467.56 11.2516  0.005 **
+- PCNM8             1 468.51 12.1611  0.005 **
+- PCNM4             1 474.91 18.5844  0.005 **
+- PCNM10            1 509.45 63.5742  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM7 +      PCNM8 + PCNM9 + PCNM10 + sol.rad.60d + pcpt.60d + temp.laying.date 
+
+                   Df    AIC       F Pr(>F)   
+- temp.laying.date  1 455.80  1.3210  0.170   
+- PCNM7             1 456.01  1.5007  0.155   
+- PCNM3             1 457.68  2.9221  0.025 * 
+- sol.rad.60d       1 457.75  2.9885  0.025 * 
+- PCNM10            1 457.36  2.6470  0.020 * 
+- pcpt.60d          1 458.12  3.3074  0.010 **
+- PCNM9             1 458.91  3.9927  0.005 **
+- PCNM5             1 459.33  4.3616  0.005 **
+- PCNM1             1 464.40  8.9704  0.005 **
+- PCNM2             1 466.99 11.4376  0.005 **
+- PCNM8             1 467.73 12.1575  0.005 **
+- PCNM4             1 474.00 18.5361  0.005 **
+- PCNM6             1 511.20 68.3835  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM7 +      PCNM8 + PCNM9 + PCNM10 + sol.rad.60d + pcpt.60d 
+
+              Df    AIC        F Pr(>F)   
+- PCNM7        1 455.52   1.4583  0.125   
+- PCNM6        1 456.88   2.6318  0.045 * 
+- PCNM10       1 456.96   2.7067  0.025 * 
+- sol.rad.60d  1 456.96   2.7049  0.010 **
+- PCNM3        1 457.15   2.8680  0.010 **
+- pcpt.60d     1 457.29   2.9893  0.010 **
+- PCNM5        1 459.26   4.7422  0.010 **
+- PCNM9        1 458.46   4.0231  0.005 **
+- PCNM1        1 464.74   9.8343  0.005 **
+- PCNM2        1 466.20  11.2477  0.005 **
+- PCNM8        1 467.02  12.0539  0.005 **
+- PCNM4        1 574.84 235.0413  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM8 +      PCNM9 + PCNM10 + sol.rad.60d + pcpt.60d 
+
+              Df    AIC        F Pr(>F)   
+- PCNM10       1 456.57   2.6503  0.030 * 
+- PCNM6        1 456.60   2.6771  0.025 * 
+- PCNM3        1 456.70   2.7652  0.020 * 
+- sol.rad.60d  1 457.45   3.4292  0.015 * 
+- pcpt.60d     1 457.60   3.5644  0.005 **
+- PCNM9        1 457.97   3.8999  0.005 **
+- PCNM2        1 466.65  12.1461  0.005 **
+- PCNM8        1 466.78  12.2729  0.005 **
+- PCNM4        1 474.54  20.4435  0.005 **
+- PCNM1        1 521.64  90.9973  0.005 **
+- PCNM5        1 548.88 154.9492  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Call: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 +
+PCNM6 + PCNM8 + PCNM9 + PCNM10 + sol.rad.60d + pcpt.60d, data =
+Climate.Data)
+
+               Inertia Proportion Rank
+Total         430.9929     1.0000     
+Constrained   222.5162     0.5163   11
+Unconstrained 208.4767     0.4837   69
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+  RDA1   RDA2   RDA3   RDA4   RDA5   RDA6   RDA7   RDA8   RDA9  RDA10  RDA11 
+137.92  30.70  16.39   9.43   5.99   4.75   4.41   3.75   3.31   3.14   2.72 
+
+Eigenvalues for unconstrained axes:
+   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8 
+30.806  7.662  6.838  6.675  6.126  5.736  5.162  4.763 
+(Showed only 8 of all 69 unconstrained eigenvalues)
+
+```
+
+Partial out Geog and test which variable is the most important
 ```
 ##Partial out geog
 H0: Climate does not explain genetic data
 
-pRDA.CH932.geog <- rda(GenData~shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(lat + long), Climate.Data)
+pRDA.CH932.geog <- rda(GenData~shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM7 + PCNM8 + PCNM9 + PCNM10 + PCNM11 + PCNM12 +PCNM13 +PCNM14 + PCNM15), Climate.Data)
 
 #head(summary(pRDA.CH940.geog))
 
