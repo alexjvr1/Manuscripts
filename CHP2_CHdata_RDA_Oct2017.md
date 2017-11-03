@@ -3,9 +3,25 @@
 RDA: Effect of Climate & Geog on genetic variation
 
 ### Part1: RDA of full dataset for each region
+      
+      aim: partition variance into neutral, adaptive and residual
 
-### Part2: RDA of adaptive loci for each region
+### Part 2: Effect of spatial scale
 
+Compare the proportion of variance explained at different spatial scales
+
+
+### Part 3: Identify the most important environmental variables
+
+Of the 5 environmental variables, which is the most important in the different geographic regions, and globally. 
+
+
+### Final: RDA of adaptive loci for each region  
+ 
+ This was something I did before - a potential additional analysis with adaptive loci.. 
+ 
+ 
+ 
 
 I can use RDA to partition the effects of climate and geog on genetic variation. 
 
@@ -14,6 +30,15 @@ Explanation and example: http://www.davidzeleny.net/anadat-r/doku.php/en:rda_exa
 And Victoria's paper: http://www.amjbot.org/content/103/1/33.full.pdf+html
 
 Paul Gugger tutorial: http://pgugger.al.umces.edu/assets/redundancy-analysis-for-landscape-genetics.pdf
+
+
+Also, see these papers: 
+
+http://onlinelibrary.wiley.com/doi/10.1111/mec.13409/full
+
+http://onlinelibrary.wiley.com/doi/10.1111/mec.13811/full
+
+http://onlinelibrary.wiley.com/doi/10.1111/j.1365-294X.2012.05709.x/full
 
 
 /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/RDA
@@ -258,14 +283,518 @@ write.csv(CZ404.MAF4, file="CZ404.MAF.csv")
 
 
 
-#### 2. Geographic coordinates
+#### 2. Geographic component: pcnm 
 
+I used only geographic coordinates before. Now I've decided to use a PCNM which should describe geographic structure (akin to MEM)
+
+
+I've already calculated MEMs for the gradient forest for all the transects: 
+
+https://github.com/alexjvr1/Manuscripts/blob/90bb82edd50be25e4d467ca64b151798926bee9a/CHP2_GF.subsets.MACfiltered.md
+
+So I'm changing the end of the code to write pcnms. All the code is given here, but it was run here: 
+
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GradientForest/Oct2017
+
+#### CHN
+```
+#Calculating MEM variables
+#install.packages("tripack")
+#install.packages("spacemakeR", repos="http://R-Forge.R-project.org")
+
+library(spacemakeR)
+
+
+env.data.CHN <- read.csv("AllEnv.Data_CHN_20161010.csv", header=T)
+head(env.data.CHN)
+#extract x and y
+CHN.xy <- env.data.CHN[, c("long","lat")]
+
+#install.packages("geosphere")
+library(geosphere) #calculate a matrix of geographic distances
+CHN.dxy <- distm(CHN.xy)
+CHN.dxy <- as.dist(CHN.dxy)
+
+#Function that returns the maximum distance of the minimum spanning tree based on a distance matrix.
+CHN.th <- give.thresh(CHN.dxy)
+#Function to compute neighborhood based on the minimum spanning tree. Returns an object of the class nb (see spdep package).
+CHN.nb1 <- mst.nb(CHN.dxy)
+CHN.wh1 <- which(as.matrix(CHN.dxy)==CHN.th,arr.ind=TRUE)
+plot(CHN.nb1,CHN.xy,pch=20,cex=2,lty=3)
+lines(CHN.xy[CHN.wh1[1,],1],CHN.xy[CHN.wh1[1,],2],lwd=2)
+title(main="Maximum distance of the minimum spanning tree in bold")
+#thershold distance
+CHN.th 
+#[1] 50457.46
+CHN.nb1
+Neighbour list object:
+Number of regions: 19 
+Number of nonzero links: 36 
+Percentage nonzero weights: 9.972299 
+Average number of links: 1.894737 
+
+#install.packages("spdep")
+library(spdep)
+#transform nb to listw (spdep package)
+CHN.listw=nb2listw(CHN.nb1, glist=NULL, style="W", zero.policy=NULL)
+#The can.be.simmed helper function checks whether a spatial weights object is similar to
+#symmetric and can be so transformed to yield real eigenvalues or for Cholesky decomposition.
+can.be.simmed(CHN.listw)
+#[1] TRUE
+ 
+library(vegan)
+CHN.pcnm.scores <- pcnm(CHN.dxy, CHN.th)  ##calculate pcnm
+
+test.scores(CHN.pcnm.scores, CHN.listw, nsim=999)  ##and select only positive pcnm
+
+          stat  pval
+1   0.84559173 0.001
+2   0.90374681 0.001
+3   0.68531162 0.001
+4   0.43768794 0.005
+5  -0.47001032 0.960
+6  -0.07610158 0.560
+7  -0.16121905 0.724
+8  -0.33847617 0.885
+9  -0.29365084 0.851
+10 -0.14700643 0.691
+11 -0.53066144 0.985
+12 -0.77952568 0.999
+
+#4 significant PCNM eigenfunctions with positive correlations.
+
+write.table (CHN.pcnm.scores$vectors[,1], "CHN.scores_PCNM1.txt") 
+write.table (CHN.pcnm.scores$vectors[,2], "CHN.scores_PCNM2.txt") 
+write.table (CHN.pcnm.scores$vectors[,3], "CHN.scores_PCNM3.txt") 
+write.table (CHN.pcnm.scores$vectors[,4], "CHN.scores_PCNM4.txt") 
+```
+
+
+#### CZ
+```
+#Calculating MEM variables
+#install.packages("tripack")
+#install.packages("spacemakeR", repos="http://R-Forge.R-project.org")
+
+library(spacemakeR)
+
+
+env.data.CZ <- read.csv("AllEnv.Data_CZ_20161010.csv", header=T)
+head(env.data.CZ)
+
+env.data.CZ <- env.data.CZ[-18,]##remove meie. This population was added by mistake
+
+#extract x and y
+CZ.xy <- env.data.CZ[, c("long","lat")]
+
+#install.packages("geosphere")
+library(geosphere) #calculate a matrix of geographic distances
+CZ.dxy <- distm(CZ.xy)
+CZ.dxy <- as.dist(CZ.dxy)
+
+#Function that returns the maximum distance of the minimum spanning tree based on a distance matrix.
+CZ.th <- give.thresh(CZ.dxy)
+#Function to compute neighborhood based on the minimum spanning tree. Returns an object of the class nb (see spdep package).
+CZ.nb1 <- mst.nb(CZ.dxy)
+CZ.wh1 <- which(as.matrix(CZ.dxy)==CZ.th,arr.ind=TRUE)
+plot(CZ.nb1,CZ.xy,pch=20,cex=2,lty=3)
+lines(CZ.xy[CZ.wh1[1,],1],CZ.xy[CZ.wh1[1,],2],lwd=2)
+title(main="Maximum distance of the minimum spanning tree in bold")
+#thershold distance
+CZ.th 
+#[1] 122285.5
+CZ.nb1
+Neighbour list object:
+Number of regions: 37 
+Number of nonzero links: 72 
+Percentage nonzero weights: 5.259313 
+Average number of links: 1.945946 
+
+#install.packages("spdep")
+library(spdep)
+#transform nb to listw (spdep package)
+CZ.listw=nb2listw(CZ.nb1, glist=NULL, style="W", zero.policy=NULL)
+#The can.be.simmed helper function checks whether a spatial weights object is similar to
+#symmetric and can be so transformed to yield real eigenvalues or for Cholesky decomposition.
+can.be.simmed(CZ.listw)
+#[1] TRUE
+ 
+library(vegan)
+CZ.pcnm.scores <- pcnm(CZ.dxy, CZ.th)  ##calculate pcnm
+
+test.scores(CZ.pcnm.scores, CZ.listw, nsim=999)  ##and select only positive pcnm
+
+          stat  pval
+1   0.95580479 0.001
+2   0.93050370 0.001
+3   0.91257634 0.001
+4   0.64966475 0.001
+5   0.25237401 0.041
+6   0.34391370 0.011
+7  -0.14166137 0.803
+8   0.08943395 0.248
+9  -0.11566399 0.709
+10  0.11102298 0.218
+11 -0.15455107 0.769
+12 -0.32732604 0.977
+13  0.16821893 0.104
+14 -0.03065197 0.508
+15 -0.63822650 0.999
+16  0.34012456 0.005
+17 -0.52370184 0.998
+18 -0.60240388 0.999
+19 -0.67917757 0.999
+20 -0.53936405 0.998
+21 -0.50854789 0.997
+
+#6 significant PCNM eigenfunctions with positive correlations.
+
+write.table (CHN.pcnm.scores$vectors[,1], "CHN.scores_PCNM1.txt") 
+write.table (CHN.pcnm.scores$vectors[,2], "CHN.scores_PCNM2.txt") 
+write.table (CHN.pcnm.scores$vectors[,3], "CHN.scores_PCNM3.txt") 
+write.table (CHN.pcnm.scores$vectors[,4], "CHN.scores_PCNM4.txt") 
+write.table (CHN.pcnm.scores$vectors[,5], "CHN.scores_PCNM5.txt") 
+write.table (CHN.pcnm.scores$vectors[,6], "CHN.scores_PCNM6.txt") 
+
+```
+
+#### CHS
+```
+#Calculating MEM variables
+#install.packages("tripack")
+#install.packages("spacemakeR", repos="http://R-Forge.R-project.org")
+
+library(spacemakeR)
+
+
+env.data.CHS <- read.csv("AllEnv.Data_CHS_20161010.csv", header=T)
+env.data.CHS <- env.data.CHS[-23,]  ##remove stba
+head(env.data.CHS)
+#extract x and y
+CHS.xy <- env.data.CHS[, c("long","lat")]
+
+#install.packages("geosphere")
+library(geosphere) #calculate a matrix of geographic distances
+CHS.dxy <- distm(CHS.xy)
+CHS.dxy <- as.dist(CHS.dxy)
+
+#Function that returns the maximum distance of the minimum spanning tree based on a distance matrix.
+CHS.th <- give.thresh(CHS.dxy)
+#Function to compute neighborhood based on the minimum spanning tree. Returns an object of the class nb (see spdep package).
+CHS.nb1 <- mst.nb(CHS.dxy)
+CHS.wh1 <- which(as.matrix(CHS.dxy)==CHS.th,arr.ind=TRUE)
+plot(CHS.nb1,CHS.xy,pch=20,cex=2,lty=3)
+lines(CHS.xy[CHS.wh1[1,],1],CHS.xy[CHS.wh1[1,],2],lwd=2)
+title(main="Maximum distance of the minimum spanning tree in bold")
+#thershold distance
+CHS.th 
+#[1] 47654.6
+CHS.nb1
+Neighbour list object:
+Number of regions: 24 
+Number of nonzero links: 46 
+Percentage nonzero weights: 7.986111 
+Average number of links: 1.916667 
+
+
+#install.packages("spdep")
+library(spdep)
+#transform nb to listw (spdep package)
+CHS.listw=nb2listw(CHS.nb1, glist=NULL, style="W", zero.policy=NULL)
+#The can.be.simmed helper function checks whether a spatial weights object is similar to
+#symmetric and can be so transformed to yield real eigenvalues or for Cholesky decomposition.
+can.be.simmed(CHS.listw)
+#[1] TRUE
+ 
+library(vegan)
+CHS.pcnm.scores <- pcnm(CHS.dxy, CHS.th)  ##calculate pcnm
+
+test.scores(CHS.pcnm.scores, CHS.listw, nsim=999)  ##and select only positive pcnm
+
+         stat  pval
+1   0.9658591 0.001
+2   0.9300624 0.001
+3   0.4679170 0.001
+4  -0.3328825 0.913
+5  -0.0461216 0.587
+6   0.4680426 0.006
+7   0.3722407 0.024
+8  -0.1211875 0.661
+9  -0.2357535 0.840
+10 -0.3741807 0.946
+
+#3 significant PCNM eigenfunctions with positive correlations.
+
+write.table (CHS.pcnm.scores$vectors[,1], "CHS.scores_PCNM1.txt") 
+write.table (CHS.pcnm.scores$vectors[,2], "CHS.scores_PCNM2.txt") 
+write.table (CHS.pcnm.scores$vectors[,3], "CHS.scores_PCNM3.txt") 
+```
+
+
+#### CHS.TI
+```
+#Calculating MEM variables
+#install.packages("tripack")
+#install.packages("spacemakeR", repos="http://R-Forge.R-project.org")
+
+library(spacemakeR)
+
+
+env.data.CHS.TI <- read.csv("AllEnv.Data_CHS.TI_20161010.csv", header=T)
+head(env.data.CHS.TI)
+#extract x and y
+CHS.TI.xy <- env.data.CHS.TI[, c("long","lat")]
+
+#install.packages("geosphere")
+library(geosphere) #calculate a matrix of geographic distances
+CHS.TI.dxy <- distm(CHS.TI.xy)
+CHS.TI.dxy <- as.dist(CHS.TI.dxy)
+
+#Function that returns the maximum distance of the minimum spanning tree based on a distance matrix.
+CHS.TI.th <- give.thresh(CHS.TI.dxy)
+#Function to compute neighborhood based on the minimum spanning tree. Returns an object of the class nb (see spdep package).
+CHS.TI.nb1 <- mst.nb(CHS.TI.dxy)
+CHS.TI.wh1 <- which(as.matrix(CHS.TI.dxy)==CHS.TI.th,arr.ind=TRUE)
+plot(CHS.TI.nb1,CHS.TI.xy,pch=20,cex=2,lty=3)
+lines(CHS.TI.xy[CHS.TI.wh1[1,],1],CHS.TI.xy[CHS.TI.wh1[1,],2],lwd=2)
+title(main="Maximum distance of the minimum spanning tree in bold")
+#thershold distance
+CHS.TI.th 
+#[1] 19167.21
+CHS.TI.nb1
+Neighbour list object:
+Number of regions: 15 
+Number of nonzero links: 28 
+Percentage nonzero weights: 12.44444 
+Average number of links: 1.866667 
+
+#install.packages("spdep")
+library(spdep)
+#transform nb to listw (spdep package)
+CHS.TI.listw=nb2listw(CHS.TI.nb1, glist=NULL, style="W", zero.policy=NULL)
+#The can.be.simmed helper function checks whether a spatial weights object is similar to
+#symmetric and can be so transformed to yield real eigenvalues or for Cholesky decomposition.
+can.be.simmed(CHS.TI.listw)
+#[1] TRUE
+ 
+library(vegan)
+CHS.TI.pcnm.scores <- pcnm(CHS.TI.dxy, CHS.TI.th)  ##calculate pcnm
+
+test.scores(CHS.TI.pcnm.scores, CHS.TI.listw, nsim=999)  ##and select only positive pcnm
+
+         stat  pval
+1   0.92968201 0.001
+2   0.80836905 0.001
+3   0.73502128 0.001
+4   0.41725039 0.005
+5   0.27276369 0.090
+6  -0.06803219 0.514
+7  -0.27148032 0.771
+8  -0.27717479 0.798
+9  -0.74824234 0.987
+10 -0.40149812 0.915
+
+#4 significant PCNM eigenfunctions with positive correlations.
+
+write.table (CHS.TI.pcnm.scores$vectors[,1], "CHS.TI.scores_PCNM1.txt") 
+write.table (CHS.TI.pcnm.scores$vectors[,2], "CHS.TI.scores_PCNM2.txt") 
+write.table (CHS.TI.pcnm.scores$vectors[,3], "CHS.TI.scores_PCNM3.txt")  
+write.table (CHS.TI.pcnm.scores$vectors[,4], "CHS.TI.scores_PCNM4.txt")  
+```
+
+
+#### CHS.VS
+```
+#Calculating MEM variables
+#install.packages("tripack")
+#install.packages("spacemakeR", repos="http://R-Forge.R-project.org")
+
+library(spacemakeR)
+
+
+env.data.CHS.VS <- read.csv("AllEnv.Data_CHS.VS_20161010.csv", header=T)
+head(env.data.CHS.VS)
+#extract x and y
+CHS.VS.xy <- env.data.CHS.VS[, c("long","lat")]
+
+#install.packages("geosphere")
+library(geosphere) #calculate a matrix of geographic distances
+CHS.VS.dxy <- distm(CHS.VS.xy)
+CHS.VS.dxy <- as.dist(CHS.VS.dxy)
+
+#Function that returns the maximum distance of the minimum spanning tree based on a distance matrix.
+CHS.VS.th <- give.thresh(CHS.VS.dxy)
+#Function to compute neighborhood based on the minimum spanning tree. Returns an object of the class nb (see spdep package).
+CHS.VS.nb1 <- mst.nb(CHS.VS.dxy)
+CHS.VS.wh1 <- which(as.matrix(CHS.VS.dxy)==CHS.VS.th,arr.ind=TRUE)
+plot(CHS.VS.nb1,CHS.VS.xy,pch=20,cex=2,lty=3)
+lines(CHS.VS.xy[CHS.VS.wh1[1,],1],CHS.VS.xy[CHS.VS.wh1[1,],2],lwd=2)
+title(main="Maximum distance of the minimum spanning tree in bold")
+#thershold distance
+CHS.VS.th 
+#[1] 41004.58
+CHS.VS.nb1
+Neighbour list object:
+Number of regions: 10 
+Number of nonzero links: 18 
+Percentage nonzero weights: 18 
+Average number of links: 1.8  
+
+#install.packages("spdep")
+library(spdep)
+#transform nb to listw (spdep package)
+CHS.VS.listw=nb2listw(CHS.VS.nb1, glist=NULL, style="W", zero.policy=NULL)
+#The can.be.simmed helper function checks whether a spatial weights object is similar to
+#symmetric and can be so transformed to yield real eigenvalues or for Cholesky decomposition.
+can.be.simmed(CHS.VS.listw)
+#[1] TRUE
+ 
+library(vegan)
+CHS.VS.pcnm.scores <- pcnm(CHS.VS.dxy, CHS.VS.th)  ##calculate pcnm
+
+test.scores(CHS.VS.pcnm.scores, CHS.VS.listw, nsim=999)  ##and select only positive pcnm
+
+         stat  pval
+1 0.395931977 0.037
+2 0.037207343 0.038
+3 0.009497033 0.300
+4 0.468849442 0.019
+
+#3 significant PCNM eigenfunctions with positive correlations.
+
+write.table (CHS.VS.pcnm.scores$vectors[,1], "CHS.VS.scores_PCNM1.txt") 
+write.table (CHS.VS.pcnm.scores$vectors[,2], "CHS.VS.scores_PCNM2.txt") 
+write.table (CHS.VS.pcnm.scores$vectors[,4], "CHS.VS.scores_PCNM4.txt") 
+```
+
+
+#### CHall
+```
+#Calculating MEM variables
+#install.packages("tripack")
+#install.packages("spacemakeR", repos="http://R-Forge.R-project.org")
+
+library(spacemakeR)
+
+
+env.data.CHall <- rbind(env.data.CHN, env.data.CHS, env.data.CZ)
+head(env.data.CHall)
+#extract x and y
+CHall.xy <- env.data.CHall[, c("long","lat")]
+
+#install.packages("geosphere")
+library(geosphere) #calculate a matrix of geographic distances
+CHall.dxy <- distm(CHall.xy)
+CHall.dxy <- as.dist(CHall.dxy)
+
+#Function that returns the maximum distance of the minimum spanning tree based on a distance matrix.
+CHall.th <- give.thresh(CHall.dxy)
+#Function to compute neighborhood based on the minimum spanning tree. Returns an object of the class nb (see spdep package).
+CHall.nb1 <- mst.nb(CHall.dxy)
+CHall.wh1 <- which(as.matrix(CHall.dxy)==CHall.th,arr.ind=TRUE)
+plot(CHall.nb1,CHall.xy,pch=20,cex=2,lty=3)
+lines(CHall.xy[CHall.wh1[1,],1],CHall.xy[CHall.wh1[1,],2],lwd=2)
+title(main="Maximum distance of the minimum spanning tree in bold")
+#thershold distance
+CHall.th 
+#[1] 42437.1
+CHall.nb1
+Neighbour list object:
+Number of regions: 80 
+Number of nonzero links: 158 
+Percentage nonzero weights: 2.46875 
+Average number of links: 1.975 
+
+#install.packages("spdep")
+library(spdep)
+#transform nb to listw (spdep package)
+CHall.listw=nb2listw(CHall.nb1, glist=NULL, style="W", zero.policy=NULL)
+#The can.be.simmed helper function checks whether a spatial weights object is similar to
+#symmetric and can be so transformed to yield real eigenvalues or for Cholesky decomposition.
+can.be.simmed(CHall.listw)
+#[1] TRUE
+ 
+library(vegan)
+CHall.pcnm.scores <- pcnm(CHall.dxy, CHall.th)  ##calculate pcnm
+
+test.scores(CHall.pcnm.scores, CHall.listw, nsim=999)  ##and select only positive pcnm
+
+           stat  pval
+1   0.978870662 0.001*
+2   0.979201633 0.001*
+3   0.933694805 0.001*
+4   0.917753544 0.001*
+5   0.852246427 0.001*
+6   0.900881326 0.001*
+7   0.834207732 0.001*
+8   0.856667583 0.001*
+9   0.848587547 0.001*
+10  0.645406423 0.001*
+11  0.525168074 0.001*
+12  0.166315768 0.043*
+13  0.223339042 0.026*
+14  0.014088782 0.406
+15  0.036135417 0.355
+16  0.009042856 0.410
+17 -0.167323668 0.916
+18 -0.279342795 0.994
+19 -0.351123899 0.999
+20 -0.394090816 0.999
+21 -0.132939121 0.896
+22 -0.007220108 0.502
+23  0.061296277 0.253
+24 -0.406238925 0.999
+25 -0.069283508 0.731
+26 -0.097663284 0.787
+27 -0.269447987 0.992
+28 -0.272271122 0.989
+29 -0.456094441 0.999
+30  0.176203280 0.029*
+31  0.009238961 0.252
+32 -0.060031799 0.948
+33 -0.059769523 0.763
+34  0.384102665 0.001*
+35 -0.075602831 0.825
+36 -0.001538547 0.621
+37 -0.019890990 0.740
+38 -0.831325686 0.999
+39 -0.774231556 0.999
+40 -0.215617762 0.968
+41 -0.676525471 0.999
+42 -0.265577634 0.982
+43 -0.717997084 0.999
+44 -0.428119796 0.997
+45 -0.086623617 0.931
+
+#4 significant PCNM eigenfunctions with positive correlations.
+
+write.table (CHall.pcnm.scores$vectors[,1], "CHall.scores_PCNM1.txt") 
+write.table (CHall.pcnm.scores$vectors[,2], "CHall.scores_PCNM2.txt") 
+write.table (CHall.pcnm.scores$vectors[,3], "CHall.scores_PCNM3.txt") 
+write.table (CHall.pcnm.scores$vectors[,4], "CHall.scores_PCNM4.txt") 
+write.table (CHall.pcnm.scores$vectors[,5], "CHall.scores_PCNM5.txt") 
+write.table (CHall.pcnm.scores$vectors[,6], "CHall.scores_PCNM6.txt") 
+write.table (CHall.pcnm.scores$vectors[,7], "CHall.scores_PCNM7.txt") 
+write.table (CHall.pcnm.scores$vectors[,8], "CHall.scores_PCNM8.txt") 
+write.table (CHall.pcnm.scores$vectors[,9], "CHall.scores_PCNM9.txt") 
+write.table (CHall.pcnm.scores$vectors[,10], "CHall.scores_PCNM10.txt") 
+write.table (CHall.pcnm.scores$vectors[,11], "CHall.scores_PCNM11.txt") 
+write.table (CHall.pcnm.scores$vectors[,12], "CHall.scores_PCNM12.txt") 
+write.table (CHall.pcnm.scores$vectors[,13], "CHall.scores_PCNM13.txt") 
+write.table (CHall.pcnm.scores$vectors[,30], "CHall.scores_PCNM14.txt") 
+write.table (CHall.pcnm.scores$vectors[,34], "CHall.scores_PCNM15.txt") 
+```
+
+
+###OLD way: Geographic coordinates
 paste coordinates into the MAF.csv file from Env.Data.all_20161025.csv
 
 located: /Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/BayENV2
 
 
 i.e. lat, long
+
+
 
 
 #### 3. Climate variables
