@@ -2042,6 +2042,130 @@ dev.off()
 ```
 
 
+
+Best model overall
+```
+step.res.CHS <- ordistep(RDA.CHSfull)
+
+
+Start: GenData ~ PCNM1 + PCNM2 + PCNM3 + shadow.days + sol.rad.60d +      pcpt.60d + day10cm + temp.laying.date 
+
+                   Df    AIC      F Pr(>F)  
+- pcpt.60d          1 137.86 1.0225  0.380  
+- shadow.days       1 138.00 1.1166  0.280  
+- PCNM2             1 138.08 1.1695  0.250  
+- day10cm           1 138.09 1.1750  0.195  
+- PCNM3             1 138.30 1.3227  0.150  
+- temp.laying.date  1 138.41 1.3985  0.090 .
+- sol.rad.60d       1 138.45 1.4205  0.070 .
+- PCNM1             1 138.79 1.6550  0.050 *
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + shadow.days + sol.rad.60d +      day10cm + temp.laying.date 
+
+                   Df    AIC      F Pr(>F)   
+- shadow.days       1 137.53 1.1510  0.220   
+- temp.laying.date  1 137.84 1.3762  0.140   
+- day10cm           1 137.79 1.3394  0.135   
+- PCNM3             1 137.76 1.3229  0.130   
+- sol.rad.60d       1 137.87 1.4014  0.110   
+- PCNM2             1 138.43 1.8116  0.055 . 
+- PCNM1             1 142.25 4.8802  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + sol.rad.60d + day10cm + temp.laying.date 
+
+                   Df    AIC      F Pr(>F)   
+- PCNM3             1 137.37 1.3619  0.135   
+- day10cm           1 137.29 1.3007  0.115   
+- temp.laying.date  1 137.48 1.4420  0.095 . 
+- sol.rad.60d       1 137.53 1.4819  0.055 . 
+- PCNM2             1 137.95 1.8100  0.030 * 
+- PCNM1             1 141.68 4.9659  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + sol.rad.60d + day10cm + temp.laying.date 
+
+                   Df    AIC      F Pr(>F)   
+- sol.rad.60d       1 136.98 1.2463  0.215   
+- day10cm           1 136.98 1.2421  0.155   
+- temp.laying.date  1 137.13 1.3639  0.110   
+- PCNM2             1 137.60 1.7500  0.040 * 
+- PCNM1             1 141.33 5.0724  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + day10cm + temp.laying.date 
+
+                   Df    AIC      F Pr(>F)   
+- day10cm           1 136.44 1.1869  0.200   
+- temp.laying.date  1 136.45 1.1997  0.180   
+- PCNM2             1 136.95 1.6280  0.060 . 
+- PCNM1             1 141.25 5.6659  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + temp.laying.date 
+
+                   Df    AIC      F Pr(>F)   
+- temp.laying.date  1 135.81 1.1751  0.195   
+- PCNM2             1 136.39 1.6995  0.030 * 
+- PCNM1             1 140.41 5.6549  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 
+
+        Df    AIC      F Pr(>F)   
+- PCNM2  1 135.64 1.6700  0.030 * 
+- PCNM1  1 139.70 5.8442  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+```
+
+
+Best model when space is partialled out
+```
+step.res.CHS.pgeog <- ordistep(pRDA.CHSgeog)
+
+Start: GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date +      Condition(PCNM1 + PCNM2 + PCNM3) 
+
+                                   Df    AIC      F Pr(>F)  
+- pcpt.60d                          1 137.86 1.0225  0.440  
+- shadow.days                       1 138.00 1.1166  0.285  
+- day10cm                           1 138.09 1.1750  0.180  
+- temp.laying.date                  1 138.41 1.3985  0.045 *
+- sol.rad.60d                       1 138.45 1.4205  0.045 *
+- Condition(PCNM1 + PCNM2 + PCNM3)  3 138.96                
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ shadow.days + sol.rad.60d + day10cm + temp.laying.date +      Condition(PCNM1 + PCNM2 + PCNM3) 
+
+                                   Df    AIC      F Pr(>F)  
+- shadow.days                       1 137.53 1.1510  0.225  
+- day10cm                           1 137.79 1.3394  0.090 .
+- sol.rad.60d                       1 137.87 1.4014  0.090 .
+- temp.laying.date                  1 137.84 1.3762  0.055 .
+- Condition(PCNM1 + PCNM2 + PCNM3)  3 141.74                
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ sol.rad.60d + day10cm + temp.laying.date + Condition(PCNM1 +      PCNM2 + PCNM3) 
+
+                                   Df    AIC      F Pr(>F)  
+- day10cm                           1 137.29 1.3007  0.085 .
+- sol.rad.60d                       1 137.53 1.4819  0.050 *
+- temp.laying.date                  1 137.48 1.4420  0.045 *
+- Condition(PCNM1 + PCNM2 + PCNM3)  3 141.10                
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+```
+
+
 #### 4. CHS.VS
 
 ```
@@ -2286,13 +2410,100 @@ Figure of the partitioning of variance
 ```
 library(VennDiagram)
 
-Venn.CHS.Climate.contribution <- (141.9559+-6.87)  ##get these values from the RDA table. From the full and partial models run above
-Venn.CHS.Geog.contribution <- (61.2333+-6.87)
-Venn.CHS.Geog.Climate.contribution <- -6.87
+Venn.CHS.VS.Climate.contribution <- (141.9559+-6.87)  ##get these values from the RDA table. From the full and partial models run above
+Venn.CHS.VS.Geog.contribution <- (61.2333+-6.87)
+Venn.CHS.VS.Geog.Climate.contribution <- -6.87
 
-pdf("CHS.Venn.RDA.pdf")
-draw.pairwise.venn(area1=Venn.CHS.Geog.contribution, area2=Venn.CHS.Climate.contribution, cross.area=Venn.CHS.Geog.Climate.contribution, category=c("Space", "Climate"), fill=c("blue", "green"))
+pdf("CHS.VS.Venn.RDA.pdf")
+draw.pairwise.venn(area1=Venn.CHS.VS.Geog.contribution, area2=Venn.CHS.VS.Climate.contribution, cross.area=Venn.CHS.VS.Geog.Climate.contribution, category=c("Space", "Climate"), fill=c("blue", "green"))
 dev.off()
+```
+
+
+Best model overall
+```
+step.res.CHS.VS <- ordistep(RDA.CHS.VSfull)
+
+Start: GenData ~ PCNM1 + PCNM2 + shadow.days + sol.rad.60d + pcpt.60d +      day10cm + temp.laying.date 
+
+                   Df    AIC      F Pr(>F)   
+- day10cm           1 52.179 1.0946  0.345   
+- pcpt.60d          1 52.916 1.3312  0.155   
+- PCNM2             1 52.897 1.3250  0.150   
+- shadow.days       1 54.223 1.7963  0.030 * 
+- temp.laying.date  1 55.134 2.1582  0.020 * 
+- sol.rad.60d       1 55.644 2.3758  0.005 **
+- PCNM1             1 56.164 2.6098  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + shadow.days + sol.rad.60d + pcpt.60d +      temp.laying.date 
+
+                   Df    AIC      F Pr(>F)   
+- PCNM2             1 54.393 1.5720  0.045 * 
+- shadow.days       1 54.711 1.7200  0.015 * 
+- temp.laying.date  1 55.368 2.0404  0.010 **
+- pcpt.60d          1 54.970 1.8438  0.005 **
+- sol.rad.60d       1 56.145 2.4478  0.005 **
+- PCNM1             1 56.287 2.5257  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+```
+
+
+Best model when space is partialled out
+```
+step.res.CHS.VS.pgeog <- ordistep(pRDA.CHS.VS.geog)
+
+Start: GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date +      Condition(PCNM1 + PCNM2) 
+
+                           Df    AIC      F Pr(>F)  
+- day10cm                   1 52.179 1.0946  0.355  
+- pcpt.60d                  1 52.916 1.3312  0.255  
+- shadow.days               1 54.223 1.7963  0.115  
+- temp.laying.date          1 55.134 2.1582  0.040 *
+- sol.rad.60d               1 55.644 2.3758  0.025 *
+- Condition(PCNM1 + PCNM2)  2 56.370                
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ shadow.days + sol.rad.60d + pcpt.60d + temp.laying.date +      Condition(PCNM1 + PCNM2) 
+
+                           Df    AIC      F Pr(>F)  
+- shadow.days               1 54.711 1.7200  0.105  
+- pcpt.60d                  1 54.970 1.8438  0.075 .
+- temp.laying.date          1 55.368 2.0404  0.045 *
+- sol.rad.60d               1 56.145 2.4478  0.030 *
+- Condition(PCNM1 + PCNM2)  2 56.396                
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ sol.rad.60d + pcpt.60d + temp.laying.date + Condition(PCNM1 +      PCNM2) 
+
+                           Df    AIC      F Pr(>F)   
+- pcpt.60d                  1 55.812 1.4544   0.12   
+- temp.laying.date          1 56.017 1.5670   0.08 . 
+- sol.rad.60d               1 57.094 2.2004   0.01 **
+- Condition(PCNM1 + PCNM2)  2 56.934                 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ sol.rad.60d + temp.laying.date + Condition(PCNM1 +      PCNM2) 
+
+                           Df    AIC      F Pr(>F)  
+- temp.laying.date          1 56.248 1.3792  0.145  
+- sol.rad.60d               1 56.885 1.7982  0.055 .
+- Condition(PCNM1 + PCNM2)  2 56.458                
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ sol.rad.60d + Condition(PCNM1 + PCNM2) 
+
+                           Df    AIC      F Pr(>F)  
+- sol.rad.60d               1 56.573 1.5706  0.095 .
+- Condition(PCNM1 + PCNM2)  2 56.059                
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 ```
 
 
@@ -2550,6 +2761,139 @@ draw.pairwise.venn(area1=Venn.CHS.TI.Geog.contribution, area2=Venn.CHS.TI.Climat
 dev.off()
 ```
 
+Best model overall
+```
+step.res.CHS.TI <- ordistep(RDA.CHS.TIfull)
+
+Start: GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + shadow.days + sol.rad.60d +      pcpt.60d + day10cm + temp.laying.date 
+
+                   Df    AIC      F Pr(>F)
+- PCNM4             1 80.242 0.6605  0.965
+- PCNM1             1 80.633 0.7926  0.810
+- temp.laying.date  1 80.577 0.7733  0.795
+- shadow.days       1 80.808 0.8527  0.685
+- day10cm           1 80.854 0.8689  0.645
+- sol.rad.60d       1 80.851 0.8677  0.640
+- pcpt.60d          1 80.887 0.8802  0.590
+- PCNM3             1 81.117 0.9610  0.460
+- PCNM2             1 81.311 1.0304  0.380
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + shadow.days + sol.rad.60d +      pcpt.60d + day10cm + temp.laying.date 
+
+                   Df    AIC      F Pr(>F)
+- shadow.days       1 80.509 0.8789  0.730
+- temp.laying.date  1 80.638 0.9334  0.570
+- PCNM3             1 80.812 1.0077  0.525
+- pcpt.60d          1 80.700 0.9599  0.515
+- PCNM1             1 80.773 0.9908  0.470
+- day10cm           1 80.884 1.0388  0.470
+- sol.rad.60d       1 81.065 1.1169  0.370
+- PCNM2             1 81.062 1.1159  0.255
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + sol.rad.60d + pcpt.60d + day10cm +      temp.laying.date 
+
+                   Df    AIC      F Pr(>F)
+- day10cm           1 80.507 0.9205  0.625
+- PCNM1             1 80.479 0.9066  0.600
+- pcpt.60d          1 80.582 0.9574  0.500
+- temp.laying.date  1 80.635 0.9839  0.485
+- PCNM2             1 80.809 1.0714  0.335
+- PCNM3             1 81.013 1.1752  0.300
+- sol.rad.60d       1 81.055 1.1965  0.205
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + sol.rad.60d + pcpt.60d + temp.laying.date 
+
+                   Df    AIC      F Pr(>F)
+- temp.laying.date  1 80.365 0.9935  0.335
+- PCNM2             1 80.509 1.0762  0.300
+- sol.rad.60d       1 80.567 1.1095  0.265
+- pcpt.60d          1 80.671 1.1699  0.220
+- PCNM1             1 80.636 1.1494  0.200
+- PCNM3             1 80.879 1.2926  0.175
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + sol.rad.60d + pcpt.60d 
+
+              Df    AIC      F Pr(>F)  
+- sol.rad.60d  1 80.322 1.2002  0.190  
+- PCNM2        1 80.389 1.2440  0.155  
+- pcpt.60d     1 80.406 1.2557  0.145  
+- PCNM1        1 80.387 1.2431  0.140  
+- PCNM3        1 80.891 1.5819  0.055 .
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + pcpt.60d 
+
+           Df    AIC      F Pr(>F)  
+- pcpt.60d  1 79.929 1.0943  0.320  
+- PCNM3     1 80.431 1.4629  0.095 .
+- PCNM1     1 80.292 1.3594  0.055 .
+- PCNM2     1 80.496 1.5117  0.040 *
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 
+
+        Df    AIC      F Pr(>F)  
+- PCNM3  1 79.857 1.4770  0.075 .
+- PCNM2  1 79.825 1.4507  0.030 *
+- PCNM1  1 79.917 1.5261  0.015 *
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+```
+
+
+Best model when space is partialled out
+```
+step.res.CHS.TI.pgeog <- ordistep(pRDA.CHS.TI.geog)
+
+Start: GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date +      Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4) 
+
+                                           Df    AIC      F Pr(>F)
+- temp.laying.date                          1 80.577 0.7733  0.745
+- day10cm                                   1 80.854 0.8689  0.685
+- sol.rad.60d                               1 80.851 0.8677  0.670
+- pcpt.60d                                  1 80.887 0.8802  0.665
+- shadow.days                               1 80.808 0.8527  0.660
+- Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4)  4 81.610              
+
+Step: GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + Condition(PCNM1 +      PCNM2 + PCNM3 + PCNM4) 
+
+                                           Df    AIC      F Pr(>F)
+- shadow.days                               1 80.688 0.8140  0.695
+- day10cm                                   1 80.895 0.9002  0.640
+- sol.rad.60d                               1 80.968 0.9311  0.610
+- pcpt.60d                                  1 80.974 0.9337  0.535
+- Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4)  4 80.964              
+
+Step: GenData ~ sol.rad.60d + pcpt.60d + day10cm + Condition(PCNM1 +      PCNM2 + PCNM3 + PCNM4) 
+
+                                           Df    AIC      F Pr(>F)
+- day10cm                                   1 80.593 0.8744  0.585
+- pcpt.60d                                  1 80.758 0.9558  0.520
+- sol.rad.60d                               1 80.751 0.9524  0.430
+- Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4)  4 80.783              
+
+Step: GenData ~ sol.rad.60d + pcpt.60d + Condition(PCNM1 + PCNM2 +      PCNM3 + PCNM4) 
+
+                                           Df    AIC      F Pr(>F)
+- sol.rad.60d                               1 80.310 0.9135  0.555
+- pcpt.60d                                  1 80.404 0.9668  0.515
+- Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4)  4 80.377              
+
+Step: GenData ~ pcpt.60d + Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4) 
+
+                                           Df    AIC      F Pr(>F)
+- pcpt.60d                                  1 80.082 1.0796   0.45
+- Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4)  4 79.942              
+
+Step: GenData ~ Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4) 
+
+                                           Df    AIC F Pr(>F)
+- Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4)  4 79.138         
+
+Step: GenData ~ 1
+```
 
 
 #### 6. CZ
@@ -2816,6 +3160,22 @@ pdf("CZ.Venn.RDA.pdf")
 draw.pairwise.venn(area1=Venn.CZ.Geog.contribution, area2=Venn.CZ.Climate.contribution, cross.area=Venn.CZ.Geog.Climate.contribution, category=c("Space", "Climate"), fill=c("blue", "green"))
 dev.off()
 ```
+
+Best model overall
+```
+step.res.CZ <- ordistep(RDA.CZfull)
+
+
+```
+
+
+
+Best model when space is partialled out
+```
+step.res.CZ.pgeog <- ordistep(pRDA.CZ.geog)
+
+```
+
 
 
 
