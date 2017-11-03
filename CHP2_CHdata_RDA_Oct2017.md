@@ -1610,6 +1610,168 @@ dev.off()
 
 
 
+Best model overall
+```
+ordistep(RDA.CHNfull)
+
+Start: GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + shadow.days + sol.rad.60d +      pcpt.60d + day10cm + temp.laying.date 
+
+                   Df     AIC      F Pr(>F)   
+- PCNM2             1 -28.424 0.9659  0.540   
+- day10cm           1 -28.257 1.0540  0.400   
+- shadow.days       1 -28.365 0.9971  0.390   
+- sol.rad.60d       1 -28.223 1.0722  0.285   
+- pcpt.60d          1 -28.147 1.1126  0.240   
+- temp.laying.date  1 -27.979 1.2021  0.205   
+- PCNM4             1 -27.930 1.2285  0.100 . 
+- PCNM1             1 -27.197 1.6309  0.030 * 
+- PCNM3             1 -26.860 1.8213  0.010 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM3 + PCNM4 + shadow.days + sol.rad.60d +      pcpt.60d + day10cm + temp.laying.date 
+
+                   Df     AIC      F Pr(>F)   
+- shadow.days       1 -28.632 0.9889  0.450   
+- pcpt.60d          1 -28.422 1.1113  0.225   
+- temp.laying.date  1 -28.305 1.1801  0.180   
+- sol.rad.60d       1 -28.270 1.2009  0.175   
+- PCNM4             1 -28.090 1.3068  0.080 . 
+- day10cm           1 -28.066 1.3213  0.070 . 
+- PCNM1             1 -27.477 1.6780  0.005 **
+- PCNM3             1 -27.136 1.8893  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM3 + PCNM4 + sol.rad.60d + pcpt.60d + day10cm +      temp.laying.date 
+
+                   Df     AIC      F Pr(>F)   
+- pcpt.60d          1 -28.786 1.1224  0.250   
+- temp.laying.date  1 -28.691 1.1832  0.190   
+- sol.rad.60d       1 -28.672 1.1955  0.165   
+- day10cm           1 -28.258 1.4642  0.025 * 
+- PCNM4             1 -28.037 1.6101  0.010 **
+- PCNM1             1 -27.878 1.7158  0.005 **
+- PCNM3             1 -27.244 2.1476  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM3 + PCNM4 + sol.rad.60d + day10cm + temp.laying.date 
+
+                   Df     AIC      F Pr(>F)   
+- temp.laying.date  1 -29.009 1.1769  0.155   
+- sol.rad.60d       1 -28.842 1.2932  0.080 . 
+- PCNM4             1 -28.151 1.7853  0.005 **
+- PCNM1             1 -28.117 1.8100  0.005 **
+- PCNM3             1 -27.669 2.1400  0.005 **
+- day10cm           1 -27.267 2.4416  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Step: GenData ~ PCNM1 + PCNM3 + PCNM4 + sol.rad.60d + day10cm 
+
+              Df     AIC      F Pr(>F)   
+- sol.rad.60d  1 -29.199 1.2994  0.055 . 
+- PCNM4        1 -28.590 1.7647  0.010 **
+- PCNM1        1 -28.393 1.9184  0.005 **
+- PCNM3        1 -28.183 2.0849  0.005 **
+- day10cm      1 -27.275 2.8233  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Call: rda(formula = GenData ~ PCNM1 + PCNM3 + PCNM4 + sol.rad.60d +
+day10cm, data = Climate.Data)
+
+              Inertia Proportion Rank
+Total         0.21485    1.00000     
+Constrained   0.09292    0.43249    5
+Unconstrained 0.12193    0.56751   13
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1     RDA2     RDA3     RDA4     RDA5 
+0.030052 0.022822 0.017977 0.011807 0.010263 
+
+Eigenvalues for unconstrained axes:
+     PC1      PC2      PC3      PC4      PC5      PC6      PC7      PC8 
+0.016084 0.013974 0.012941 0.010911 0.009839 0.009099 0.008570 0.008168 
+     PC9     PC10     PC11     PC12     PC13 
+0.008071 0.006926 0.006388 0.005957 0.005004 
+
+```
+
+
+
+
+Best model when space is partialled out
+```
+ordistep(pRDA.CHNgeog)
+
+Start: GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date +      Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4) 
+
+                                           Df     AIC       F Pr(>F)
+- shadow.days                               1 -28.365 -8.9887      1
+- day10cm                                   1 -28.257 -8.9886      1
+- sol.rad.60d                               1 -28.223 -8.9886      1
+- pcpt.60d                                  1 -28.147 -8.9886      1
+- temp.laying.date                          1 -27.979 -8.9885      1
+- Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4)  4 -26.693               
+
+Step: GenData ~ sol.rad.60d + pcpt.60d + day10cm + temp.laying.date +      Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4) 
+
+                                           Df     AIC      F Pr(>F)
+- sol.rad.60d                               1 -28.466 1.0513  0.405
+- pcpt.60d                                  1 -28.361 1.1123  0.380
+- day10cm                                   1 -28.253 1.1755  0.240
+- temp.laying.date                          1 -28.202 1.2056  0.215
+- Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4)  4 -26.974              
+
+Step: GenData ~ pcpt.60d + day10cm + temp.laying.date + Condition(PCNM1 +      PCNM2 + PCNM3 + PCNM4) 
+
+                                           Df     AIC      F Pr(>F)
+- pcpt.60d                                  1 -28.588 1.1423  0.290
+- day10cm                                   1 -28.555 1.1634  0.215
+- temp.laying.date                          1 -28.517 1.1880  0.155
+- Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4)  4 -27.611              
+
+Step: GenData ~ day10cm + temp.laying.date + Condition(PCNM1 + PCNM2 +      PCNM3 + PCNM4) 
+
+                                           Df     AIC      F Pr(>F)
+- temp.laying.date                          1 -28.778 1.1997  0.230
+- day10cm                                   1 -28.691 1.2602  0.215
+- Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4)  4 -27.839              
+
+Step: GenData ~ day10cm + Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4) 
+
+                                           Df     AIC      F Pr(>F)  
+- day10cm                                   1 -28.885 1.3619   0.06 .
+- Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4)  4 -28.598                
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Call: rda(formula = GenData ~ day10cm + Condition(PCNM1 + PCNM2 + PCNM3
++ PCNM4), data = Climate.Data)
+
+              Inertia Proportion Rank
+Total         0.21485    1.00000     
+Conditional   0.07850    0.36537    4
+Constrained   0.01293    0.06018    1
+Unconstrained 0.12342    0.57445   13
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+   RDA1 
+0.01293 
+
+Eigenvalues for unconstrained axes:
+     PC1      PC2      PC3      PC4      PC5      PC6      PC7      PC8 
+0.016356 0.014030 0.012798 0.012309 0.009987 0.009035 0.008313 0.008165 
+     PC9     PC10     PC11     PC12     PC13 
+0.007935 0.006925 0.006668 0.006076 0.004825 
+```
+
+
+
 
 #### 3. CHS
 
