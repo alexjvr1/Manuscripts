@@ -831,6 +831,8 @@ library(vegan)
 CHallData <- read.csv("CH932.MAF.csv", header=T)
 CHallData <- CHallData[complete.cases(CHallData),]
 GenData <- CHallData[,25:ncol(CHallData)]
+
+GenData <- decostand(GenData, "hellinger") #detrend the genetic data 
 Climate.Data <- CHallData[,3:24]
 names(Climate.Data)
 ```
@@ -844,26 +846,27 @@ RDA.CH932full <- rda(GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + P
 
 RDA.CH932full
 
+RDA.CH932full
 Call: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 +
 PCNM6 + PCNM7 + PCNM8 + PCNM9 + PCNM10 + PCNM11 + PCNM12 + PCNM13 +
 PCNM14 + PCNM15 + shadow.days + sol.rad.60d + pcpt.60d + day10cm +
 temp.laying.date, data = Climate.Data)
 
-               Inertia Proportion Rank
-Total         430.9929     1.0000     
-Constrained   252.3716     0.5856   20
-Unconstrained 178.6213     0.4144   60
+              Inertia Proportion Rank
+Total          0.3387     1.0000     
+Constrained    0.1941     0.5731   20
+Unconstrained  0.1446     0.4269   60
 Inertia is variance 
 
 Eigenvalues for constrained axes:
-  RDA1   RDA2   RDA3   RDA4   RDA5   RDA6   RDA7   RDA8   RDA9  RDA10  RDA11 
-140.68  31.49  16.74   9.59   6.49   5.04   4.48   4.10   3.94   3.64   3.40 
- RDA12  RDA13  RDA14  RDA15  RDA16  RDA17  RDA18  RDA19  RDA20 
-  3.15   3.04   2.81   2.69   2.48   2.37   2.22   2.18   1.85 
+   RDA1    RDA2    RDA3    RDA4    RDA5    RDA6    RDA7    RDA8    RDA9   RDA10 
+0.10352 0.02716 0.01238 0.00688 0.00502 0.00429 0.00371 0.00333 0.00312 0.00297 
+  RDA11   RDA12   RDA13   RDA14   RDA15   RDA16   RDA17   RDA18   RDA19   RDA20 
+0.00285 0.00262 0.00248 0.00236 0.00223 0.00215 0.00184 0.00180 0.00178 0.00162 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8 
-27.993  7.082  6.254  6.160  5.794  5.109  4.940  4.287 
+     PC1      PC2      PC3      PC4      PC5      PC6      PC7      PC8 
+0.020688 0.006219 0.005449 0.004814 0.004716 0.004201 0.003947 0.003725 
 (Showed only 8 of all 60 unconstrained eigenvalues)
 
 
@@ -872,10 +875,10 @@ Eigenvalues for unconstrained axes:
 RsquareAdj(RDA.CH932full)
 
 $r.squared
-[1] 0.5855586
+[1] 0.5731014
 
 $adj.r.squared
-[1] 0.4474114
+[1] 0.4308019
 
 
 
@@ -885,10 +888,10 @@ Permutation test for rda under reduced model
 Permutation: free
 Number of permutations: 999
 
-Model: rda(formula = GenData ~ lat + long + shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
+Model: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM7 + PCNM8 + PCNM9 + PCNM10 + PCNM11 + PCNM12 + PCNM13 + PCNM14 + PCNM15 + shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
          Df Variance      F Pr(>F)    
-Model     7   172.36 6.9499  0.001 ***
-Residual 73   258.63                  
+Model    20  0.19410 4.0274  0.001 ***
+Residual 60  0.14458                  
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -1161,20 +1164,20 @@ day10cm + temp.laying.date + Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4 +
 PCNM5 + PCNM6 + PCNM7 + PCNM8 + PCNM9 + PCNM10 + PCNM11 + PCNM12 +
 PCNM13 + PCNM14 + PCNM15), data = Climate.Data)
 
-               Inertia Proportion Rank
-Total         430.9929     1.0000     
-Conditional   231.9445     0.5382   15
-Constrained    20.4271     0.0474    5
-Unconstrained 178.6213     0.4144   60
+              Inertia Proportion Rank
+Total         0.33869    1.00000     
+Conditional   0.17749    0.52405   15
+Constrained   0.01661    0.04905    5
+Unconstrained 0.14458    0.42690   60
 Inertia is variance 
 
 Eigenvalues for constrained axes:
- RDA1  RDA2  RDA3  RDA4  RDA5 
-8.893 3.698 2.934 2.531 2.370 
+    RDA1     RDA2     RDA3     RDA4     RDA5 
+0.007017 0.003147 0.002428 0.002020 0.002002 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8 
-27.993  7.082  6.254  6.160  5.794  5.109  4.940  4.287 
+     PC1      PC2      PC3      PC4      PC5      PC6      PC7      PC8 
+0.020688 0.006219 0.005449 0.004814 0.004716 0.004201 0.003947 0.003725 
 (Showed only 8 of all 60 unconstrained eigenvalues)
 
 
@@ -1183,10 +1186,10 @@ Eigenvalues for unconstrained axes:
 RsquareAdj(pRDA.CH932.geog)
 
 $r.squared
-[1] 0.04739547
+[1] 0.04905403
 
 $adj.r.squared
-[1] 0.01582607
+[1] 0.01658972
 
 anova(pRDA.CH932.geog)
 
@@ -1196,8 +1199,8 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM7 + PCNM8 + PCNM9 + PCNM10 + PCNM11 + PCNM12 + PCNM13 + PCNM14 + PCNM15), data = Climate.Data)
          Df Variance      F Pr(>F)   
-Model     5   20.427 1.3723   0.01 **
-Residual 60  178.621                 
+Model     5 0.016614 1.3789  0.006 **
+Residual 60 0.144585                 
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -1226,19 +1229,19 @@ summary(pRDA.CH932.geog)
 
 Biplot scores for constraining variables
 
-                     RDA1     RDA2     RDA3    RDA4     RDA5 PC1
-shadow.days      -0.46131 -0.07346 -0.45753  0.1944  0.55599   0
-sol.rad.60d       0.34668  0.73300  0.14663 -0.3589  0.14878   0
-pcpt.60d         -0.26901  0.69045  0.04948 -0.1079 -0.09417   0
-day10cm          -0.13826  0.60859  0.14412  0.2796  0.28876   0
-temp.laying.date  0.08472  0.28759 -0.59875  0.3625 -0.29636   0
+                     RDA1    RDA2     RDA3    RDA4     RDA5 PC1
+shadow.days      -0.45832 -0.1355 -0.37446  0.3868  0.50612   0
+sol.rad.60d       0.34831  0.7203  0.25210 -0.1824  0.30492   0
+pcpt.60d         -0.27648  0.6932  0.07362 -0.0963  0.01866   0
+day10cm          -0.14166  0.5715  0.14609  0.4306  0.13571   0
+temp.laying.date  0.06186  0.3177 -0.70016  0.1267 -0.23785   0
 
 
 #eigenvalue (i.e. weight) of each RDA
 pRDA.CH932.geog$CCA$eig
 
-   RDA1     RDA2     RDA3     RDA4     RDA5 
-8.893496 3.698480 2.934175 2.530524 2.370435 
+       RDA1        RDA2        RDA3        RDA4        RDA5 
+0.007017060 0.003146749 0.002427694 0.002020352 0.002002091 
 ```
 
 
@@ -1258,22 +1261,22 @@ PCNM6 + PCNM7 + PCNM8 + PCNM9 + PCNM10 + PCNM11 + PCNM12 + PCNM13 +
 PCNM14 + PCNM15 + Condition(shadow.days + sol.rad.60d + pcpt.60d +
 day10cm + temp.laying.date), data = Climate.Data)
 
-                Inertia Proportion Rank
-Total         430.99291    1.00000     
-Conditional    38.46745    0.08925    5
-Constrained   213.90415    0.49631   15
-Unconstrained 178.62131    0.41444   60
+              Inertia Proportion Rank
+Total         0.33869    1.00000     
+Conditional   0.02951    0.08713    5
+Constrained   0.16459    0.48597   15
+Unconstrained 0.14458    0.42690   60
 Inertia is variance 
 
 Eigenvalues for constrained axes:
-  RDA1   RDA2   RDA3   RDA4   RDA5   RDA6   RDA7   RDA8   RDA9  RDA10  RDA11 
-129.64  26.90  13.90   6.05   6.00   4.04   3.99   3.74   3.57   3.16   3.05 
- RDA12  RDA13  RDA14  RDA15 
-  2.74   2.66   2.51   1.94 
+   RDA1    RDA2    RDA3    RDA4    RDA5    RDA6    RDA7    RDA8    RDA9   RDA10 
+0.09564 0.02335 0.01054 0.00486 0.00442 0.00350 0.00310 0.00293 0.00287 0.00271 
+  RDA11   RDA12   RDA13   RDA14   RDA15 
+0.00251 0.00230 0.00213 0.00202 0.00172 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8 
-27.993  7.082  6.254  6.160  5.794  5.109  4.940  4.287 
+     PC1      PC2      PC3      PC4      PC5      PC6      PC7      PC8 
+0.020688 0.006219 0.005449 0.004814 0.004716 0.004201 0.003947 0.003725 
 (Showed only 8 of all 60 unconstrained eigenvalues)
 
 
@@ -1283,10 +1286,10 @@ Eigenvalues for unconstrained axes:
 RsquareAdj(pRDA.CH932.climate)
 
 $r.squared
-[1] 0.4963055
+[1] 0.4859667
 
 $adj.r.squared
-[1] 0.4188748
+[1] 0.4045249
 
 anova(pRDA.CH932.climate)
 
@@ -1296,10 +1299,11 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM7 + PCNM8 + PCNM9 + PCNM10 + PCNM11 + PCNM12 + PCNM13 + PCNM14 + PCNM15 + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data = Climate.Data)
          Df Variance      F Pr(>F)    
-Model    15   213.90 4.7901  0.001 ***
-Residual 60   178.62                  
+Model    15  0.16459 4.5535  0.001 ***
+Residual 60  0.14458                  
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
 
 pdf(file="pRDA.CH932.climate.pdf")
 plot(pRDA.CH932.climate, main="pRDA CH932 (climate partialled out)")
@@ -1330,12 +1334,12 @@ Find the most important loci associated with Climate
 
 Biplot scores for constraining variables
 
-                    RDA1    RDA2    RDA3    RDA4    RDA5 PC1
-shadow.days       0.3453 -0.1496 -0.3566  0.1332 -0.8445   0
-sol.rad.60d      -0.2580  0.3047 -0.3726 -0.8022  0.2101   0
-pcpt.60d          0.4786 -0.2806 -0.6136 -0.3718  0.2047   0
-day10cm           0.3646  0.6714 -0.5720 -0.1345 -0.1135   0
-temp.laying.date -0.1816 -0.3905 -0.7047  0.4556  0.1166   0
+                     RDA1    RDA2     RDA3    RDA4     RDA5 PC1
+shadow.days      -0.45832 -0.1355 -0.37446  0.3868  0.50612   0
+sol.rad.60d       0.34831  0.7203  0.25210 -0.1824  0.30492   0
+pcpt.60d         -0.27648  0.6932  0.07362 -0.0963  0.01866   0
+day10cm          -0.14166  0.5715  0.14609  0.4306  0.13571   0
+temp.laying.date  0.06186  0.3177 -0.70016  0.1267 -0.23785   0
 
 
 RDA1: pcpt.60d, day10cm, shadow.days
@@ -1354,6 +1358,8 @@ library(vegan)
 
 CHNData <- read.csv("CHN229.MAF.csv", header=T)
 GenData <- CHNData[,14:ncol(CHNData)]
+GenData <- decostand(GenData, "hellinger") ##detrend the data
+
 Climate.Data <- CHNData[,3:13]
 
 names(Climate.Data)
@@ -1372,28 +1378,33 @@ Call: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 +
 shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data
 = Climate.Data)
 
-               Inertia Proportion Rank
-Total         191.7262     1.0000     
-Constrained   118.4312     0.6177    9
-Unconstrained  73.2950     0.3823    9
+              Inertia Proportion Rank
+Total         0.21485    1.00000     
+Constrained   0.13205    0.61459    9
+Unconstrained 0.08281    0.38541    9
 Inertia is variance 
 
 Eigenvalues for constrained axes:
-  RDA1   RDA2   RDA3   RDA4   RDA5   RDA6   RDA7   RDA8   RDA9 
-26.553 23.177 16.120 13.051 10.149  9.172  7.400  6.756  6.051 
+    RDA1     RDA2     RDA3     RDA4     RDA5     RDA6     RDA7     RDA8 
+0.030828 0.024473 0.018272 0.014203 0.011790 0.010550 0.007933 0.007175 
+    RDA9 
+0.006824 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8    PC9 
-13.230 10.148  9.477  8.659  7.505  7.073  6.568  5.590  5.044  
+     PC1      PC2      PC3      PC4      PC5      PC6      PC7      PC8 
+0.014934 0.011844 0.010747 0.010134 0.008548 0.008055 0.007047 0.006180 
+     PC9 
+0.005317 
+ 
 
 
 RsquareAdj(RDA.CHNfull)
 
 $r.squared
-[1] 0.6177101
+[1] 0.6145933
 
 $adj.r.squared
-[1] 0.2354202
+[1] 0.2291866
 
 
 
@@ -1405,8 +1416,8 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
          Df Variance      F Pr(>F)    
-Model     9  118.431 1.6158  0.001 ***
-Residual  9   73.295                  
+Model     9 0.132047 1.5947  0.001 ***
+Residual  9 0.082806                  
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -1431,28 +1442,30 @@ Call: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d +
 day10cm + temp.laying.date + Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4),
 data = Climate.Data)
 
-               Inertia Proportion Rank
-Total         191.7262     1.0000     
-Conditional    69.5847     0.3629    4
-Constrained    48.8465     0.2548    5
-Unconstrained  73.2950     0.3823    9
+              Inertia Proportion Rank
+Total         0.21485    1.00000     
+Conditional   0.07850    0.36537    4
+Constrained   0.05355    0.24922    5
+Unconstrained 0.08281    0.38541    9
 Inertia is variance 
 
 Eigenvalues for constrained axes:
-  RDA1   RDA2   RDA3   RDA4   RDA5 
-13.043 10.777  8.794  8.277  7.956 
+    RDA1     RDA2     RDA3     RDA4     RDA5 
+0.014513 0.011845 0.009541 0.009002 0.008644 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8    PC9 
-13.230 10.148  9.477  8.659  7.505  7.073  6.568  5.590  5.044 
+     PC1      PC2      PC3      PC4      PC5      PC6      PC7      PC8 
+0.014934 0.011844 0.010747 0.010134 0.008548 0.008055 0.007047 0.006180 
+     PC9 
+0.005317  
 
 RsquareAdj(pRDA.CHNgeog)
 
 $r.squared
-[1] 0.2547722
+[1] 0.2492243
 
 $adj.r.squared
-[1] 0.05450001
+[1] 0.04514076
 
 
 anova(pRDA.CHNgeog)
@@ -1462,11 +1475,9 @@ Permutation: free
 Number of permutations: 999
 
 Model: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4), data = Climate.Data)
-         Df Variance      F Pr(>F)  
-Model     5   48.847 1.1996   0.07 .
-Residual  9   73.295                
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+         Df Variance     F Pr(>F)
+Model     5 0.053547 1.164  0.129
+Residual  9 0.082806
 
 
 H0 not rejected: Climate does not explain a significant amount of CHN GeneticData
@@ -1494,30 +1505,32 @@ Call: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 +
 Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm +
 temp.laying.date), data = Climate.Data)
 
-               Inertia Proportion Rank
-Total         191.7262     1.0000     
-Conditional    68.2651     0.3561    5
-Constrained    50.1661     0.2617    4
-Unconstrained  73.2950     0.3823    9
+              Inertia Proportion Rank
+Total         0.21485    1.00000     
+Conditional   0.07712    0.35892    5
+Constrained   0.05493    0.25567    4
+Unconstrained 0.08281    0.38541    9
 Inertia is variance 
 
 Eigenvalues for constrained axes:
-  RDA1   RDA2   RDA3   RDA4 
-18.137 13.931 10.978  7.120 
+    RDA1     RDA2     RDA3     RDA4 
+0.020120 0.014598 0.011917 0.008297 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8    PC9 
-13.230 10.148  9.477  8.659  7.505  7.073  6.568  5.590  5.044 
+     PC1      PC2      PC3      PC4      PC5      PC6      PC7      PC8 
+0.014934 0.011844 0.010747 0.010134 0.008548 0.008055 0.007047 0.006180 
+     PC9 
+0.005317  
 
 
 
 RsquareAdj(pRDA.CHNclimate)
 
 $r.squared
-[1] 0.2616551
+[1] 0.2556717
 
 $adj.r.squared
-[1] 0.1270363
+[1] 0.1168337
 
 anova(pRDA.CHNclimate)
 
@@ -1526,9 +1539,9 @@ Permutation: free
 Number of permutations: 999
 
 Model: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data = Climate.Data)
-         Df Variance    F Pr(>F)    
-Model     4   50.166 1.54  0.001 ***
-Residual  9   73.295                
+         Df Variance      F Pr(>F)   
+Model     4 0.054932 1.4926  0.004 **
+Residual  9 0.082806                 
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
           
@@ -1550,12 +1563,12 @@ summary(pRDA.CHNgeog)
 
 Biplot scores for constraining variables
 
-                    RDA1     RDA2     RDA3      RDA4      RDA5 PC1
-shadow.days      -0.6372  0.33047  0.33471  0.246755 -0.008364   0
-sol.rad.60d      -0.2536 -0.76583  0.25466 -0.046557  0.289053   0
-pcpt.60d         -0.4723 -0.51210 -0.01391  0.002262  0.396309   0
-day10cm          -0.4603 -0.09573  0.23986 -0.301758  0.228056   0
-temp.laying.date -0.7094 -0.22601 -0.22636 -0.319271 -0.466171   0
+                    RDA1     RDA2    RDA3     RDA4     RDA5 PC1
+shadow.days      -0.2301 -0.41578  0.1777 -0.01312  0.47282   0
+sol.rad.60d      -0.6434 -0.23237 -0.4678  0.05344 -0.19547   0
+pcpt.60d         -0.7412 -0.09528 -0.2354  0.36022 -0.05286   0
+day10cm          -0.5316 -0.36279  0.1897  0.15015 -0.14827   0
+temp.laying.date -0.6775  0.27792  0.2336 -0.48509 -0.01842   0
 
 
 RDA1: temp.laying.date, shadow.days
@@ -1578,19 +1591,19 @@ summary(pRDA.CHNgeog)
 
 Biplot scores for constraining variables
 
-                    RDA1     RDA2     RDA3     RDA4     RDA5 PC1
-shadow.days      -0.2711 -0.42885 -0.02875  0.07874  0.46546   0
-sol.rad.60d      -0.6233 -0.18094  0.40744  0.06741 -0.36899   0
-pcpt.60d         -0.7335 -0.06609  0.34672 -0.26142 -0.12464   0
-day10cm          -0.5072 -0.39083 -0.09214 -0.25124 -0.11432   0
-temp.laying.date -0.6722  0.22304 -0.47631  0.29841 -0.09513   0
+                    RDA1     RDA2    RDA3     RDA4     RDA5 PC1
+shadow.days      -0.2301 -0.41578  0.1777 -0.01312  0.47282   0
+sol.rad.60d      -0.6434 -0.23237 -0.4678  0.05344 -0.19547   0
+pcpt.60d         -0.7412 -0.09528 -0.2354  0.36022 -0.05286   0
+day10cm          -0.5316 -0.36279  0.1897  0.15015 -0.14827   0
+temp.laying.date -0.6775  0.27792  0.2336 -0.48509 -0.01842   0
 
 
 #eigenvalue (i.e. weight) of each RDA
 pRDA.CHNgeog$CCA$eig
 
-     RDA1      RDA2      RDA3      RDA4      RDA5 
-13.042716 10.777001  8.794033  8.276531  7.956232  
+     RDA1        RDA2        RDA3        RDA4        RDA5 
+0.014513463 0.011845253 0.009541467 0.009002205 0.008644273 
 ```
 
 
@@ -1783,6 +1796,8 @@ library(vegan)
 CHSData <- read.csv("CHS275.MAF.csv", header=T)
 CHSData <- CHSData[complete.cases(CHSData),]  ##stba is removed here due to missing data
 GenData <- CHSData[,13:ncol(CHSData)]
+GenData <- decostand(GenData, "hellinger") ##detrend data
+
 Climate.Data <- CHSData[,3:12]
 
 names(Climate.Data)
@@ -1801,30 +1816,30 @@ Call: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + shadow.days +
 sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data =
 Climate.Data)
 
-               Inertia Proportion Rank
-Total         316.3975     1.0000     
-Constrained   159.7482     0.5049    8
-Unconstrained 156.6493     0.4951   15
+              Inertia Proportion Rank
+Total          0.3083     1.0000     
+Constrained    0.1570     0.5093    8
+Unconstrained  0.1513     0.4907   15
 Inertia is variance 
 
 Eigenvalues for constrained axes:
- RDA1  RDA2  RDA3  RDA4  RDA5  RDA6  RDA7  RDA8 
-67.22 20.13 16.23 15.57 13.56 10.42  8.65  7.97 
+   RDA1    RDA2    RDA3    RDA4    RDA5    RDA6    RDA7    RDA8 
+0.06531 0.02335 0.01610 0.01398 0.01228 0.01019 0.00839 0.00739 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8    PC9   PC10   PC11 
-22.559 20.615 16.327 13.494 10.497 10.050  9.637  9.292  8.481  7.584  7.007 
-  PC12   PC13   PC14   PC15 
- 6.020  5.750  4.768  4.571 
+     PC1      PC2      PC3      PC4      PC5      PC6      PC7      PC8 
+0.025153 0.021440 0.015275 0.012001 0.009863 0.009675 0.009224 0.008483 
+     PC9     PC10     PC11     PC12     PC13     PC14     PC15 
+0.007934 0.006660 0.006440 0.005588 0.004965 0.004347 0.004217  
 
 
 RsquareAdj(RDA.CHSfull)
 
 $r.squared
-[1] 0.5048971
+[1] 0.5092838
 
 $adj.r.squared
-[1] 0.2408422
+[1] 0.2475686
 
 
 
@@ -1836,8 +1851,8 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
          Df Variance      F Pr(>F)    
-Model     8   159.75 1.9121  0.001 ***
-Residual 15   156.65                  
+Model     8  0.15699 1.9459  0.001 ***
+Residual 15  0.15127                  
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -1860,10 +1875,10 @@ pRDA.CHSgeog <- rda(GenData~shadow.days + sol.rad.60d + pcpt.60d + day10cm + tem
 RsquareAdj(pRDA.CHSgeog)
 
 $r.squared
-[1] 0.20404
+[1] 0.2023947
 
 $adj.r.squared
-[1] 0.04485659
+[1] 0.044646
 
 
 anova(pRDA.CHSgeog)
@@ -1874,8 +1889,8 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(PCNM1 + PCNM2 + PCNM3), data = Climate.Data)
          Df Variance      F Pr(>F)  
-Model     5   64.558 1.2363  0.028 *
-Residual 15  156.649                
+Model     5 0.062389 1.2373  0.057 .
+Residual 15 0.151266                
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -1888,22 +1903,22 @@ Call: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d +
 day10cm + temp.laying.date + Condition(PCNM1 + PCNM2 + PCNM3), data =
 Climate.Data)
 
-               Inertia Proportion Rank
-Total         316.3975     1.0000     
-Conditional    95.1904     0.3009    3
-Constrained    64.5578     0.2040    5
-Unconstrained 156.6493     0.4951   15
+              Inertia Proportion Rank
+Total         0.30826    1.00000     
+Conditional   0.09460    0.30689    3
+Constrained   0.06239    0.20239    5
+Unconstrained 0.15127    0.49072   15
 Inertia is variance 
 
 Eigenvalues for constrained axes:
-  RDA1   RDA2   RDA3   RDA4   RDA5 
-18.227 15.385 14.112  8.762  8.072 
+    RDA1     RDA2     RDA3     RDA4     RDA5 
+0.017872 0.016230 0.012429 0.008427 0.007432 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8    PC9   PC10   PC11 
-22.559 20.615 16.327 13.494 10.497 10.050  9.637  9.292  8.481  7.584  7.007 
-  PC12   PC13   PC14   PC15 
- 6.020  5.750  4.768  4.571 
+     PC1      PC2      PC3      PC4      PC5      PC6      PC7      PC8 
+0.025153 0.021440 0.015275 0.012001 0.009863 0.009675 0.009224 0.008483 
+     PC9     PC10     PC11     PC12     PC13     PC14     PC15 
+0.007934 0.006660 0.006440 0.005588 0.004965 0.004347 0.004217  
 
 
 pdf(file="pRDA.CHSgeog.pdf")
@@ -1926,31 +1941,31 @@ Call: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 +
 Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm +
 temp.laying.date), data = Climate.Data)
 
-               Inertia Proportion Rank
-Total         316.3975     1.0000     
-Conditional   109.4408     0.3459    5
-Constrained    50.3074     0.1590    3
-Unconstrained 156.6493     0.4951   15
+              Inertia Proportion Rank
+Total         0.30826    1.00000     
+Conditional   0.10548    0.34219    5
+Constrained   0.05151    0.16709    3
+Unconstrained 0.15127    0.49072   15
 Inertia is variance 
 
 Eigenvalues for constrained axes:
-  RDA1   RDA2   RDA3 
-23.210 15.915 11.182 
+    RDA1     RDA2     RDA3 
+0.025113 0.015476 0.010918 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2    PC3    PC4    PC5    PC6    PC7    PC8    PC9   PC10   PC11 
-22.559 20.615 16.327 13.494 10.497 10.050  9.637  9.292  8.481  7.584  7.007 
-  PC12   PC13   PC14   PC15 
- 6.020  5.750  4.768  4.571 
+     PC1      PC2      PC3      PC4      PC5      PC6      PC7      PC8 
+0.025153 0.021440 0.015275 0.012001 0.009863 0.009675 0.009224 0.008483 
+     PC9     PC10     PC11     PC12     PC13     PC14     PC15 
+0.007934 0.006660 0.006440 0.005588 0.004965 0.004347 0.004217  
 
 
 RsquareAdj(pRDA.CHSclimate)
 
 $r.squared
-[1] 0.1590007
+[1] 0.1670919
 
 $adj.r.squared
-[1] 0.07664123
+[1] 0.08810106
 
 anova(pRDA.CHSclimate)
 
@@ -1960,8 +1975,8 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data = Climate.Data)
          Df Variance      F Pr(>F)   
-Model     3   50.307 1.6057  0.002 **
-Residual 15  156.649                 
+Model     3 0.051507 1.7025  0.002 **
+Residual 15 0.151266                 
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
           
@@ -1984,12 +1999,12 @@ head(summary(pRDA.CHSgeog))
 
 Biplot scores for constraining variables
 
-                     RDA1     RDA2     RDA3    RDA4      RDA5 PC1
-shadow.days      -0.57138 -0.36197  0.55148  0.2124 -0.051183   0
-sol.rad.60d      -0.02309  0.64415 -0.36900  0.3378 -0.427501   0
-pcpt.60d         -0.32004  0.37876  0.08764 -0.2157  0.061851   0
-day10cm          -0.12807  0.64213  0.24394  0.4782  0.006326   0
-temp.laying.date -0.67551  0.01769 -0.12396  0.1134  0.674231   0
+                     RDA1      RDA2      RDA3     RDA4     RDA5 PC1
+shadow.days       0.55907 -0.436678 -0.007770  0.30985  0.34680   0
+sol.rad.60d      -0.51434  0.002098  0.612895 -0.16668  0.17302   0
+pcpt.60d          0.06542 -0.143825  0.424469 -0.01164 -0.16270   0
+day10cm          -0.12714  0.061116  0.725570  0.36524  0.08033   0
+temp.laying.date -0.09510 -0.632217 -0.004846  0.55377 -0.41632   0
 
 RDA1: temp.laying.date, shadow.days
 
@@ -2011,19 +2026,19 @@ summary(pRDA.CHSgeog)
 
 Biplot scores for constraining variables
 
-                     RDA1     RDA2     RDA3     RDA4    RDA5 PC1
-shadow.days      -0.02767 -0.74451 -0.06114 -0.12561  0.3808   0
-sol.rad.60d      -0.34486  0.48859 -0.51951  0.20634  0.1667   0
-pcpt.60d         -0.09943 -0.08843 -0.43795  0.02814 -0.1465   0
-day10cm          -0.06687  0.16630 -0.73133 -0.27282  0.2117   0
-temp.laying.date -0.54692 -0.35415 -0.07559 -0.61220 -0.2893   0
+                     RDA1      RDA2      RDA3     RDA4     RDA5 PC1
+shadow.days       0.55907 -0.436678 -0.007770  0.30985  0.34680   0
+sol.rad.60d      -0.51434  0.002098  0.612895 -0.16668  0.17302   0
+pcpt.60d          0.06542 -0.143825  0.424469 -0.01164 -0.16270   0
+day10cm          -0.12714  0.061116  0.725570  0.36524  0.08033   0
+temp.laying.date -0.09510 -0.632217 -0.004846  0.55377 -0.41632   0
 
 
 #eigenvalue (i.e. weight) of each RDA
 pRDA.CHSgeog$CCA$eig
 
-    RDA1      RDA2      RDA3      RDA4      RDA5 
-18.226594 15.385375 14.112027  8.761846  8.071920 
+      RDA1        RDA2        RDA3        RDA4        RDA5 
+0.017872167 0.016229721 0.012428778 0.008427029 0.007431517 
 ```
 
 
@@ -2174,6 +2189,7 @@ library(vegan)
 CHS.VS.Data <- read.csv("CHS.VS135.MAF.csv", header=T)
 CHS.VS.Data <- CHS.VS.Data[complete.cases(CHS.VS.Data),]  ##stba is removed here due to missing data
 GenData <- CHS.VS.Data[,12:ncol(CHS.VS.Data)]
+GenData <- decostand(GenData, "hellinger") ##detrend data
 Climate.Data <- CHS.VS.Data[,3:11]
 names(Climate.Data)
 ```
@@ -2189,29 +2205,29 @@ RDA.CHS.VSfull
 Call: rda(formula = GenData ~ PCNM1 + PCNM2 + shadow.days + sol.rad.60d
 + pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
 
-               Inertia Proportion Rank
-Total         228.9971     1.0000     
-Constrained   196.3168     0.8573    7
-Unconstrained  32.6803     0.1427    2
+              Inertia Proportion Rank
+Total         0.21582    1.00000     
+Constrained   0.18469    0.85575    7
+Unconstrained 0.03113    0.14425    2
 Inertia is variance 
 
 Eigenvalues for constrained axes:
- RDA1  RDA2  RDA3  RDA4  RDA5  RDA6  RDA7 
-56.77 33.57 26.79 26.15 21.00 16.82 15.23 
+   RDA1    RDA2    RDA3    RDA4    RDA5    RDA6    RDA7 
+0.05298 0.03092 0.02816 0.02354 0.01883 0.01544 0.01481 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2 
-16.755 15.925 
+     PC1      PC2 
+0.016505 0.014626  
 
 
 
 
 RsquareAdj(RDA.CHS.VSfull)
 $r.squared
-[1] 0.8572896
+[1] 0.8557526
 
 $adj.r.squared
-[1] 0.3578032
+[1] 0.3508868
 
 
 anova(RDA.CHS.VSfull)
@@ -2221,9 +2237,9 @@ Permutation: free
 Number of permutations: 999
 
 Model: rda(formula = GenData ~ PCNM1 + PCNM2 + shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
-         Df Variance      F Pr(>F)   
-Model     7   196.32 1.7163  0.003 **
-Residual  2    32.68                 
+         Df Variance     F Pr(>F)   
+Model     7 0.184687 1.695  0.008 **
+Residual  2 0.031131                
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -2249,28 +2265,28 @@ Call: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d +
 day10cm + temp.laying.date + Condition(PCNM1 + PCNM2), data =
 Climate.Data)
 
-               Inertia Proportion Rank
-Total         228.9971     1.0000     
-Conditional    54.3610     0.2374    2
-Constrained   141.9559     0.6199    5
-Unconstrained  32.6803     0.1427    2
+              Inertia Proportion Rank
+Total         0.21582    1.00000     
+Conditional   0.05274    0.24436    2
+Constrained   0.13195    0.61139    5
+Unconstrained 0.03113    0.14425    2
 Inertia is variance 
 
 Eigenvalues for constrained axes:
- RDA1  RDA2  RDA3  RDA4  RDA5 
-53.66 27.68 26.26 18.14 16.22 
+   RDA1    RDA2    RDA3    RDA4    RDA5 
+0.05043 0.02553 0.02232 0.01755 0.01612 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2 
-16.755 15.925 
+     PC1      PC2 
+0.016505 0.014626 
 
 
 RsquareAdj(pRDA.CHS.VS.geog)
 $r.squared
-[1] 0.6199025
+[1] 0.6113917
 
 $adj.r.squared
-[1] 0.3383054
+[1] 0.3224228
 
 
 anova(pRDA.CHS.VS.geog)
@@ -2281,8 +2297,8 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(PCNM1 + PCNM2), data = Climate.Data)
          Df Variance      F Pr(>F)  
-Model     5   141.96 1.7375  0.063 .
-Residual  2    32.68                
+Model     5 0.131950 1.6954  0.088 .
+Residual  2 0.031131                
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -2311,20 +2327,20 @@ Call: rda(formula = GenData ~ PCNM1 + PCNM2 + Condition(shadow.days +
 sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data =
 Climate.Data)
 
-               Inertia Proportion Rank
-Total         228.9971     1.0000     
-Conditional   135.0835     0.5899    5
-Constrained    61.2333     0.2674    2
-Unconstrained  32.6803     0.1427    2
+              Inertia Proportion Rank
+Total         0.21582    1.00000     
+Conditional   0.12718    0.58930    5
+Constrained   0.05750    0.26645    2
+Unconstrained 0.03113    0.14425    2
 Inertia is variance 
 
 Eigenvalues for constrained axes:
- RDA1  RDA2 
-42.64 18.59 
+   RDA1    RDA2 
+0.04081 0.01670 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2 
-16.755 15.925  
+     PC1      PC2 
+0.016505 0.014626 
 
 
 #head(summary(pRDA.CHS.VS.climate))
@@ -2332,10 +2348,11 @@ Eigenvalues for unconstrained axes:
 RsquareAdj(pRDA.CHS.VS.climate)
 
 $r.squared
-[1] 0.2673977
+[1] 0.2664485
 
 $adj.r.squared
-[1] 0.2805464
+[1] 0.2749526
+
 
 anova(pRDA.CHS.VS.climate)
 
@@ -2345,8 +2362,8 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ PCNM1 + PCNM2 + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data = Climate.Data)
          Df Variance      F Pr(>F)
-Model     2   61.233 1.8737  0.135
-Residual  2   32.680   
+Model     2 0.057505 1.8472  0.187
+Residual  2 0.031131      
 
 H0: Not Rejected -> Geography alone doesn't explain GenData
 
@@ -2364,12 +2381,12 @@ head(summary(pRDA.CHS.VS.geog))
 
 Biplot scores for constraining variables
 
-                   RDA1    RDA2     RDA3    RDA4     RDA5 PC1
-shadow.days      0.2814 -0.1945  0.18520 0.16543 -0.10742   0
-sol.rad.60d      0.2770  0.2697 -0.02120 0.09208  0.51938   0
-pcpt.60d         0.5170  0.8100  0.13979 0.21681 -0.01227   0
-day10cm          0.5726  0.5415 -0.09465 0.44351  0.15408   0
-temp.laying.date 0.4772  0.5430 -0.13052 0.06771 -0.65840   0
+                    RDA1    RDA2    RDA3     RDA4     RDA5 PC1
+shadow.days       0.2906  0.4324  0.3755  0.09537  0.08563   0
+sol.rad.60d      -0.5865 -0.1228 -0.1705 -0.47359 -0.26945   0
+pcpt.60d         -0.5241  0.5999 -0.5789 -0.08392  0.02238   0
+day10cm          -0.4778  0.3572 -0.4011 -0.29523  0.14967   0
+temp.laying.date -0.4201  0.4259 -0.4296  0.50117  0.44500   0
 
 RDA1: day10cm, pcpt.60d, temp.laying.date
 
@@ -2389,19 +2406,21 @@ Calculate the proportion of variance explained by each environmental variable wh
 summary(pRDA.CHS.VS.geog)
 
 
+Biplot scores for constraining variables
+
                     RDA1    RDA2    RDA3     RDA4     RDA5 PC1
-shadow.days       0.3063  0.4422  0.3499  0.09249  0.09210   0
-sol.rad.60d      -0.5887 -0.1074 -0.1618 -0.41912 -0.35365   0
-pcpt.60d         -0.5085  0.5872 -0.6086 -0.05311 -0.02571   0
-day10cm          -0.4735  0.3662 -0.4198 -0.29363  0.07414   0
-temp.laying.date -0.4147  0.4161 -0.4493  0.44425  0.49729   0
+shadow.days       0.2906  0.4324  0.3755  0.09537  0.08563   0
+sol.rad.60d      -0.5865 -0.1228 -0.1705 -0.47359 -0.26945   0
+pcpt.60d         -0.5241  0.5999 -0.5789 -0.08392  0.02238   0
+day10cm          -0.4778  0.3572 -0.4011 -0.29523  0.14967   0
+temp.laying.date -0.4201  0.4259 -0.4296  0.50117  0.44500   0
 
 
 #eigenvalue (i.e. weight) of each RDA
 pRDA.CHS.VS.geog$CCA$eig
 
-     RDA1     RDA2     RDA3     RDA4     RDA5 
-53.66130 27.67980 26.25523 18.13664 16.22288 
+     RDA1       RDA2       RDA3       RDA4       RDA5 
+0.05043003 0.02553040 0.02231961 0.01755057 0.01611916 
 ```
 
 
@@ -2517,6 +2536,7 @@ library(vegan)
 CHS.TI.Data <- read.csv("CHS.TI140.MAF.csv", header=T)
 CHS.TI.Data <- CHS.TI.Data[complete.cases(CHS.TI.Data),]  ##stba is removed here due to missing data
 GenData <- CHS.TI.Data[,14:ncol(CHS.TI.Data)]
+GenData <- decostand(GenData, "hellinger") ##detrend data
 Climate.Data <- CHS.TI.Data[,3:13]
 
 names(Climate.Data)
@@ -2534,27 +2554,27 @@ Call: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 +
 shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data
 = Climate.Data)
 
-               Inertia Proportion Rank
-Total         266.1176     1.0000     
-Constrained   187.3005     0.7038    9
-Unconstrained  78.8171     0.2962    4
+              Inertia Proportion Rank
+Total         0.28916    1.00000     
+Constrained   0.20151    0.69687    9
+Unconstrained 0.08765    0.30313    4
 Inertia is variance 
 
 Eigenvalues for constrained axes:
- RDA1  RDA2  RDA3  RDA4  RDA5  RDA6  RDA7  RDA8  RDA9 
-38.99 31.40 28.56 24.49 15.04 13.58 13.01 11.57 10.65 
+   RDA1    RDA2    RDA3    RDA4    RDA5    RDA6    RDA7    RDA8    RDA9 
+0.04670 0.03670 0.02742 0.02449 0.01578 0.01473 0.01367 0.01127 0.01075 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2    PC3    PC4 
-29.229 19.790 16.985 12.812  
+    PC1     PC2     PC3     PC4 
+0.03672 0.01934 0.01838 0.01321 
 
 
 RsquareAdj(RDA.CHS.TIfull)
 $r.squared
-[1] 0.7038261
+[1] 0.6968709
 
 $adj.r.squared
-[1] 0.03743483
+[1] 0.01483055
 
 anova(RDA.CHS.TIfull)
 
@@ -2564,8 +2584,8 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date, data = Climate.Data)
          Df Variance      F Pr(>F)
-Model     9  187.300 1.0562  0.348
-Residual  4   78.817       
+Model     9 0.201506 1.0217  0.471
+Residual  4 0.087652              
 
 
 ##to see which variables are most important, we can plot the results in a biplot
@@ -2588,28 +2608,28 @@ Call: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d +
 day10cm + temp.laying.date + Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4),
 data = Climate.Data)
 
-               Inertia Proportion Rank
-Total         266.1176     1.0000     
-Conditional   105.3452     0.3959    4
-Constrained    81.9553     0.3080    5
-Unconstrained  78.8171     0.2962    4
+              Inertia Proportion Rank
+Total         0.28916    1.00000     
+Conditional   0.11263    0.38951    4
+Constrained   0.08888    0.30737    5
+Unconstrained 0.08765    0.30313    4
 Inertia is variance 
 
 Eigenvalues for constrained axes:
-  RDA1   RDA2   RDA3   RDA4   RDA5 
-23.940 16.915 15.105 13.914 12.082 
+    RDA1     RDA2     RDA3     RDA4     RDA5 
+0.027112 0.018597 0.015661 0.014847 0.012661 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2    PC3    PC4 
-29.229 19.790 16.985 12.812 
+    PC1     PC2     PC3     PC4 
+0.03672 0.01934 0.01838 0.01321 
 
 
 RsquareAdj(pRDA.CHS.TI.geog)
 $r.squared
-[1] 0.3079665
+[1] 0.3073656
 
 $adj.r.squared
-[1] -0.08991797
+[1] -0.1033438
 
 
 anova(pRDA.CHS.TI.geog)
@@ -2620,8 +2640,8 @@ Number of permutations: 999
 
 Model: rda(formula = GenData ~ shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date + Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4), data = Climate.Data)
          Df Variance      F Pr(>F)
-Model     5   81.955 0.8319  0.823
-Residual  4   78.817                           
+Model     5 0.088877 0.8112  0.803
+Residual  4 0.087652                        
 
 
 H0 not rejected: Climate alone does not explain CHS.TI GeneticData
@@ -2648,27 +2668,27 @@ Call: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 +
 Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm +
 temp.laying.date), data = Climate.Data)
 
-               Inertia Proportion Rank
-Total         266.1176     1.0000     
-Conditional   110.6767     0.4159    5
-Constrained    76.6237     0.2879    4
-Unconstrained  78.8171     0.2962    4
+              Inertia Proportion Rank
+Total         0.28916    1.00000     
+Conditional   0.12148    0.42011    5
+Constrained   0.08003    0.27676    4
+Unconstrained 0.08765    0.30313    4
 Inertia is variance 
 
 Eigenvalues for constrained axes:
-  RDA1   RDA2   RDA3   RDA4 
-27.342 23.026 15.001 11.254 
+    RDA1     RDA2     RDA3     RDA4 
+0.030250 0.023329 0.014874 0.011575 
 
 Eigenvalues for unconstrained axes:
-   PC1    PC2    PC3    PC4 
-29.229 19.790 16.985 12.812 
+    PC1     PC2     PC3     PC4 
+0.03672 0.01934 0.01838 0.01321 
 
 RsquareAdj(pRDA.CHS.TI.climate)
 $r.squared
-[1] 0.2879319
+[1] 0.2767607
 
 $adj.r.squared
-[1] -0.01339318
+[1] -0.04284855
 
 #head(summary(pRDA.CHS.TI.climate))
 
@@ -2679,9 +2699,9 @@ Permutation: free
 Number of permutations: 999
 
 Model: rda(formula = GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + Condition(shadow.days + sol.rad.60d + pcpt.60d + day10cm + temp.laying.date), data = Climate.Data)
-         Df Variance      F Pr(>F)
-Model     4   76.624 0.9722  0.541
-Residual  4   78.817 
+         Df Variance     F Pr(>F)
+Model     4 0.080028 0.913  0.628
+Residual  4 0.087652 
 
 
 H0: Rejected -> Geography explains a sig proportion of GenData
@@ -2701,12 +2721,14 @@ Find the most important loci associated with Climate
 
 Biplot scores for constraining variables
 
-                   RDA1    RDA2     RDA3   RDA4     RDA5 PC1
-shadow.days      0.1420 -0.1929  0.10514 0.5472  0.30812   0
-sol.rad.60d      0.3530  0.6966 -0.03810 0.1271 -0.08304   0
-pcpt.60d         0.4858  0.2915 -0.33094 0.1259 -0.24697   0
-day10cm          0.4140  0.4474  0.03417 0.2251  0.14133   0
-temp.laying.date 0.1626 -0.3189  0.30536 0.3612  0.01246   0
+                   RDA1    RDA2     RDA3     RDA4     RDA5 PC1
+shadow.days      0.2011 -0.1344 -0.16694  0.58450  0.18647   0
+sol.rad.60d      0.1701  0.7226  0.17161  0.13981 -0.18513   0
+pcpt.60d         0.4172  0.4533 -0.16464 -0.03591 -0.31509   0
+day10cm          0.2936  0.5101  0.12119  0.28509  0.03155   0
+temp.laying.date 0.2292 -0.3434  0.06574  0.41886 -0.04221   0
+
+
 
 
 
@@ -2729,20 +2751,20 @@ summary(pRDA.CHS.TI.geog)
 
 Biplot scores for constraining variables
 
-                   RDA1    RDA2     RDA3   RDA4     RDA5 PC1
-shadow.days      0.1420 -0.1929  0.10514 0.5472  0.30812   0
-sol.rad.60d      0.3530  0.6966 -0.03810 0.1271 -0.08304   0
-pcpt.60d         0.4858  0.2915 -0.33094 0.1259 -0.24697   0
-day10cm          0.4140  0.4474  0.03417 0.2251  0.14133   0
-temp.laying.date 0.1626 -0.3189  0.30536 0.3612  0.01246   0
+                   RDA1    RDA2     RDA3     RDA4     RDA5 PC1
+shadow.days      0.2011 -0.1344 -0.16694  0.58450  0.18647   0
+sol.rad.60d      0.1701  0.7226  0.17161  0.13981 -0.18513   0
+pcpt.60d         0.4172  0.4533 -0.16464 -0.03591 -0.31509   0
+day10cm          0.2936  0.5101  0.12119  0.28509  0.03155   0
+temp.laying.date 0.2292 -0.3434  0.06574  0.41886 -0.04221   0
 
 
 
 #eigenvalue (i.e. weight) of each RDA
 pRDA.CHS.TI.geog$CCA$eig
 
-    RDA1     RDA2     RDA3     RDA4     RDA5 
-23.93970 16.91471 15.10477 13.91440 12.08171 
+      RDA1       RDA2       RDA3       RDA4       RDA5 
+0.02711151 0.01859665 0.01566078 0.01484691 0.01266147 
 
 ```
 
