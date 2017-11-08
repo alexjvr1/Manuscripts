@@ -1150,6 +1150,15 @@ RDA2: day10cm, temp.laying.date
 Best model when geography is partialled out
 ```
 step.res.CHall.pgeog <- ordistep(pRDA.CH932.geog)
+
+Step: GenData ~ sol.rad.60d + pcpt.60d + Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4 + PCNM5 + PCNM6 + PCNM7 +
+PCNM8 + PCNM9 + PCNM10 + PCNM11 + PCNM12 + PCNM13 + PCNM14 + PCNM15) 
+
+                                                                                                                                           
+                      Df    AIC    F      Pr(>F)
+- sol.rad.60d         1   -116-690 2.2363 0.005**
+- pcpt.60d            1   -116.611 2.3001 0.005**
+- Condition(PCNM1-15) 15  -85.282
 ```
 
 Best model when climate is partialled out
@@ -2765,10 +2774,18 @@ RDA.CZfull.bestModel <- ordistep(RDA.CZfull)
 
 Best model when space is partialled out
 ```
-step.res.CZ.pgeog <- ordistep(pRDA.CZgeog)
+step.res.CZ.pgeog <- ordistep(pRDA.CZ.geog)
 
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + pcpt.60d 
 
-
+           Df     AIC      F Pr(>F)   
+- PCNM4     1 -55.159 1.4761  0.070 . 
+- pcpt.60d  1 -55.114 1.5159  0.055 . 
+- PCNM2     1 -53.396 3.0612  0.015 * 
+- PCNM1     1 -52.036 4.3364  0.005 **
+- PCNM3     1 -50.942 5.3966  0.005 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 ```
 
 
