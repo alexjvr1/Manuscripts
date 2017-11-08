@@ -2767,15 +2767,6 @@ Best model overall
 ```
 RDA.CZfull.bestModel <- ordistep(RDA.CZfull)
 
-
-
-```
-
-
-Best model when space is partialled out
-```
-step.res.CZ.pgeog <- ordistep(pRDA.CZ.geog)
-
 Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + PCNM4 + pcpt.60d 
 
            Df     AIC      F Pr(>F)   
@@ -2789,11 +2780,33 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 ```
 
 
+Best model when space is partialled out
+```
+step.res.CZ.pgeog <- ordistep(pRDA.CZ.geog)
+
+Step: GenData ~ pcpt.60d + Condition(PCNM1 + PCNM2 + PCNM3 + PCNM4 +      PCNM5 + PCNM6 + PCNM7) 
+
+                     Df    AIC  F      Pr(>F)
+- pcpt.60d            1 -52.594 1.4696 0.025*
+- Condition(PCNM1-7)  7 -48.648
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+```
+
+
 Best model when climate is partialled out
 ```
 step.res.CZ.pclimate <- ordistep(pRDA.CZclimate)
 
+Step: GenData ~ PCNM1 + PCNM2 + PCNM3 + Condition(shadow.days + sol.rad.60d +      pcpt.60d + day10cm + temp.laying.date) 
 
+                      Df   AIC    F      Pr(>F)
+- PCNM3               1  -51.222  2.4501  0.005**
+- PCNM2               1  -50.784  2.8125  0.005**
+- PCNM1               1  -50.780  2.8164  0.005**
+- Condition(climate)  5  -55.336
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 ```
 
 
