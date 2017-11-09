@@ -2269,6 +2269,32 @@ Step: GenData ~ 1
 
 
 
+Plots
+
+```
+CHS.VS.coords <- cbind(CHS.VS.Data$long, CHS.VS.Data$lat)
+colnames(CHS.VS.coords) <- c("long", "lat")
+CHS.VS.coords <- as.data.frame(CHS.VS.coords)
+scl <- 3
+scrs <- scores(RDA.CHS.VSfull, display = c("sites", "species"), scaling = scl)
+
+pdf(file="RDA.CHS.VSfull.Nov2017.pdf")
+plot(RDA.CHS.VSfull, scaling=scl)
+with(Climate.Data, points(scrs$sites, col="purple", pch=21, bg ="purple"))
+with(scrs, text(sites, labels=CHS.VS.Data$X.CLST, cex = 0.8))
+dev.off()
+
+pdf("RDA.CHS.VS.sites.Nov2017.pdf")
+plot(CHS.VS.Data$lat~CHS.VS.Data$long)
+with(CHS.VS.Data, points(CHS.VS.coords, col="purple", pch=21, bg ="purple"))
+with(CHS.VS.Data, text(CHS.VS.coords, labels=CHS.VS.Data$X.CLST, cex = 0.8))
+dev.off()
+```
+
+
+
+
+
 #### 5. CHS.TI
 
 ```
@@ -2552,6 +2578,28 @@ Best model when climate is partialled out
 step.res.CHS.TI.pclimate <- ordistep(pRDA.CHS.TIclimate)
 
 Step: GenData ~ 1 
+```
+
+Plots
+
+```
+CHS.TI.coords <- cbind(CHS.TI.Data$long, CHS.TI.Data$lat)
+colnames(CHS.TI.coords) <- c("long", "lat")
+CHS.TI.coords <- as.data.frame(CHS.TI.coords)
+scl <- 3
+scrs <- scores(RDA.CHS.TIfull, display = c("sites", "species"), scaling = scl)
+
+pdf(file="RDA.CHS.TIfull.Nov2017.pdf")
+plot(RDA.CHS.TIfull, scaling=scl)
+with(Climate.Data, points(scrs$sites, col="purple", pch=21, bg ="purple"))
+with(scrs, text(sites, labels=CHS.TI.Data$X.CLST, cex = 0.8))
+dev.off()
+
+pdf("RDA.CHS.TI.sites.Nov2017.pdf")
+plot(CHS.TI.Data$lat~CHS.TI.Data$long)
+with(CHS.TI.Data, points(CHS.TI.coords, col="purple", pch=21, bg ="purple"))
+with(CHS.TI.Data, text(CHS.TI.coords, labels=CHS.TI.Data$X.CLST, cex = 0.8))
+dev.off()
 ```
 
 
