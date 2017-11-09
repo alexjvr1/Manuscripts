@@ -1169,6 +1169,29 @@ step.res.CHall.pclimate <- ordistep(pRDA.CH932.climate)
 ```
 
 
+Plots
+
+```
+CHall.coords <- cbind(CHallData$long, CHallData$lat)
+colnames(CHall.coords) <- c("long", "lat")
+CHall.coords <- as.data.frame(CHall.coords)
+scl <- 3
+scrs <- scores(RDA.CH932full, display = c("sites", "species"), scaling = scl)
+
+pdf(file="RDA.CHallfull.Nov2017.pdf")
+plot(RDA.CH932full, scaling=scl)
+with(Climate.Data, points(scrs$sites, col="forestgreen", pch=21, bg ="purple"))
+with(scrs, text(sites, labels=CHallData$X.CLST, cex = 0.8))
+dev.off()
+
+pdf("RDA.CHall.sites.Nov2017.pdf")
+plot(CHallData$lat~CHallData$long)
+with(CHallData, points(CHall.coords, col="purple", pch=21, bg ="forestgreen"))
+with(CHallData, text(CHall.coords, labels=CHallData$X.CLST, cex = 0.8))
+dev.off()
+```
+
+
 #### 2. CHN
 
 See this tutorial for the interpretation: REDUNDANCY ANALYSIS TUTORIAL: Landscape Genetics Paul Gugger redundancy-analysis-for-landscape-genetics.pdf on mac
@@ -1246,6 +1269,28 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 
 pdf(file="RDA.CHNfull.pdf")
 plot(RDA.CHNfull, main="RDA CHNfull")
+dev.off()
+```
+
+Plots
+
+```
+CHN.coords <- cbind(CHNData$long, CHNData$lat)
+colnames(CHN.coords) <- c("long", "lat")
+CHN.coords <- as.data.frame(CHN.coords)
+scl <- 3
+scrs <- scores(RDA.CHNfull, display = c("sites", "species"), scaling = scl)
+
+pdf(file="RDA.CHNfull.Nov2017.pdf")
+plot(RDA.CHNfull, scaling=scl)
+with(Climate.Data, points(scrs$sites, col="forestgreen", pch=21, bg ="purple"))
+with(scrs, text(sites, labels=CHNData$X.CLST, cex = 0.8))
+dev.off()
+
+pdf("RDA.CHN.sites.Nov2017.pdf")
+plot(CHNData$lat~CHNData$long)
+with(CHNData, points(CHN.coords, col="purple", pch=21, bg ="forestgreen"))
+with(CHNData, text(CHN.coords, labels=CHNData$X.CLST, cex = 0.8))
 dev.off()
 ```
 
