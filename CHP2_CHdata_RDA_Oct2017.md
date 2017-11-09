@@ -898,6 +898,8 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 
 ##to see which variables are most important, we can plot the results in a biplot
 
+
+
 pdf(file="RDA.CH932full.pdf")
 plot(RDA.CH932full)
 dev.off()
@@ -1666,8 +1668,21 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 
 ##to see which variables are most important, we can plot the results in a biplot
 
-pdf(file="RDA.CHSfull.pdf")
-plot(RDA.CHSfull, main="RDA CHSfull")
+pdf(file="RDA.CHSfull.Nov2017.pdf")
+scl <- 3
+plot(RDA.CHSfull, scaling=scl)
+with(Climate.Data, points(scrs$sites, col="purple", pch=21, bg ="purple"))
+with(scrs, text(sites, labels=CHSData$X.CLST, cex = 0.8))
+dev.off()
+
+pdf("RDA.CHS.sites.Nov2017.pdf")
+plot(CHSData$lat~CHSData$long)
+#CHS.coords <- cbind(CHSData$long, CHSData$lat)
+#colnames(CHS.coords) <- c("long", "lat")
+#CHS.coords <- as.data.frame(CHS.coords)
+with(CHSData, points(CHS.coords, col="purple", pch=21, bg ="purple"))
+with(CHSData, text(CHS.coords, labels=CHSData$X.CLST, cex = 0.8))
+
 dev.off()
 ```
 
@@ -2566,8 +2581,25 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 
 ##to see which variables are most important, we can plot the results in a biplot
 
-pdf(file="RDA.CZfull.pdf")
-plot(RDA.CZfull, main="CZ RDAfull")
+scl <- 3
+scrs <- scores(RDA.CZfull, display = c("sites", "species"), scaling = scl)
+
+CZ.coords <- cbind(CZData$long, CZData$lat)
+colnames(CZ.coords) <- c("long", "lat")
+CZ.coords <- as.data.frame(CZ.coords)
+
+
+pdf(file="RDA.CZfull.Nov2017.pdf")
+plot(RDA.CZfull, scaling=scl)
+with(Climate.Data, points(scrs$sites, col="goldenrod", pch=21, bg ="goldenrod"))
+with(scrs, text(sites, labels=CZData$X.CLST, cex = 0.8))
+dev.off()
+
+pdf("RDA.CZ.sites.Nov2017.pdf")
+plot(CZData$lat~CZData$long)
+with(CZData, points(CZ.coords, col="purple", pch=21, bg ="purple"))
+with(CZData, text(CZ.coords, labels=CZData$X.CLST, cex = 0.8))
+
 dev.off()
 ```
 
