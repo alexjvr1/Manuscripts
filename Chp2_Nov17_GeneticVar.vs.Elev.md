@@ -98,19 +98,19 @@ m2.RAD.Ho <- lm(RAD.data$Ho~RAD.data$elev.c + RAD.data$Region + RAD.data$elev.c.
 Select model
 ```
 AIC(m1.RAD.Fis)
-[1] -146.3384
+[1] -188.5216
 AIC(m2.RAD.Fis)
-[1] -139.51
+[1] -182.84
 
 AIC(m1.RAD.Hs)
-[1] -384.6909
+[1] -395.9505
 AIC(m2.RAD.Hs)
-[1] -377.7738
+[1] -389.7367
 
 AIC(m1.RAD.Ho)
-[1] -298.8624
+[1] -369.4961
 AIC(m2.RAD.Ho)
-[1] -292.3717
+[1] -366.6641
 ```
 
 All m1 models
@@ -124,11 +124,13 @@ Anova(m1.RAD.Fis)
 Anova Table (Type II tests)
 
 Response: RAD.data$FIS
-                                 Sum Sq Df F value Pr(>F)
-RAD.data$elev.c                 0.01293  1  1.5139 0.2225
-RAD.data$Region                 0.04600  3  1.7951 0.1556
-RAD.data$elev.c:RAD.data$Region 0.01545  3  0.6029 0.6152
-Residuals                       0.62357 73  
+                                 Sum Sq Df F value  Pr(>F)   
+RAD.data$elev.c                 0.04561  1  9.5613 0.00284 **
+RAD.data$Region                 0.02148  3  1.5010 0.22172   
+RAD.data$elev.c:RAD.data$Region 0.00630  3  0.4400 0.72509   
+Residuals                       0.33870 71                   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 
 Anova(m1.RAD.Hs)
@@ -136,11 +138,11 @@ Anova(m1.RAD.Hs)
 Anova Table (Type II tests)
 
 Response: RAD.data$Hs
-                                  Sum Sq Df F value    Pr(>F)    
-RAD.data$elev.c                 0.001313  1  2.9147   0.09203 .  
-RAD.data$Region                 0.022724  3 16.8178 2.105e-08 ***
-RAD.data$elev.c:RAD.data$Region 0.003732  3  2.7620   0.04809 *  
-Residuals                       0.032879 73                      
+                                   Sum Sq Df F value   Pr(>F)    
+RAD.data$elev.c                 0.0003684  1  1.0666  0.30521    
+RAD.data$Region                 0.0183735  3 17.7348 1.08e-08 ***
+RAD.data$elev.c:RAD.data$Region 0.0029904  3  2.8865  0.04154 *  
+Residuals                       0.0245189 71                     
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -150,10 +152,10 @@ Anova Table (Type II tests)
 
 Response: RAD.data$Ho
                                   Sum Sq Df F value    Pr(>F)    
-RAD.data$elev.c                 0.000039  1  0.0304    0.8622    
-RAD.data$Region                 0.033237  3  8.5256 6.299e-05 ***
-RAD.data$elev.c:RAD.data$Region 0.004098  3  1.0512    0.3752    
-Residuals                       0.094864 73                      
+RAD.data$elev.c                 0.001356  1  2.8095   0.09811 .  
+RAD.data$Region                 0.020559  3 14.1975 2.418e-07 ***
+RAD.data$elev.c:RAD.data$Region 0.001513  3  1.0451   0.37803    
+Residuals                       0.034271 71                      
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 ```
@@ -223,8 +225,14 @@ p3.Ho.RAD <- ggplot(fit.Ho.RAD, aes(x=elev, y=RAD.data.Ho , group=RAD.data.Regio
 multiplot
 ```
 pdf("RADvsElev.pdf")
-multiplot(p1.Fis.RAD, p2.Hs.RAD, p3.Ho.RAD, cols=1)
+multiplot(p1.Fis.RAD, p2.Hs.RAD, cols=1)
 dev.off()
+
+
+pdf("RADvsElev.pdf")
+multiplot(p1.Fis.RAD, p3.Ho.RAD, cols=1)
+dev.off()
+
 ```
 
 
