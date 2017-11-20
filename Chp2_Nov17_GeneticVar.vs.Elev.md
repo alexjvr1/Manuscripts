@@ -236,6 +236,202 @@ dev.off()
 ```
 
 
+###### Test correlation and p-value
+
+I can get R-values for the correlation and test whether they are significant
+
+
+CHN
+```
+library(Hmisc)
+
+CHN.elev <- subset(RAD.data, Region=="CHN",)
+
+cor.test(CHN.elev$elev.c, CHN.elev$FIS, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CHN.elev$elev.c and CHN.elev$FIS
+t = -0.84295, df = 17, p-value = 0.411
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.5999302  0.2793195
+sample estimates:
+      cor 
+-0.200302 
+
+cor.test(CHN.elev$elev.c, CHN.elev$Hs, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CHN.elev$elev.c and CHN.elev$Hs
+t = -0.25738, df = 17, p-value = 0.8
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.5022970  0.4033207
+sample estimates:
+        cor 
+-0.06230177 
+
+cor.test(CHN.elev$elev.c, CHN.elev$Ho, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CHN.elev$elev.c and CHN.elev$Ho
+t = 0.21188, df = 17, p-value = 0.8347
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.4125038  0.4940147
+sample estimates:
+       cor 
+0.05132113 
+```
+
+
+CHS.VS
+```
+CHS.VS.elev <- subset(RAD.data, Region=="CHS.VS",)
+
+cor.test(CHS.VS.elev$elev.c, CHS.VS.elev$FIS, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CHS.VS.elev$elev.c and CHS.VS.elev$FIS
+t = -1.7315, df = 8, p-value = 0.1216
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.8667912  0.1601732
+sample estimates:
+       cor 
+-0.5221073 
+
+
+cor.test(CHS.VS.elev$elev.c, CHS.VS.elev$Hs, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CHS.VS.elev$elev.c and CHS.VS.elev$Hs
+t = -4.1896, df = 8, p-value = 0.003039
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.9583366 -0.4165586
+sample estimates:
+       cor 
+-0.8288082 
+
+cor.test(CHS.VS.elev$elev.c, CHS.VS.elev$Ho, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CHS.VS.elev$elev.c and CHS.VS.elev$Ho
+t = -0.11241, df = 8, p-value = 0.9133
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.6530097  0.6050437
+sample estimates:
+        cor 
+-0.03971036 
+
+```
+
+
+CHS.TI
+```
+CHS.TI.elev <- subset(RAD.data, Region=="CHS.TI",)
+
+cor.test(CHS.TI.elev$elev.c, CHS.TI.elev$FIS, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CHS.TI.elev$elev.c and CHS.TI.elev$FIS
+t = -0.99518, df = 13, p-value = 0.3378
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.6849688  0.2850503
+sample estimates:
+       cor 
+-0.2660633 
+
+
+cor.test(CHS.TI.elev$elev.c, CHS.TI.elev$Hs, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CHS.TI.elev$elev.c and CHS.TI.elev$Hs
+t = 1.4697, df = 13, p-value = 0.1654
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.1671183  0.7455610
+sample estimates:
+      cor 
+0.3774581 
+
+
+cor.test(CHS.TI.elev$elev.c, CHS.TI.elev$Ho, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CHS.TI.elev$elev.c and CHS.TI.elev$Ho
+t = 2.5228, df = 13, p-value = 0.02547
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.08640765 0.83912519
+sample estimates:
+      cor 
+0.5732945 
+
+```
+
+
+CZ
+```
+CZ.elev <- subset(RAD.data, Region=="CZ",)
+
+cor.test(CZ.elev$elev.c, CZ.elev$FIS, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CZ.elev$elev.c and CZ.elev$FIS
+t = -2.3069, df = 33, p-value = 0.02748
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.6279237 -0.0449986
+sample estimates:
+       cor 
+-0.3726569 
+
+
+
+cor.test(CZ.elev$elev.c, CZ.elev$Hs, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CZ.elev$elev.c and CZ.elev$Hs
+t = -1.3039, df = 33, p-value = 0.2013
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.5164922  0.1208150
+sample estimates:
+       cor 
+-0.2213431 
+
+
+cor.test(CZ.elev$elev.c, CZ.elev$Ho, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CZ.elev$elev.c and CZ.elev$Ho
+t = 0.73267, df = 33, p-value = 0.4689
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.2158301  0.4411627
+sample estimates:
+      cor 
+0.1265161 
+
+```
+
+
 
 #### mtDNA
 
@@ -362,6 +558,149 @@ pdf("mtDNAvsElev.pdf")
 multiplot(p1.Hd.mtDNA, p2.nd.mtDNA, cols=1)
 dev.off()
 ```
+
+
+###### test for correlation
+
+CHN
+```
+CHN.elev <- subset(mtDNA.data, Region=="CHN",)
+
+cor.test(CHN.elev$elev.c, CHN.elev$Hd, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CHN.elev$elev.c and CHN.elev$Hd
+t = 2.5595, df = 13, p-value = 0.02376
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.09466821 0.84157228
+sample estimates:
+      cor 
+0.5788593 
+
+cor.test(CHN.elev$elev.c, CHN.elev$nd, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CHN.elev$elev.c and CHN.elev$nd
+t = 2.5032, df = 13, p-value = 0.02643
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.08198632 0.83780278
+sample estimates:
+      cor 
+0.5702975 
+
+
+```
+
+
+CHS.TI
+```
+CHS.TI.elev <- subset(mtDNA.data, Region=="CHS.TI",)
+
+cor.test(CHS.TI.elev$elev.c, CHS.TI.elev$Hd, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CHS.TI.elev$elev.c and CHS.TI.elev$Hd
+t = -1.4386, df = 13, p-value = 0.1739
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.7419863  0.1748850
+sample estimates:
+       cor 
+-0.3705767 
+
+cor.test(CHS.TI.elev$elev.c, CHS.TI.elev$nd, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CHS.TI.elev$elev.c and CHS.TI.elev$nd
+t = 0.1089, df = 13, p-value = 0.9149
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.4896450  0.5341917
+sample estimates:
+       cor 
+0.03019038 
+
+```
+
+
+
+
+CHS.VS
+```
+CHS.VS.elev <- subset(mtDNA.data, Region=="CHS.VS",)
+
+cor.test(CHS.VS.elev$elev.c, CHS.VS.elev$Hd, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CHS.VS.elev$elev.c and CHS.VS.elev$Hd
+t = -1.0616, df = 5, p-value = 0.337
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.8933974  0.4788215
+sample estimates:
+       cor 
+-0.4288837 
+
+cor.test(CHS.VS.elev$elev.c, CHS.VS.elev$nd, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CHS.VS.elev$elev.c and CHS.VS.elev$nd
+t = -1.0576, df = 5, p-value = 0.3386
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.8930735  0.4800555
+sample estimates:
+       cor 
+-0.4275752 
+
+```
+
+
+
+
+
+CZ
+```
+CZ.elev <- subset(mtDNA.data, Region=="CZ",)
+
+cor.test(CZ.elev$elev.c, CZ.elev$Hd, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CZ.elev$elev.c and CZ.elev$Hd
+t = -1.3984, df = 28, p-value = 0.173
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.5638616  0.1153972
+sample estimates:
+       cor 
+-0.2554939 
+
+
+cor.test(CZ.elev$elev.c, CZ.elev$nd, type="pearson")
+
+	Pearson's product-moment correlation
+
+data:  CZ.elev$elev.c and CZ.elev$nd
+t = -0.51593, df = 28, p-value = 0.61
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.4418630  0.2727635
+sample estimates:
+        cor 
+-0.09704187 
+```
+
+
+
 
 ### 2. RDA
 
