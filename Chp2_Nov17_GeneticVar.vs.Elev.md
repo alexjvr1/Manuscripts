@@ -366,8 +366,6 @@ MAF input files have been prepared before: https://github.com/alexjvr1/Manuscrip
 I have to add elevation and geographic distance. Since I want to understand how genetic diversity is distributed up elevation,
 I will measure all distances from the lowest elevation population
 
-CHall: scai
-
 CHN: rade
 
 CHS.VS: orge
@@ -376,9 +374,782 @@ CHS.TI: scai
 
 CZ: ente
 
+
+First I need to calculate the geographic distance between all populations. And then take the distance from the lowest elevation and most north/most southern population. (see above)
+```
+library(fields)
+library(reshape2)
+
+CHNData <- read.csv("CHN229.MAF.csv", header=T)
+
+CHN_long.lat <- cbind(CHNData$long, CHNData$lat)
+
+CHN.dist.matrix <- rdist.earth(CHN_long.lat, miles=F)
+CHN.m.dist <- as.matrix(CHN.dist.matrix)
+
+colnames(CHN.m.dist) <- (CHNData$X.CLST)
+rownames(CHN.m.dist) <- (CHNData$X.CLST)
+
+head(CHN.m.dist)
+CHN.m2.dist <- melt(CHN.m.dist)[melt(upper.tri(CHN.m.dist))$value,]
+
+names(CHN.m2.dist) <- c("c1", "c2", "distance")
+CHN.m2.dist$log.km <- log(CHN.m2.dist$distance)
+
+CHN.dist.rade <- subset(CHN.m2.dist, c1==c("rade"), select=c1:log.km)
+
+new.row <- c("rade", "rade", "0", "0")
+CHN.dist.rade.new <- rbind(new.row,CHN.dist.rade)
+CHNData$X.CLST
+CHN.dist.rade.new$c2
+CHNData$log.km <- CHN.dist.rade.new$log.km
 ```
 
 
+CHS.TI
+```
+CHS.TIData <- read.csv("CHS.TI140.MAF.csv", header=T)
+
+CHS.TI_long.lat <- cbind(CHS.TIData$long, CHS.TIData$lat)
+
+CHS.TI.dist.matrix <- rdist.earth(CHS.TI_long.lat, miles=F)
+CHS.TI.m.dist <- as.matrix(CHS.TI.dist.matrix)
+
+colnames(CHS.TI.m.dist) <- (CHS.TIData$X.CLST)
+rownames(CHS.TI.m.dist) <- (CHS.TIData$X.CLST)
+
+head(CHS.TI.m.dist)
+CHS.TI.m2.dist <- melt(CHS.TI.m.dist)[melt(upper.tri(CHS.TI.m.dist))$value,]
+
+names(CHS.TI.m2.dist) <- c("c1", "c2", "distance")
+CHS.TI.m2.dist$log.km <- log(CHS.TI.m2.dist$distance)
+
+CHS.TI.dist.scai <- subset(CHS.TI.m2.dist, c1==c("scai"), select=c1:log.km)
+
+new.row <- c("scai", "scai", "0", "0")
+CHS.TI.dist.scai.new <- rbind(new.row,CHS.TI.dist.scai)
+CHS.TIData$X.CLST
+CHS.TI.dist.scai.new$c2
+CHS.TIData$log.km <- CHS.TI.dist.scai.new$log.km
+```
+
+
+CHS.VS
+```
+CHS.VSData <- read.csv("CHS.VS135.MAF.csv", header=T)
+
+CHS.VS_long.lat <- cbind(CHS.VSData$long, CHS.VSData$lat)
+
+CHS.VS.dist.matrix <- rdist.earth(CHS.VS_long.lat, miles=F)
+CHS.VS.m.dist <- as.matrix(CHS.VS.dist.matrix)
+
+colnames(CHS.VS.m.dist) <- (CHS.VSData$X.CLST)
+rownames(CHS.VS.m.dist) <- (CHS.VSData$X.CLST)
+
+head(CHS.VS.m.dist)
+CHS.VS.m2.dist <- melt(CHS.VS.m.dist)[melt(upper.tri(CHS.VS.m.dist))$value,]
+
+names(CHS.VS.m2.dist) <- c("c1", "c2", "distance")
+CHS.VS.m2.dist$log.km <- log(CHS.VS.m2.dist$distance)
+
+CHS.VS.dist.orge <- subset(CHS.VS.m2.dist, c1==c("orge"), select=c1:log.km)
+
+new.row <- c("orge", "orge", "0", "0")
+CHS.VS.dist.orge.new <- rbind(new.row,CHS.VS.dist.orge)
+CHS.VSData$X.CLST
+CHS.VS.dist.orge.new$c2
+CHS.VSData$log.km <- CHS.VS.dist.orge.new$log.km
+```
+
+CZ
+```
+CZData <- read.csv("CZ404.MAF.csv", header=T)
+
+CZ_long.lat <- cbind(CZData$long, CZData$lat)
+
+CZ.dist.matrix <- rdist.earth(CZ_long.lat, miles=F)
+CZ.m.dist <- as.matrix(CZ.dist.matrix)
+
+colnames(CZ.m.dist) <- (CZData$X.CLST)
+rownames(CZ.m.dist) <- (CZData$X.CLST)
+
+head(CZ.m.dist)
+CZ.m2.dist <- melt(CZ.m.dist)[melt(upper.tri(CZ.m.dist))$value,]
+
+names(CZ.m2.dist) <- c("c1", "c2", "distance")
+CZ.m2.dist$log.km <- log(CZ.m2.dist$distance)
+
+CZ.dist.ente <- subset(CZ.m2.dist, c1==c("ente"), select=c1:log.km)
+
+new.row <- c("ente", "ente", "0", "0")
+CZ.dist.ente.new <- rbind(new.row,CZ.dist.ente)
+CZData$X.CLST
+CZ.dist.ente.new$c2
+CZData$log.km <- CZ.dist.ente.new$log.km
+```
+
+
+##### Run RDA models
+
+###### CHN
+```
+library(vegan)
+
+GenData <- CHNData[,15:5279]
+GenData <- decostand(GenData, "hellinger")
+
+Climate.Data <- CHNData$Elev
+Climate.Data
+Climate.Data <- as.data.frame(Climate.Data)
+colnames(Climate.Data) <- "elev"
+Climate.Data$log.km <- CHNData$log.km
+Climate.Data <- as.data.frame(Climate.Data)
+class(Climate.Data$log.km) <- "numeric"
+Climate.Data <- as.data.frame(Climate.Data)
+summary(Climate.Data)
+```
+
+CHN Full RDA
+```
+RDA.CHN.dist.elev <- rda(GenData ~ elev + log.km, Climate.Data)
+
+RDA.CHN.dist.elev
+
+Call: rda(formula = GenData ~ elev + log.km, data = Climate.Data)
+
+              Inertia Proportion Rank
+Total         0.21485    1.00000     
+Constrained   0.03425    0.15940    2
+Unconstrained 0.18061    0.84060   16
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1     RDA2 
+0.022545 0.011702 
+
+Eigenvalues for unconstrained axes:
+     PC1      PC2      PC3      PC4      PC5      PC6      PC7      PC8 
+0.025321 0.023201 0.017360 0.015786 0.013331 0.011585 0.010067 0.009347 
+     PC9     PC10     PC11     PC12     PC13     PC14     PC15     PC16 
+0.009033 0.008145 0.007880 0.006800 0.006685 0.006050 0.005194 0.004822 
+
+
+RsquareAdj(RDA.CHN.dist.elev)
+
+$r.squared
+[1] 0.1593952
+
+$adj.r.squared
+[1] 0.05431955
+
+
+anova(RDA.CHN.dist.elev)
+
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ elev + log.km, data = Climate.Data)
+         Df Variance     F Pr(>F)   
+Model     2 0.034247 1.517  0.004 **
+Residual 16 0.180607                
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+```
+
+pCHN.distOnly
+```
+pCHN.distOnly <- rda(GenData ~ log.km + Condition(elev), Climate.Data) 
+
+pCHN.distOnly
+
+Call: rda(formula = GenData ~ log.km + Condition(elev), data =
+Climate.Data)
+
+              Inertia Proportion Rank
+Total         0.21485    1.00000     
+Conditional   0.02028    0.09439    1
+Constrained   0.01397    0.06501    1
+Unconstrained 0.18061    0.84060   16
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1 
+0.013967 
+
+Eigenvalues for unconstrained axes:
+     PC1      PC2      PC3      PC4      PC5      PC6      PC7      PC8 
+0.025321 0.023201 0.017360 0.015786 0.013331 0.011585 0.010067 0.009347 
+     PC9     PC10     PC11     PC12     PC13     PC14     PC15     PC16 
+0.009033 0.008145 0.007880 0.006800 0.006685 0.006050 0.005194 0.004822
+
+RsquareAdj(pCHN.distOnly)
+
+$r.squared
+[1] 0.06500662
+
+$adj.r.squared
+[1] 0.01320228
+
+anova(pCHN.distOnly)
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ log.km + Condition(elev), data = Climate.Data)
+         Df Variance      F Pr(>F)
+Model     1 0.013967 1.2373  0.155
+Residual 16 0.180607     
+
+```
+
+pCHN.elevOnly
+```
+pCHN.elevOnly <- rda(GenData ~elev + Condition(log.km), Climate.Data)
+
+pCHN.elevOnly
+
+Call: rda(formula = GenData ~ elev + Condition(log.km), data =
+Climate.Data)
+
+              Inertia Proportion Rank
+Total         0.21485    1.00000     
+Conditional   0.01962    0.09131    1
+Constrained   0.01463    0.06809    1
+Unconstrained 0.18061    0.84060   16
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1 
+0.014628 
+
+Eigenvalues for unconstrained axes:
+     PC1      PC2      PC3      PC4      PC5      PC6      PC7      PC8 
+0.025321 0.023201 0.017360 0.015786 0.013331 0.011585 0.010067 0.009347 
+     PC9     PC10     PC11     PC12     PC13     PC14     PC15     PC16 
+0.009033 0.008145 0.007880 0.006800 0.006685 0.006050 0.005194 0.004822 
+
+
+
+
+RsquareAdj(pCHN.elevOnly)
+
+$r.squared
+[1] 0.06808528
+
+$adj.r.squared
+[1] 0.01646204
+
+anova(pCHN.elevOnly)
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ elev + Condition(log.km), data = Climate.Data)
+         Df Variance      F Pr(>F)  
+Model     1 0.014628 1.2959  0.077 .
+Residual 16 0.180607                
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+```
+
+
+###### CHS.TI
+```
+library(vegan)
+
+GenData <- CHS.TIData[,15:5706]
+GenData <- decostand(GenData, "hellinger")
+
+Climate.Data <- CHS.TIData$elev
+Climate.Data
+Climate.Data <- as.data.frame(Climate.Data)
+colnames(Climate.Data) <- "elev"
+Climate.Data$log.km <- CHS.TIData$log.km
+Climate.Data <- as.data.frame(Climate.Data)
+class(Climate.Data$log.km) <- "numeric"
+Climate.Data <- as.data.frame(Climate.Data)
+summary(Climate.Data)
+```
+
+CHS.TI Full RDA
+```
+RDA.CHS.TI.dist.elev <- rda(GenData ~ elev + log.km, Climate.Data)
+
+RDA.CHS.TI.dist.elev
+
+Call: rda(formula = GenData ~ elev + log.km, data = Climate.Data)
+
+              Inertia Proportion Rank
+Total         0.28916    1.00000     
+Constrained   0.05668    0.19602    2
+Unconstrained 0.23248    0.80398   11
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+   RDA1    RDA2 
+0.03314 0.02354 
+
+Eigenvalues for unconstrained axes:
+    PC1     PC2     PC3     PC4     PC5     PC6     PC7     PC8     PC9    PC10 
+0.05747 0.03864 0.02596 0.02037 0.01727 0.01603 0.01502 0.01339 0.01149 0.00921 
+   PC11 
+0.00763 
+
+
+
+
+RsquareAdj(RDA.CHS.TI.dist.elev)
+
+$r.squared
+[1] 0.1960223
+
+$adj.r.squared
+[1] 0.04984454
+
+
+anova(RDA.CHS.TI.dist.elev)
+
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ elev + log.km, data = Climate.Data)
+         Df Variance     F Pr(>F)  
+Model     2 0.056681 1.341  0.085 .
+Residual 11 0.232477               
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+```
+
+pCHS.TI.distOnly
+```
+pCHS.TI.distOnly <- rda(GenData ~ log.km + Condition(elev), Climate.Data) 
+
+pCHS.TI.distOnly
+
+Call: rda(formula = GenData ~ log.km + Condition(elev), data =
+Climate.Data)
+
+              Inertia Proportion Rank
+Total         0.28916    1.00000     
+Conditional   0.02835    0.09805    1
+Constrained   0.02833    0.09797    1
+Unconstrained 0.23248    0.80398   11
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+   RDA1 
+0.02833 
+
+Eigenvalues for unconstrained axes:
+    PC1     PC2     PC3     PC4     PC5     PC6     PC7     PC8     PC9    PC10 
+0.05747 0.03864 0.02596 0.02037 0.01727 0.01603 0.01502 0.01339 0.01149 0.00921 
+   PC11 
+0.00763 
+
+
+
+RsquareAdj(pCHS.TI.distOnly)
+
+$r.squared
+[1] 0.09797342
+
+$adj.r.squared
+[1] 0.02695825
+
+anova(pCHS.TI.distOnly)
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ log.km + Condition(elev), data = Climate.Data)
+         Df Variance      F Pr(>F)
+Model     1  0.02833 1.3405  0.144
+Residual 11  0.23248     
+
+```
+
+pCHS.TI.elevOnly
+```
+pCHS.TI.elevOnly <- rda(GenData ~elev + Condition(log.km), Climate.Data)
+
+pCHS.TI.elevOnly
+
+Call: rda(formula = GenData ~ elev + Condition(log.km), data =
+Climate.Data)
+
+              Inertia Proportion Rank
+Total         0.28916    1.00000     
+Conditional   0.03303    0.11422    1
+Constrained   0.02365    0.08181    1
+Unconstrained 0.23248    0.80398   11
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1 
+0.023655 
+
+Eigenvalues for unconstrained axes:
+    PC1     PC2     PC3     PC4     PC5     PC6     PC7     PC8     PC9    PC10 
+0.05747 0.03864 0.02596 0.02037 0.01727 0.01603 0.01502 0.01339 0.01149 0.00921 
+   PC11 
+0.00763 
+
+
+
+
+RsquareAdj(pCHS.TI.elevOnly)
+
+$r.squared
+[1] 0.081806
+
+$adj.r.squared
+[1] 0.009443545
+
+
+anova(pCHS.TI.elevOnly)
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ elev + Condition(log.km), data = Climate.Data)
+         Df Variance      F Pr(>F)
+Model     1 0.023655 1.1193  0.276
+Residual 11 0.232477        
+```
+
+###### CHS.VS
+```
+library(vegan)
+
+GenData <- CHS.VSData[,13:5847]
+GenData <- decostand(GenData, "hellinger")
+
+Climate.Data <- CHS.VSData$elev
+Climate.Data
+Climate.Data <- as.data.frame(Climate.Data)
+colnames(Climate.Data) <- "elev"
+Climate.Data$log.km <- CHS.VSData$log.km
+Climate.Data <- as.data.frame(Climate.Data)
+class(Climate.Data$log.km) <- "numeric"
+Climate.Data <- as.data.frame(Climate.Data)
+summary(Climate.Data)
+```
+
+CHS.VS Full RDA
+```
+RDA.CHS.VS.dist.elev <- rda(GenData ~ elev + log.km, Climate.Data)
+
+RDA.CHS.VS.dist.elev
+
+Call: rda(formula = GenData ~ elev + log.km, data = Climate.Data)
+
+              Inertia Proportion Rank
+Total         0.21582    1.00000     
+Constrained   0.05477    0.25379    2
+Unconstrained 0.16105    0.74621    7
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1     RDA2 
+0.029482 0.025292 
+
+Eigenvalues for unconstrained axes:
+    PC1     PC2     PC3     PC4     PC5     PC6     PC7 
+0.04447 0.02786 0.02539 0.02101 0.01720 0.01417 0.01095 
+
+
+RsquareAdj(RDA.CHS.VS.dist.elev)
+
+$r.squared
+[1] 0.2537949
+
+$adj.r.squared
+[1] 0.0405935
+
+anova(RDA.CHS.VS.dist.elev)
+
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ elev + log.km, data = Climate.Data)
+         Df Variance      F Pr(>F)
+Model     2 0.054774 1.1904  0.171
+Residual  7 0.161045               
+
+```
+
+pCHS.VS.distOnly
+```
+pCHS.VS.distOnly <- rda(GenData ~ log.km + Condition(elev), Climate.Data) 
+
+pCHS.VS.distOnly
+
+Call: rda(formula = GenData ~ log.km + Condition(elev), data =
+Climate.Data)
+
+              Inertia Proportion Rank
+Total         0.21582    1.00000     
+Conditional   0.02737    0.12684    1
+Constrained   0.02740    0.12696    1
+Unconstrained 0.16105    0.74621    7
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+  RDA1 
+0.0274 
+
+Eigenvalues for unconstrained axes:
+    PC1     PC2     PC3     PC4     PC5     PC6     PC7 
+0.04447 0.02786 0.02539 0.02101 0.01720 0.01417 0.01095 
+
+
+
+RsquareAdj(pCHS.VS.distOnly)
+
+$r.squared
+[1] 0.1269586
+
+$adj.r.squared
+[1] 0.02290261
+
+anova(pCHS.VS.distOnly)
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ log.km + Condition(elev), data = Climate.Data)
+         Df Variance     F Pr(>F)
+Model     1  0.02740 1.191  0.248
+Residual  7  0.16104     
+
+```
+
+pCHS.VS.elevOnly
+```
+pCHS.VS.elevOnly <- rda(GenData ~elev + Condition(log.km), Climate.Data)
+
+pCHS.VS.elevOnly
+
+Call: rda(formula = GenData ~ elev + Condition(log.km), data =
+Climate.Data)
+
+              Inertia Proportion Rank
+Total         0.21582    1.00000     
+Conditional   0.02581    0.11959    1
+Constrained   0.02896    0.13421    1
+Unconstrained 0.16105    0.74621    7
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1 
+0.028965 
+
+Eigenvalues for unconstrained axes:
+    PC1     PC2     PC3     PC4     PC5     PC6     PC7 
+0.04447 0.02786 0.02539 0.02101 0.01720 0.01417 0.01095 
+
+
+
+
+RsquareAdj(pCHS.VS.elevOnly)
+
+$r.squared
+[1] 0.1342098
+
+$adj.r.squared
+[1] 0.03106016
+
+
+anova(pCHS.VS.elevOnly)
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ elev + Condition(log.km), data = Climate.Data)
+         Df Variance     F Pr(>F)
+Model     1 0.028965 1.259  0.178
+Residual  7 0.161045     
+```
+
+
+###### CZ
+```
+library(vegan)
+
+GenData <- CZData[,18:7305]
+GenData <- decostand(GenData, "hellinger")
+
+Climate.Data <- CZData$elev
+Climate.Data
+Climate.Data <- as.data.frame(Climate.Data)
+colnames(Climate.Data) <- "elev"
+Climate.Data$log.km <- CZData$log.km
+Climate.Data <- as.data.frame(Climate.Data)
+class(Climate.Data$log.km) <- "numeric"
+Climate.Data <- as.data.frame(Climate.Data)
+summary(Climate.Data)
+```
+
+CZ Full RDA
+```
+RDA.CZ.dist.elev <- rda(GenData ~ elev + log.km, Climate.Data)
+
+RDA.CZ.dist.elev
+
+Call: rda(formula = GenData ~ elev + log.km, data = Climate.Data)
+
+              Inertia Proportion Rank
+Total         0.25682    1.00000     
+Constrained   0.03628    0.14128    2
+Unconstrained 0.22053    0.85872   34
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1     RDA2 
+0.028764 0.007520 
+
+Eigenvalues for unconstrained axes:
+    PC1     PC2     PC3     PC4     PC5     PC6     PC7     PC8 
+0.04093 0.01756 0.01277 0.01100 0.01034 0.00823 0.00777 0.00719 
+(Showed only 8 of all 34 unconstrained eigenvalues)
+
+
+
+RsquareAdj(RDA.CZ.dist.elev)
+
+$r.squared
+[1] 0.1412819
+
+$adj.r.squared
+[1] 0.09076911
+
+anova(RDA.CZ.dist.elev)
+
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ elev + log.km, data = Climate.Data)
+         Df Variance     F Pr(>F)    
+Model     2 0.036284 2.797  0.001 ***
+Residual 34 0.220534                 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+```
+
+pCZ.distOnly
+```
+pCZ.distOnly <- rda(GenData ~ log.km + Condition(elev), Climate.Data) 
+
+pCZ.distOnly
+
+Call: rda(formula = GenData ~ log.km + Condition(elev), data =
+Climate.Data)
+
+              Inertia Proportion Rank
+Total         0.25682    1.00000     
+Conditional   0.01903    0.07411    1
+Constrained   0.01725    0.06717    1
+Unconstrained 0.22053    0.85872   34
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1 
+0.017251 
+
+Eigenvalues for unconstrained axes:
+    PC1     PC2     PC3     PC4     PC5     PC6     PC7     PC8 
+0.04093 0.01756 0.01277 0.01100 0.01034 0.00823 0.00777 0.00719 
+(Showed only 8 of all 34 unconstrained eigenvalues)
+
+RsquareAdj(pCZ.distOnly)
+
+$r.squared
+[1] 0.06717223
+
+$adj.r.squared
+[1] 0.04311341
+
+anova(pCZ.distOnly)
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ log.km + Condition(elev), data = Climate.Data)
+         Df Variance      F Pr(>F)   
+Model     1 0.017251 2.6596  0.002 **
+Residual 34 0.220534                 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+```
+
+pCZ.elevOnly
+```
+pCZ.elevOnly <- rda(GenData ~elev + Condition(log.km), Climate.Data)
+
+pCZ.elevOnly
+
+Call: rda(formula = GenData ~ elev + Condition(log.km), data =
+Climate.Data)
+
+               Inertia Proportion Rank
+Total         0.256818   1.000000     
+Conditional   0.026948   0.104930    1
+Constrained   0.009336   0.036352    1
+Unconstrained 0.220534   0.858718   34
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1 
+0.009336 
+
+Eigenvalues for unconstrained axes:
+    PC1     PC2     PC3     PC4     PC5     PC6     PC7     PC8 
+0.04093 0.01756 0.01277 0.01100 0.01034 0.00823 0.00777 0.00719 
+(Showed only 8 of all 34 unconstrained eigenvalues)
+
+
+
+
+RsquareAdj(pCZ.elevOnly)
+
+$r.squared
+[1] 0.03635195
+
+$adj.r.squared
+[1] 0.01141255
+
+
+anova(pCZ.elevOnly)
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = GenData ~ elev + Condition(log.km), data = Climate.Data)
+         Df Variance      F Pr(>F)  
+Model     1 0.009336 1.4393   0.06 .
+Residual 34 0.220534                
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 ```
 
