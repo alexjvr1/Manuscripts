@@ -30,6 +30,15 @@ I'm comparing results from RAD and mtDNA for all analyses to get an impression o
 compare mtDNA vs RAD (contemporary vs historic geneflow)
 
 
+### 3. Fst across elevation 
+
+Isolation by elevation: 
+
+Comparison vs distance
+ 
+Comparison between mtDNA and RAD data
+
+
 ## Analyses
 
 One of the measures of diversity is estimated populations size (Ne). I'll compare this to the estimated census size based on nr of 
@@ -1507,6 +1516,279 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 
 
 
+
+## 3. Isolation by Dist vs Isolation by Elev
+
+Within a transect. Is Fst higher across elevation than across distance? 
+
+IBD has previously been calculated using the RAD data
+
+I'll have to add in all the mtDNA data later... 
+
+
+## Isolation by Elevation
+
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/Dataset1_forPCA/summstats
+
+CHN
+```
+library(reshape2)
+CHall.elev <- read.table("CHall.82pops.coords.elev", header=T)
+
+
+CHN.elev <- subset(CHall.elev, region=="CHN",)
+CHN.elevonly <- CHN.elev$elev
+CHN.elev.dist <- dist(CHN.elevonly, method="euclidean")
+
+m.CHN.elev <- as.matrix(CHN.elev.dist)
+m2.CHN.elev <- melt(m.CHN.elev)[melt(upper.tri(m.CHN.elev))$value,]
+colnames(m2.CHN.elev) <- c("site1", "site2", "elev")
+m2.CHN.elev$log.elev <- log(m2.CHN.elev$value)
+
+pdf("CHN.Isol.Elev")
+plot(m2.CHN$IBD~m2.CHN.elev$log.elev, pch=20, cex=0.5, xlab="elevation (m)", ylab="Fst/(1-Fst)", ylim=c(0,0.6))
+abline(fit <- lm(m2.CHN$IBD~m2.CHN.elev$log.elev))
+legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.squared, digits=4)))  ##and paste R2
+title("Isolation by elevation plot - CHN")
+dev.off()
+
+##test significance
+fit <- lm(m2.CHN$IBD~m2.CHN.elev$log.elev)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CHN$IBD
+                      Df   Sum Sq   Mean Sq F value    Pr(>F)    
+m2.CHN.elev$log.elev   1 0.005876 0.0058756   13.21 0.0003692 ***
+Residuals            169 0.075168 0.0004448                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+```
+
+
+## Isolation by Elevation
+
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/Dataset1_forPCA/summstats
+
+CHS.VS
+```
+CHS.VS.elev <- subset(CHall.elev, region=="CHS.VS",)
+CHS.VS.elev <- CHS.VS.elev[-9,]  ##remove oalp from analysis
+
+CHS.VS.elevonly <- CHS.VS.elev$elev
+CHS.VS.elev.dist <- dist(CHS.VS.elevonly, method="euclidean")
+
+m.CHS.VS.elev <- as.matrix(CHS.VS.elev.dist)
+m2.CHS.VS.elev <- melt(m.CHS.VS.elev)[melt(upper.tri(m.CHS.VS.elev))$value,]
+colnames(m2.CHS.VS.elev) <- c("site1", "site2", "elev")
+m2.CHS.VS.elev$log.elev <- log(m2.CHS.VS.elev$elev)
+
+pdf("CHS.VS.Isol.Elev")
+plot(m2.CHS.VS$IBD~m2.CHS.VS.elev$log.elev, pch=20, cex=0.5, xlab="elevation (m)", ylab="Fst/(1-Fst)", ylim=c(0,0.6))
+abline(fit <- lm(m2.CHS.VS$IBD~m2.CHS.VS.elev$log.elev))
+legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.squared, digits=4)))  ##and paste R2
+title("Isolation by elevation plot - CHS.VS")
+dev.off()
+
+
+##test significance
+fit <- lm(m2.CHS.VS$IBD~m2.CHS.VS.elev$log.elev)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CHS.VS$IBD
+                        Df   Sum Sq    Mean Sq F value Pr(>F)
+m2.CHS.VS.elev$log.elev  1 0.000051 0.00005118  0.0679 0.7956
+Residuals               43 0.032399 0.00075347 
+
+```
+
+
+CZ
+```
+CZ.elev <- subset(CHall.elev, region=="CZ",)
+
+#one of the values (wise vs egel) = -Inf because these sites are at exactly the same elevation. 
+I’m changing the elevation of egel to 446
+
+CZ.elev.2$elev[CZ.elev.2$site=="egel" & CZ.elev.2$elev==445] <- 446
+
+
+CZ.elevonly <- CZ.elev.2$elev
+CZ.elev.dist <- dist(CZ.elevonly, method="euclidean")
+
+m.CZ.elev <- as.matrix(CZ.elev.dist)
+m2.CZ.elev <- melt(m.CZ.elev)[melt(upper.tri(m.CZ.elev))$value,]
+colnames(m2.CZ.elev) <- c("site1", "site2", "elev")
+m2.CZ.elev$log.elev <- log(m2.CZ.elev$elev)
+
+
+pdf("CZ.Isol.Elev")
+plot(m2.CZ$IBD~m2.CZ.elev$log.elev, pch=20, cex=0.5, xlab="elevation (m)", ylab="Fst/(1-Fst)", ylim=c(0,0.6))
+abline(fit <- lm(m2.CZ$IBD~m2.CZ.elev$log.elev))
+legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.squared, digits=4)))  ##and paste R2
+title("Isolation by elevation plot - CZ")
+dev.off()
+
+
+And test the significance
+fit <- lm(m2.CZ$IBD~m2.CZ.elev$log.elev)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CZ$IBD
+                     Df  Sum Sq   Mean Sq F value   Pr(>F)   
+m2.CZ.elev$log.elev   1 0.03005 0.0300522  8.8367 0.003059 **
+Residuals           664 2.25816 0.0034008                    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+```
+
+
+CHS.TI
+```
+##I had to remove oalp from the genind object and recalculate the Fst
+library(hierfstat)
+
+obj <- seppop(CHall.L3$CHS.TI)
+
+CHS.TI.genind.oalpremoved <- repool(obj$agra, obj$arce, obj$cava, obj$forn, obj$gola, obj$gott, obj$lucm, obj$magn, obj$mart, obj$pozz, obj$sali, obj$scai, obj$star, obj$stba, obj$zeni)
+
+CHS.TI.elev.fst <- pairwise.fst(CHS.TI.genind.oalpremoved, pop=NULL, res.type=c("dist", "matrix"))
+
+
+m.CHS.TI.fst.elev <- as.matrix(CHS.TI.elev.fst)
+m2.CHS.TI.fst.elev <- melt(m.CHS.TI.fst.elev)[melt(upper.tri(m.CHS.TI.fst.elev))$value,]
+names(m2.CHS.TI.fst.elev) <- c("c1", "c2", "distance")
+m2.CHS.TI.fst.elev$IBD <- (m2.CHS.TI.fst.elev$distance/(1-m2.CHS.TI.fst.elev$distance))
+
+
+
+CHS.TI.elev <- subset(CHall.elev, region=="CHS.TI",)
+
+CHS.TI.elevonly <- CHS.TI.elev$elev
+CHS.TI.elev.dist <- dist(CHS.TI.elevonly, method="euclidean")
+
+m.CHS.TI.elev <- as.matrix(CHS.TI.elev.dist)
+m2.CHS.TI.elev <- melt(m.CHS.TI.elev)[melt(upper.tri(m.CHS.TI.elev))$value,]
+colnames(m2.CHS.TI.elev) <- c("site1", "site2", "elev")
+m2.CHS.TI.elev$log.elev <- log(m2.CHS.TI.elev$elev)
+
+pdf("CHS.TI.Isol.Elev")
+plot(m2.CHS.TI.fst.elev$IBD~m2.CHS.TI.elev$log.elev, pch=20, cex=0.5, xlab="elevation (m)", ylab="Fst/(1-Fst)", ylim=c(0,0.6))
+abline(fit <- lm(m2.CHS.TI.fst.elev$IBD~m2.CHS.TI.elev$log.elev))
+legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.squared, digits=4)))  ##and paste R2
+title("Isolation by elevation plot - CHS.TI")
+dev.off()
+
+##test significance
+
+fit <- lm(m2.CHS.TI.fst.elev$IBD~m2.CHS.TI.elev$log.elev)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CHS.TI.fst.elev$IBD
+                         Df   Sum Sq    Mean Sq F value Pr(>F)
+m2.CHS.TI.elev$log.elev   1 0.000008 0.00000844  0.0075  0.931
+Residuals               103 0.115268 0.00111910  
+
+```
+
+
+### Check significance of IBD calculated previously
+
+https://github.com/alexjvr1/Manuscripts/blob/19f7dd1845d4fa852e6d729f0ee456e274b0182c/5.CHP2_CH_LandscapeGenomics.md
+
+```
+##significance of IBD
+
+#CHall
+fit <- lm(m2.CHall$IBD~CHall.m2.dist$log.km)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CHall$IBD
+                       Df Sum Sq Mean Sq F value    Pr(>F)    
+CHall.m2.dist$log.km    1  4.079  4.0789  404.96 < 2.2e-16 ***
+Residuals            3319 33.430  0.0101                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+#CHN
+fit <- lm(m2.CHN$IBD~CHN.m2.dist$log.km)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CHN$IBD
+                    Df   Sum Sq   Mean Sq F value   Pr(>F)    
+CHN.m2.dist$log.km   1 0.010874 0.0108743   26.19 8.34e-07 ***
+Residuals          169 0.070170 0.0004152                     
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+#CHS
+fit <- lm(m2.CHS$IBD~CHS.m2.dist$log.km)
+anova(fit)
+Analysis of Variance Table
+
+Response: m2.CHS$IBD
+                    Df  Sum Sq  Mean Sq F value    Pr(>F)    
+CHS.m2.dist$log.km   1 0.10629 0.106290   115.3 < 2.2e-16 ***
+Residuals          323 0.29777 0.000922                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+#CHS.VS
+fit <- lm(m2.CHS.VS$IBD~CHS.VS.m2.dist$log.km)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CHS.VS$IBD
+                      Df    Sum Sq    Mean Sq F value Pr(>F)
+CHS.VS.m2.dist$log.km  1 0.0019346 0.00193458   2.726  0.106
+Residuals             43 0.0305158 0.00070967     
+
+#CHS.TI
+fit <- lm(m2.CHS.TI$IBD~CHS.TI.m2.dist$log.km)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CHS.TI$IBD
+                       Df   Sum Sq   Mean Sq F value    Pr(>F)    
+CHS.TI.m2.dist$log.km   1 0.013235 0.0132350  12.242 0.0006597 ***
+Residuals             118 0.127566 0.0010811                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+#CZ
+fit <- lm(m2.CZ$IBD~CZ.m2.dist$log.km)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CZ$IBD
+                   Df  Sum Sq Mean Sq F value    Pr(>F)    
+CZ.m2.dist$log.km   1 0.69433 0.69433  289.25 < 2.2e-16 ***
+Residuals         664 1.59388 0.00240                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+
+
+```
+
 define multiplot
 ```
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
@@ -1545,3 +1827,6 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
   }
 }
 ```
+
+
+
