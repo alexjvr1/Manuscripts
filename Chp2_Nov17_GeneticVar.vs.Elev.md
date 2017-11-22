@@ -1784,10 +1784,344 @@ Residuals         664 1.59388 0.00240
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-
-
-
 ```
+
+
+#### mtDNA IBD vs IBelevation
+
+
+## Isolation by Elevation mtDNA
+
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/Dataset1_forPCA/summstats
+
+
+CHN
+```
+library(reshape2)
+library(fields)
+
+Fst.info <- read.table("Fst.data", header=T)
+
+##geog dist
+CHN.mtDNA.elev <- subset(Fst.info, Region=="CHN",)
+CHN.mtDNA_lon.lat <- cbind(CHN.mtDNA.elev$Long, CHN.mtDNA.elev$Lat)
+CHN.mtDNA.distance.matrix <- rdist.earth(CHN.mtDNA_lon.lat, miles=F)
+CHN.mtDNA.m.dist <- as.matrix(CHN.mtDNA.distance.matrix)
+
+CHN.mtDNA.m2.dist <- melt(CHN.mtDNA.m.dist)[melt(upper.tri(CHN.mtDNA.m.dist))$value,]
+names(CHN.mtDNA.m2.dist) <- c("c1", "c2", "distance")
+CHN.mtDNA.m2.dist$log.km <- log(CHN.mtDNA.m2.dist$distance)
+
+
+
+##elev dist
+CHN.mtDNA.elev <- subset(Fst.info, Region=="CHN",)
+CHN.mtDNA.elevonly <- CHN.mtDNA.elev$Elev
+CHN.mtDNA.elev.dist <- dist(CHN.mtDNA.elevonly, method="euclidean")
+
+m.CHN.mtDNA.elev <- as.matrix(CHN.mtDNA.elev.dist)
+m2.CHN.mtDNA.elev <- melt(m.CHN.mtDNA.elev)[melt(upper.tri(m.CHN.mtDNA.elev))$value,]
+colnames(m2.CHN.mtDNA.elev) <- c("site1", "site2", "elev")
+m2.CHN.mtDNA.elev$log.elev <- log(m2.CHN.mtDNA.elev$elev)
+
+
+##PhiSt
+CHN.phiST <- read.table("CHN.phiST", header=T)
+CHN.phiST <- as.matrix(CHN.phiST)
+CHN.mtDNA.names <- colnames(CHN.phiST)
+
+m2.CHN.mtDNA.phist <- melt(CHN.phiST)[melt(lower.tri(CHN.phiST))$value,]
+names(m2.CHN.mtDNA.phist) <- c("c1", "c2", "distance")
+m2.CHN.mtDNA.phist$IBD <- (m2.CHN.mtDNA.phist$distance/(1-m2.CHN.mtDNA.phist$distance))
+
+
+##IBD
+pdf("CHN.mtDNA.IBD.pdf")
+plot(m2.CHN.mtDNA.phist$IBD~CHN.mtDNA.m2.dist$log.km, pch=20, cex=0.5, xlab="distance (km)", ylab="Fst/(1-Fst)")
+abline(fit <- lm(m2.CHN.mtDNA.phist$IBD~CHN.mtDNA.m2.dist$log.km))
+legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.squared, digits=4)))  ##and paste R2
+title("Isolation by distance (mtDNA) plot - CHN")
+dev.off()
+
+##test significance IBD
+fit <- lm(m2.CHN.mtDNA.phist$IBD~CHN.mtDNA.m2.dist$log.km)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CHN.mtDNA.phist$IBD
+                          Df  Sum Sq   Mean Sq F value Pr(>F)
+CHN.mtDNA.m2.dist$log.km   1 0.00017 0.0001671  0.0129 0.9097
+Residuals                103 1.33029 0.0129154 
+
+
+
+##IB Elevation
+pdf("CHN.mtDNA.Isol.Elev.pdf")
+plot(m2.CHN.mtDNA.phist$IBD~m2.CHN.mtDNA.elev$log.elev, pch=20, cex=0.5, xlab="elevation (m)", ylab="Fst/(1-Fst)")
+abline(fit <- lm(m2.CHN.mtDNA.phist$IBD~m2.CHN.mtDNA.elev$log.elev))
+legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.squared, digits=4)))  ##and paste R2
+title("Isolation by elevation (mtDNA) plot - CHN")
+dev.off()
+
+
+##test significance IBelev
+fit <- lm(m2.CHN.mtDNA.phist$IBD~m2.CHN.mtDNA.elev$log.elev)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CHN.mtDNA.phist$IBD
+                            Df  Sum Sq  Mean Sq F value Pr(>F)
+m2.CHN.mtDNA.elev$log.elev   1 0.00396 0.003959  0.3074 0.5805
+Residuals                  103 1.32650 0.012879
+```
+
+
+
+CHS.TI
+```
+##geog dist
+CHS.TI.mtDNA.elev <- subset(Fst.info, Region=="CHS.TI",)
+CHS.TI.mtDNA_lon.lat <- cbind(CHS.TI.mtDNA.elev$Long, CHS.TI.mtDNA.elev$Lat)
+CHS.TI.mtDNA.distance.matrix <- rdist.earth(CHS.TI.mtDNA_lon.lat, miles=F)
+CHS.TI.mtDNA.m.dist <- as.matrix(CHS.TI.mtDNA.distance.matrix)
+
+CHS.TI.mtDNA.m2.dist <- melt(CHS.TI.mtDNA.m.dist)[melt(upper.tri(CHS.TI.mtDNA.m.dist))$value,]
+names(CHS.TI.mtDNA.m2.dist) <- c("c1", "c2", "distance")
+CHS.TI.mtDNA.m2.dist$log.km <- log(CHS.TI.mtDNA.m2.dist$distance)
+
+
+
+##elev dist
+CHS.TI.mtDNA.elev <- subset(Fst.info, Region=="CHS.TI",)
+CHS.TI.mtDNA.elevonly <- CHS.TI.mtDNA.elev$Elev
+CHS.TI.mtDNA.elev.dist <- dist(CHS.TI.mtDNA.elevonly, method="euclidean")
+
+m.CHS.TI.mtDNA.elev <- as.matrix(CHS.TI.mtDNA.elev.dist)
+m2.CHS.TI.mtDNA.elev <- melt(m.CHS.TI.mtDNA.elev)[melt(upper.tri(m.CHS.TI.mtDNA.elev))$value,]
+colnames(m2.CHS.TI.mtDNA.elev) <- c("site1", "site2", "elev")
+m2.CHS.TI.mtDNA.elev$log.elev <- log(m2.CHS.TI.mtDNA.elev$elev)
+
+
+##PhiSt
+CHS.TI.phiST <- read.table("CHS.TI.phiST", header=T)
+CHS.TI.phiST <- as.matrix(CHS.TI.phiST)
+CHS.TI.mtDNA.names <- colnames(CHS.TI.phiST)
+
+m2.CHS.TI.mtDNA.phist <- melt(CHS.TI.phiST)[melt(lower.tri(CHS.TI.phiST))$value,]
+names(m2.CHS.TI.mtDNA.phist) <- c("c1", "c2", "distance")
+m2.CHS.TI.mtDNA.phist$IBD <- (m2.CHS.TI.mtDNA.phist$distance/(1-m2.CHS.TI.mtDNA.phist$distance))
+
+
+##IBD
+pdf("CHS.TI.mtDNA.IBD.pdf")
+plot(m2.CHS.TI.mtDNA.phist$IBD~CHS.TI.mtDNA.m2.dist$log.km, pch=20, cex=0.5, xlab="distance (km)", ylab="Fst/(1-Fst)")
+abline(fit <- lm(m2.CHS.TI.mtDNA.phist$IBD~CHS.TI.mtDNA.m2.dist$log.km))
+legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.squared, digits=4)))  ##and paste R2
+title("Isolation by distance (mtDNA) plot - CHS.TI")
+dev.off()
+
+##test significance IBD
+fit <- lm(m2.CHS.TI.mtDNA.phist$IBD~CHS.TI.mtDNA.m2.dist$log.km)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CHS.TI.mtDNA.phist$IBD
+                            Df  Sum Sq Mean Sq F value Pr(>F)
+CHS.TI.mtDNA.m2.dist$log.km  1   0.104 0.10429   0.076 0.7835
+Residuals                   89 122.206 1.37310
+
+
+
+##IB Elevation
+pdf("CHS.TI.mtDNA.Isol.Elev.pdf")
+plot(m2.CHS.TI.mtDNA.phist$IBD~m2.CHS.TI.mtDNA.elev$log.elev, pch=20, cex=0.5, xlab="elevation (m)", ylab="Fst/(1-Fst)")
+abline(fit <- lm(m2.CHS.TI.mtDNA.phist$IBD~m2.CHS.TI.mtDNA.elev$log.elev))
+legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.squared, digits=4)))  ##and paste R2
+title("Isolation by elevation (mtDNA) plot - CHS.TI")
+dev.off()
+
+
+##test significance IBelev
+fit <- lm(m2.CHS.TI.mtDNA.phist$IBD~m2.CHS.TI.mtDNA.elev$log.elev)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CHS.TI.mtDNA.phist$IBD
+                              Df  Sum Sq Mean Sq F value Pr(>F)
+m2.CHS.TI.mtDNA.elev$log.elev  1   0.179 0.17859  0.1301 0.7191
+Residuals                     89 122.132 1.37227    
+```
+
+CHS.VS
+```
+##geog dist
+CHS.VS.mtDNA.elev <- subset(Fst.info, Region=="CHS.VS",)
+CHS.VS.mtDNA_lon.lat <- cbind(CHS.VS.mtDNA.elev$Long, CHS.VS.mtDNA.elev$Lat)
+CHS.VS.mtDNA.distance.matrix <- rdist.earth(CHS.VS.mtDNA_lon.lat, miles=F)
+CHS.VS.mtDNA.m.dist <- as.matrix(CHS.VS.mtDNA.distance.matrix)
+
+CHS.VS.mtDNA.m2.dist <- melt(CHS.VS.mtDNA.m.dist)[melt(upper.tri(CHS.VS.mtDNA.m.dist))$value,]
+names(CHS.VS.mtDNA.m2.dist) <- c("c1", "c2", "distance")
+CHS.VS.mtDNA.m2.dist$log.km <- log(CHS.VS.mtDNA.m2.dist$distance)
+
+
+
+##elev dist
+CHS.VS.mtDNA.elev <- subset(Fst.info, Region=="CHS.VS",)
+CHS.VS.mtDNA.elevonly <- CHS.VS.mtDNA.elev$Elev
+CHS.VS.mtDNA.elev.dist <- dist(CHS.VS.mtDNA.elevonly, method="euclidean")
+
+m.CHS.VS.mtDNA.elev <- as.matrix(CHS.VS.mtDNA.elev.dist)
+m2.CHS.VS.mtDNA.elev <- melt(m.CHS.VS.mtDNA.elev)[melt(upper.tri(m.CHS.VS.mtDNA.elev))$value,]
+colnames(m2.CHS.VS.mtDNA.elev) <- c("site1", "site2", "elev")
+m2.CHS.VS.mtDNA.elev$log.elev <- log(m2.CHS.VS.mtDNA.elev$elev)
+
+
+##PhiSt
+CHS.VS.phiST <- read.table("CHS.VS.phiST", header=T)
+CHS.VS.phiST <- as.matrix(CHS.VS.phiST)
+CHS.VS.mtDNA.names <- colnames(CHS.VS.phiST)
+
+m2.CHS.VS.mtDNA.phist <- melt(CHS.VS.phiST)[melt(lower.tri(CHS.VS.phiST))$value,]
+names(m2.CHS.VS.mtDNA.phist) <- c("c1", "c2", "distance")
+m2.CHS.VS.mtDNA.phist$IBD <- (m2.CHS.VS.mtDNA.phist$distance/(1-m2.CHS.VS.mtDNA.phist$distance))
+
+
+##IBD
+pdf("CHS.VS.mtDNA.IBD.pdf")
+plot(m2.CHS.VS.mtDNA.phist$IBD~CHS.VS.mtDNA.m2.dist$log.km, pch=20, cex=0.5, xlab="distance (km)", ylab="Fst/(1-Fst)")
+abline(fit <- lm(m2.CHS.VS.mtDNA.phist$IBD~CHS.VS.mtDNA.m2.dist$log.km))
+legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.squared, digits=4)))  ##and paste R2
+title("Isolation by distance (mtDNA) plot - CHS.VS")
+dev.off()
+
+##test significance IBD
+fit <- lm(m2.CHS.VS.mtDNA.phist$IBD~CHS.VS.mtDNA.m2.dist$log.km)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CHS.VS.mtDNA.phist$IBD
+                            Df     Sum Sq    Mean Sq F value Pr(>F)
+CHS.VS.mtDNA.m2.dist$log.km  1 1.1277e+10 1.1277e+10  0.1192 0.7337
+Residuals                   19 1.7982e+12 9.4644e+10  
+
+
+
+##IB Elevation
+pdf("CHS.VS.mtDNA.Isol.Elev.pdf")
+plot(m2.CHS.VS.mtDNA.phist$IBD~m2.CHS.VS.mtDNA.elev$log.elev, pch=20, cex=0.5, xlab="elevation (m)", ylab="Fst/(1-Fst)")
+abline(fit <- lm(m2.CHS.VS.mtDNA.phist$IBD~m2.CHS.VS.mtDNA.elev$log.elev))
+legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.squared, digits=4)))  ##and paste R2
+title("Isolation by elevation (mtDNA) plot - CHS.VS")
+dev.off()
+
+
+##test significance IBelev
+fit <- lm(m2.CHS.VS.mtDNA.phist$IBD~m2.CHS.VS.mtDNA.elev$log.elev)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CHS.VS.mtDNA.phist$IBD
+                              Df     Sum Sq    Mean Sq F value Pr(>F)
+m2.CHS.VS.mtDNA.elev$log.elev  1 9.8464e+09 9.8464e+09   0.104 0.7507
+Residuals                     19 1.7997e+12 9.4720e+10      
+```
+
+
+CZ
+```
+##geog dist
+CZ.mtDNA.elev <- subset(Fst.info, Region=="CZ",)
+CZ.mtDNA_lon.lat <- cbind(CZ.mtDNA.elev$Long, CZ.mtDNA.elev$Lat)
+CZ.mtDNA.distance.matrix <- rdist.earth(CZ.mtDNA_lon.lat, miles=F)
+CZ.mtDNA.m.dist <- as.matrix(CZ.mtDNA.distance.matrix)
+
+CZ.mtDNA.m2.dist <- melt(CZ.mtDNA.m.dist)[melt(upper.tri(CZ.mtDNA.m.dist))$value,]
+names(CZ.mtDNA.m2.dist) <- c("c1", "c2", "distance")
+CZ.mtDNA.m2.dist$log.km <- log(CZ.mtDNA.m2.dist$distance)
+
+
+
+##elev dist
+
+CZ.mtDNA.elev <- subset(Fst.info, Region=="CZ",)
+CZ.mtDNA.elevonly <- CZ.mtDNA.elev$Elev
+CZ.mtDNA.elev.dist <- dist(CZ.mtDNA.elevonly, method="euclidean")
+
+m.CZ.mtDNA.elev <- as.matrix(CZ.mtDNA.elev.dist)
+m2.CZ.mtDNA.elev <- melt(m.CZ.mtDNA.elev)[melt(upper.tri(m.CZ.mtDNA.elev))$value,]
+colnames(m2.CZ.mtDNA.elev) <- c("site1", "site2", "elev")
+m2.CZ.mtDNA.elev$log.elev <- log(m2.CZ.mtDNA.elev$elev)
+
+
+##PhiSt
+CZ.phiST <- read.table("CZ.phiST", header=T)
+CZ.phiST <- as.matrix(CZ.phiST)
+CZ.mtDNA.names <- colnames(CZ.phiST)
+
+m2.CZ.mtDNA.phist <- melt(CZ.phiST)[melt(lower.tri(CZ.phiST))$value,]
+names(m2.CZ.mtDNA.phist) <- c("c1", "c2", "distance")
+m2.CZ.mtDNA.phist$IBD <- (m2.CZ.mtDNA.phist$distance/(1-m2.CZ.mtDNA.phist$distance))
+
+
+##IBD
+pdf("CZ.mtDNA.IBD.pdf")
+plot(m2.CZ.mtDNA.phist$IBD~CZ.mtDNA.m2.dist$log.km, pch=20, cex=0.5, xlab="distance (km)", ylab="Fst/(1-Fst)")
+abline(fit <- lm(m2.CZ.mtDNA.phist$IBD~CZ.mtDNA.m2.dist$log.km))
+legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.squared, digits=4)))  ##and paste R2
+title("Isolation by distance (mtDNA) plot - CZ")
+dev.off()
+
+##test significance IBD
+fit <- lm(m2.CZ.mtDNA.phist$IBD~CZ.mtDNA.m2.dist$log.km)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CZ.mtDNA.phist$IBD
+                         Df     Sum Sq    Mean Sq F value Pr(>F)
+CZ.mtDNA.m2.dist$log.km   1 5.7630e+10 5.7630e+10  0.9666 0.3262
+Residuals               376 2.2418e+13 5.9624e+10     
+
+
+
+##IB Elevation
+pdf("CZ.mtDNA.Isol.Elev.pdf")
+plot(m2.CZ.mtDNA.phist$IBD~m2.CZ.mtDNA.elev$log.elev, pch=20, cex=0.5, xlab="elevation (m)", ylab="Fst/(1-Fst)")
+abline(fit <- lm(m2.CZ.mtDNA.phist$IBD~m2.CZ.mtDNA.elev$log.elev))
+legend("bottomright", bty="n", legend=paste("R2 =", format(summary(fit)$adj.r.squared, digits=4)))  ##and paste R2
+title("Isolation by elevation (mtDNA) plot - CZ")
+dev.off()
+
+
+##test significance IBelev
+fit <- lm(m2.CZ.mtDNA.phist$IBD~m2.CZ.mtDNA.elev$log.elev)
+anova(fit)
+
+Analysis of Variance Table
+
+Response: m2.CZ.mtDNA.phist$IBD
+                           Df     Sum Sq    Mean Sq F value Pr(>F)
+m2.CZ.mtDNA.elev$log.elev   1 8.1185e+09 8.1185e+09  0.1359 0.7126
+Residuals                 376 2.2468e+13 5.9755e+10  
+```
+
+
+
+
+
+
+
+
+
+
+
 
 define multiplot
 ```
