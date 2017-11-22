@@ -1512,7 +1512,634 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 #### mtDNA
 
 
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/subsets/GeneticVar.vs.Elev
 
+
+HD input files have been prepared before: 
+
+R: mtDNA.data$Hd
+
+I have to add elevation and geographic distance. Since I want to understand how genetic diversity is distributed up elevation, I will measure all distances from the lowest elevation population
+
+CHN: berm
+CHS.VS: grma
+CHS.TI: mart
+CZ: kebe
+
+
+CHN
+```
+library(fields)
+library(reshape2)
+
+CHNData <- subset(mtDNA.data, Region=="CHN",)
+CHN_long.lat <- cbind(CHNData$Long, CHNData$Lat)
+
+CHN.dist.matrix <- rdist.earth(CHN_long.lat, miles=F)
+CHN.m.dist <- as.matrix(CHN.dist.matrix)
+
+colnames(CHN.m.dist) <- (CHNData$Pop)
+rownames(CHN.m.dist) <- (CHNData$Pop)
+
+head(CHN.m.dist)
+CHN.m2.dist <- melt(CHN.m.dist)[melt(upper.tri(CHN.m.dist))$value,]
+
+names(CHN.m2.dist) <- c("c1", "c2", "distance")
+CHN.m2.dist$log.km <- log(CHN.m2.dist$distance)
+
+CHN.dist.berm <- subset(CHN.m2.dist, c1==c("berm"), select=c1:log.km)
+
+new.row <- c("berm", "berm", "0", "0")
+CHN.dist.berm.new <- rbind(new.row,CHN.dist.berm)
+CHNData$Pop
+CHN.dist.berm.new$c2
+CHNData$log.km <- CHN.dist.berm.new$log.km
+CHNData$log.km <- as.numeric(CHNData$log.km)
+```
+
+CHN Full RDA
+```
+RDA.CHN.dist.elev <- rda(CHNData$Hd ~ Elev + log.km, CHNData)
+
+RDA.CHN.dist.elev
+
+Call: rda(formula = CHNData$Hd ~ Elev + log.km, data = CHNData)
+
+              Inertia Proportion Rank
+Total         0.08098    1.00000     
+Constrained   0.02828    0.34920    1
+Unconstrained 0.05270    0.65080    1
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+   RDA1 
+0.02828 
+
+Eigenvalues for unconstrained axes:
+   PC1 
+0.0527 
+
+
+RsquareAdj(RDA.CHN.dist.elev)
+
+$r.squared
+[1] 0.3491992
+
+$adj.r.squared
+[1] 0.2407324
+
+anova(RDA.CHN.dist.elev)
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = CHNData$Hd ~ Elev + log.km, data = CHNData)
+         Df Variance      F Pr(>F)  
+Model     2 0.028280 3.2194  0.064 .
+Residual 12 0.052705                
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+```
+
+pCHN.distOnly
+```
+pCHN.distOnly <- rda(CHNData$Hd ~log.km + Condition(Elev), CHNData)
+
+pCHN.distOnly
+
+Call: rda(formula = CHNData$Hd ~ log.km + Condition(Elev), data =
+CHNData)
+
+               Inertia Proportion Rank
+Total         0.080984   1.000000     
+Conditional   0.027136   0.335078    1
+Constrained   0.001144   0.014121    1
+Unconstrained 0.052705   0.650801    1
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+     RDA1 
+0.0011436 
+
+Eigenvalues for unconstrained axes:
+   PC1 
+0.0527 
+
+
+
+RsquareAdj(pCHN.distOnly)
+
+$r.squared
+[1] 0.01412113
+
+$adj.r.squared
+[1] -0.04319783
+
+anova(pCHN.distOnly)
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = CHNData$Hd ~ log.km + Condition(Elev), data = CHNData)
+         Df Variance      F Pr(>F)
+Model     1 0.001144 0.2604  0.646
+Residual 12 0.052705        
+```
+
+pCHN.elevOnly
+```
+pCHN.elevOnly <- rda(CHNData$Hd ~Elev + Condition(log.km), CHNData)
+
+pCHN.elevOnly
+
+Call: rda(formula = CHNData$Hd ~ Elev + Condition(log.km), data =
+CHNData)
+
+               Inertia Proportion Rank
+Total         0.080984   1.000000     
+Conditional   0.009229   0.113955    1
+Constrained   0.019051   0.235245    1
+Unconstrained 0.052705   0.650801    1
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1 
+0.019051 
+
+Eigenvalues for unconstrained axes:
+   PC1 
+0.0527 
+
+
+
+RsquareAdj(pCHN.elevOnly)
+
+$r.squared
+[1] 0.2352446
+
+$adj.r.squared
+[1] 0.1949352
+
+anova(pCHN.elevOnly)
+
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = CHNData$Hd ~ Elev + Condition(log.km), data = CHNData)
+         Df Variance      F Pr(>F)  
+Model     1 0.019051 4.3376  0.053 .
+Residual 12 0.052705                
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+```
+
+
+CHS.TI
+```
+CHS.TIData <- subset(mtDNA.data, Region=="CHS.TI",)
+CHS.TI_long.lat <- cbind(CHS.TIData$Long, CHS.TIData$Lat)
+
+CHS.TI.dist.matrix <- rdist.earth(CHS.TI_long.lat, miles=F)
+CHS.TI.m.dist <- as.matrix(CHS.TI.dist.matrix)
+
+colnames(CHS.TI.m.dist) <- (CHS.TIData$Pop)
+rownames(CHS.TI.m.dist) <- (CHS.TIData$Pop)
+
+head(CHS.TI.m.dist)
+CHS.TI.m2.dist <- melt(CHS.TI.m.dist)[melt(upper.tri(CHS.TI.m.dist))$value,]
+
+names(CHS.TI.m2.dist) <- c("c1", "c2", "distance")
+CHS.TI.m2.dist$log.km <- log(CHS.TI.m2.dist$distance)
+
+CHS.TI.dist.mart <- subset(CHS.TI.m2.dist, c1==c("mart"), select=c1:log.km)
+
+new.row <- c("mart", "mart", "0", "0")
+CHS.TI.dist.mart.new <- rbind(new.row,CHS.TI.dist.mart)
+CHS.TIData$Pop
+CHS.TI.dist.mart.new$c2
+CHS.TIData$log.km <- CHS.TI.dist.mart.new$log.km
+CHS.TIData$log.km <- as.numeric(CHS.TIData$log.km)
+
+```
+
+CHS.TI Full RDA
+```
+RDA.CHS.TI.dist.elev <- rda(CHS.TIData$Hd ~ Elev + log.km, CHS.TIData)
+RDA.CHS.TI.dist.elev
+Call: rda(formula = CHS.TIData$Hd ~ Elev + log.km, data = CHS.TIData)
+
+              Inertia Proportion Rank
+Total         0.10273    1.00000     
+Constrained   0.01423    0.13851    1
+Unconstrained 0.08850    0.86149    1
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+   RDA1 
+0.01423 
+
+Eigenvalues for unconstrained axes:
+   PC1 
+0.0885 
+
+RsquareAdj(RDA.CHS.TI.dist.elev)
+$r.squared
+[1] 0.1385137
+
+$adj.r.squared
+[1] -0.005067377
+
+anova(RDA.CHS.TI.dist.elev)
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = CHS.TIData$Hd ~ Elev + log.km, data = CHS.TIData)
+         Df Variance      F Pr(>F)
+Model     2 0.014230 0.9647  0.396
+Residual 12 0.088501    
+```
+
+pCHS.TI.distOnly
+```
+pCHS.TI.distOnly <- rda(CHS.TIData$Hd ~ log.km + Condition(Elev), CHS.TIData) 
+pCHS.TI.distOnly
+
+Call: rda(formula = CHS.TIData$Hd ~ log.km + Condition(Elev), data =
+CHS.TIData)
+
+                Inertia Proportion Rank
+Total         0.1027304  1.0000000     
+Conditional   0.0141077  0.1373271    1
+Constrained   0.0001219  0.0011866    1
+Unconstrained 0.0885008  0.8614863    1
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+     RDA1 
+0.0001219 
+
+Eigenvalues for unconstrained axes:
+   PC1 
+0.0885 
+
+RsquareAdj(pCHS.TI.distOnly)
+$r.squared
+[1] 0.001186575
+
+$adj.r.squared
+[1] -0.07603503
+
+anova(pCHS.TI.distOnly)
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = CHS.TIData$Hd ~ log.km + Condition(Elev), data = CHS.TIData)
+         Df Variance      F Pr(>F)
+Model     1 0.000122 0.0165  0.888
+Residual 12 0.088501  
+```
+
+pCHS.TI.elevOnly
+```
+pCHS.TI.elevOnly <- rda(CHS.TIData$Hd ~Elev + Condition(log.km), CHS.TIData)
+pCHS.TI.elevOnly
+Call: rda(formula = CHS.TIData$Hd ~ Elev + Condition(log.km), data =
+CHS.TIData)
+
+               Inertia Proportion Rank
+Total         0.102730   1.000000     
+Conditional   0.006907   0.067233    1
+Constrained   0.007323   0.071281    1
+Unconstrained 0.088501   0.861486    1
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1 
+0.007323 
+
+Eigenvalues for unconstrained axes:
+   PC1 
+0.0885 
+
+RsquareAdj(pCHS.TI.elevOnly)
+$r.squared
+[1] 0.07128101
+
+$adj.r.squared
+[1] -0.0005487082
+
+anova(pCHS.TI.elevOnly)
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = CHS.TIData$Hd ~ Elev + Condition(log.km), data = CHS.TIData)
+         Df Variance      F Pr(>F)
+Model     1 0.007323 0.9929  0.344
+Residual 12 0.088501    
+```
+
+
+CHS.VS
+```
+CHS.VSData <- subset(mtDNA.data, Region=="CHS.VS",)
+CHS.VS_long.lat <- cbind(CHS.VSData$Long, CHS.VSData$Lat)
+
+CHS.VS.dist.matrix <- rdist.earth(CHS.VS_long.lat, miles=F)
+CHS.VS.m.dist <- as.matrix(CHS.VS.dist.matrix)
+
+colnames(CHS.VS.m.dist) <- (CHS.VSData$Pop)
+rownames(CHS.VS.m.dist) <- (CHS.VSData$Pop)
+
+head(CHS.VS.m.dist)
+CHS.VS.m2.dist <- melt(CHS.VS.m.dist)[melt(upper.tri(CHS.VS.m.dist))$value,]
+
+names(CHS.VS.m2.dist) <- c("c1", "c2", "distance")
+CHS.VS.m2.dist$log.km <- log(CHS.VS.m2.dist$distance)
+
+CHS.VS.dist.grma <- subset(CHS.VS.m2.dist, c1==c("grma"), select=c1:log.km)
+
+new.row <- c("grma", "grma", "0", "0")
+CHS.VS.dist.grma.new <- rbind(new.row,CHS.VS.dist.grma)
+CHS.VSData$Pop
+CHS.VS.dist.grma.new$c2
+CHS.VSData$log.km <- CHS.VS.dist.grma.new$log.km
+CHS.VSData$log.km <- as.numeric(CHS.VSData$log.km)
+
+```
+
+CHS.VS Full RDA
+```
+RDA.CHS.VS.dist.elev <- rda(CHS.VSData$Hd ~ Elev + log.km, CHS.VSData)
+RDA.CHS.VS.dist.elev
+Call: rda(formula = CHS.VSData$Hd ~ Elev + log.km, data = CHS.VSData)
+
+              Inertia Proportion Rank
+Total         0.11694    1.00000     
+Constrained   0.02258    0.19305    1
+Unconstrained 0.09437    0.80695    1
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1 
+0.022575 
+
+Eigenvalues for unconstrained axes:
+    PC1 
+0.09437 
+
+RsquareAdj(RDA.CHS.VS.dist.elev)
+$r.squared
+[1] 0.1930486
+
+$adj.r.squared
+[1] -0.210427
+
+anova(RDA.CHS.VS.dist.elev)
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = CHS.VSData$Hd ~ Elev + log.km, data = CHS.VSData)
+         Df Variance      F Pr(>F)
+Model     2 0.022575 0.4785  0.665
+Residual  4 0.094366    
+```
+
+pCHS.VS.distOnly
+```
+pCHS.VS.distOnly <- rda(CHS.VSData$Hd ~ log.km + Condition(Elev), CHS.VSData) 
+pCHS.VS.distOnly
+
+Call: rda(formula = CHS.VSData$Hd ~ log.km + Condition(Elev), data =
+CHS.VSData)
+
+               Inertia Proportion Rank
+Total         0.116941   1.000000     
+Conditional   0.021510   0.183941    1
+Constrained   0.001065   0.009107    1
+Unconstrained 0.094366   0.806951    1
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1 
+0.001065 
+
+Eigenvalues for unconstrained axes:
+    PC1 
+0.09437 
+
+RsquareAdj(pCHS.VS.distOnly)
+$r.squared
+[1] 0.009107431
+
+$adj.r.squared
+[1] -0.2311565
+
+anova(pCHS.VS.distOnly)
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = CHS.VSData$Hd ~ log.km + Condition(Elev), data = CHS.VSData)
+         Df Variance      F Pr(>F)
+Model     1 0.001065 0.0451  0.921
+Residual  4 0.094366   
+```
+
+pCHS.VS.elevOnly
+```
+pCHS.VS.elevOnly <- rda(CHS.VSData$Hd ~Elev + Condition(log.km), CHS.VSData)
+pCHS.VS.elevOnly
+Call: rda(formula = CHS.VSData$Hd ~ Elev + Condition(log.km), data =
+CHS.VSData)
+
+               Inertia Proportion Rank
+Total         0.116941   1.000000     
+Conditional   0.009428   0.080619    1
+Constrained   0.013148   0.112429    1
+Unconstrained 0.094366   0.806951    1
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1 
+0.013148 
+
+Eigenvalues for unconstrained axes:
+    PC1 
+0.09437 
+
+RsquareAdj(pCHS.VS.elevOnly)
+$r.squared
+[1] 0.1124293
+
+$adj.r.squared
+[1] -0.1071702
+
+anova(pCHS.VS.elevOnly)
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = CHS.VSData$Hd ~ Elev + Condition(log.km), data = CHS.VSData)
+         Df Variance      F Pr(>F)
+Model     1 0.013148 0.5573  0.509
+Residual  4 0.094366     
+```
+
+
+CZ
+```
+CZData <- subset(mtDNA.data, Region=="CZ",)
+CZ_long.lat <- cbind(CZData$Long, CZData$Lat)
+
+CZ.dist.matrix <- rdist.earth(CZ_long.lat, miles=F)
+CZ.m.dist <- as.matrix(CZ.dist.matrix)
+
+colnames(CZ.m.dist) <- (CZData$Pop)
+rownames(CZ.m.dist) <- (CZData$Pop)
+
+head(CZ.m.dist)
+CZ.m2.dist <- melt(CZ.m.dist)[melt(upper.tri(CZ.m.dist))$value,]
+
+names(CZ.m2.dist) <- c("c1", "c2", "distance")
+CZ.m2.dist$log.km <- log(CZ.m2.dist$distance)
+
+CZ.dist.kebe <- subset(CZ.m2.dist, c1==c("kebe"), select=c1:log.km)
+
+new.row <- c("kebe", "kebe", "0", "0")
+CZ.dist.kebe.new <- rbind(new.row,CZ.dist.kebe)
+CZData$Pop
+CZ.dist.kebe.new$c2
+CZData$log.km <- CZ.dist.kebe.new$log.km
+CZData$log.km <- as.numeric(CZData$log.km)
+
+```
+
+CZ Full RDA
+```
+RDA.CZ.dist.elev <- rda(CZData$Hd ~ Elev + log.km, CZData)
+RDA.CZ.dist.elev
+Call: rda(formula = CZData$Hd ~ Elev + log.km, data = CZData)
+
+               Inertia Proportion Rank
+Total         0.109845   1.000000     
+Constrained   0.009354   0.085156    1
+Unconstrained 0.100491   0.914844    1
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1 
+0.009354 
+
+Eigenvalues for unconstrained axes:
+    PC1 
+0.10049 
+
+RsquareAdj(RDA.CZ.dist.elev)
+$r.squared
+[1] 0.08515555
+
+$adj.r.squared
+[1] 0.0173893
+
+anova(RDA.CZ.dist.elev)
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = CZData$Hd ~ Elev + log.km, data = CZData)
+         Df Variance      F Pr(>F)
+Model     2 0.009354 1.2566   0.29
+Residual 27 0.100491  
+```
+
+pCZ.distOnly
+```
+pCZ.distOnly <- rda(CZData$Hd ~ log.km + Condition(Elev), CZData) 
+pCZ.distOnly
+
+Call: rda(formula = CZData$Hd ~ log.km + Condition(Elev), data =
+CZData)
+
+               Inertia Proportion Rank
+Total         0.109845   1.000000     
+Conditional   0.007170   0.065277    1
+Constrained   0.002184   0.019878    1
+Unconstrained 0.100491   0.914844    1
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+     RDA1 
+0.0021835 
+
+Eigenvalues for unconstrained axes:
+    PC1 
+0.10049 
+
+RsquareAdj(pCZ.distOnly)
+$r.squared
+[1] 0.01987841
+
+$adj.r.squared
+[1] -0.01450489
+
+anova(pCZ.distOnly)
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = CZData$Hd ~ log.km + Condition(Elev), data = CZData)
+         Df Variance      F Pr(>F)
+Model     1 0.002184 0.5867  0.495
+Residual 27 0.100491   
+```
+
+pCZ.elevOnly
+```
+pCZ.elevOnly <- rda(CZData$Hd ~Elev + Condition(log.km), CZData)
+pCZ.elevOnly
+Call: rda(formula = CZData$Hd ~ Elev + Condition(log.km), data =
+CZData)
+
+               Inertia Proportion Rank
+Total         0.116941   1.000000     
+Conditional   0.009428   0.080619    1
+Constrained   0.013148   0.112429    1
+Unconstrained 0.094366   0.806951    1
+Inertia is variance 
+
+Eigenvalues for constrained axes:
+    RDA1 
+0.013148 
+
+Eigenvalues for unconstrained axes:
+    PC1 
+0.09437 
+
+RsquareAdj(pCZ.elevOnly)
+$r.squared
+[1] 0.1124293
+
+$adj.r.squared
+[1] -0.1071702
+
+anova(pCZ.elevOnly)
+Permutation test for rda under reduced model
+Permutation: free
+Number of permutations: 999
+
+Model: rda(formula = CZData$Hd ~ Elev + Condition(log.km), data = CZData)
+         Df Variance      F Pr(>F)
+Model     1 0.013148 0.5573  0.509
+Residual  4 0.094366     
+```
 
 
 
