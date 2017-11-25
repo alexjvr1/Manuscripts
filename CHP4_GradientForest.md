@@ -1,5 +1,8 @@
 # Gradient Forest Analysis
 
+
+Nice landscape genomics tutorial: http://www.mountainmanmaier.com/software/pop_genom/#gradient-forest-modeling
+
 Aim: determine whether mean temp during development or growth season are the most important environmental drivers of adaptive divergence. 
 
 I've identified candidate loci associated with mean temp 60 days and number of days above 6deg C. I have two sets of candidate loci for 
