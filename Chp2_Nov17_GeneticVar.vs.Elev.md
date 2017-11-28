@@ -38,6 +38,11 @@ Comparison vs distance
  
 Comparison between mtDNA and RAD data
 
+### 4. Connectivity within each region
+
+I'll use a network analysis to visualise how connected populations are across elevation. i.e. are high elevation populations isolated? 
+
+
 
 ## Analyses
 
@@ -2788,6 +2793,30 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
   }
 }
 ```
+
+
+### 4. Connectivity across elevation
+
+*** I didn't finish this. Converting between packages and adding population and coordinate information was annoying. I'll add this into a next paper. 
+
+I've already described the Fst. But now I will use a network analysis to determine how connected populations are across elevation. ie. are high elevation populations more isolated? 
+
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/Dataset1_forPCA/summstats
+
+I'm working in this directory because I already have all the genind objects created in this R project. 
+
+I'll use the package EcoGenetics. 
+
+
+```
+#install.packages("EcoGenetics")
+library(EcoGenetics)
+
+
+
+
+```
+
 
 
 
