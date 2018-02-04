@@ -2540,6 +2540,118 @@ Number of permutations: 999
 
 ```
 
+
+Mantel test to test for IBD and IBElevation in each region
+
+Two questions: 
+
+1. To test for scale in IBD patterns, we use pRDA to determine if genetic distance increases with geog distance partialling out elev
+
+2. To test for gene flow across elevation, pRDA partiallying out geographic distance. 
+
+
+
+
+
+I need to do this within all regions, and for CHall. 
+
+
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/Dataset1_forPCA/summstats
+
+CHall 
+```
+#library(vegan)
+
+CHall.fst.matrix <- as.matrix(CHall.fst)
+dim(CHall.fst.matrix)
+[1] 82 82
+
+CHall.elev.diff.matrix <- as.matrix(CHall.elev.diff)
+dim(CHall.elev.diff.matrix)
+[1] 82 82
+
+CHall.geog.dist.matrix <- as.matrix(CHall.m.dist)
+dim(CHall.geog.dist.matrix)
+
+
+CHall.mantel.geog <- mantel(CHall.fst.matrix, CHall.geog.dist.matrix, method="pearson", permutations=999) ##mantel fst x geog
+
+CHall.mantel.geog 
+
+Mantel statistic based on Pearson's product-moment correlation 
+
+Call:
+mantel(xdis = CHall.fst.matrix, ydis = CHall.geog.dist.matrix,      method = "pearson", permutations = 999) 
+
+Mantel statistic r:   0.3 
+      Significance: 0.001 
+
+Upper quantiles of permutations (null model):
+   90%    95%  97.5%    99% 
+0.0424 0.0547 0.0663 0.0841 
+Permutation: free
+Number of permutations: 999
+
+CHall.mantel.elev <- mantel(CHall.fst.matrix, CHall.elev.diff.matrix, method="pearson", permutations=999)  ##mantel fst x elev
+
+CHall.mantel.elev
+
+Mantel statistic based on Pearson's product-moment correlation 
+
+Call:
+mantel(xdis = CHall.fst.matrix, ydis = CHall.elev.diff.matrix,      method = "pearson", permutations = 999) 
+
+Mantel statistic r:  0.05 
+      Significance: 0.042 
+
+Upper quantiles of permutations (null model):
+   90%    95%  97.5%    99% 
+0.0354 0.0474 0.0578 0.0719 
+Permutation: free
+Number of permutations: 999
+
+CHall.mantel.geog.pElev <- mantel.partial(CHall.fst.matrix, CHall.geog.dist.matrix, CHall.elev.diff.matrix, method="pearson", permutations=999)  ##pMantel fst x geog, elev constant
+
+CHall.mantel.geog.pElev
+
+Partial Mantel statistic based on Pearson's product-moment correlation 
+
+Call:
+mantel.partial(xdis = CHall.fst.matrix, ydis = CHall.geog.dist.matrix,      zdis = CHall.elev.diff.matrix, method = "pearson", permutations = 999) 
+
+Mantel statistic r: 0.2987 
+      Significance: 0.001 
+
+Upper quantiles of permutations (null model):
+   90%    95%  97.5%    99% 
+0.0402 0.0527 0.0623 0.0778 
+Permutation: free
+Number of permutations: 999
+
+CHall.mantel.elev.pGeog <- mantel.partial(CHall.fst.matrix, CHall.elev.diff.matrix, CHall.geog.dist.matrix, method="pearson", permutations=999) ##pMantel fst x elev, geog constant
+
+CHall.mantel.elev.pGeog
+
+Partial Mantel statistic based on Pearson's product-moment correlation 
+
+Call:
+mantel.partial(xdis = CHall.fst.matrix, ydis = CHall.elev.diff.matrix,      zdis = CHall.geog.dist.matrix, method = "pearson", permutations = 999) 
+
+Mantel statistic r: 0.04018 
+      Significance: 0.066 
+
+Upper quantiles of permutations (null model):
+   90%    95%  97.5%    99% 
+0.0335 0.0440 0.0548 0.0657 
+Permutation: free
+Number of permutations: 999
+
+
+
+```
+
+
+
 ### 3.2 
 
 ## Isolation by Elevation
