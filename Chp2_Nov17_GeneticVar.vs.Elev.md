@@ -38,6 +38,8 @@ Comparison vs distance
  
 Comparison between mtDNA and RAD data
 
+Mantel and partial mantel tests to determine if Fst is correlated with elevation or distance. 
+
 ### 4. Connectivity within each region
 
 I'll use a network analysis to visualise how connected populations are across elevation. i.e. are high elevation populations isolated? 
@@ -2157,6 +2159,140 @@ IBD has previously been calculated using the RAD data
 
 I'll have to add in all the mtDNA data later... 
 
+##### Mantel assesment
+
+I originally just ran some linear models to test for IBD and isolation by elevation. (I've also partialled out the effects of geog and elev on Genetic distance using RDA). 
+However, Josh was not happy about this. So I'm running some Mantel and partial mantel tests to see whether there's IBD and IBelevation while controlling for the other. 
+
+Mantel test to test for IBD and IBElevation in each region
+
+Two questions: 
+
+1. To test for scale in IBD patterns, we use pRDA to determine if genetic distance increases with geog distance partialling out elev
+
+2. To test for gene flow across elevation, pRDA partiallying out geographic distance. 
+
+
+/Users/alexjvr/2016RADAnalysis/3_CH.landscapeGenomics/Dataset1_forPCA/summstats
+
+
+CHN 
+```
+library(vegan)
+
+CHN.fst.matrix <- as.matrix(CHN.fst) ##create an fst matrix
+CHN.elev.dist.matrix <- as.matrix(CHN.elev.dist)  ##elevational differences as matrix
+
+CHN.mantel.geog <- mantel(CHN.fst.matrix, CHN.m.dist, method="pearson", permutations=999) ##mantel fst x geog
+
+Mantel statistic based on Pearson's product-moment correlation 
+
+Call:
+mantel(xdis = CHN.fst.matrix, ydis = CHN.m.dist, method = "pearson",      permutations = 999) 
+
+Mantel statistic r: 0.3584 
+      Significance: 0.002 
+
+Upper quantiles of permutations (null model):
+  90%   95% 97.5%   99% 
+0.169 0.217 0.268 0.292 
+Permutation: free
+Number of permutations: 999
+
+
+CHN.mantel.elev <- mantel(CHN.fst.matrix, CHN.elev.dist.matrix, method="pearson", permutations=999)  ##mantel fst x elev
+
+
+Mantel statistic based on Pearson's product-moment correlation 
+
+Call:
+mantel(xdis = CHN.fst.matrix, ydis = CHN.elev.dist.matrix, method = "pearson",      permutations = 999) 
+
+Mantel statistic r: 0.3215 
+      Significance: 0.001 
+
+Upper quantiles of permutations (null model):
+  90%   95% 97.5%   99% 
+0.132 0.171 0.209 0.236 
+Permutation: free
+Number of permutations: 999
+
+CHN.mantel.geog.pElev <- mantel.partial(CHN.fst.matrix, CHN.m.dist, CHN.elev.dist.matrix, method="pearson", permutations=999)  ##pMantel fst x geog, elev constant
+
+Partial Mantel statistic based on Pearson's product-moment correlation 
+
+Call:
+mantel.partial(xdis = CHN.fst.matrix, ydis = CHN.m.dist, zdis = CHN.elev.dist.matrix,      method = "pearson", permutations = 999) 
+
+Mantel statistic r: 0.3857 
+      Significance: 0.002 
+
+Upper quantiles of permutations (null model):
+  90%   95% 97.5%   99% 
+0.154 0.205 0.252 0.284 
+Permutation: free
+Number of permutations: 999
+
+CHN.mantel.elev.pGeog <- mantel.partial(CHN.fst.matrix, CHN.elev.dist.matrix, CHN.m.dist, method="pearson", permutations=999) ##pMantel fst x elev, geog constant
+
+Partial Mantel statistic based on Pearson's product-moment correlation 
+
+Call:
+mantel.partial(xdis = CHN.fst.matrix, ydis = CHN.elev.dist.matrix,      zdis = CHN.m.dist, method = "pearson", permutations = 999) 
+
+Mantel statistic r: 0.3525 
+      Significance: 0.001 
+
+Upper quantiles of permutations (null model):
+  90%   95% 97.5%   99% 
+0.145 0.186 0.226 0.263 
+Permutation: free
+Number of permutations: 999
+
+```
+
+
+CHS.TI 
+```
+#library(vegan)
+
+CHS.TI.fst.matrix <- as.matrix(CHS.TI.fst) ##create an fst matrix
+CHS.TI.elev.dist.matrix <- as.matrix(CHS.TI.elev.dist)  ##elevational differences as matrix
+
+CHS.TI.mantel.geog <- mantel(CHS.TI.fst.matrix, CHS.TI.m.dist, method="pearson", permutations=999) ##mantel fst x geog
+
+CHS.TI.mantel.geog 
+
+Mantel statistic based on Pearson's product-moment correlation 
+
+Call:
+mantel(xdis = CHS.TI.fst.matrix, ydis = CHS.TI.m.dist, method = "pearson",      permutations = 999) 
+
+Mantel statistic r: 0.316 
+      Significance: 0.006 
+
+Upper quantiles of permutations (null model):
+  90%   95% 97.5%   99% 
+0.142 0.174 0.217 0.276 
+Permutation: free
+Number of permutations: 999
+
+CHS.TI.mantel.elev <- mantel(CHS.TI.fst.matrix, CHS.TI.elev.dist.matrix, method="pearson", permutations=999)  ##mantel fst x elev
+
+CHS.TI.mantel.elev
+
+CHS.TI.mantel.geog.pElev <- mantel.partial(CHS.TI.fst.matrix, CHS.TI.m.dist, CHS.TI.elev.dist.matrix, method="pearson", permutations=999)  ##pMantel fst x geog, elev constant
+
+CHS.TI.mantel.geog.pElev
+
+CHS.TI.mantel.elev.pGeog <- mantel.partial(CHS.TI.fst.matrix, CHS.TI.elev.dist.matrix, CHS.TI.m.dist, method="pearson", permutations=999) ##pMantel fst x elev, geog constant
+
+CHS.TI.mantel.elev.pGeog
+```
+
+
+
+### 3.2 
 
 ## Isolation by Elevation
 
