@@ -2256,6 +2256,11 @@ CHS.TI
 ```
 #library(vegan)
 
+First make sure that oalp is removed from all datasets (i.e. I need 15x15 datasets.)
+
+CHS.TI.noOalp_lon.lat <- CHS.TI_lon.lat[-10,]
+
+
 CHS.TI.fst.matrix <- as.matrix(CHS.TI.fst) ##create an fst matrix
 CHS.TI.elev.dist.matrix <- as.matrix(CHS.TI.elev.dist)  ##elevational differences as matrix
 
