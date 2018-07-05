@@ -21,3 +21,12 @@ which is a consequence of
 
 5. Small comment on possible recolonisation routes, and that the same sequences need to be generated for Italian and European samples
 to resolve this problem. 
+
+
+## Part 1: Genetic diversity and population structure
+
+For the first part I will subset the CH RAD dataset to include only the samples for which I have mtDNA data. 
+
+Then I will estimate genetic diversity and population structure based on these samples. 
+
+
