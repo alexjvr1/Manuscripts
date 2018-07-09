@@ -29,4 +29,8 @@ For the first part I will subset the CH RAD dataset to include only the samples 
 
 Then I will estimate genetic diversity and population structure based on these samples. 
 
+First I have to subset the full vcf file to include only the 368 samples I sequenced in the mtDNA MS
 
+```
+
+```
