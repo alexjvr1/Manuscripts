@@ -140,5 +140,23 @@ pca.data2$x
 ```
 
 
+## Are the niches significantly different? 
+
+We'll use 
+
+For now we'll determine if the variance is significantly different between groups based on the PCA
+```
+#install.packages("heplots")
+library(heplots)
+leven <- abs(colDevs(data4pca[,1:ncol(data4pca)], data.region2, median))
+leven.mod <- lm(leven ~ data.region2)
+Anova(leven.mod)
+
+Type II MANOVA Tests: Pillai test statistic
+             Df test stat approx F num Df den Df    Pr(>F)    
+data.region2  2   0.11676   65.387     10  10546 < 2.2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+```
 
 
