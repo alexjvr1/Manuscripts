@@ -65,3 +65,36 @@ ggbiplot(pca.data)
 
 first just the plain graph: 
 
+![alt_txt][Fig1]
+
+[Fig1]:https://user-images.githubusercontent.com/12142475/49028289-f2c3ab00-f199-11e8-8e27-a08e432ed68c.png
+
+
+
+Now change some features. See [here](https://stackoverflow.com/questions/40287943/ggbiplot-change-the-group-color-and-marker) for more info on this. 
+```
+data.region <- data$region  ##object with the region names in
+ggbiplot(pca.data, group=data.region) + scale_color_manual(name="Region", values=c("goldenrod1", "cyan3")) + theme(legend.direction ="horizontal", 
+      legend.position = "right")
+
+#scale_shape_manual(name="Variety", values=c(17:19)) +
+#geom_point(aes(colour=wine.class, shape=wine.class), size = 3)
+```
+
+Change the colours as you wish using the [R colours](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
+
+![alt_txt][Fig2]
+
+[Fig2]:https://user-images.githubusercontent.com/12142475/49029688-1f2cf680-f19d-11e8-9c79-e1e4f8eb754b.png
+
+
+
+### Is the genomic data different? 
+
+So the East vs West niche looks quite different. We'll quantify this in a moment. We probably also want to determine whether the samples collected for genomic analyses are a good representative of the eastern niche:
+
+```
+
+
+```
+
