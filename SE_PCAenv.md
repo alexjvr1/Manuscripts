@@ -2,9 +2,9 @@
 
 Aim: 
 
-Determine if the ecological niche of R.temp differs between East and West Sweden. 
+1. Determine if the ecological niche of R.temp differs between East and West Sweden. 
 
-Also, determine if the samples collected for genomic analyses is similar to SE east. 
+2. Determine if the samples collected for genomic analyses is similar to Sweden_East. 
 
 
 Data have been downloaded from gbif. 
@@ -94,7 +94,42 @@ Change the colours as you wish using the [R colours](http://www.stat.columbia.ed
 So the East vs West niche looks quite different. We'll quantify this in a moment. We probably also want to determine whether the samples collected for genomic analyses are a good representative of the eastern niche:
 
 ```
+#read in the data
+data.genom <- read.table("SEonly.BIOclim", header=T) 
+head(data.genom)
 
+## select only the variables of interest and create a df for the pca
+data4pca <- rbind((data[,c(4,7,8,14,20)]),(data.genom[,c(4,7,8,14,20)])) 
 
+#make a regions list for the new dataset
+data.genom$region <- 'genom'  
+data.region.genom <- data.genom$region #write the regions column to a variable 
+data.region2 <- c(data.region, data.region.genom)  
+summary(data.region2)  ##check that this is the right lenght and contains all the variables
+
+#run PCA and plot as before
+
+pca.data2 <- prcomp(data4pca, center=T, scale.=T)
+ggbiplot(pca.data2, group=data.region2) + scale_color_manual(name="Region", values=c("goldenrod1", "black", "cyan3")) + theme(legend.direction ="horizontal", 
+      legend.position = "right")
 ```
+
+
+![alt_txt][Fig3]
+
+[Fig3]:https://user-images.githubusercontent.com/12142475/49031456-e2173300-f1a1-11e8-9596-21959cf945c8.png
+
+
+It's a bit unexpected that three of the locations where we collected genomic data from does not fall within the eastern ecoregion. The data look correct (I've checked the order of the data.region and data4pca files, and I've plotted a histogram of all the variables to check that they haven't been reordered or differently normalised: 
+```
+tail(data4pcr)
+
+par(mfrow=c(3,2))
+hist(data4pca$bio2)
+hist(data4pca$bio5)
+hist(data4pca$bio6)
+hist(data4pca$bio12)
+hist(data4pca$bio18)
+```
+
 
