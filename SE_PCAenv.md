@@ -132,4 +132,13 @@ hist(data4pca$bio12)
 hist(data4pca$bio18)
 ```
 
+Looking at the loadings I can identify these as the three southernmost populations. That makes sense because you've defined east as anything < 15deg long. So the entire southern SE will be defined as western. 
+
+```
+pca.data2$x
+
+```
+
+
+
 
