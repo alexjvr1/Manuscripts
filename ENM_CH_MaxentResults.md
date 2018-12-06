@@ -30,4 +30,24 @@ CHSW = South West CH (Valais)
 CHSE = South East CH (Ticino)
 
 
+## 2. Change in suitable cells
+
+Calculate the change in suitable habitat under future climate conditions. 
+
+1. Plot current distribution. 
+
+2. Calculate number of suitable cells. 
+
+3. Plot future climates
+
+4. Calculate number of suitable cells. 
+
+5. Calculate % change for 2050 and 2070. 
+
+6. Boxplot of the results. 
+
+
+
+
+
 
