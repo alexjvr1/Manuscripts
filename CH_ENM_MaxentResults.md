@@ -2,6 +2,10 @@
 
 Use results from Charlotte & Elsa's 3rd year project MaxEnt output to display MaxEnt output.
 
+MaxEnt run for Current climate, 2050 and 2070. 
+See for Charlotte's code. 
+
+
 ### Aims: 
 
 1. Calculate niche overlap between regions within Switzerland. (using Schroeder's D)
