@@ -30,6 +30,8 @@ CHSW = South West CH (Valais)
 CHSE = South East CH (Ticino)
 
 
+
+
 ## 2. Change in suitable cells
 
 Calculate the change in suitable habitat under future climate conditions. 
@@ -48,6 +50,25 @@ Calculate the change in suitable habitat under future climate conditions.
 
 
 
+#### CH Full
 
+working directory: 
+/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland
+
+
+Import MaxEnt output into R
+```
+library(raster)
+library(dismo)
+library(sp)
+library(jsonlite)
+library(rgdal)
+library(spaa)
+
+
+MaxEnt <- system.file("java",package="dismo")  ##get MaxEnt
+
+
+```
 
 
