@@ -19,17 +19,28 @@ library(spaa)
 
 #Getting MaxEnt
 MaxEnt <- system.file("java",package="dismo")
+```
 
+
+### Get data
+
+Climate 
+```
 #Climate Data 
 climate <- getData('worldclim', var='bio', res=2.5) #No Need to convert to Rasta- What set of Bioclim is this?
 climate2 <- crop(climate, extent(5.8,10.6,45.5,47.9)) ##crop to map to Switzerland
 plot(Climate2)
 
+```
+
+Occurrance data based on sampled sites and GBIF
+```
 # Alex Occurance data - Switzerland
 #xy <- Envi[, c("long","lat")]  #extract coordinates
 #xy.forbioclim <- xy[,c(1,2)] #rename xy for rest of code
 #spdf <- SpatialPointsDataFrame(coords = xy.forbioclim, data=xy, proj4string = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
 #spdf = switzerland, swespdf = Sweden
+
 
 #Gibif Data Download 
 RtempGeo = gbif("Rana", "temporaria", geo=F)    ##download all the data from GBIF - this took around 3 hours on my home wifi, should be faster at Uni
@@ -43,7 +54,7 @@ acgeo.SW <- acgeo.SW[which(acgeo.SW$lat <48),]
 plot(wrld_simpl, xlim=c(6,11), ylim=c(45.5,48), axes=T)
 points(acgeo.SW$lon, acgeo.SW$lat, col='red', pch=20, cex=0.75)
 
-##Cleaning- cleaned down to Switzerrland, after 1970 and by human observation as is Alex's data
+##Cleaning- cleaned down to Switzerland, after 1970 and by human observation as is Alex's data
 acgeo.SW <- subset(acgeo.SW, basisOfRecord=="HUMAN_OBSERVATION")
 acgeo.SW <- subset(acgeo.SW, country=="Switzerland")
 acgeo.SW <- subset(acgeo.SW, year>=1970)
@@ -60,10 +71,11 @@ GIBIF.SW <- read.csv(file.choose())#Combined presence data
 xyGIBSW <- GIBIF.SW[, c("long","lat")]  #extract coordinates
 xy1 <- xyGIBSW[,c(1,2)] #rename xy for rest of code
 SW <- SpatialPointsDataFrame(coords = xy1, data=xy1, proj4string = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+```
 
-##Run MaxEnt Switzerland
-meGIBIFSwi <- maxent(climate2, SW, a=NULL, factors=NULL, nbg=10000, path='C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output')
 
+Reduce the number of climate variables in the dateset by removing correlated variables. 
+```
 #Correlation of Climatatic Factors 
 install.packages("corrr")  
 library(corrr)
@@ -111,21 +123,45 @@ bio18 <- file.choose()
 
 Subset.Bio <- stack(bio8,bio9,bio13,bio15,bio18)
 Subset.Bio <- crop(Subset.Bio, extent(5.8,10.6,45.5,47.9))
+```
 
+
+### Run MaxEnt Switzerland
+
+First this was run before reducing the number of climate variables
+```
+meGIBIFSwi <- maxent(climate2, SW, a=NULL, factors=NULL, nbg=10000, path='C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output')
+```
+
+
+#### Full model for Switzerland. 
+```
 SwitzerlandFull <- maxent(Subset.Bio, SW, a=NULL, factors=NULL, nbg=10000, path='C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output/MaxEnt Full Switzerland/Full Switzerland- 5 Bios')
 
-#Preediction
+#Prediction
 Pred.Pres.Full <- predict(SwitzerlandFull, Subset.Bio)#What goes here??? Why doesn't it work!?
 plot(Pred.Pres.Full)
+```
 
-#SUBSETS FOR N/SE/SW
+
+#### SUBSETS FOR N/SE/SW
+
+Subset the climate data
+```
 #N
 Present.Bio.N <- crop(Subset.Bio, extent(6.1,10.1,46.7,47.5))
 #SE
 Present.Bio.SE <- crop(Subset.Bio, extent(8.0,10.1,46,47.5))
 #SW
 Present.Bio.SW <- crop(Subset.Bio, extent(6.1,8,46,47.5))
+```
 
+### Future climates
+
+Download all BioClim data for future climate scenarios. 
+
+2050
+```
 Full Future 
 #Library 
 
@@ -250,7 +286,10 @@ CSM1.85MaxEnt <- maxent(CSM1.85, SW, a=NULL, factors=NULL, nbg=10000, path='C:/U
 
 Pred.CSM1.85.Full <- predict(CSM1.85MaxEnt, CSM1.85)#What goes here??? Why doesn't it work!?
 plot(Pred.CSM1.85.Full)
+```
 
+2070
+```
 ##Future 2070
 #CCSM.26 2070
 bio8CCSM.267 <- file.choose()
@@ -372,7 +411,14 @@ CSM1.857MaxEnt <- maxent(CSM1.857, SW, a=NULL, factors=NULL, nbg=10000, path='C:
 Pred.CSM1.857.Full <- predict(CSM1.857MaxEnt, CSM1.857)#What goes here??? Why doesn't it work!?
 plot(Pred.CSM1.857.Full)
 
-Genomic Split
+```
+
+
+
+#### Split by Genomic region
+
+North present
+```
 # Genomic Cropped
 #Genomic Group- North
 
@@ -384,7 +430,10 @@ Present.North <- maxent(Present.Bio.N, North.Pres, a=NULL, factors=NULL, nbg=100
 
 Pred.Present.North <- predict(Present.North, Present.Bio.N)#What goes here??? Why doesn't it work!?
 plot(Pred.Present.North)
+```
 
+North Future 2050
+```
 #CCSM1.26
 CCSM.26.N <- crop(CCSM.26, extent(6.1,10.1,46.7,47.5)) #Bioclim
 CCSM.26MaxEnt.N <- maxent(CCSM.26.N, North.Pres, a=NULL, factors=NULL, nbg=10000, path='C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output/MaxEnt North Subset/MaxEnt Cropped Bios Full Future 2050 Switerland/CCSM2.26')
@@ -441,8 +490,11 @@ CSM1.85MaxEnt.N <- maxent(CSM1.85.N, North.Pres, a=NULL, factors=NULL, nbg=10000
 Pred.CSM1.85.North <- predict(CSM1.85MaxEnt.N, CSM1.85.N)#What goes here??? Why doesn't it work!?
 plot(Pred.CSM1.85.North)
 ########################################################################################
-#North 2070
+```
 
+
+North Future 2070
+```
 #CCSM.267
 CCSM.267.N <- crop(CCSM.267,extent(6.1,10.1,46.7,47.5))
 CCSM.267MaxEnt.N <- maxent(CCSM.267.N, North.Pres, a=NULL, factors=NULL, nbg=10000, path='C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output/MaxEnt North Subset/MaxEnt Cropped Bios Full Future 2070 Switerland/CCSM2.26')
@@ -498,16 +550,21 @@ CSM1.857MaxEnt.N <- maxent(CSM1.857.N, North.Pres, a=NULL, factors=NULL, nbg=100
 
 Pred.CSM1.857.North <- predict(CSM1.857MaxEnt.N, CSM1.857.N)#What goes here??? Why doesn't it work!?
 plot(Pred.CSM1.857.North)
+```
 
-####################################################################################
-#South West
+
+South West present
+```
 SW.Pres <- crop(SW, extent(6.1,8,46.7,47.5)) #Presence
 Present.Bio.SW <- crop(Subset.Bio, extent(6.1,8,46.7,47.5))
 SW.pres <- maxent(Present.Bio.SW, SW.Pres, a=NULL, factors=NULL, nbg=10000, path='C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output/MaxEnt South West Subset/Present')
 
 Pred.CCSM.SW <- predict(SW.pres, Present.Bio.SW)#What goes here??? Why doesn't it work!?
 plot(Pred.CCSM.SW)
+```
 
+South West Future 2050
+```
 #CCSM1.26
 CCSM.26.SW <- crop(CCSM.26, extent(6.1,8,46.7,47.5)) #Bioclim
 CCSM.26MaxEnt.SW <- maxent(CCSM.26.SW, SW.Pres, a=NULL, factors=NULL, nbg=10000, path='C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output/MaxEnt South West Subset/MaxEnt Cropped Bios Full Future 2050 Switerland/CCSM2.26')
@@ -563,9 +620,11 @@ CSM1.85MaxEnt.SW <- maxent(CSM1.85.SW, SW.Pres, a=NULL, factors=NULL, nbg=10000,
 
 Pred.CSM1.85.SW <- predict(CSM1.85MaxEnt.SW, CSM1.85.SW)#What goes here??? Why doesn't it work!?
 plot(Pred.CSM1.85.SW)
-#######################################################################################
-#South west 2070
+```
 
+
+South West Future 2070
+```
 #CSM1.26
 CSM1.267.SW <- crop(CSM1.267,extent(6.1,8,46.7,47.5))
 CSM1.267MaxEnt.SW <- maxent(CSM1.267.SW, SW.Pres, a=NULL, factors=NULL, nbg=10000, path='C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output/MaxEnt South West Subset/MaxEnt Cropped Bios Full Future 2070 Switerland/CSM1.26')
@@ -621,9 +680,12 @@ CCSM.857MaxEnt.SW <- maxent(CCSM.857.SW, SW.Pres, a=NULL, factors=NULL, nbg=1000
 
 Pred.CCSM.857.SW <- predict(CCSM.857MaxEnt.SW, CCSM.857.SW)#What goes here??? Why doesn't it work!?
 plot(Pred.CCSM.857.SW)
-########################################################################################
+```
 
-#South East Subset
+South East present
+
+** Is there a mistake in the code here?? crop SW i.s.o SE
+```
 #South West
 SE.Pres <- crop(SW, extent(8.0,10.1,46,47.5)) #Presence
 Present.Bio.SE <- crop(Subset.Bio, extent(8.0,10.1,46,47.5))
@@ -631,7 +693,10 @@ SE.pres <- maxent(Present.Bio.SE, SE.Pres, a=NULL, factors=NULL, nbg=10000, path
 
 Pred.East <- predict(SE.pres, Present.Bio.SE)#What goes here??? Why doesn't it work!?
 plot(Pred.East)
+```
 
+South East Future 2050
+```
 #CCSM.26
 CCSM.26.SE <- crop(CCSM.26, extent(8.0,10.1,46,47.5)) #Bioclim
 CCSM.26MaxEnt.SE <- maxent(CCSM.26.SE, SE.Pres, a=NULL, factors=NULL, nbg=10000, path='C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output/MaxEnt South East Subset/MaxEnt Cropped Bios Full Future 2050 Switerland/CCSM2.26')
@@ -687,9 +752,10 @@ CSM1.85MaxEnt.SE <- maxent(CSM1.85.SE, SE.Pres, a=NULL, factors=NULL, nbg=10000,
 
 Pred.CSM1.85.SE <- predict(CSM1.85MaxEnt.SE, CSM1.85.SE)#What goes here??? Why doesn't it work!?
 plot(Pred.CSM1.85.SE)
-#####################################################################################
-#South East 2070
+```
 
+South East Future 2070
+```
 #CCSM.267
 CCSM.267.SE <- crop(CCSM.267,extent(8.0,10.1,46,47.5))
 CCSM.267MaxEnt.SE <- maxent(CCSM.267.SE, SE.Pres, a=NULL, factors=NULL, nbg=10000, path='C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output/MaxEnt South East Subset/MaxEnt Cropped Bios Full Future 2070 Switerland/CCSM2.26')
@@ -747,31 +813,47 @@ Pred.CSM1.857.SE <- predict(CSM1.857MaxEnt.SE, CSM1.857.SE)#What goes here??? Wh
 plot(Pred.CSM1.857.SE)
 
 CSM1.45MaxEnt.SE
+```
 
-################################################################################################
+### Combine Future results
 
-#Stack Predictors
-#North
+Stack Predictors
+
+North
+```
 North.Present <- Pred.Present.North
 North.2050 <- stack(Pred.CCSM.26.North,Pred.CCSM.45.North,Pred.CCSM.60.North,Pred.CCSM.85.North,Pred.CSM1.26.North,Pred.CSM1.45.North,Pred.CSM1.60.North,Pred.CSM1.85.North)
 plot(North.2050)
 North.2070 <- stack(Pred.CCSM.267.North,Pred.CCSM.457.North,Pred.CCSM.607.North,Pred.CCSM.857.North,Pred.CSM1.267.North,Pred.CSM1.457.North,Pred.CSM1.607.North,Pred.CSM1.857.North)
+```
 
-#South East
+South East
+```
 SE.Present <- Pred.East 
 #SE.2050 <- stack(Pred.CCSM.26.SE,Pred.CCSM.45.SE,Pred.CCSM.60.SE,Pred.CCSM.85.SE,Pred.CSM1.26.SE,Pred.CSM1.45.SE,Pred.CSM1.60.SE,Pred.CSM1.85.SE)
 SE.2070 <- stack(Pred.CCSM.267.SE,Pred.CCSM.457.SE,Pred.CCSM.607.SE,Pred.CCSM.857.SE,Pred.CSM1.267.SE,Pred.CSM1.457.SE,Pred.CSM1.607.SE,Pred.CSM1.857.SE)
+```
 
-#South West
+
+South West
+```
 SW.Present <- Pred.CCSM.SW
 SW.2050 <- stack(Pred.CCSM.26.SW,Pred.CCSM.45.SW,Pred.CCSM.60.SW,Pred.CCSM.85.SW,Pred.CSM1.26.SW,Pred.CSM1.45.SW,Pred.CSM1.60.SW,Pred.CSM1.85.SW)
 SW.2070 <- stack(Pred.CCSM.267.SW,Pred.CCSM.457.SW,Pred.CCSM.607.SW,Pred.CCSM.857.SW,Pred.CSM1.267.SW,Pred.CSM1.457.SW,Pred.CSM1.607.SW,Pred.CSM1.857.SW)
+```
 
+Full Switzerland
+```
 #Full
 Full.Present <- Pred.Pres.Full
 Full.2050 <- stack(Pred.CCSM.26.Full,Pred.CCSM.45.Full,Pred.CCSM.60.Full,Pred.CCSM.85.Full,Pred.CSM1.26.Full,Pred.CSM1.45.Full,Pred.CSM1.60.Full,Pred.CSM1.85.Full)
 Full.2070 <- stack(Pred.CCSM.267.Full,Pred.CCSM.457.Full,Pred.CCSM.607.Full,Pred.CCSM.857.Full,Pred.CSM1.267.Full,Pred.CSM1.457.Full,Pred.CSM1.607.Full,Pred.CSM1.857.Full)
+```
 
+
+## Niche similarity
+
+```
 #Schoener’s D test Code- present only 
 Full.SW <- modOverlap(SE.Present, SW.Present, na.rm = TRUE) 
 {
@@ -786,34 +868,44 @@ Full.SW <- modOverlap(SE.Present, SW.Present, na.rm = TRUE)
 Full.SW <- niche.overlap.pair(Full.Present, SW.Present, method = c("schoener"))
 
 install.packages('fuzzySim')
+```
 
-Full.SW
 
-Code for Niche Similarity
 
-#Stack Predictors
-#North
+
+North
+```
 North.Present <- Pred.Present.North
 North.2050 <- stack(Pred.CCSM.26.North,Pred.CCSM.45.North,Pred.CCSM.60.North,Pred.CCSM.85.North,Pred.CSM1.26.North,Pred.CSM1.45.North,Pred.CSM1.60.North,Pred.CSM1.85.North)
 plot(North.2050)
 North.2070 <- stack(Pred.CCSM.267.North,Pred.CCSM.457.North,Pred.CCSM.607.North,Pred.CCSM.857.North,Pred.CSM1.267.North,Pred.CSM1.457.North,Pred.CSM1.607.North,Pred.CSM1.857.North)
+```
+
 
 #South East
+````
 SE.Present <- Pred.East 
 #SE.2050 <- stack(Pred.CCSM.26.SE,Pred.CCSM.45.SE,Pred.CCSM.60.SE,Pred.CCSM.85.SE,Pred.CSM1.26.SE,Pred.CSM1.45.SE,Pred.CSM1.60.SE,Pred.CSM1.85.SE)
 SE.2070 <- stack(Pred.CCSM.267.SE,Pred.CCSM.457.SE,Pred.CCSM.607.SE,Pred.CCSM.857.SE,Pred.CSM1.267.SE,Pred.CSM1.457.SE,Pred.CSM1.607.SE,Pred.CSM1.857.SE)
+```
 
 #South West
+```
 SW.Present <- Pred.CCSM.SW
 SW.2050 <- stack(Pred.CCSM.26.SW,Pred.CCSM.45.SW,Pred.CCSM.60.SW,Pred.CCSM.85.SW,Pred.CSM1.26.SW,Pred.CSM1.45.SW,Pred.CSM1.60.SW,Pred.CSM1.85.SW)
 SW.2070 <- stack(Pred.CCSM.267.SW,Pred.CCSM.457.SW,Pred.CCSM.607.SW,Pred.CCSM.857.SW,Pred.CSM1.267.SW,Pred.CSM1.457.SW,Pred.CSM1.607.SW,Pred.CSM1.857.SW)
+```
+
 
 #Full
+```
 Full.Present <- Pred.Pres.Full
 Full.2050 <- stack(Pred.CCSM.26.Full,Pred.CCSM.45.Full,Pred.CCSM.60.Full,Pred.CCSM.85.Full,Pred.CSM1.26.Full,Pred.CSM1.45.Full,Pred.CSM1.60.Full,Pred.CSM1.85.Full)
 Full.2070 <- stack(Pred.CCSM.267.Full,Pred.CCSM.457.Full,Pred.CCSM.607.Full,Pred.CCSM.857.Full,Pred.CSM1.267.Full,Pred.CSM1.457.Full,Pred.CSM1.607.Full,Pred.CSM1.857.Full)
+```
 
 #Schoener’s D test Code- present only 
+```
 <- modOverlap(SE.Present, SW.Present, na.rm = TRUE) 
 
 class       : RasterLayer 
