@@ -883,7 +883,7 @@ North.2070 <- stack(Pred.CCSM.267.North,Pred.CCSM.457.North,Pred.CCSM.607.North,
 
 
 #South East
-````
+```
 SE.Present <- Pred.East 
 #SE.2050 <- stack(Pred.CCSM.26.SE,Pred.CCSM.45.SE,Pred.CCSM.60.SE,Pred.CCSM.85.SE,Pred.CSM1.26.SE,Pred.CSM1.45.SE,Pred.CSM1.60.SE,Pred.CSM1.85.SE)
 SE.2070 <- stack(Pred.CCSM.267.SE,Pred.CCSM.457.SE,Pred.CCSM.607.SE,Pred.CCSM.857.SE,Pred.CSM1.267.SE,Pred.CSM1.457.SE,Pred.CSM1.607.SE,Pred.CSM1.857.SE)
@@ -993,7 +993,5 @@ coord. ref. : NA
 data source : in memory
 names       : layer 
 values      : 1, 1  (min, max)
-
-
 
 ```
