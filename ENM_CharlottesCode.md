@@ -151,13 +151,16 @@ North <- subset(Genomic, Transect=="CHN")
 
 #Cutting down bioclim data 
 #Subsetting Bioclims
-bio8 <- file.choose()
+bio8 <- file.choose(values.SW)
 bio9 <- file.choose()
 bio13 <- file.choose()
 bio15 <- file.choose()
 bio18 <- file.choose()
 
-Subset.Bio <- stack(bio8,bio9,bio13,bio15,bio18)
+##select the bioclim variables from climate
+
+#Subset.Bio <- stack(bio8,bio9,bio13,bio15,bio18)
+Subset.Bio <- stack(climate$bio8,climate$bio9,climate$bio13,climate$bio15,climate$bio18)
 Subset.Bio <- crop(Subset.Bio, extent(5.8,10.6,45.5,47.9))
 ```
 
@@ -166,13 +169,13 @@ Subset.Bio <- crop(Subset.Bio, extent(5.8,10.6,45.5,47.9))
 
 First this was run before reducing the number of climate variables
 ```
-meGIBIFSwi <- maxent(climate2, SW, a=NULL, factors=NULL, nbg=10000, path='C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output')
+#meGIBIFSwi <- maxent(climate2, SW, a=NULL, factors=NULL, nbg=10000, path='C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output')
 ```
 
 
 #### Full model for Switzerland. 
 ```
-SwitzerlandFull <- maxent(Subset.Bio, SW, a=NULL, factors=NULL, nbg=10000, path='C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output/MaxEnt Full Switzerland/Full Switzerland- 5 Bios')
+SwitzerlandFull <- maxent(Subset.Bio, SW, a=NULL, factors=NULL, nbg=10000, path="/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland")
 
 #Prediction
 Pred.Pres.Full <- predict(SwitzerlandFull, Subset.Bio)#What goes here??? Why doesn't it work!?
