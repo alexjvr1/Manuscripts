@@ -141,10 +141,13 @@ corrplot(corMatMy.SW, order = "hclust", tl.cex=1)
 
 ```
 ##Subset by Genome 
-Genomic <- read.csv(file.choose())#swiss.csv
-SouthEast <- subset(Genomic, region=="SouthEast")
-SouthWest <- subset(Genomic, region=="SouthWest")
-North <- subset(Genomic, region=="North")
+Genomic <- read.csv("swiss.csv", header=T) #data from AJvR with all CHregions specified
+#SouthEast <- subset(Genomic, region=="SouthEast")
+#SouthWest <- subset(Genomic, region=="SouthWest")
+#North <- subset(Genomic, region=="North")
+SouthEast <- subset(Genomic, Transect=="CHS.TI")
+SouthWest <- subset(Genomic, Transect=="CHS.VS")
+North <- subset(Genomic, Transect=="CHN")
 
 #Cutting down bioclim data 
 #Subsetting Bioclims
