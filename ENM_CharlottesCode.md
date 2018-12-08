@@ -51,8 +51,26 @@ dim(RtempGeo)    #dimensions of the data. Each row is a record, each column some
 ##Subset for Switzerlansw
 acgeo.SW <- acgeo[which(acgeo$lat >=25),]
 acgeo.SW <- acgeo.SW[which(acgeo.SW$lat <48),]
-plot(wrld_simpl, xlim=c(6,11), ylim=c(45.5,48), axes=T)
+
+##plot Switzerland
+library(sp)  # classes for spatial data
+library(raster)  # grids, rasters
+library(rasterVis)  # raster visualisation
+library(maptools)
+library(rgeos)
+
+require(spatial.tools)
+elevation<-getData("alt", country = "CH")
+x <- terrain(elevation, opt = c("slope", "aspect"), unit = "degrees")
+plot(x)
+slope <- terrain(elevation, opt = "slope")
+aspect <- terrain(elevation, opt = "aspect")
+hill <- hillShade(slope, aspect, 40, 270)
+plot(hill, col = grey(0:100/100), legend = FALSE, main = "Switzerland")
+
+#add gbif points
 points(acgeo.SW$lon, acgeo.SW$lat, col='red', pch=20, cex=0.75)
+
 
 ##Cleaning- cleaned down to Switzerland, after 1970 and by human observation as is Alex's data
 acgeo.SW <- subset(acgeo.SW, basisOfRecord=="HUMAN_OBSERVATION")
@@ -60,16 +78,19 @@ acgeo.SW <- subset(acgeo.SW, country=="Switzerland")
 acgeo.SW <- subset(acgeo.SW, year>=1970)
 
 ##Replot using this subset
-plot(wrld_simpl, xlim=c(6,11), ylim=c(45.5,48), axes=T)
+plot(hill, col = grey(0:100/100), legend = FALSE, main = "Switzerland")
 points(acgeo.SW$lon, acgeo.SW$lat, col='red', pch=20, cex=0.75)
 
 #Create CSV
-write.csv(acgeo.SW, "C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output/acgeo_SW.csv")
+write.csv(acgeo.SW, "acgeo_SW.csv")
 
 #Merg With Alex's Data!
-GIBIF.SW <- read.csv(file.choose())#Combined presence data
-xyGIBSW <- GIBIF.SW[, c("long","lat")]  #extract coordinates
-xy1 <- xyGIBSW[,c(1,2)] #rename xy for rest of code
+#CH.coords <- read.csv("CH.coords_83pops", header=T)
+#GIBIF.SW <- read.csv("acgeo_SW.csv", header=T)#Combined presence data
+#xyGIBSW <- GIBIF.SW[, c("long","lat")]  #extract coordinates
+#xy1 <- xyGIBSW[,c(1,2)] #rename xy for rest of code
+
+xy1 <- read.table("GBIF_CH.combined.coords")
 SW <- SpatialPointsDataFrame(coords = xy1, data=xy1, proj4string = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
 ```
 
@@ -82,31 +103,43 @@ library(corrr)
 
 ###Reduce number of variables using 
 #Prep Data 
-values.SW <- extract(climate2,SW)#Climate Files and Presence
+values.SW <- extract(climate,SW)#Climate Files and Presence. Charlotte uses climate2 here, but I don't know what it is. 
 df.SW <- cbind.data.frame(coordinates(SW),values.SW)
 head(df.SW)
 
-write.csv(df.SW, "C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output/df_SW.csv")
+write.csv(df.SW, "df_SW.csv")
 
 #Library
-install.packages('corrplot')
-install.packages('caret')
 library(corrplot)
 library(caret)
 
-datMy.SW <- read.csv("C:/Users/Student/Desktop/Third Year Project/MaxEnt input+output/df_SW.csv", header=TRUE)#df_SW.csv
+datMy.SW <- read.csv("df_SW.csv", header=TRUE)#df_SW.csv
 datMy.SW <- datMy.SW[, 3:21]
 datMy.scale.SW <- scale(datMy.SW[1:ncol(datMy.SW)], center=T, scale = T) #scale all the features (from feature 2 bacause feature 1 is the predictor output)
 corMatMy.SW <- cor(datMy.scale.SW, method = "spearman") #compute the correlation matrix
 corrplot(corMatMy.SW, order = "hclust", tl.cex = 1)
   #visualize the matrix, clustering features by correlation index.
+```
 
-highlyCor.SW <- findCorrelation(corMatMy.SW, 0.80) #After inspection, apply correlation filter at 0.70,
+![alt_txt][corrplot1]
+
+[corrplot1]:https://user-images.githubusercontent.com/12142475/49691437-fa8c3380-fb39-11e8-8706-f70d986ae867.png
+
+
+```
+highlyCor.SW <- findCorrelation(corMatMy.SW, 0.80) #After inspection, apply correlation filter at 0.8.
 #then we remove all the variable correlated with more 0.8.
 datMyFiltered.scale.SW <- datMy.scale.SW[,-highlyCor.SW]
 corMatMy.SW <- cor(datMyFiltered.scale.SW)
 corrplot(corMatMy.SW, order = "hclust", tl.cex=1)
+```
 
+![alt_txt][corrplot0.8]
+
+[corrplot0.8]:https://user-images.githubusercontent.com/12142475/49691459-52c33580-fb3a-11e8-870f-cccb7ffd27b2.png
+
+
+```
 ##Subset by Genome 
 Genomic <- read.csv(file.choose())#swiss.csv
 SouthEast <- subset(Genomic, region=="SouthEast")
