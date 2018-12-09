@@ -2,6 +2,7 @@
 
 Code by Charlotte (3rd year project, 2018). 
 
+Modified with code from [here](https://cmerow.github.io/RDataScience/3_6_Teaching_Ecoinformatics.html)
 ```
 #Switzerland 
 
@@ -175,12 +176,58 @@ First this was run before reducing the number of climate variables
 
 #### Full model for Switzerland. 
 ```
+#First choose a subset for training and for modeling
+RtempOcc <- xy1  ##rename to something obvious
+fold <- kfold(RtempOcc, k=5)  #randomly assign 1-5 
+Rtemptest <- RtempOcc[fold == 1, ]  #select all 1s (ie. 20% of the dataset) for testing the dataset
+Rtemptrain <- RtempOcc[fold != 1, ]
+
+#fit the maxent model
+Rtemp.me <- maxent(Subset.Bio, Rtemptrain)
+
+# plot showing importance of each variable
+plot(Rtemp.me@results[12:16,])
+
+# response curves
+response(Rtemp.me)
+```
+
+
+![alt_txt][responseCurves]
+
+[responseCurves]:https://user-images.githubusercontent.com/12142475/49696558-3effe980-fba3-11e8-8da4-11ce8ac30038.png
+
+
+
+```
+# predict to entire dataset
+Rtemp.pred <- predict(Rtemp.me, Subset.Bio)
+
+#plot predictions
+plot(Rtemp.pred, main="Predicted Suitability")
+#map('worldHires', fill=FALSE, add=TRUE)
+points(xy1[,1], xy1[,2], pch="+", cex=1)
+```
+
+![alt_txt][prediction]
+
+[prediction]:https://user-images.githubusercontent.com/12142475/49696622-67d4ae80-fba4-11e8-913c-5340753d2fcb.png
+
+
+
+Charlotte's code
+```
 SwitzerlandFull <- maxent(Subset.Bio, SW, a=NULL, factors=NULL, nbg=10000, path="/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland")
 
 #Prediction
-Pred.Pres.Full <- predict(SwitzerlandFull, Subset.Bio)#What goes here??? Why doesn't it work!?
+Pred.Pres.Full <- predict(SwitzerlandFull, Subset.Bio)
 plot(Pred.Pres.Full)
+points(xy1[,1], xy1[,2], pch="+", cex=1)
 ```
+
+![alt_txt][Charlotte.pred]
+
+[Charlotte.pred]:https://user-images.githubusercontent.com/12142475/49696630-96528980-fba4-11e8-9f5c-8f3379814eaa.png
 
 
 #### SUBSETS FOR N/SE/SW
@@ -198,6 +245,14 @@ Present.Bio.SW <- crop(Subset.Bio, extent(6.1,8,46,47.5))
 ### Future climates
 
 Download all BioClim data for future climate scenarios. 
+
+
+Get the data
+```
+futureEnv=getData('CMIP5', var='bio', res=2.5, rcp=85, model='HE', year=70)
+names(futureEnv)=names(climate)
+```
+
 
 2050
 ```
