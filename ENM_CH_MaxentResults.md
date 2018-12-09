@@ -42,11 +42,11 @@ CHSE = South East CH (Ticino)
 
 Calculate the change in suitable habitat under future climate conditions. 
 
-1. Plot current distribution. 
+1. Import MaxEnt model for current distribution. 
 
-2. Calculate number of suitable cells. 
+2. Calculate number of suitable cells based on threshold
 
-3. Plot future climates
+3. Import maxEnt model for future climates
 
 4. Calculate number of suitable cells. 
 
