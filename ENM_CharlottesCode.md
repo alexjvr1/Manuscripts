@@ -230,6 +230,10 @@ points(xy1[,1], xy1[,2], pch="+", cex=1)
 [Charlotte.pred]:https://user-images.githubusercontent.com/12142475/49696630-96528980-fba4-11e8-9f5c-8f3379814eaa.png
 
 
+The plots look really similar. 
+
+
+
 #### SUBSETS FOR N/SE/SW
 
 Subset the climate data
