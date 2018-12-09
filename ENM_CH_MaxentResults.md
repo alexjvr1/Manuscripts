@@ -55,7 +55,76 @@ CHSW = South West CH (Valais)
 
 CHSE = South East CH (Ticino)
 
+Upload models for CHN and CHSW
+```
+CHN <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntNorthSubset/Present/")
 
+CHSW <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntSouthWestSubset/Present/")
+```
+
+Subset the bioclim models
+```
+#N
+Present.Bio.N <- crop(Subset.Bio, extent(6.1,10.1,46.7,47.5))
+#SE
+Present.Bio.SE <- crop(Subset.Bio, extent(8.0,10.1,46,47.5))
+#SW
+Present.Bio.SW <- crop(Subset.Bio, extent(6.1,8,46,47.5))
+```
+
+
+
+Calculate the niche overlap between the different regions using the R package [ecospat](https://cran.r-project.org/web/packages/ecospat/vignettes/vignette_ecospat_package.pdf)
+```
+install.packages("ecospat")
+library(ecospat)
+
+
+##PCA of the BioClim variables for the CHN and CHSW data combined. This is for the entire region based on the extent of the bioclim data. 
+
+pca.env <- dudi.pca(c(Present.Bio.N@data@values[,1:5],Present.Bio.SW@data@values[,1:5]),scannf=F,nf=2)  #scannf=F: don't display screeplot; nf=2: keep two axes
+
+pca.env
+Duality diagramm
+class: pca dudi
+$call: dudi.pca(df = c(Present.Bio.N@data@values[, 1:5], Present.Bio.SW@data@values[,1:5]), scannf = F, nf = 2)
+
+$nf: 1 axis-components saved
+$rank: 1
+eigen values: 1
+  vector length mode    content       
+1 $cw    1      numeric column weights
+2 $lw    17400  numeric row weights   
+3 $eig   1      numeric eigen values  
+
+  data.frame nrow  ncol content             
+1 $tab       17400 1    modified array      
+2 $li        17400 1    row coordinates     
+3 $l1        17400 1    row normed scores   
+4 $co        1     1    column coordinates  
+5 $c1        1     1    column normed scores
+other elements: cent norm 
+
+
+
+##plot the PCA
+
+ecospat.plot.contrib(contrib=pca.env$co, eigen=pca.env$eig)
+```
+
+Predict the scores on the axes
+```
+# PCA scores for the whole study area
+scores.globclim <- pca.env$li
+# PCA scores for the CHN sites with known R.temp populations
+scores.sp.nat <- suprow(pca.env,nat[which(nat[,11]==1),3:10])$li  ###
+# PCA scores for the CHSW sites with known R.temp populations
+scores.sp.inv <- suprow(pca.env,inv[which(inv[,11]==1),3:10])$li  ###
+# PCA scores for the whole CHN study area
+scores.clim.nat <- suprow(pca.env,Present.Bio.N@data@values[,1:5])$li
+# PCA scores for the whole CHSW study area
+scores.clim.inv <- suprow(pca.env,inv[,3:10])$li
+```
 
 
 ## 2. Change in suitable cells
