@@ -114,9 +114,9 @@ SwitzerlandFull <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMp
 
 ```
 
-ModelPredictions (see below for future climate data)
+ModelPredictions 
 ```
-pred.CCSM
+pred.SwitzerlandFull <- predict(SwitzerlandFull, Subset.Bio)
 
 ```
 
@@ -353,22 +353,59 @@ pred.CSM1.85_2070_CH <- predict(CSM1.85MaxEnt_2070.FULL, CSM1.85_2070_CH5) #wron
 ```
 
 
+Now we have all the models to plot the change in suitable cells
 
+i.e. present climate predict, and all future climates predict. 
+
+Determine the number of suitable cells in each model. We want to change the presence probability into binary suitability values. There are different ways to choose a thresholds for this. I'd suggest using 0.7 for this data. It's quite stringent, but let's see what it looks like. 
+
+The predicted outputs all have an @data@values layer which gives you the raw suitability for each cell in the dataset. We can simply count all the cells above our threshold for this: 
+```
+#Switzerland Full
+
+suitability.df <- ()
+
+sum(pred.SwitzerlandFull@data@values > 0.7)
+[1] 1104
+
+sum(pred.CCSM.26_2050_CH@data@values > 0.7)
+sum(pred.CCSM.45_2050_CH@data@values > 0.7)
+sum(pred.CCSM.60_2050_CH@data@values > 0.7)
+sum(pred.CCSM.85_2050_CH@data@values > 0.7)
+sum(pred.CSM1.26_2050_CH@data@values > 0.7)
+sum(pred.CSM1.45_2050_CH@data@values > 0.7)
+sum(pred.CSM1.60_2050_CH@data@values > 0.7)
+sum(pred.CSM1.85_2050_CH@data@values > 0.7)
+
+sum(pred.CCSM.26_2070_CH@data@values > 0.7)
+sum(pred.CCSM.45_2070_CH@data@values > 0.7)
+sum(pred.CCSM.60_2070_CH@data@values > 0.7)
+sum(pred.CCSM.85_2070_CH@data@values > 0.7)
+sum(pred.CSM1.26_2070_CH@data@values > 0.7)
+sum(pred.CSM1.45_2070_CH@data@values > 0.7)
+sum(pred.CSM1.60_2070_CH@data@values > 0.7)
+sum(pred.CSM1.85_2070_CH@data@values > 0.7)
 
 ```
-RtempChangePoints = extract(rattler.change, rattlerocc)
-hist(rattlerChangePoints, main="", xlab="Change in habitat suitability")
-abline(v=0, col="red")
 
-pvtest <- data.frame(extract(pred_nf, occtest))
-avtest <- data.frame(extract(pred_nf, bg))
-e2 <- evaluate(me, p=pvtest, a=avtest)
 
-rattlerMitChangePoints = extract(rattler.mit.change, rattlerocc)
-hist(rattlerChangePoints, main="", x)
-abline(v=0, col="red")
+Create a table in excel with all the info and import back into R
 
+In the example here I've copied the CHfull results 4 times to represent the other regions, so the data is exactly the same. The last column is the proportional change relative to the present predictions. 
+```
+Cells.Comparison <- read.table("SuitableCellsComparison", header=T)
+
+head(Cells.Comparison)
+  region    time nr.cells proportion change.in.suitable.cells
+1  Chall present     1104  0.1655172                 100.0000
+2  Chall    2050     1194  0.1790105                 108.1522
+3  Chall    2050     1130  0.1694153                 102.3551
+4  Chall    2050     1127  0.1689655                 102.0833
+5  Chall    2050     1257  0.1884558                 113.8587
+6  Chall    2050     1207  0.1809595                 109.3297
 ```
 
+Plot
+```
 
-
+```
