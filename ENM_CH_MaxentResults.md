@@ -6,6 +6,12 @@ MaxEnt run for Current climate, 2050 and 2070.
 See [here](https://github.com/alexjvr1/Manuscripts/blob/master/ENM_CharlottesCode.md) for Charlotte's code. 
 
 
+Some resources for MaxEnt in R
+
+https://www.molecularecologist.com/2013/04/species-distribution-models-in-r/
+
+
+
 ### Aims: 
 
 1. Calculate niche overlap between regions within Switzerland. (using Schroeder's D)
@@ -56,7 +62,7 @@ working directory:
 /Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland
 
 
-Import MaxEnt output into R
+load libraries and MaxEnt
 ```
 library(raster)
 library(dismo)
@@ -65,10 +71,17 @@ library(jsonlite)
 library(rgdal)
 library(spaa)
 
+## MaxEnt needs to be downloaded and maxent.jar should be moved to the dismo package directory:  
+## system.file("java", package="dismo")  ##use this to find the directory
 
 MaxEnt <- system.file("java",package="dismo")  ##get MaxEnt
+```
+
+Import MaxEnt output into R
+```
+
+
 
 
 ```
-
 
