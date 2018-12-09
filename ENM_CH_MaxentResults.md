@@ -10,7 +10,27 @@ Some resources for MaxEnt in R
 
 https://www.molecularecologist.com/2013/04/species-distribution-models-in-r/
 
+Function to import maxent models. From [here](https://rdrr.io/github/johnbaums/rmaxent/src/R/import_maxent.R)
+```
+import_maxent <- function(dir, lambdas, html) {
+  l <- ifelse(missing(lambdas), 
+         list.files(dir, '\\.lambdas$', full.names=TRUE)[1], 
+         file.path(dir, basename(lambdas)))
+  h <- ifelse(missing(html), 
+              list.files(dir, '\\.html$', full.names=TRUE)[1], 
+              file.path(dir, basename(html)))
+  m <- methods::new('MaxEnt',
+           lambdas=readLines(l),
+           results=t(utils::read.csv(file.path(dir, 'maxentResults.csv'))[, -1]),
+           path=dir,
+           html=h,
+           hasabsence=file.exists(file.path(dir, 'absence')))
+  m@absence <- read.csv(file.path(dir, 'absence'))[, -(1:3)]
+  m@presence <- utils::read.csv(file.path(dir, 'presence'))[, -(1:3)]
+  m
+}
 
+```
 
 ### Aims: 
 
@@ -79,9 +99,56 @@ MaxEnt <- system.file("java",package="dismo")  ##get MaxEnt
 
 Import MaxEnt output into R
 ```
+#install.packages("devtools")
+library(devtools)
+install_github("johnbaums/rmaxent")
 
 
+##2050
 
 
+CCSM.45MaxEnt_2050.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2050_Switerland")
 ```
 
+Get Future climate data for 2050 and 2070
+```
+CCSM.26_2050=getData('CMIP5', var='bio', res=2.5, rcp=26, model='CC', year=50)
+CCSM.45_2050=getData('CMIP5', var='bio', res=2.5, rcp=45, model='CC', year=50)
+CCSM.60_2050=getData('CMIP5', var='bio', res=2.5, rcp=60, model='CC', year=50)
+CCSM.85_2050=getData('CMIP5', var='bio', res=2.5, rcp=85, model='CC', year=50)
+CSM1.26_2050=getData('CMIP5', var='bio', res=2.5, rcp=26, model='BC', year=50)
+CSM1.45_2050=getData('CMIP5', var='bio', res=2.5, rcp=45, model='BC', year=50)
+CSM1.60_2050=getData('CMIP5', var='bio', res=2.5, rcp=60, model='BC', year=50)
+CSM1.85_2050=getData('CMIP5', var='bio', res=2.5, rcp=85, model='BC', year=50)
+
+
+CCSM.26_2070=getData('CMIP5', var='bio', res=2.5, rcp=26, model='CC', year=70)
+CCSM.45_2070=getData('CMIP5', var='bio', res=2.5, rcp=45, model='CC', year=70)
+CCSM.60_2070=getData('CMIP5', var='bio', res=2.5, rcp=60, model='CC', year=70)
+CCSM.85_2070=getData('CMIP5', var='bio', res=2.5, rcp=85, model='CC', year=70)
+CSM1.26_2070=getData('CMIP5', var='bio', res=2.5, rcp=26, model='BC', year=70)
+CSM1.45_2070=getData('CMIP5', var='bio', res=2.5, rcp=45, model='BC', year=70)
+CSM1.60_2070=getData('CMIP5', var='bio', res=2.5, rcp=60, model='BC', year=70)
+CSM1.85_2070=getData('CMIP5', var='bio', res=2.5, rcp=85, model='BC', year=70)
+
+
+#rename all the bioclim variables
+names(CCSM.26_2050)=names(climate)
+names(CCSM.45_2050)=names(climate)
+names(CCSM.60_2050)=names(climate)
+names(CCSM.85_2050)=names(climate)
+names(CSM1.26_2050)=names(climate)
+names(CSM1.45_2050)=names(climate)
+names(CSM1.60_2050)=names(climate)
+names(CSM1.85_2050)=names(climate)
+
+names(CCSM.26_2070)=names(climate)
+names(CCSM.45_2070)=names(climate)
+names(CCSM.60_2070)=names(climate)
+names(CCSM.85_2070)=names(climate)
+names(CSM1.26_2070)=names(climate)
+names(CSM1.45_2070)=names(climate)
+names(CSM1.60_2070)=names(climate)
+names(CSM1.85_2070)=names(climate)
+
+```
