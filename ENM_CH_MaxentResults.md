@@ -97,7 +97,7 @@ library(spaa)
 MaxEnt <- system.file("java",package="dismo")  ##get MaxEnt
 ```
 
-Import MaxEnt output into R
+Import MaxEnt models run by Charlotte into R
 ```
 #install.packages("devtools")
 library(devtools)
@@ -106,9 +106,46 @@ install_github("johnbaums/rmaxent")
 
 ##2050
 
+CCSM.26MaxEnt_2050.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2050_Switerland/CCSM2.26")
 
-CCSM.45MaxEnt_2050.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2050_Switerland")
+CCSM.45MaxEnt_2050.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2050_Switerland/CCSM2.45")
+
+CCSM.60MaxEnt_2050.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2050_SwiterlandCCSM2.60")
+
+CCSM.85MaxEnt_2050.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2050_Switerland/CCSM2.80")
+
+CSM1.26MaxEnt_2050.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2050_Switerland/CSM1.26")
+
+CSM1.45MaxEnt_2050.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2050_Switerland/CSM1.45")
+
+CSM1.60MaxEnt_2050.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2050_Switerland/CSM1.60")
+
+CSM1.85MaxEnt_2050.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2050_Switerland/CSM1.85")
 ```
+
+
+```
+##2070
+
+CCSM.26MaxEnt_2070.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2070_Switerland/CCSM2.26")
+
+CCSM.45MaxEnt_2070.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2070_Switerland/CCSM2.45")
+
+CCSM.60MaxEnt_2070.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2070_Switerland/CCSM2.60")
+
+CCSM.85MaxEnt_2070.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2070_Switerland/CCSM2.80")
+
+CSM1.26MaxEnt_2070.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2070_Switerland/CSM1.26")
+
+CSM1.45MaxEnt_2070.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2070_Switerland/CSM1.45")
+
+CSM1.60MaxEnt_2070.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2070_Switerland/CSM1.60")
+
+CSM1.85MaxEnt_2070.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2070_Switerland/CSM1.85")
+
+```
+
+
 
 Get Future climate data for 2050 and 2070
 ```
@@ -150,5 +187,25 @@ names(CSM1.26_2070)=names(climate)
 names(CSM1.45_2070)=names(climate)
 names(CSM1.60_2070)=names(climate)
 names(CSM1.85_2070)=names(climate)
+
+
+##crop extent to CH
+CCSM.26_2050_CH <- crop(CCSM.26_2050,extent(5.8,10.6,45.5,47.9))
+CCSM.45_2050_CH <- crop(CCSM.45_2050,extent(5.8,10.6,45.5,47.9))
+CCSM.60_2050_CH <- crop(CCSM.60_2050,extent(5.8,10.6,45.5,47.9))
+CCSM.85_2050_CH <- crop(CCSM.85_2050,extent(5.8,10.6,45.5,47.9))
+CSM1.26_2050_CH <- crop(CSM1.26_2050,extent(5.8,10.6,45.5,47.9))
+CSM1.45_2050_CH <- crop(CSM1.45_2050,extent(5.8,10.6,45.5,47.9))
+CSM1.60_2050_CH <- crop(CSM1.60_2050,extent(5.8,10.6,45.5,47.9))
+CSM1.85_2050_CH <- crop(CSM1.85_2050,extent(5.8,10.6,45.5,47.9))
+
+CCSM.26_2070_CH <- crop(CCSM.26_2070,extent(5.8,10.6,45.5,47.9))
+CCSM.45_2070_CH <- crop(CCSM.45_2070,extent(5.8,10.6,45.5,47.9))
+CCSM.60_2070_CH <- crop(CCSM.60_2070,extent(5.8,10.6,45.5,47.9))
+CCSM.85_2070_CH <- crop(CCSM.85_2070,extent(5.8,10.6,45.5,47.9))
+CSM1.26_2070_CH <- crop(CSM1.26_2070,extent(5.8,10.6,45.5,47.9))
+CSM1.45_2070_CH <- crop(CSM1.45_2070,extent(5.8,10.6,45.5,47.9))
+CSM1.60_2070_CH <- crop(CSM1.60_2070,extent(5.8,10.6,45.5,47.9))
+CSM1.85_2070_CH <- crop(CSM1.85_2070,extent(5.8,10.6,45.5,47.9))
 
 ```
