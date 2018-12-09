@@ -90,6 +90,9 @@ library(sp)
 library(jsonlite)
 library(rgdal)
 library(spaa)
+library(rJava)  #rJava package
+library(maptools)
+
 
 ## MaxEnt needs to be downloaded and maxent.jar should be moved to the dismo package directory:  
 ## system.file("java", package="dismo")  ##use this to find the directory
@@ -102,15 +105,67 @@ Import MaxEnt models run by Charlotte into R
 #install.packages("devtools")
 library(devtools)
 install_github("johnbaums/rmaxent")
+```
 
 
+Currentmodel
+```
+SwitzerlandFull <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland")
+
+```
+
+ModelPredictions (see below for future climate data)
+```
+pred.CCSM
+
+```
+
+
+Evaluate model and choose suitability threshold
+```
+# withold 20% of the data for testing the model
+Rtempocc=xy1
+fold <- kfold(Rtempocc, k=5)
+Rtemptest <- Rtempocc[fold == 1, ]
+Rtemptrain <- Rtempocc[fold != 1, ]
+
+
+#fit the maxent model
+Rtemp.me <- maxent(Subset.Bio, Rtemptrain)
+
+# response curves
+response(Rtemp.me)
+# predict to entire dataset
+Rtemp.pred <- predict(Rtemp.me, Subset.Bio)
+```
+
+Evaluate the model
+```
+#testing the model
+# background data
+bg <- randomPoints(Subset.Bio, 1000) #background "pseudoabsences"
+
+#simplest way to use 'evaluate'
+e1 <- evaluate(Rtemp.me, p=Rtemptest, a=bg, x=Subset.Bio)
+
+plot(e1, 'ROC')
+pvtest <- data.frame(extract(Subset.Bio, Rtemptest))
+avtest <- data.frame(extract(Subset.Bio, bg))
+e2 <- evaluate(Rtemp.me, p=pvtest, a=avtest)
+```
+
+
+
+
+Upload all the models that Charlotte ran before
+```
 ##2050
 
 CCSM.26MaxEnt_2050.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2050_Switerland/CCSM2.26")
 
 CCSM.45MaxEnt_2050.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2050_Switerland/CCSM2.45")
 
-CCSM.60MaxEnt_2050.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2050_SwiterlandCCSM2.60")
+CCSM.60MaxEnt_2050.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2050_Switerland/CCSM2.60")
 
 CCSM.85MaxEnt_2050.FULL <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntFullSwitzerland/MaxEntCroppedBiosFullFuture_2050_Switerland/CCSM2.80")
 
@@ -189,6 +244,49 @@ names(CSM1.60_2070)=names(climate)
 names(CSM1.85_2070)=names(climate)
 
 
+#names to use to compare with Charlotte's models
+#rename all the bioclim variables
+
+Charlotte.bioclimnames.cc2650 <- c("cc26bi508", "cc26bi509","cc26bi5013", "cc26bi5015", "cc26bi5018")
+Charlotte.bioclimnames.cc4550 <- c("cc45bi508", "cc45bi509","cc45bi5013", "cc45bi5015", "cc45bi5018")
+Charlotte.bioclimnames.cc6050 <- c("cc60bi508", "cc60bi509","cc60bi5013", "cc60bi5015", "cc60bi5018")
+Charlotte.bioclimnames.cc8550 <- c("cc85bi508", "cc85bi509","cc85bi5013", "cc85bi5015", "cc85bi5018")
+Charlotte.bioclimnames.bc2650 <- c("bc26bi508", "bc26bi509","bc26bi5013", "bc26bi5015", "bc26bi5018")
+Charlotte.bioclimnames.bc4550 <- c("bc45bi508", "bc45bi509","bc45bi5013", "bc45bi5015", "bc45bi5018")
+Charlotte.bioclimnames.bc6050 <- c("bc60bi508", "bc60bi509","bc60bi5013", "bc60bi5015", "bc60bi5018")
+Charlotte.bioclimnames.bc8550 <- c("bc85bi508", "bc85bi509","bc85bi5013", "bc85bi5015", "bc85bi5018")
+
+
+Charlotte.bioclimnames.cc2670 <- c("cc26bi708", "cc26bi709","cc26bi7013", "cc26bi7015", "cc26bi7018")
+Charlotte.bioclimnames.cc4570 <- c("cc45bi708", "cc45bi709","cc45bi7013", "cc45bi7015", "cc45bi7018")
+Charlotte.bioclimnames.cc6070 <- c("cc60bi708", "cc60bi709","cc60bi7013", "cc60bi7015", "cc60bi7018")
+Charlotte.bioclimnames.cc8570 <- c("cc85bi708", "cc85bi709","cc85bi7013", "cc85bi7015", "cc85bi7018")
+Charlotte.bioclimnames.bc2670 <- c("bc26bi708", "bc26bi709","bc26bi7013", "bc26bi7015", "bc26bi7018")
+Charlotte.bioclimnames.bc4570 <- c("bc45bi708", "bc45bi709","bc45bi7013", "bc45bi7015", "bc45bi7018")
+Charlotte.bioclimnames.bc6070 <- c("bc60bi708", "bc60bi709","bc60bi7013", "bc60bi7015", "bc60bi7018")
+Charlotte.bioclimnames.bc8570 <- c("bc85bi708", "bc85bi709","bc85bi7013", "bc85bi7015", "bc85bi7018")
+
+#names(CCSM.26_2050_CH5)=Charlotte.bioclimnames.cc2650
+#names(CCSM.45_2050_CH5)=Charlotte.bioclimnames.cc4550
+#names(CCSM.60_2050_CH5)=Charlotte.bioclimnames.cc6050
+#names(CCSM.85_2050_CH5)=Charlotte.bioclimnames.cc8550
+#names(CSM1.26_2050_CH5)=Charlotte.bioclimnames.bc2650
+#names(CSM1.45_2050_CH5)=Charlotte.bioclimnames.bc4550
+#names(CSM1.60_2050_CH5)=Charlotte.bioclimnames.bc6050
+#names(CSM1.85_2050_CH5)=Charlotte.bioclimnames.bc8550
+
+##I think these models might be swapped around. I've renamed the CCSM models with the bc variable names.. The same happened with CCSM.60MaxEnt_2050.FULL & CSM1.80MaxEnt_2050.FULL
+#names(CCSM.26_2070_CH5)=Charlotte.bioclimnames.bc2670
+#names(CCSM.45_2070_CH5)=Charlotte.bioclimnames.bc4570
+#names(CCSM.60_2070_CH5)=Charlotte.bioclimnames.bc6070
+#names(CCSM.85_2070_CH5)=Charlotte.bioclimnames.bc8570
+#names(CSM1.26_2070_CH5)=Charlotte.bioclimnames.cc2670
+#names(CSM1.45_2070_CH5)=Charlotte.bioclimnames.cc4570
+#names(CSM1.60_2070_CH5)=Charlotte.bioclimnames.cc6070
+#names(CSM1.85_2070_CH5)=Charlotte.bioclimnames.cc8570
+
+
+
 ##crop extent to CH
 CCSM.26_2050_CH <- crop(CCSM.26_2050,extent(5.8,10.6,45.5,47.9))
 CCSM.45_2050_CH <- crop(CCSM.45_2050,extent(5.8,10.6,45.5,47.9))
@@ -208,4 +306,69 @@ CSM1.45_2070_CH <- crop(CSM1.45_2070,extent(5.8,10.6,45.5,47.9))
 CSM1.60_2070_CH <- crop(CSM1.60_2070,extent(5.8,10.6,45.5,47.9))
 CSM1.85_2070_CH <- crop(CSM1.85_2070,extent(5.8,10.6,45.5,47.9))
 
+##keep only the 6 bioclim variables
+important.bios <- c("bio8", "bio9", "bio13", "bio15", "bio18")
+
+CCSM.26_2050_CH5 <- subset(CCSM.26_2050_CH,important.bios)
+CCSM.45_2050_CH5 <- subset(CCSM.45_2050_CH,important.bios)
+CCSM.60_2050_CH5 <- subset(CCSM.60_2050_CH,important.bios)
+CCSM.85_2050_CH5 <- subset(CCSM.85_2050_CH,important.bios)
+CSM1.26_2050_CH5 <- subset(CSM1.26_2050_CH,important.bios)
+CSM1.45_2050_CH5 <- subset(CSM1.45_2050_CH,important.bios)
+CSM1.60_2050_CH5 <- subset(CSM1.60_2050_CH,important.bios)
+CSM1.85_2050_CH5 <- subset(CSM1.85_2050_CH,important.bios)
+
+CCSM.26_2070_CH5 <- subset(CCSM.26_2070_CH,important.bios)
+CCSM.45_2070_CH5 <- subset(CCSM.45_2070_CH,important.bios)
+CCSM.60_2070_CH5 <- subset(CCSM.60_2070_CH,important.bios)
+CCSM.85_2070_CH5 <- subset(CCSM.85_2070_CH,important.bios)
+CSM1.26_2070_CH5 <- subset(CSM1.26_2070_CH,important.bios)
+CSM1.45_2070_CH5 <- subset(CSM1.45_2070_CH,important.bios)
+CSM1.60_2070_CH5 <- subset(CSM1.60_2070_CH,important.bios)
+CSM1.85_2070_CH5 <- subset(CSM1.85_2070_CH,important.bios)
+
 ```
+
+
+Run predictions for all the models: 
+```
+pred.CCSM.26_2050_CH <- predict(CCSM.26MaxEnt_2050.FULL, CCSM.26_2050_CH5)
+pred.CCSM.45_2050_CH <- predict(CCSM.45MaxEnt_2050.FULL, CCSM.45_2050_CH5)
+pred.CCSM.60_2050_CH <- predict(CCSM.60MaxEnt_2050.FULL, CCSM.60_2050_CH5) #wrong variables
+pred.CCSM.85_2050_CH <- predict(CCSM.85MaxEnt_2050.FULL, CCSM.85_2050_CH5) #wrong variables
+pred.CSM1.26_2050_CH <- predict(CSM1.26MaxEnt_2050.FULL, CSM1.26_2050_CH5)
+pred.CSM1.45_2050_CH <- predict(CSM1.45MaxEnt_2050.FULL, CSM1.45_2050_CH5)
+pred.CSM1.60_2050_CH <- predict(CSM1.60MaxEnt_2050.FULL, CSM1.60_2050_CH5)
+pred.CSM1.85_2050_CH <- predict(CSM1.85MaxEnt_2050.FULL, CSM1.85_2050_CH5) 
+
+pred.CCSM.26_2070_CH <- predict(CCSM.26MaxEnt_2070.FULL, CCSM.26_2070_CH5)
+pred.CCSM.45_2070_CH <- predict(CCSM.45MaxEnt_2070.FULL, CCSM.45_2070_CH5) #wrong variables
+pred.CCSM.60_2070_CH <- predict(CCSM.60MaxEnt_2070.FULL, CCSM.60_2070_CH5)
+pred.CCSM.85_2070_CH <- predict(CCSM.85MaxEnt_2070.FULL, CCSM.85_2070_CH5)
+pred.CSM1.26_2070_CH <- predict(CSM1.26MaxEnt_2070.FULL, CSM1.26_2070_CH5)
+pred.CSM1.45_2070_CH <- predict(CSM1.45MaxEnt_2070.FULL, CSM1.45_2070_CH5)
+pred.CSM1.60_2070_CH <- predict(CSM1.60MaxEnt_2070.FULL, CSM1.60_2070_CH5)
+pred.CSM1.85_2070_CH <- predict(CSM1.85MaxEnt_2070.FULL, CSM1.85_2070_CH5) #wrong variables
+
+```
+
+
+
+
+```
+RtempChangePoints = extract(rattler.change, rattlerocc)
+hist(rattlerChangePoints, main="", xlab="Change in habitat suitability")
+abline(v=0, col="red")
+
+pvtest <- data.frame(extract(pred_nf, occtest))
+avtest <- data.frame(extract(pred_nf, bg))
+e2 <- evaluate(me, p=pvtest, a=avtest)
+
+rattlerMitChangePoints = extract(rattler.mit.change, rattlerocc)
+hist(rattlerChangePoints, main="", x)
+abline(v=0, col="red")
+
+```
+
+
+
