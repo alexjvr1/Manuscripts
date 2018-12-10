@@ -129,10 +129,14 @@ Predict the scores on the axes
 scores.globclim <- pca.env$li
 
 # PCA scores for the CHN sites with known R.temp populations
-scores.N <- suprow(pca.env,nat[which(nat[,11]==1),3:10])$li  ###Here we have to identify the cells in the raster file that represents the known populations. 
+CHN.presence.bio <- CHN@presence #write all the bioclim vars for known sites to a dataframe (make sure they're in the same order and format as with the full dataset (i.e. not transformed in this case). Here CHN is the model I read in before. 
+pca.sp.N <- dudi.pca(CHN.presence.bio, scannf=F, nf=2)  ##pca on these variables 
+scores.N <- pca.sp.N$li
 
 # PCA scores for the CHSW sites with known R.temp populations
-scores.SW <- suprow(pca.env,inv[which(inv[,11]==1),3:10])$li  ###
+SW.presence.bio <- SW@presence #write all the bioclim vars for known sites to a dataframe
+pca.sp.SW <- dudi.pca(SW.presence.bio, scannf=F, nf=2)  ##pca on these variables 
+scores.SW <- pca.sp.N$li
 
 
 # PCA scores for the whole CHN study area
