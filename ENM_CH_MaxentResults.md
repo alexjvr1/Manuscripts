@@ -779,7 +779,7 @@ hill <- hillShade(slope, aspect, 40, 270)
 plot(hill, col = grey(0:100/100), legend = FALSE, main = "Switzerland")
 
 #add the spatial data points
-plot(pCHfull.2050.coords, pch = 15, cex = 0.8, col=col, add = TRUE)
+plot(pCHfull.2050.coords, pch = 20, cex = 1, col=col, add = TRUE)
 
 ```
 
