@@ -595,7 +595,7 @@ summary(pAll)  #see below. This gives you coordinates in cols 1&2, and the predi
 
 ```
 
-Add a binary column to this with 1 for all cells > 0.7 (or whatever your threshold is)
+Add a binary column to this with 1 for all cells > 0.7 (or whatever your threshold is). For the boxplot above we used 0.7, so remember to check that you're using the same threshold throughout. 
 ```
 pAll$thresh <- pAll$layer
 pAll[which(pAll$layer>=0.7),4] <- 1 #assign 1 to all cells above the threshold in a new column called thresh
@@ -711,3 +711,15 @@ Threshold of 0.7
 ![alt_txt][thresh0.7]
 
 [thresh0.7]:https://user-images.githubusercontent.com/12142475/49741635-bd858580-fc8e-11e8-9dba-a5575f6fdebe.png
+
+
+
+#### Plot future climates
+
+We want to aggregate the future climates and change the colour on the plot according to the number of models that found a cell to be suitable (>0.7). So we'll add the binary suitability threshold, then add all the columns together, then create a final column called 0, 1, 2 or 3 depending on the number of models that supported that cell (up to 25%, 25-50%, 50-75%, 75-100%). We'll assign three colours to the rows we want to map (classes >25% suitability). 
+
+SwitzerlandFull
+```
+
+
+```
