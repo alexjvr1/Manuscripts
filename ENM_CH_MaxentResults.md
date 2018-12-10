@@ -129,14 +129,14 @@ Predict the scores on the axes
 scores.globclim <- pca.env$li
 
 # PCA scores for the CHN sites with known R.temp populations
-CHN.presence.bio <- CHN@presence #write all the bioclim vars for known sites to a dataframe (make sure they're in the same order and format as with the full dataset (i.e. not transformed in this case). Here CHN is the model I read in before. 
+CHN.presence.bio <- CHN@presence #write all the bioclim vars for known sites to a dataframe (make sure they're in the same order and format as with the full dataset (i.e. not transformed in this case). Here CHN is the model I imported in before (see above) 
 pca.sp.N <- dudi.pca(CHN.presence.bio, scannf=F, nf=2)  ##pca on these variables 
-scores.N <- pca.sp.N$li
+scores.sp.N <- pca.sp.N$li
 
 # PCA scores for the CHSW sites with known R.temp populations
-SW.presence.bio <- SW@presence #write all the bioclim vars for known sites to a dataframe
+SW.presence.bio <- CHSW@presence #write all the bioclim vars for known sites to a dataframe
 pca.sp.SW <- dudi.pca(SW.presence.bio, scannf=F, nf=2)  ##pca on these variables 
-scores.SW <- pca.sp.N$li
+scores.sp.SW <- pca.sp.SW$li
 
 
 # PCA scores for the whole CHN study area
@@ -156,7 +156,24 @@ dim(scores.clim.SW)
 ```
 
 
+Calculate the Occurrence Densities Grid with ecospat.grid.clim.dyn()
+```
+#For a species in CHN
+# gridding the CHN niche
+grid.clim.nat <- ecospat.grid.clim.dyn(glob=scores.globclim,
+glob1=scores.clim.N,
+sp=scores.sp.N, R=100,
+th.sp=0.05)
 
+
+For a species in the invaded range (Australia)
+11
+# gridding the invasive niche
+grid.clim.inv <- ecospat.grid.clim.dyn(glob=scores.globclim,
+glob1=scores.clim.inv,
+sp=scores.sp.inv, R=100,
+th.sp=0)
+```
 
 
 
