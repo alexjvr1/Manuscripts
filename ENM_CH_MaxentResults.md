@@ -720,6 +720,65 @@ We want to aggregate the future climates and change the colour on the plot accor
 
 SwitzerlandFull
 ```
+#predicted maps made above
+#stack all the raster layers
 
+CHfull.2050 <- stack(pred.CCSM.26_2050_CH, pred.CCSM.45_2050_CH, pred.CSM1.26_2050_CH, pred.CSM1.45_2050_CH, pred.CSM1.60_2050_CH, pred.CSM1.85_2050_CH) #pred.CCSM.60_2050_CH and pred.CCSM.85_2050_CH removed from this code, because they need to be rerun
+
+pCHfull.2050 <- as.data.frame(rasterToPoints(CHfull.2050)) #this gives you xy coordinates, and a layer with suitability values for each of the future climate scenarios. 
+
+pCHfull.2050[,9:14] <- pCHfull.2050[,3:8]  # add an additional column for each layer. These will be our thresholds. 
+pCHfull.2050[which(pCHfull.2050$layer.1.1>=0.7),9] <- 1 #assign 1 to all cells above the threshold in a new column called thresh
+pCHfull.2050[which(pCHfull.2050$layer.1.1<0.7),9] <- 0 #0 to everything else
+pCHfull.2050[which(pCHfull.2050$layer.2.1>=0.7),10] <- 1 #assign 1 to all cells above the threshold in a new column called thresh
+pCHfull.2050[which(pCHfull.2050$layer.2.1<0.7),10] <- 0 #0 to everything else
+pCHfull.2050[which(pCHfull.2050$layer.3.1>=0.7),11] <- 1 #assign 1 to all cells above the threshold in a new column called thresh
+pCHfull.2050[which(pCHfull.2050$layer.3.1<0.7),11] <- 0 #0 to everything else
+pCHfull.2050[which(pCHfull.2050$layer.4.1>=0.7),12] <- 1 #assign 1 to all cells above the threshold in a new column called thresh
+pCHfull.2050[which(pCHfull.2050$layer.4.1<0.7),12] <- 0 #0 to everything else
+pCHfull.2050[which(pCHfull.2050$layer.5.1>=0.7),13] <- 1 #assign 1 to all cells above the threshold in a new column called thresh
+pCHfull.2050[which(pCHfull.2050$layer.5.1<0.7),13] <- 0 #0 to everything else
+pCHfull.2050[which(pCHfull.2050$layer.6.1>=0.7),14] <- 1 #assign 1 to all cells above the threshold in a new column called thresh
+pCHfull.2050[which(pCHfull.2050$layer.6.1<0.7),14] <- 0 #0 to everything else
+
+
+#Add a column with aggregated presence values
+pCHfull.2050$thresh <- rowSums(pCHfull.2050[9:14])
+
+
+#extract all the cells where >25% of the models support presence
+pCHfull.2050.coords <- pCHfull.2050[which(pCHfull.2050$thresh>1),1:2]
+pCHfull.2050.names <- as.data.frame(pCHfull.2050[which(pCHfull.2050$thresh>1),15]) #get the value of these (presence val) so that we can colour accordingly
+colnames(pCHfull.2050.names) <- "thresh"
+
+pCHfull.2050.names$col <- pCHfull.2050.names$thresh
+pCHfull.2050.names <- within(pCHfull.2050.names, col[thresh>5] <- "darkslategray")
+pCHfull.2050.names <- within(pCHfull.2050.names, col[thresh==4] <- "darkslategray3")
+pCHfull.2050.names <- within(pCHfull.2050.names, col[thresh==5] <- "darkslategray3")
+pCHfull.2050.names <- within(pCHfull.2050.names, col[thresh==2] <- "darkslategray1")
+pCHfull.2050.names <- within(pCHfull.2050.names, col[thresh==3] <- "darkslategray1")
+
+coordinates(pCHfull.2050.coords) <- pCHfull.2050.coords[,1:2]
+crs.geo <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84") #define the projection. You can confirm this by looking at your rasterfile
+proj4string(pCHfull.2050.coords) <- crs.geo  #change the coordinates to a spatial dataframe with the correct projection
+
+col<- as.character(pCHfull.2050.names$col) #define colours
+```
+
+
+Draw map
+Draw a map of CH: 
+```
+require(spatial.tools)
+elevation<-getData("alt", country = "CH")
+x <- terrain(elevation, opt = c("slope", "aspect"), unit = "degrees")
+plot(x)
+slope <- terrain(elevation, opt = "slope")
+aspect <- terrain(elevation, opt = "aspect")
+hill <- hillShade(slope, aspect, 40, 270)
+plot(hill, col = grey(0:100/100), legend = FALSE, main = "Switzerland")
+
+#add the spatial data points
+plot(pCHfull.2050.coords, pch = 20, cex = 1, col=col, add = TRUE)
 
 ```
