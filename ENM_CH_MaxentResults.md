@@ -528,3 +528,113 @@ Plot
 ```
 
 ```
+
+
+## 3. Plot Niche
+
+Aim: 
+
+1. Plot niche based on current data
+
+2. plot future niche (2050)
+
+3. Plot future niche (2070)
+
+
+
+We need to plot the predicted niche suitability onto a map. We'll decide on a suitability threshold to turn the predicted values into binary 1s and 0s (suitable, not suitable). This will also make combining the models easy for aims 2 and 3. 
+
+
+
+Import all models and bioclim data
+```
+Upload models for CHN and CHSW
+
+CHN <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntNorthSubset/Present/")
+
+CHSW <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntSouthWestSubset/Present/")
+
+CHSE <- import_maxent("/Users/alexjvr/2016RADAnalysis/2018StudentENMproject/MaxEntSouthEastSubset/Present/")
+
+
+Subset Bioclim vars
+#N
+Present.Bio.N <- crop(Subset.Bio, extent(6.1,10.1,46.7,47.5))
+#SE
+Present.Bio.SE <- crop(Subset.Bio, extent(8.0,10.1,46,47.5))
+#SW
+Present.Bio.SW <- crop(Subset.Bio, extent(6.1,8,46,47.5))
+```
+
+
+predict maps for Rtemp Full, North, SoutWest, and SouthEast
+```
+library(dismo)
+
+Rtemp.pred <- predict(Rtemp.me, Subset.Bio)
+Rtemp.N.pred <- predict(CHN, Present.Bio.N)
+Rtemp.SW.pred <- predict(CHSW, Present.Bio.SW)
+Rtemp.SE.pred <- predict(CHSE, Present.Bio.SE)
+```
+
+
+Extract the predicted value and cell coordinates for each grid point
+```
+library(raster)
+pAll <- rasterToPoints(Rtemp.pred) 
+
+summary(pAll)  #see below. This gives you coordinates in cols 1&2, and the prediction value in col3 (layer). 
+
+       x                y             layer        
+ Min.   : 5.812   Min.   :45.52   Min.   :0.01539  
+ 1st Qu.: 6.979   1st Qu.:46.10   1st Qu.:0.18942  
+ Median : 8.188   Median :46.71   Median :0.38617  
+ Mean   : 8.188   Mean   :46.71   Mean   :0.41567  
+ 3rd Qu.: 9.396   3rd Qu.:47.31   3rd Qu.:0.60553  
+ Max.   :10.562   Max.   :47.90   Max.   :0.96043 
+
+```
+
+Add a binary column to this with 1 for all cells > 0.7 (or whatever your threshold is)
+```
+pAll$thresh <- pAll$layer
+pAll[which(pAll$layer>=0.6),4] <- 1 #assign 1 to all cells above the threshold in a new column called thresh
+pAll[which(pAll$layer<0.6),4] <- 0 #0 to everything else
+```
+
+Change the coordinates to spatial data points: 
+```
+library(sp)  # classes for spatial data
+library(raster)  # grids, rasters
+library(rasterVis)  # raster visualisation
+library(maptools)
+library(rgeos)
+# and their dependencies
+
+
+pAll.coords <- pAll[which(pAll$thresh==1),1:2]
+crs.geo <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84") #define the projection. You can confirm this by looking at your rasterfile
+proj4string(pAll.coords) <- crs.geo  #change the coordinates to a spatial dataframe with the correct projection
+```
+
+
+
+
+Draw a map of CH: 
+```
+require(spatial.tools)
+elevation<-getData("alt", country = "CH")
+x <- terrain(elevation, opt = c("slope", "aspect"), unit = "degrees")
+plot(x)
+slope <- terrain(elevation, opt = "slope")
+aspect <- terrain(elevation, opt = "aspect")
+hill <- hillShade(slope, aspect, 40, 270)
+plot(hill, col = grey(0:100/100), legend = FALSE, main = "Switzerland")
+
+#add the spatial data points
+plot(pAll.coords, pch = 20, cex = 1, add = TRUE) #you can add different colours like before when you plotted the CH map. 
+```
+Some of the points are outside of CH. This might be because the extent of the raster files were always in a rectangle that encompasses CH, rather than only CH. You can decide whether to keep these or not. 
+
+
+
