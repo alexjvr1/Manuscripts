@@ -598,8 +598,8 @@ summary(pAll)  #see below. This gives you coordinates in cols 1&2, and the predi
 Add a binary column to this with 1 for all cells > 0.7 (or whatever your threshold is)
 ```
 pAll$thresh <- pAll$layer
-pAll[which(pAll$layer>=0.6),4] <- 1 #assign 1 to all cells above the threshold in a new column called thresh
-pAll[which(pAll$layer<0.6),4] <- 0 #0 to everything else
+pAll[which(pAll$layer>=0.7),4] <- 1 #assign 1 to all cells above the threshold in a new column called thresh
+pAll[which(pAll$layer<0.7),4] <- 0 #0 to everything else
 ```
 
 Change the coordinates to spatial data points: 
@@ -613,6 +613,7 @@ library(rgeos)
 
 
 pAll.coords <- pAll[which(pAll$thresh==1),1:2]
+coordinates(pAll.coords) <- pAll.coords[,1:2]
 crs.geo <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84") #define the projection. You can confirm this by looking at your rasterfile
 proj4string(pAll.coords) <- crs.geo  #change the coordinates to a spatial dataframe with the correct projection
 ```
@@ -636,5 +637,62 @@ plot(pAll.coords, pch = 20, cex = 1, add = TRUE) #you can add different colours 
 ```
 Some of the points are outside of CH. This might be because the extent of the raster files were always in a rectangle that encompasses CH, rather than only CH. You can decide whether to keep these or not. 
 
+
+
+#### Maps of the regions
+
+
+```
+pCHN <- as.data.frame(rasterToPoints(Rtemp.N.pred))
+pCHSW <- as.data.frame(rasterToPoints(Rtemp.SW.pred))
+pCHSE <- as.data.frame(rasterToPoints(Rtemp.SE.pred))
+
+
+pCHN$thresh <- pCHN$layer
+pCHN[which(pCHN$layer>=0.7),4] <- 1 #assign 1 to all cells above the threshold in a new column called thresh
+pCHN[which(pCHN$layer<0.7),4] <- 0 #0 to everything else
+pCHN.coords <- pCHN[which(pCHN$thresh==1),1:2]
+coordinates(pCHN.coords) <- pCHN.coords[,1:2]  ##convert to spatial points
+crs.geo <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84") #define the projection. You can confirm this by looking at your rasterfile
+proj4string(pCHN.coords) <- crs.geo  #change the coordinates to a spatial dataframe with the correct projection
+
+
+pCHSW$thresh <- pCHSW$layer
+pCHSW[which(pCHSW$layer>=0.7),4] <- 1 #assign 1 to all cells above the threshold in a new column called thresh
+pCHSW[which(pCHSW$layer<0.7),4] <- 0 #0 to everything else
+pCHSW.coords <- pCHSW[which(pCHSW$thresh==1),1:2]
+coordinates(pCHSW.coords) <- pCHSW.coords[,1:2]
+crs.geo <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84") #define the projection. You can confirm this by looking at your rasterfile
+proj4string(pCHSW.coords) <- crs.geo  #change the coordinates to a spatial dataframe with the correct projection
+
+
+pCHSE$thresh <- pCHSE$layer
+pCHSE[which(pCHSE$layer>=0.7),4] <- 1 #assign 1 to all cells above the threshold in a new column called thresh
+pCHSE[which(pCHSE$layer<0.7),4] <- 0 #0 to everything else
+pCHSE.coords <- pCHSE[which(pCHSE$thresh==1),1:2]
+coordinates(pCHSE.coords) <- pCHSE.coords[,1:2]
+crs.geo <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84") #define the projection. You can confirm this by looking at your rasterfile
+proj4string(pCHSE.coords) <- crs.geo  #change the coordinates to a spatial dataframe with the correct projection
+
+```
+
+
+
+Draw a map of CH: 
+```
+require(spatial.tools)
+elevation<-getData("alt", country = "CH")
+x <- terrain(elevation, opt = c("slope", "aspect"), unit = "degrees")
+plot(x)
+slope <- terrain(elevation, opt = "slope")
+aspect <- terrain(elevation, opt = "aspect")
+hill <- hillShade(slope, aspect, 40, 270)
+plot(hill, col = grey(0:100/100), legend = FALSE, main = "Switzerland")
+
+#add the spatial data points
+plot(pCHN.coords, pch = 20, cex = 1, col="blue", add = TRUE) #you can add different colours like before when you plotted the CH map. Maybe match the PCA and barplots?
+plot(pCHSE.coords, pch = 20, cex = 1, col="purple", add = TRUE)
+plot(pCHSW.coords, pch = 20, cex = 1, col="green", add = TRUE)
+```
 
 
