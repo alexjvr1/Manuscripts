@@ -694,5 +694,20 @@ plot(pCHN.coords, pch = 20, cex = 1, col="blue", add = TRUE) #you can add differ
 plot(pCHSE.coords, pch = 20, cex = 1, col="purple", add = TRUE)
 plot(pCHSW.coords, pch = 20, cex = 1, col="green", add = TRUE)
 ```
+You can use Rcolours and pch to change this figure. 
 
 
+Threshold of 0.5
+
+![alt_txt][thresh0.5]
+
+[thresh0.5]:https://user-images.githubusercontent.com/12142475/49741636-bd858580-fc8e-11e8-8518-df50d7a64533.png
+
+
+
+
+Threshold of 0.7
+
+![alt_txt][thresh0.7]
+
+[thresh0.7]:https://user-images.githubusercontent.com/12142475/49741635-bd858580-fc8e-11e8-9dba-a5575f6fdebe.png
