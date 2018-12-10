@@ -76,34 +76,39 @@ Present.Bio.SW <- crop(Subset.Bio, extent(6.1,8,46,47.5))
 
 Calculate the niche overlap between the different regions using the R package [ecospat](https://cran.r-project.org/web/packages/ecospat/vignettes/vignette_ecospat_package.pdf)
 ```
-install.packages("ecospat")
+#install.packages("ecospat")
 library(ecospat)
 
 
 ##PCA of the BioClim variables for the CHN and CHSW data combined. This is for the entire region based on the extent of the bioclim data. 
 
-pca.env <- dudi.pca(c(Present.Bio.N@data@values[,1:5],Present.Bio.SW@data@values[,1:5]),scannf=F,nf=2)  #scannf=F: don't display screeplot; nf=2: keep two axes
+df.Present.Bio.N <- as.data.frame(Present.Bio.N@data@values[, 1:5])
+df.Present.Bio.SW <- as.data.frame(Present.Bio.SW@data@values[, 1:5])
 
-pca.env
+
+pca.env <- dudi.pca(rbind(df.Present.Bio.N, df.Present.Bio.SW),scannf=F,nf=2)  #scannf=F: don't display screeplot; nf=2: keep two axes
+
 Duality diagramm
 class: pca dudi
-$call: dudi.pca(df = c(Present.Bio.N@data@values[, 1:5], Present.Bio.SW@data@values[,1:5]), scannf = F, nf = 2)
+$call: dudi.pca(df = rbind(df.Present.Bio.N, df.Present.Bio.SW), scannf = F, 
+    nf = 2)
 
-$nf: 1 axis-components saved
-$rank: 1
-eigen values: 1
+$nf: 2 axis-components saved
+$rank: 5
+eigen values: 2.747 1.653 0.3828 0.1936 0.02299
   vector length mode    content       
-1 $cw    1      numeric column weights
-2 $lw    17400  numeric row weights   
-3 $eig   1      numeric eigen values  
+1 $cw    5      numeric column weights
+2 $lw    3480   numeric row weights   
+3 $eig   5      numeric eigen values  
 
-  data.frame nrow  ncol content             
-1 $tab       17400 1    modified array      
-2 $li        17400 1    row coordinates     
-3 $l1        17400 1    row normed scores   
-4 $co        1     1    column coordinates  
-5 $c1        1     1    column normed scores
+  data.frame nrow ncol content             
+1 $tab       3480 5    modified array      
+2 $li        3480 2    row coordinates     
+3 $l1        3480 2    row normed scores   
+4 $co        5    2    column coordinates  
+5 $c1        5    2    column normed scores
 other elements: cent norm 
+
 
 
 
@@ -112,19 +117,43 @@ other elements: cent norm
 ecospat.plot.contrib(contrib=pca.env$co, eigen=pca.env$eig)
 ```
 
+![alt_txt][PCA]
+
+[PCA]:https://user-images.githubusercontent.com/12142475/49727061-51dbf200-fc67-11e8-9821-ece211399001.png
+
+
+
 Predict the scores on the axes
 ```
 # PCA scores for the whole study area
 scores.globclim <- pca.env$li
+
 # PCA scores for the CHN sites with known R.temp populations
-scores.sp.nat <- suprow(pca.env,nat[which(nat[,11]==1),3:10])$li  ###
+scores.N <- suprow(pca.env,nat[which(nat[,11]==1),3:10])$li  ###Here we have to identify the cells in the raster file that represents the known populations. 
+
 # PCA scores for the CHSW sites with known R.temp populations
-scores.sp.inv <- suprow(pca.env,inv[which(inv[,11]==1),3:10])$li  ###
+scores.SW <- suprow(pca.env,inv[which(inv[,11]==1),3:10])$li  ###
+
+
 # PCA scores for the whole CHN study area
-scores.clim.nat <- suprow(pca.env,Present.Bio.N@data@values[,1:5])$li
+scores.clim.N <- suprow(pca.env,df.Present.Bio.N[,1:5])$li
+dim(df.Present.Bio.N) #we added North first (rbind command above). Check how big the df and if it corresponds with the PCA rows
+[1] 1824
+dim(scores.clim.N)
+[1] 1824    2
+
+
 # PCA scores for the whole CHSW study area
-scores.clim.inv <- suprow(pca.env,inv[,3:10])$li
+scores.clim.SW <- suprow(pca.env,df.Present.Bio.SW[,1:5])$li
+dim(df.Present.Bio.SW)
+[1] 1656    5
+dim(scores.clim.SW)
+[1] 1656    2
 ```
+
+
+
+
 
 
 ## 2. Change in suitable cells
