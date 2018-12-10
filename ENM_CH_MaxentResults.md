@@ -782,3 +782,8 @@ plot(hill, col = grey(0:100/100), legend = FALSE, main = "Switzerland")
 plot(pCHfull.2050.coords, pch = 20, cex = 1, col=col, add = TRUE)
 
 ```
+
+
+![alt_txt][concat.map]
+
+[concat.map]:https://user-images.githubusercontent.com/12142475/49748151-da28ba00-fc9c-11e8-841c-c9bd59f04fda.png
